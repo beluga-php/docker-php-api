@@ -16,7 +16,7 @@
         "jane-php/open-api-runtime": "^6.3"
     },
     "require-dev": {
-        "friendsofphp/php-cs-fixer": "^2.17",
+        "friendsofphp/php-cs-fixer": "^2.17 || ^3.0",
         "jane-php/json-schema": "^6.3",
         "jane-php/open-api-3": "^6.3"
     },
