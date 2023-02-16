@@ -49,7 +49,10 @@
         "docker-php/docker-php-api": "*"
     },
     "scripts": {
-        "generate": "vendor/bin/jane-openapi generate",
+        "generate": [
+            "vendor/bin/jane-openapi generate",
+            "cat patches/*.patch | patch -s -p1"
+        ],
         "lint": "vendor/bin/php-cs-fixer fix --dry-run --verbose --diff",
         "lint-fix": "vendor/bin/php-cs-fixer fix --verbose"
     },
