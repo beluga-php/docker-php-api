@@ -1,41 +1,35 @@
 <?php
 
-declare(strict_types=1);
-
 namespace Docker\API\Normalizer;
 
-use Docker\API\Runtime\Normalizer\CheckArray;
 use Jane\Component\JsonSchemaRuntime\Reference;
+use Docker\API\Runtime\Normalizer\CheckArray;
+use Docker\API\Runtime\Normalizer\ValidatorTrait;
+use Symfony\Component\Serializer\Exception\InvalidArgumentException;
 use Symfony\Component\Serializer\Normalizer\DenormalizerAwareInterface;
 use Symfony\Component\Serializer\Normalizer\DenormalizerAwareTrait;
 use Symfony\Component\Serializer\Normalizer\DenormalizerInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerAwareInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerAwareTrait;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
-
 class NetworkAttachmentConfigNormalizer implements DenormalizerInterface, NormalizerInterface, DenormalizerAwareInterface, NormalizerAwareInterface
 {
-    use CheckArray;
     use DenormalizerAwareTrait;
     use NormalizerAwareTrait;
-
-    /**
-     * @return bool
-     */
-    public function supportsDenormalization($data, $type, $format = null)
+    use CheckArray;
+    use ValidatorTrait;
+    public function supportsDenormalization($data, $type, $format = null) : bool
     {
-        return 'Docker\\API\\Model\\NetworkAttachmentConfig' === $type;
+        return $type === 'Docker\\API\\Model\\NetworkAttachmentConfig';
     }
-
-    public function supportsNormalization($data, $format = null)
+    public function supportsNormalization($data, $format = null) : bool
     {
-        return \is_object($data) && 'Docker\\API\\Model\\NetworkAttachmentConfig' === $data::class;
+        return is_object($data) && get_class($data) === 'Docker\\API\\Model\\NetworkAttachmentConfig';
     }
-
     /**
      * @return mixed
      */
-    public function denormalize($data, $class, $format = null, array $context = [])
+    public function denormalize($data, $class, $format = null, array $context = array())
     {
         if (isset($data['$ref'])) {
             return new Reference($data['$ref'], $context['document-origin']);
@@ -47,57 +41,70 @@ class NetworkAttachmentConfigNormalizer implements DenormalizerInterface, Normal
         if (null === $data || false === \is_array($data)) {
             return $object;
         }
-        if (\array_key_exists('Target', $data) && null !== $data['Target']) {
+        if (\array_key_exists('Target', $data) && $data['Target'] !== null) {
             $object->setTarget($data['Target']);
-        } elseif (\array_key_exists('Target', $data) && null === $data['Target']) {
+            unset($data['Target']);
+        }
+        elseif (\array_key_exists('Target', $data) && $data['Target'] === null) {
             $object->setTarget(null);
         }
-        if (\array_key_exists('Aliases', $data) && null !== $data['Aliases']) {
-            $values = [];
+        if (\array_key_exists('Aliases', $data) && $data['Aliases'] !== null) {
+            $values = array();
             foreach ($data['Aliases'] as $value) {
                 $values[] = $value;
             }
             $object->setAliases($values);
-        } elseif (\array_key_exists('Aliases', $data) && null === $data['Aliases']) {
+            unset($data['Aliases']);
+        }
+        elseif (\array_key_exists('Aliases', $data) && $data['Aliases'] === null) {
             $object->setAliases(null);
         }
-        if (\array_key_exists('DriverOpts', $data) && null !== $data['DriverOpts']) {
-            $values_1 = new \ArrayObject([], \ArrayObject::ARRAY_AS_PROPS);
+        if (\array_key_exists('DriverOpts', $data) && $data['DriverOpts'] !== null) {
+            $values_1 = new \ArrayObject(array(), \ArrayObject::ARRAY_AS_PROPS);
             foreach ($data['DriverOpts'] as $key => $value_1) {
                 $values_1[$key] = $value_1;
             }
             $object->setDriverOpts($values_1);
-        } elseif (\array_key_exists('DriverOpts', $data) && null === $data['DriverOpts']) {
+            unset($data['DriverOpts']);
+        }
+        elseif (\array_key_exists('DriverOpts', $data) && $data['DriverOpts'] === null) {
             $object->setDriverOpts(null);
         }
-
+        foreach ($data as $key_1 => $value_2) {
+            if (preg_match('/.*/', (string) $key_1)) {
+                $object[$key_1] = $value_2;
+            }
+        }
         return $object;
     }
-
     /**
      * @return array|string|int|float|bool|\ArrayObject|null
      */
-    public function normalize($object, $format = null, array $context = [])
+    public function normalize($object, $format = null, array $context = array())
     {
-        $data = [];
-        if (null !== $object->getTarget()) {
+        $data = array();
+        if ($object->isInitialized('target') && null !== $object->getTarget()) {
             $data['Target'] = $object->getTarget();
         }
-        if (null !== $object->getAliases()) {
-            $values = [];
+        if ($object->isInitialized('aliases') && null !== $object->getAliases()) {
+            $values = array();
             foreach ($object->getAliases() as $value) {
                 $values[] = $value;
             }
             $data['Aliases'] = $values;
         }
-        if (null !== $object->getDriverOpts()) {
-            $values_1 = [];
+        if ($object->isInitialized('driverOpts') && null !== $object->getDriverOpts()) {
+            $values_1 = array();
             foreach ($object->getDriverOpts() as $key => $value_1) {
                 $values_1[$key] = $value_1;
             }
             $data['DriverOpts'] = $values_1;
         }
-
+        foreach ($object as $key_1 => $value_2) {
+            if (preg_match('/.*/', (string) $key_1)) {
+                $data[$key_1] = $value_2;
+            }
+        }
         return $data;
     }
 }

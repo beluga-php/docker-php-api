@@ -1,145 +1,239 @@
 <?php
 
-declare(strict_types=1);
-
 namespace Docker\API\Model;
 
-class BuildInfo
+class BuildInfo extends \ArrayObject
 {
     /**
+     * @var array
+     */
+    protected $initialized = array();
+    public function isInitialized($property) : bool
+    {
+        return array_key_exists($property, $this->initialized);
+    }
+    /**
+     * 
+     *
      * @var string|null
      */
     protected $id;
     /**
+     * 
+     *
      * @var string|null
      */
     protected $stream;
     /**
+     * 
+     *
      * @var string|null
      */
     protected $error;
     /**
+     * 
+     *
      * @var ErrorDetail|null
      */
     protected $errorDetail;
     /**
+     * 
+     *
      * @var string|null
      */
     protected $status;
     /**
+     * 
+     *
      * @var string|null
      */
     protected $progress;
     /**
+     * 
+     *
      * @var ProgressDetail|null
      */
     protected $progressDetail;
     /**
-     * Image ID or Digest.
+     * Image ID or Digest
      *
      * @var ImageID|null
      */
     protected $aux;
-
-    public function getId(): ?string
+    /**
+     * 
+     *
+     * @return string|null
+     */
+    public function getId() : ?string
     {
         return $this->id;
     }
-
-    public function setId(?string $id): self
+    /**
+     * 
+     *
+     * @param string|null $id
+     *
+     * @return self
+     */
+    public function setId(?string $id) : self
     {
+        $this->initialized['id'] = true;
         $this->id = $id;
-
         return $this;
     }
-
-    public function getStream(): ?string
+    /**
+     * 
+     *
+     * @return string|null
+     */
+    public function getStream() : ?string
     {
         return $this->stream;
     }
-
-    public function setStream(?string $stream): self
+    /**
+     * 
+     *
+     * @param string|null $stream
+     *
+     * @return self
+     */
+    public function setStream(?string $stream) : self
     {
+        $this->initialized['stream'] = true;
         $this->stream = $stream;
-
         return $this;
     }
-
-    public function getError(): ?string
+    /**
+     * 
+     *
+     * @return string|null
+     */
+    public function getError() : ?string
     {
         return $this->error;
     }
-
-    public function setError(?string $error): self
+    /**
+     * 
+     *
+     * @param string|null $error
+     *
+     * @return self
+     */
+    public function setError(?string $error) : self
     {
+        $this->initialized['error'] = true;
         $this->error = $error;
-
         return $this;
     }
-
-    public function getErrorDetail(): ?ErrorDetail
+    /**
+     * 
+     *
+     * @return ErrorDetail|null
+     */
+    public function getErrorDetail() : ?ErrorDetail
     {
         return $this->errorDetail;
     }
-
-    public function setErrorDetail(?ErrorDetail $errorDetail): self
+    /**
+     * 
+     *
+     * @param ErrorDetail|null $errorDetail
+     *
+     * @return self
+     */
+    public function setErrorDetail(?ErrorDetail $errorDetail) : self
     {
+        $this->initialized['errorDetail'] = true;
         $this->errorDetail = $errorDetail;
-
         return $this;
     }
-
-    public function getStatus(): ?string
+    /**
+     * 
+     *
+     * @return string|null
+     */
+    public function getStatus() : ?string
     {
         return $this->status;
     }
-
-    public function setStatus(?string $status): self
+    /**
+     * 
+     *
+     * @param string|null $status
+     *
+     * @return self
+     */
+    public function setStatus(?string $status) : self
     {
+        $this->initialized['status'] = true;
         $this->status = $status;
-
         return $this;
     }
-
-    public function getProgress(): ?string
+    /**
+     * 
+     *
+     * @return string|null
+     */
+    public function getProgress() : ?string
     {
         return $this->progress;
     }
-
-    public function setProgress(?string $progress): self
+    /**
+     * 
+     *
+     * @param string|null $progress
+     *
+     * @return self
+     */
+    public function setProgress(?string $progress) : self
     {
+        $this->initialized['progress'] = true;
         $this->progress = $progress;
-
         return $this;
     }
-
-    public function getProgressDetail(): ?ProgressDetail
+    /**
+     * 
+     *
+     * @return ProgressDetail|null
+     */
+    public function getProgressDetail() : ?ProgressDetail
     {
         return $this->progressDetail;
     }
-
-    public function setProgressDetail(?ProgressDetail $progressDetail): self
+    /**
+     * 
+     *
+     * @param ProgressDetail|null $progressDetail
+     *
+     * @return self
+     */
+    public function setProgressDetail(?ProgressDetail $progressDetail) : self
     {
+        $this->initialized['progressDetail'] = true;
         $this->progressDetail = $progressDetail;
-
         return $this;
     }
-
     /**
-     * Image ID or Digest.
+     * Image ID or Digest
+     *
+     * @return ImageID|null
      */
-    public function getAux(): ?ImageID
+    public function getAux() : ?ImageID
     {
         return $this->aux;
     }
-
     /**
-     * Image ID or Digest.
+     * Image ID or Digest
+     *
+     * @param ImageID|null $aux
+     *
+     * @return self
      */
-    public function setAux(?ImageID $aux): self
+    public function setAux(?ImageID $aux) : self
     {
+        $this->initialized['aux'] = true;
         $this->aux = $aux;
-
         return $this;
     }
 }

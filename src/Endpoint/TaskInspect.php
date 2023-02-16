@@ -1,42 +1,36 @@
 <?php
 
-declare(strict_types=1);
-
 namespace Docker\API\Endpoint;
 
 class TaskInspect extends \Docker\API\Runtime\Client\BaseEndpoint implements \Docker\API\Runtime\Client\Endpoint
 {
-    use \Docker\API\Runtime\Client\EndpointTrait;
     protected $id;
-
     /**
+     * 
+     *
      * @param string $id ID of the task
      */
     public function __construct(string $id)
     {
         $this->id = $id;
     }
-
-    public function getMethod(): string
+    use \Docker\API\Runtime\Client\EndpointTrait;
+    public function getMethod() : string
     {
         return 'GET';
     }
-
-    public function getUri(): string
+    public function getUri() : string
     {
-        return str_replace(['{id}'], [$this->id], '/tasks/{id}');
+        return str_replace(array('{id}'), array($this->id), '/tasks/{id}');
     }
-
-    public function getBody(\Symfony\Component\Serializer\SerializerInterface $serializer, $streamFactory = null): array
+    public function getBody(\Symfony\Component\Serializer\SerializerInterface $serializer, $streamFactory = null) : array
     {
-        return [[], null];
+        return array(array(), null);
     }
-
-    public function getExtraHeaders(): array
+    public function getExtraHeaders() : array
     {
-        return ['Accept' => ['application/json']];
+        return array('Accept' => array('application/json'));
     }
-
     /**
      * {@inheritdoc}
      *
@@ -44,26 +38,27 @@ class TaskInspect extends \Docker\API\Runtime\Client\BaseEndpoint implements \Do
      * @throws \Docker\API\Exception\TaskInspectInternalServerErrorException
      * @throws \Docker\API\Exception\TaskInspectServiceUnavailableException
      *
-     * @return \Docker\API\Model\Task|null
+     * @return null|\Docker\API\Model\Task
      */
-    protected function transformResponseBody(string $body, int $status, \Symfony\Component\Serializer\SerializerInterface $serializer, ?string $contentType = null)
+    protected function transformResponseBody(\Psr\Http\Message\ResponseInterface $response, \Symfony\Component\Serializer\SerializerInterface $serializer, ?string $contentType = null)
     {
-        if ((null === $contentType) === false && (200 === $status && false !== mb_strpos($contentType, 'application/json'))) {
+        $status = $response->getStatusCode();
+        $body = (string) $response->getBody();
+        if (is_null($contentType) === false && (200 === $status && mb_strpos($contentType, 'application/json') !== false)) {
             return $serializer->deserialize($body, 'Docker\\API\\Model\\Task', 'json');
         }
-        if ((null === $contentType) === false && (404 === $status && false !== mb_strpos($contentType, 'application/json'))) {
-            throw new \Docker\API\Exception\TaskInspectNotFoundException($serializer->deserialize($body, 'Docker\\API\\Model\\ErrorResponse', 'json'));
+        if (is_null($contentType) === false && (404 === $status && mb_strpos($contentType, 'application/json') !== false)) {
+            throw new \Docker\API\Exception\TaskInspectNotFoundException($serializer->deserialize($body, 'Docker\\API\\Model\\ErrorResponse', 'json'), $response);
         }
-        if ((null === $contentType) === false && (500 === $status && false !== mb_strpos($contentType, 'application/json'))) {
-            throw new \Docker\API\Exception\TaskInspectInternalServerErrorException($serializer->deserialize($body, 'Docker\\API\\Model\\ErrorResponse', 'json'));
+        if (is_null($contentType) === false && (500 === $status && mb_strpos($contentType, 'application/json') !== false)) {
+            throw new \Docker\API\Exception\TaskInspectInternalServerErrorException($serializer->deserialize($body, 'Docker\\API\\Model\\ErrorResponse', 'json'), $response);
         }
-        if ((null === $contentType) === false && (503 === $status && false !== mb_strpos($contentType, 'application/json'))) {
-            throw new \Docker\API\Exception\TaskInspectServiceUnavailableException($serializer->deserialize($body, 'Docker\\API\\Model\\ErrorResponse', 'json'));
+        if (is_null($contentType) === false && (503 === $status && mb_strpos($contentType, 'application/json') !== false)) {
+            throw new \Docker\API\Exception\TaskInspectServiceUnavailableException($serializer->deserialize($body, 'Docker\\API\\Model\\ErrorResponse', 'json'), $response);
         }
     }
-
-    public function getAuthenticationScopes(): array
+    public function getAuthenticationScopes() : array
     {
-        return [];
+        return array();
     }
 }

@@ -1,41 +1,35 @@
 <?php
 
-declare(strict_types=1);
-
 namespace Docker\API\Normalizer;
 
-use Docker\API\Runtime\Normalizer\CheckArray;
 use Jane\Component\JsonSchemaRuntime\Reference;
+use Docker\API\Runtime\Normalizer\CheckArray;
+use Docker\API\Runtime\Normalizer\ValidatorTrait;
+use Symfony\Component\Serializer\Exception\InvalidArgumentException;
 use Symfony\Component\Serializer\Normalizer\DenormalizerAwareInterface;
 use Symfony\Component\Serializer\Normalizer\DenormalizerAwareTrait;
 use Symfony\Component\Serializer\Normalizer\DenormalizerInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerAwareInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerAwareTrait;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
-
 class ContainersCreatePostResponse201Normalizer implements DenormalizerInterface, NormalizerInterface, DenormalizerAwareInterface, NormalizerAwareInterface
 {
-    use CheckArray;
     use DenormalizerAwareTrait;
     use NormalizerAwareTrait;
-
-    /**
-     * @return bool
-     */
-    public function supportsDenormalization($data, $type, $format = null)
+    use CheckArray;
+    use ValidatorTrait;
+    public function supportsDenormalization($data, $type, $format = null) : bool
     {
-        return 'Docker\\API\\Model\\ContainersCreatePostResponse201' === $type;
+        return $type === 'Docker\\API\\Model\\ContainersCreatePostResponse201';
     }
-
-    public function supportsNormalization($data, $format = null)
+    public function supportsNormalization($data, $format = null) : bool
     {
-        return \is_object($data) && 'Docker\\API\\Model\\ContainersCreatePostResponse201' === $data::class;
+        return is_object($data) && get_class($data) === 'Docker\\API\\Model\\ContainersCreatePostResponse201';
     }
-
     /**
      * @return mixed
      */
-    public function denormalize($data, $class, $format = null, array $context = [])
+    public function denormalize($data, $class, $format = null, array $context = array())
     {
         if (isset($data['$ref'])) {
             return new Reference($data['$ref'], $context['document-origin']);
@@ -47,37 +41,48 @@ class ContainersCreatePostResponse201Normalizer implements DenormalizerInterface
         if (null === $data || false === \is_array($data)) {
             return $object;
         }
-        if (\array_key_exists('Id', $data) && null !== $data['Id']) {
+        if (\array_key_exists('Id', $data) && $data['Id'] !== null) {
             $object->setId($data['Id']);
-        } elseif (\array_key_exists('Id', $data) && null === $data['Id']) {
+            unset($data['Id']);
+        }
+        elseif (\array_key_exists('Id', $data) && $data['Id'] === null) {
             $object->setId(null);
         }
-        if (\array_key_exists('Warnings', $data) && null !== $data['Warnings']) {
-            $values = [];
+        if (\array_key_exists('Warnings', $data) && $data['Warnings'] !== null) {
+            $values = array();
             foreach ($data['Warnings'] as $value) {
                 $values[] = $value;
             }
             $object->setWarnings($values);
-        } elseif (\array_key_exists('Warnings', $data) && null === $data['Warnings']) {
+            unset($data['Warnings']);
+        }
+        elseif (\array_key_exists('Warnings', $data) && $data['Warnings'] === null) {
             $object->setWarnings(null);
         }
-
+        foreach ($data as $key => $value_1) {
+            if (preg_match('/.*/', (string) $key)) {
+                $object[$key] = $value_1;
+            }
+        }
         return $object;
     }
-
     /**
      * @return array|string|int|float|bool|\ArrayObject|null
      */
-    public function normalize($object, $format = null, array $context = [])
+    public function normalize($object, $format = null, array $context = array())
     {
-        $data = [];
+        $data = array();
         $data['Id'] = $object->getId();
-        $values = [];
+        $values = array();
         foreach ($object->getWarnings() as $value) {
             $values[] = $value;
         }
         $data['Warnings'] = $values;
-
+        foreach ($object as $key => $value_1) {
+            if (preg_match('/.*/', (string) $key)) {
+                $data[$key] = $value_1;
+            }
+        }
         return $data;
     }
 }

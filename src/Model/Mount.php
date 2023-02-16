@@ -1,11 +1,17 @@
 <?php
 
-declare(strict_types=1);
-
 namespace Docker\API\Model;
 
-class Mount
+class Mount extends \ArrayObject
 {
+    /**
+     * @var array
+     */
+    protected $initialized = array();
+    public function isInitialized($property) : bool
+    {
+        return array_key_exists($property, $this->initialized);
+    }
     /**
      * Container path.
      *
@@ -19,15 +25,16 @@ class Mount
      */
     protected $source;
     /**
-     * The mount type. Available types:.
-     *
-     * - `bind` Mounts a file or directory from the host into the container. Must exist prior to creating the container.
-     * - `volume` Creates a volume with the given name and options (or uses a pre-existing volume with the same name and options). These are **not** removed when the container is removed.
-     * - `tmpfs` Create a tmpfs with the given options. The mount source cannot be specified for tmpfs.
-     * - `npipe` Mounts a named pipe from the host into the container. Must exist prior to creating the container.
-     *
-     * @var string|null
-     */
+    * The mount type. Available types:
+    
+    - `bind` Mounts a file or directory from the host into the container. Must exist prior to creating the container.
+    - `volume` Creates a volume with the given name and options (or uses a pre-existing volume with the same name and options). These are **not** removed when the container is removed.
+    - `tmpfs` Create a tmpfs with the given options. The mount source cannot be specified for tmpfs.
+    - `npipe` Mounts a named pipe from the host into the container. Must exist prior to creating the container.
+    
+    *
+    * @var string|null
+    */
     protected $type;
     /**
      * Whether the mount should be read-only.
@@ -59,158 +66,192 @@ class Mount
      * @var MountTmpfsOptions|null
      */
     protected $tmpfsOptions;
-
     /**
      * Container path.
+     *
+     * @return string|null
      */
-    public function getTarget(): ?string
+    public function getTarget() : ?string
     {
         return $this->target;
     }
-
     /**
      * Container path.
+     *
+     * @param string|null $target
+     *
+     * @return self
      */
-    public function setTarget(?string $target): self
+    public function setTarget(?string $target) : self
     {
+        $this->initialized['target'] = true;
         $this->target = $target;
-
         return $this;
     }
-
     /**
      * Mount source (e.g. a volume name, a host path).
+     *
+     * @return string|null
      */
-    public function getSource(): ?string
+    public function getSource() : ?string
     {
         return $this->source;
     }
-
     /**
      * Mount source (e.g. a volume name, a host path).
+     *
+     * @param string|null $source
+     *
+     * @return self
      */
-    public function setSource(?string $source): self
+    public function setSource(?string $source) : self
     {
+        $this->initialized['source'] = true;
         $this->source = $source;
-
         return $this;
     }
-
     /**
-     * The mount type. Available types:.
-     *
-     * - `bind` Mounts a file or directory from the host into the container. Must exist prior to creating the container.
-     * - `volume` Creates a volume with the given name and options (or uses a pre-existing volume with the same name and options). These are **not** removed when the container is removed.
-     * - `tmpfs` Create a tmpfs with the given options. The mount source cannot be specified for tmpfs.
-     * - `npipe` Mounts a named pipe from the host into the container. Must exist prior to creating the container.
-     */
-    public function getType(): ?string
+    * The mount type. Available types:
+    
+    - `bind` Mounts a file or directory from the host into the container. Must exist prior to creating the container.
+    - `volume` Creates a volume with the given name and options (or uses a pre-existing volume with the same name and options). These are **not** removed when the container is removed.
+    - `tmpfs` Create a tmpfs with the given options. The mount source cannot be specified for tmpfs.
+    - `npipe` Mounts a named pipe from the host into the container. Must exist prior to creating the container.
+    
+    *
+    * @return string|null
+    */
+    public function getType() : ?string
     {
         return $this->type;
     }
-
     /**
-     * The mount type. Available types:.
-     *
-     * - `bind` Mounts a file or directory from the host into the container. Must exist prior to creating the container.
-     * - `volume` Creates a volume with the given name and options (or uses a pre-existing volume with the same name and options). These are **not** removed when the container is removed.
-     * - `tmpfs` Create a tmpfs with the given options. The mount source cannot be specified for tmpfs.
-     * - `npipe` Mounts a named pipe from the host into the container. Must exist prior to creating the container.
-     */
-    public function setType(?string $type): self
+    * The mount type. Available types:
+    
+    - `bind` Mounts a file or directory from the host into the container. Must exist prior to creating the container.
+    - `volume` Creates a volume with the given name and options (or uses a pre-existing volume with the same name and options). These are **not** removed when the container is removed.
+    - `tmpfs` Create a tmpfs with the given options. The mount source cannot be specified for tmpfs.
+    - `npipe` Mounts a named pipe from the host into the container. Must exist prior to creating the container.
+    
+    *
+    * @param string|null $type
+    *
+    * @return self
+    */
+    public function setType(?string $type) : self
     {
+        $this->initialized['type'] = true;
         $this->type = $type;
-
         return $this;
     }
-
     /**
      * Whether the mount should be read-only.
+     *
+     * @return bool|null
      */
-    public function getReadOnly(): ?bool
+    public function getReadOnly() : ?bool
     {
         return $this->readOnly;
     }
-
     /**
      * Whether the mount should be read-only.
+     *
+     * @param bool|null $readOnly
+     *
+     * @return self
      */
-    public function setReadOnly(?bool $readOnly): self
+    public function setReadOnly(?bool $readOnly) : self
     {
+        $this->initialized['readOnly'] = true;
         $this->readOnly = $readOnly;
-
         return $this;
     }
-
     /**
      * The consistency requirement for the mount: `default`, `consistent`, `cached`, or `delegated`.
+     *
+     * @return string|null
      */
-    public function getConsistency(): ?string
+    public function getConsistency() : ?string
     {
         return $this->consistency;
     }
-
     /**
      * The consistency requirement for the mount: `default`, `consistent`, `cached`, or `delegated`.
+     *
+     * @param string|null $consistency
+     *
+     * @return self
      */
-    public function setConsistency(?string $consistency): self
+    public function setConsistency(?string $consistency) : self
     {
+        $this->initialized['consistency'] = true;
         $this->consistency = $consistency;
-
         return $this;
     }
-
     /**
      * Optional configuration for the `bind` type.
+     *
+     * @return MountBindOptions|null
      */
-    public function getBindOptions(): ?MountBindOptions
+    public function getBindOptions() : ?MountBindOptions
     {
         return $this->bindOptions;
     }
-
     /**
      * Optional configuration for the `bind` type.
+     *
+     * @param MountBindOptions|null $bindOptions
+     *
+     * @return self
      */
-    public function setBindOptions(?MountBindOptions $bindOptions): self
+    public function setBindOptions(?MountBindOptions $bindOptions) : self
     {
+        $this->initialized['bindOptions'] = true;
         $this->bindOptions = $bindOptions;
-
         return $this;
     }
-
     /**
      * Optional configuration for the `volume` type.
+     *
+     * @return MountVolumeOptions|null
      */
-    public function getVolumeOptions(): ?MountVolumeOptions
+    public function getVolumeOptions() : ?MountVolumeOptions
     {
         return $this->volumeOptions;
     }
-
     /**
      * Optional configuration for the `volume` type.
+     *
+     * @param MountVolumeOptions|null $volumeOptions
+     *
+     * @return self
      */
-    public function setVolumeOptions(?MountVolumeOptions $volumeOptions): self
+    public function setVolumeOptions(?MountVolumeOptions $volumeOptions) : self
     {
+        $this->initialized['volumeOptions'] = true;
         $this->volumeOptions = $volumeOptions;
-
         return $this;
     }
-
     /**
      * Optional configuration for the `tmpfs` type.
+     *
+     * @return MountTmpfsOptions|null
      */
-    public function getTmpfsOptions(): ?MountTmpfsOptions
+    public function getTmpfsOptions() : ?MountTmpfsOptions
     {
         return $this->tmpfsOptions;
     }
-
     /**
      * Optional configuration for the `tmpfs` type.
+     *
+     * @param MountTmpfsOptions|null $tmpfsOptions
+     *
+     * @return self
      */
-    public function setTmpfsOptions(?MountTmpfsOptions $tmpfsOptions): self
+    public function setTmpfsOptions(?MountTmpfsOptions $tmpfsOptions) : self
     {
+        $this->initialized['tmpfsOptions'] = true;
         $this->tmpfsOptions = $tmpfsOptions;
-
         return $this;
     }
 }

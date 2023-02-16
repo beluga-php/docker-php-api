@@ -1,41 +1,35 @@
 <?php
 
-declare(strict_types=1);
-
 namespace Docker\API\Normalizer;
 
-use Docker\API\Runtime\Normalizer\CheckArray;
 use Jane\Component\JsonSchemaRuntime\Reference;
+use Docker\API\Runtime\Normalizer\CheckArray;
+use Docker\API\Runtime\Normalizer\ValidatorTrait;
+use Symfony\Component\Serializer\Exception\InvalidArgumentException;
 use Symfony\Component\Serializer\Normalizer\DenormalizerAwareInterface;
 use Symfony\Component\Serializer\Normalizer\DenormalizerAwareTrait;
 use Symfony\Component\Serializer\Normalizer\DenormalizerInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerAwareInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerAwareTrait;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
-
 class TaskSpecRestartPolicyNormalizer implements DenormalizerInterface, NormalizerInterface, DenormalizerAwareInterface, NormalizerAwareInterface
 {
-    use CheckArray;
     use DenormalizerAwareTrait;
     use NormalizerAwareTrait;
-
-    /**
-     * @return bool
-     */
-    public function supportsDenormalization($data, $type, $format = null)
+    use CheckArray;
+    use ValidatorTrait;
+    public function supportsDenormalization($data, $type, $format = null) : bool
     {
-        return 'Docker\\API\\Model\\TaskSpecRestartPolicy' === $type;
+        return $type === 'Docker\\API\\Model\\TaskSpecRestartPolicy';
     }
-
-    public function supportsNormalization($data, $format = null)
+    public function supportsNormalization($data, $format = null) : bool
     {
-        return \is_object($data) && 'Docker\\API\\Model\\TaskSpecRestartPolicy' === $data::class;
+        return is_object($data) && get_class($data) === 'Docker\\API\\Model\\TaskSpecRestartPolicy';
     }
-
     /**
      * @return mixed
      */
-    public function denormalize($data, $class, $format = null, array $context = [])
+    public function denormalize($data, $class, $format = null, array $context = array())
     {
         if (isset($data['$ref'])) {
             return new Reference($data['$ref'], $context['document-origin']);
@@ -47,49 +41,64 @@ class TaskSpecRestartPolicyNormalizer implements DenormalizerInterface, Normaliz
         if (null === $data || false === \is_array($data)) {
             return $object;
         }
-        if (\array_key_exists('Condition', $data) && null !== $data['Condition']) {
+        if (\array_key_exists('Condition', $data) && $data['Condition'] !== null) {
             $object->setCondition($data['Condition']);
-        } elseif (\array_key_exists('Condition', $data) && null === $data['Condition']) {
+            unset($data['Condition']);
+        }
+        elseif (\array_key_exists('Condition', $data) && $data['Condition'] === null) {
             $object->setCondition(null);
         }
-        if (\array_key_exists('Delay', $data) && null !== $data['Delay']) {
+        if (\array_key_exists('Delay', $data) && $data['Delay'] !== null) {
             $object->setDelay($data['Delay']);
-        } elseif (\array_key_exists('Delay', $data) && null === $data['Delay']) {
+            unset($data['Delay']);
+        }
+        elseif (\array_key_exists('Delay', $data) && $data['Delay'] === null) {
             $object->setDelay(null);
         }
-        if (\array_key_exists('MaxAttempts', $data) && null !== $data['MaxAttempts']) {
+        if (\array_key_exists('MaxAttempts', $data) && $data['MaxAttempts'] !== null) {
             $object->setMaxAttempts($data['MaxAttempts']);
-        } elseif (\array_key_exists('MaxAttempts', $data) && null === $data['MaxAttempts']) {
+            unset($data['MaxAttempts']);
+        }
+        elseif (\array_key_exists('MaxAttempts', $data) && $data['MaxAttempts'] === null) {
             $object->setMaxAttempts(null);
         }
-        if (\array_key_exists('Window', $data) && null !== $data['Window']) {
+        if (\array_key_exists('Window', $data) && $data['Window'] !== null) {
             $object->setWindow($data['Window']);
-        } elseif (\array_key_exists('Window', $data) && null === $data['Window']) {
+            unset($data['Window']);
+        }
+        elseif (\array_key_exists('Window', $data) && $data['Window'] === null) {
             $object->setWindow(null);
         }
-
+        foreach ($data as $key => $value) {
+            if (preg_match('/.*/', (string) $key)) {
+                $object[$key] = $value;
+            }
+        }
         return $object;
     }
-
     /**
      * @return array|string|int|float|bool|\ArrayObject|null
      */
-    public function normalize($object, $format = null, array $context = [])
+    public function normalize($object, $format = null, array $context = array())
     {
-        $data = [];
-        if (null !== $object->getCondition()) {
+        $data = array();
+        if ($object->isInitialized('condition') && null !== $object->getCondition()) {
             $data['Condition'] = $object->getCondition();
         }
-        if (null !== $object->getDelay()) {
+        if ($object->isInitialized('delay') && null !== $object->getDelay()) {
             $data['Delay'] = $object->getDelay();
         }
-        if (null !== $object->getMaxAttempts()) {
+        if ($object->isInitialized('maxAttempts') && null !== $object->getMaxAttempts()) {
             $data['MaxAttempts'] = $object->getMaxAttempts();
         }
-        if (null !== $object->getWindow()) {
+        if ($object->isInitialized('window') && null !== $object->getWindow()) {
             $data['Window'] = $object->getWindow();
         }
-
+        foreach ($object as $key => $value) {
+            if (preg_match('/.*/', (string) $key)) {
+                $data[$key] = $value;
+            }
+        }
         return $data;
     }
 }

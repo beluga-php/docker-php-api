@@ -1,41 +1,35 @@
 <?php
 
-declare(strict_types=1);
-
 namespace Docker\API\Normalizer;
 
-use Docker\API\Runtime\Normalizer\CheckArray;
 use Jane\Component\JsonSchemaRuntime\Reference;
+use Docker\API\Runtime\Normalizer\CheckArray;
+use Docker\API\Runtime\Normalizer\ValidatorTrait;
+use Symfony\Component\Serializer\Exception\InvalidArgumentException;
 use Symfony\Component\Serializer\Normalizer\DenormalizerAwareInterface;
 use Symfony\Component\Serializer\Normalizer\DenormalizerAwareTrait;
 use Symfony\Component\Serializer\Normalizer\DenormalizerInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerAwareInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerAwareTrait;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
-
 class MountVolumeOptionsNormalizer implements DenormalizerInterface, NormalizerInterface, DenormalizerAwareInterface, NormalizerAwareInterface
 {
-    use CheckArray;
     use DenormalizerAwareTrait;
     use NormalizerAwareTrait;
-
-    /**
-     * @return bool
-     */
-    public function supportsDenormalization($data, $type, $format = null)
+    use CheckArray;
+    use ValidatorTrait;
+    public function supportsDenormalization($data, $type, $format = null) : bool
     {
-        return 'Docker\\API\\Model\\MountVolumeOptions' === $type;
+        return $type === 'Docker\\API\\Model\\MountVolumeOptions';
     }
-
-    public function supportsNormalization($data, $format = null)
+    public function supportsNormalization($data, $format = null) : bool
     {
-        return \is_object($data) && 'Docker\\API\\Model\\MountVolumeOptions' === $data::class;
+        return is_object($data) && get_class($data) === 'Docker\\API\\Model\\MountVolumeOptions';
     }
-
     /**
      * @return mixed
      */
-    public function denormalize($data, $class, $format = null, array $context = [])
+    public function denormalize($data, $class, $format = null, array $context = array())
     {
         if (isset($data['$ref'])) {
             return new Reference($data['$ref'], $context['document-origin']);
@@ -47,49 +41,62 @@ class MountVolumeOptionsNormalizer implements DenormalizerInterface, NormalizerI
         if (null === $data || false === \is_array($data)) {
             return $object;
         }
-        if (\array_key_exists('NoCopy', $data) && null !== $data['NoCopy']) {
+        if (\array_key_exists('NoCopy', $data) && $data['NoCopy'] !== null) {
             $object->setNoCopy($data['NoCopy']);
-        } elseif (\array_key_exists('NoCopy', $data) && null === $data['NoCopy']) {
+            unset($data['NoCopy']);
+        }
+        elseif (\array_key_exists('NoCopy', $data) && $data['NoCopy'] === null) {
             $object->setNoCopy(null);
         }
-        if (\array_key_exists('Labels', $data) && null !== $data['Labels']) {
-            $values = new \ArrayObject([], \ArrayObject::ARRAY_AS_PROPS);
+        if (\array_key_exists('Labels', $data) && $data['Labels'] !== null) {
+            $values = new \ArrayObject(array(), \ArrayObject::ARRAY_AS_PROPS);
             foreach ($data['Labels'] as $key => $value) {
                 $values[$key] = $value;
             }
             $object->setLabels($values);
-        } elseif (\array_key_exists('Labels', $data) && null === $data['Labels']) {
+            unset($data['Labels']);
+        }
+        elseif (\array_key_exists('Labels', $data) && $data['Labels'] === null) {
             $object->setLabels(null);
         }
-        if (\array_key_exists('DriverConfig', $data) && null !== $data['DriverConfig']) {
+        if (\array_key_exists('DriverConfig', $data) && $data['DriverConfig'] !== null) {
             $object->setDriverConfig($this->denormalizer->denormalize($data['DriverConfig'], 'Docker\\API\\Model\\MountVolumeOptionsDriverConfig', 'json', $context));
-        } elseif (\array_key_exists('DriverConfig', $data) && null === $data['DriverConfig']) {
+            unset($data['DriverConfig']);
+        }
+        elseif (\array_key_exists('DriverConfig', $data) && $data['DriverConfig'] === null) {
             $object->setDriverConfig(null);
         }
-
+        foreach ($data as $key_1 => $value_1) {
+            if (preg_match('/.*/', (string) $key_1)) {
+                $object[$key_1] = $value_1;
+            }
+        }
         return $object;
     }
-
     /**
      * @return array|string|int|float|bool|\ArrayObject|null
      */
-    public function normalize($object, $format = null, array $context = [])
+    public function normalize($object, $format = null, array $context = array())
     {
-        $data = [];
-        if (null !== $object->getNoCopy()) {
+        $data = array();
+        if ($object->isInitialized('noCopy') && null !== $object->getNoCopy()) {
             $data['NoCopy'] = $object->getNoCopy();
         }
-        if (null !== $object->getLabels()) {
-            $values = [];
+        if ($object->isInitialized('labels') && null !== $object->getLabels()) {
+            $values = array();
             foreach ($object->getLabels() as $key => $value) {
                 $values[$key] = $value;
             }
             $data['Labels'] = $values;
         }
-        if (null !== $object->getDriverConfig()) {
+        if ($object->isInitialized('driverConfig') && null !== $object->getDriverConfig()) {
             $data['DriverConfig'] = $this->normalizer->normalize($object->getDriverConfig(), 'json', $context);
         }
-
+        foreach ($object as $key_1 => $value_1) {
+            if (preg_match('/.*/', (string) $key_1)) {
+                $data[$key_1] = $value_1;
+            }
+        }
         return $data;
     }
 }

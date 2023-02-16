@@ -1,11 +1,17 @@
 <?php
 
-declare(strict_types=1);
-
 namespace Docker\API\Model;
 
-class Address
+class Address extends \ArrayObject
 {
+    /**
+     * @var array
+     */
+    protected $initialized = array();
+    public function isInitialized($property) : bool
+    {
+        return array_key_exists($property, $this->initialized);
+    }
     /**
      * IP address.
      *
@@ -18,40 +24,48 @@ class Address
      * @var int|null
      */
     protected $prefixLen;
-
     /**
      * IP address.
+     *
+     * @return string|null
      */
-    public function getAddr(): ?string
+    public function getAddr() : ?string
     {
         return $this->addr;
     }
-
     /**
      * IP address.
+     *
+     * @param string|null $addr
+     *
+     * @return self
      */
-    public function setAddr(?string $addr): self
+    public function setAddr(?string $addr) : self
     {
+        $this->initialized['addr'] = true;
         $this->addr = $addr;
-
         return $this;
     }
-
     /**
      * Mask length of the IP address.
+     *
+     * @return int|null
      */
-    public function getPrefixLen(): ?int
+    public function getPrefixLen() : ?int
     {
         return $this->prefixLen;
     }
-
     /**
      * Mask length of the IP address.
+     *
+     * @param int|null $prefixLen
+     *
+     * @return self
      */
-    public function setPrefixLen(?int $prefixLen): self
+    public function setPrefixLen(?int $prefixLen) : self
     {
+        $this->initialized['prefixLen'] = true;
         $this->prefixLen = $prefixLen;
-
         return $this;
     }
 }

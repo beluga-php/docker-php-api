@@ -1,41 +1,35 @@
 <?php
 
-declare(strict_types=1);
-
 namespace Docker\API\Normalizer;
 
-use Docker\API\Runtime\Normalizer\CheckArray;
 use Jane\Component\JsonSchemaRuntime\Reference;
+use Docker\API\Runtime\Normalizer\CheckArray;
+use Docker\API\Runtime\Normalizer\ValidatorTrait;
+use Symfony\Component\Serializer\Exception\InvalidArgumentException;
 use Symfony\Component\Serializer\Normalizer\DenormalizerAwareInterface;
 use Symfony\Component\Serializer\Normalizer\DenormalizerAwareTrait;
 use Symfony\Component\Serializer\Normalizer\DenormalizerInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerAwareInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerAwareTrait;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
-
 class RuntimeNormalizer implements DenormalizerInterface, NormalizerInterface, DenormalizerAwareInterface, NormalizerAwareInterface
 {
-    use CheckArray;
     use DenormalizerAwareTrait;
     use NormalizerAwareTrait;
-
-    /**
-     * @return bool
-     */
-    public function supportsDenormalization($data, $type, $format = null)
+    use CheckArray;
+    use ValidatorTrait;
+    public function supportsDenormalization($data, $type, $format = null) : bool
     {
-        return 'Docker\\API\\Model\\Runtime' === $type;
+        return $type === 'Docker\\API\\Model\\Runtime';
     }
-
-    public function supportsNormalization($data, $format = null)
+    public function supportsNormalization($data, $format = null) : bool
     {
-        return \is_object($data) && 'Docker\\API\\Model\\Runtime' === $data::class;
+        return is_object($data) && get_class($data) === 'Docker\\API\\Model\\Runtime';
     }
-
     /**
      * @return mixed
      */
-    public function denormalize($data, $class, $format = null, array $context = [])
+    public function denormalize($data, $class, $format = null, array $context = array())
     {
         if (isset($data['$ref'])) {
             return new Reference($data['$ref'], $context['document-origin']);
@@ -47,41 +41,52 @@ class RuntimeNormalizer implements DenormalizerInterface, NormalizerInterface, D
         if (null === $data || false === \is_array($data)) {
             return $object;
         }
-        if (\array_key_exists('path', $data) && null !== $data['path']) {
+        if (\array_key_exists('path', $data) && $data['path'] !== null) {
             $object->setPath($data['path']);
-        } elseif (\array_key_exists('path', $data) && null === $data['path']) {
+            unset($data['path']);
+        }
+        elseif (\array_key_exists('path', $data) && $data['path'] === null) {
             $object->setPath(null);
         }
-        if (\array_key_exists('runtimeArgs', $data) && null !== $data['runtimeArgs']) {
-            $values = [];
+        if (\array_key_exists('runtimeArgs', $data) && $data['runtimeArgs'] !== null) {
+            $values = array();
             foreach ($data['runtimeArgs'] as $value) {
                 $values[] = $value;
             }
             $object->setRuntimeArgs($values);
-        } elseif (\array_key_exists('runtimeArgs', $data) && null === $data['runtimeArgs']) {
+            unset($data['runtimeArgs']);
+        }
+        elseif (\array_key_exists('runtimeArgs', $data) && $data['runtimeArgs'] === null) {
             $object->setRuntimeArgs(null);
         }
-
+        foreach ($data as $key => $value_1) {
+            if (preg_match('/.*/', (string) $key)) {
+                $object[$key] = $value_1;
+            }
+        }
         return $object;
     }
-
     /**
      * @return array|string|int|float|bool|\ArrayObject|null
      */
-    public function normalize($object, $format = null, array $context = [])
+    public function normalize($object, $format = null, array $context = array())
     {
-        $data = [];
-        if (null !== $object->getPath()) {
+        $data = array();
+        if ($object->isInitialized('path') && null !== $object->getPath()) {
             $data['path'] = $object->getPath();
         }
-        if (null !== $object->getRuntimeArgs()) {
-            $values = [];
+        if ($object->isInitialized('runtimeArgs') && null !== $object->getRuntimeArgs()) {
+            $values = array();
             foreach ($object->getRuntimeArgs() as $value) {
                 $values[] = $value;
             }
             $data['runtimeArgs'] = $values;
         }
-
+        foreach ($object as $key => $value_1) {
+            if (preg_match('/.*/', (string) $key)) {
+                $data[$key] = $value_1;
+            }
+        }
         return $data;
     }
 }

@@ -1,45 +1,47 @@
 <?php
 
-declare(strict_types=1);
-
 namespace Docker\API\Endpoint;
 
 class SwarmInit extends \Docker\API\Runtime\Client\BaseEndpoint implements \Docker\API\Runtime\Client\Endpoint
 {
-    use \Docker\API\Runtime\Client\EndpointTrait;
-
-    public function __construct(?\Docker\API\Model\SwarmInitPostBody $requestBody = null)
+    protected $accept;
+    /**
+     * 
+     *
+     * @param null|\Docker\API\Model\SwarmInitPostBody $requestBody 
+     * @param array $accept Accept content header application/json|text/plain
+     */
+    public function __construct(?\Docker\API\Model\SwarmInitPostBody $requestBody = null, array $accept = array())
     {
         $this->body = $requestBody;
+        $this->accept = $accept;
     }
-
-    public function getMethod(): string
+    use \Docker\API\Runtime\Client\EndpointTrait;
+    public function getMethod() : string
     {
         return 'POST';
     }
-
-    public function getUri(): string
+    public function getUri() : string
     {
         return '/swarm/init';
     }
-
-    public function getBody(\Symfony\Component\Serializer\SerializerInterface $serializer, $streamFactory = null): array
+    public function getBody(\Symfony\Component\Serializer\SerializerInterface $serializer, $streamFactory = null) : array
     {
         if ($this->body instanceof \Docker\API\Model\SwarmInitPostBody) {
-            return [['Content-Type' => ['application/json']], $serializer->serialize($this->body, 'json')];
+            return array(array('Content-Type' => array('application/json')), $serializer->serialize($this->body, 'json'));
         }
         if ($this->body instanceof \Docker\API\Model\SwarmInitPostBody) {
-            return [['Content-Type' => ['text/plain']], $this->body];
+            return array(array('Content-Type' => array('text/plain')), $this->body);
         }
-
-        return [[], null];
+        return array(array(), null);
     }
-
-    public function getExtraHeaders(): array
+    public function getExtraHeaders() : array
     {
-        return ['Accept' => ['application/json']];
+        if (empty($this->accept)) {
+            return array('Accept' => array('application/json', 'text/plain'));
+        }
+        return $this->accept;
     }
-
     /**
      * {@inheritdoc}
      *
@@ -49,24 +51,25 @@ class SwarmInit extends \Docker\API\Runtime\Client\BaseEndpoint implements \Dock
      *
      * @return null
      */
-    protected function transformResponseBody(string $body, int $status, \Symfony\Component\Serializer\SerializerInterface $serializer, ?string $contentType = null)
+    protected function transformResponseBody(\Psr\Http\Message\ResponseInterface $response, \Symfony\Component\Serializer\SerializerInterface $serializer, ?string $contentType = null)
     {
-        if ((null === $contentType) === false && (200 === $status && false !== mb_strpos($contentType, 'application/json'))) {
+        $status = $response->getStatusCode();
+        $body = (string) $response->getBody();
+        if (is_null($contentType) === false && (200 === $status && mb_strpos($contentType, 'application/json') !== false)) {
             return json_decode($body);
         }
-        if ((null === $contentType) === false && (400 === $status && false !== mb_strpos($contentType, 'application/json'))) {
-            throw new \Docker\API\Exception\SwarmInitBadRequestException($serializer->deserialize($body, 'Docker\\API\\Model\\ErrorResponse', 'json'));
+        if (is_null($contentType) === false && (400 === $status && mb_strpos($contentType, 'application/json') !== false)) {
+            throw new \Docker\API\Exception\SwarmInitBadRequestException($serializer->deserialize($body, 'Docker\\API\\Model\\ErrorResponse', 'json'), $response);
         }
-        if ((null === $contentType) === false && (500 === $status && false !== mb_strpos($contentType, 'application/json'))) {
-            throw new \Docker\API\Exception\SwarmInitInternalServerErrorException($serializer->deserialize($body, 'Docker\\API\\Model\\ErrorResponse', 'json'));
+        if (is_null($contentType) === false && (500 === $status && mb_strpos($contentType, 'application/json') !== false)) {
+            throw new \Docker\API\Exception\SwarmInitInternalServerErrorException($serializer->deserialize($body, 'Docker\\API\\Model\\ErrorResponse', 'json'), $response);
         }
-        if ((null === $contentType) === false && (503 === $status && false !== mb_strpos($contentType, 'application/json'))) {
-            throw new \Docker\API\Exception\SwarmInitServiceUnavailableException($serializer->deserialize($body, 'Docker\\API\\Model\\ErrorResponse', 'json'));
+        if (is_null($contentType) === false && (503 === $status && mb_strpos($contentType, 'application/json') !== false)) {
+            throw new \Docker\API\Exception\SwarmInitServiceUnavailableException($serializer->deserialize($body, 'Docker\\API\\Model\\ErrorResponse', 'json'), $response);
         }
     }
-
-    public function getAuthenticationScopes(): array
+    public function getAuthenticationScopes() : array
     {
-        return [];
+        return array();
     }
 }

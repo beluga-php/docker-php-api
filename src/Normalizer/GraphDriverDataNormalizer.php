@@ -1,41 +1,35 @@
 <?php
 
-declare(strict_types=1);
-
 namespace Docker\API\Normalizer;
 
-use Docker\API\Runtime\Normalizer\CheckArray;
 use Jane\Component\JsonSchemaRuntime\Reference;
+use Docker\API\Runtime\Normalizer\CheckArray;
+use Docker\API\Runtime\Normalizer\ValidatorTrait;
+use Symfony\Component\Serializer\Exception\InvalidArgumentException;
 use Symfony\Component\Serializer\Normalizer\DenormalizerAwareInterface;
 use Symfony\Component\Serializer\Normalizer\DenormalizerAwareTrait;
 use Symfony\Component\Serializer\Normalizer\DenormalizerInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerAwareInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerAwareTrait;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
-
 class GraphDriverDataNormalizer implements DenormalizerInterface, NormalizerInterface, DenormalizerAwareInterface, NormalizerAwareInterface
 {
-    use CheckArray;
     use DenormalizerAwareTrait;
     use NormalizerAwareTrait;
-
-    /**
-     * @return bool
-     */
-    public function supportsDenormalization($data, $type, $format = null)
+    use CheckArray;
+    use ValidatorTrait;
+    public function supportsDenormalization($data, $type, $format = null) : bool
     {
-        return 'Docker\\API\\Model\\GraphDriverData' === $type;
+        return $type === 'Docker\\API\\Model\\GraphDriverData';
     }
-
-    public function supportsNormalization($data, $format = null)
+    public function supportsNormalization($data, $format = null) : bool
     {
-        return \is_object($data) && 'Docker\\API\\Model\\GraphDriverData' === $data::class;
+        return is_object($data) && get_class($data) === 'Docker\\API\\Model\\GraphDriverData';
     }
-
     /**
      * @return mixed
      */
-    public function denormalize($data, $class, $format = null, array $context = [])
+    public function denormalize($data, $class, $format = null, array $context = array())
     {
         if (isset($data['$ref'])) {
             return new Reference($data['$ref'], $context['document-origin']);
@@ -47,37 +41,48 @@ class GraphDriverDataNormalizer implements DenormalizerInterface, NormalizerInte
         if (null === $data || false === \is_array($data)) {
             return $object;
         }
-        if (\array_key_exists('Name', $data) && null !== $data['Name']) {
+        if (\array_key_exists('Name', $data) && $data['Name'] !== null) {
             $object->setName($data['Name']);
-        } elseif (\array_key_exists('Name', $data) && null === $data['Name']) {
+            unset($data['Name']);
+        }
+        elseif (\array_key_exists('Name', $data) && $data['Name'] === null) {
             $object->setName(null);
         }
-        if (\array_key_exists('Data', $data) && null !== $data['Data']) {
-            $values = new \ArrayObject([], \ArrayObject::ARRAY_AS_PROPS);
+        if (\array_key_exists('Data', $data) && $data['Data'] !== null) {
+            $values = new \ArrayObject(array(), \ArrayObject::ARRAY_AS_PROPS);
             foreach ($data['Data'] as $key => $value) {
                 $values[$key] = $value;
             }
             $object->setData($values);
-        } elseif (\array_key_exists('Data', $data) && null === $data['Data']) {
+            unset($data['Data']);
+        }
+        elseif (\array_key_exists('Data', $data) && $data['Data'] === null) {
             $object->setData(null);
         }
-
+        foreach ($data as $key_1 => $value_1) {
+            if (preg_match('/.*/', (string) $key_1)) {
+                $object[$key_1] = $value_1;
+            }
+        }
         return $object;
     }
-
     /**
      * @return array|string|int|float|bool|\ArrayObject|null
      */
-    public function normalize($object, $format = null, array $context = [])
+    public function normalize($object, $format = null, array $context = array())
     {
-        $data = [];
+        $data = array();
         $data['Name'] = $object->getName();
-        $values = [];
+        $values = array();
         foreach ($object->getData() as $key => $value) {
             $values[$key] = $value;
         }
         $data['Data'] = $values;
-
+        foreach ($object as $key_1 => $value_1) {
+            if (preg_match('/.*/', (string) $key_1)) {
+                $data[$key_1] = $value_1;
+            }
+        }
         return $data;
     }
 }

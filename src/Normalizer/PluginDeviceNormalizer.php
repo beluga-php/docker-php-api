@@ -1,41 +1,35 @@
 <?php
 
-declare(strict_types=1);
-
 namespace Docker\API\Normalizer;
 
-use Docker\API\Runtime\Normalizer\CheckArray;
 use Jane\Component\JsonSchemaRuntime\Reference;
+use Docker\API\Runtime\Normalizer\CheckArray;
+use Docker\API\Runtime\Normalizer\ValidatorTrait;
+use Symfony\Component\Serializer\Exception\InvalidArgumentException;
 use Symfony\Component\Serializer\Normalizer\DenormalizerAwareInterface;
 use Symfony\Component\Serializer\Normalizer\DenormalizerAwareTrait;
 use Symfony\Component\Serializer\Normalizer\DenormalizerInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerAwareInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerAwareTrait;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
-
 class PluginDeviceNormalizer implements DenormalizerInterface, NormalizerInterface, DenormalizerAwareInterface, NormalizerAwareInterface
 {
-    use CheckArray;
     use DenormalizerAwareTrait;
     use NormalizerAwareTrait;
-
-    /**
-     * @return bool
-     */
-    public function supportsDenormalization($data, $type, $format = null)
+    use CheckArray;
+    use ValidatorTrait;
+    public function supportsDenormalization($data, $type, $format = null) : bool
     {
-        return 'Docker\\API\\Model\\PluginDevice' === $type;
+        return $type === 'Docker\\API\\Model\\PluginDevice';
     }
-
-    public function supportsNormalization($data, $format = null)
+    public function supportsNormalization($data, $format = null) : bool
     {
-        return \is_object($data) && 'Docker\\API\\Model\\PluginDevice' === $data::class;
+        return is_object($data) && get_class($data) === 'Docker\\API\\Model\\PluginDevice';
     }
-
     /**
      * @return mixed
      */
-    public function denormalize($data, $class, $format = null, array $context = [])
+    public function denormalize($data, $class, $format = null, array $context = array())
     {
         if (isset($data['$ref'])) {
             return new Reference($data['$ref'], $context['document-origin']);
@@ -47,49 +41,64 @@ class PluginDeviceNormalizer implements DenormalizerInterface, NormalizerInterfa
         if (null === $data || false === \is_array($data)) {
             return $object;
         }
-        if (\array_key_exists('Name', $data) && null !== $data['Name']) {
+        if (\array_key_exists('Name', $data) && $data['Name'] !== null) {
             $object->setName($data['Name']);
-        } elseif (\array_key_exists('Name', $data) && null === $data['Name']) {
+            unset($data['Name']);
+        }
+        elseif (\array_key_exists('Name', $data) && $data['Name'] === null) {
             $object->setName(null);
         }
-        if (\array_key_exists('Description', $data) && null !== $data['Description']) {
+        if (\array_key_exists('Description', $data) && $data['Description'] !== null) {
             $object->setDescription($data['Description']);
-        } elseif (\array_key_exists('Description', $data) && null === $data['Description']) {
+            unset($data['Description']);
+        }
+        elseif (\array_key_exists('Description', $data) && $data['Description'] === null) {
             $object->setDescription(null);
         }
-        if (\array_key_exists('Settable', $data) && null !== $data['Settable']) {
-            $values = [];
+        if (\array_key_exists('Settable', $data) && $data['Settable'] !== null) {
+            $values = array();
             foreach ($data['Settable'] as $value) {
                 $values[] = $value;
             }
             $object->setSettable($values);
-        } elseif (\array_key_exists('Settable', $data) && null === $data['Settable']) {
+            unset($data['Settable']);
+        }
+        elseif (\array_key_exists('Settable', $data) && $data['Settable'] === null) {
             $object->setSettable(null);
         }
-        if (\array_key_exists('Path', $data) && null !== $data['Path']) {
+        if (\array_key_exists('Path', $data) && $data['Path'] !== null) {
             $object->setPath($data['Path']);
-        } elseif (\array_key_exists('Path', $data) && null === $data['Path']) {
+            unset($data['Path']);
+        }
+        elseif (\array_key_exists('Path', $data) && $data['Path'] === null) {
             $object->setPath(null);
         }
-
+        foreach ($data as $key => $value_1) {
+            if (preg_match('/.*/', (string) $key)) {
+                $object[$key] = $value_1;
+            }
+        }
         return $object;
     }
-
     /**
      * @return array|string|int|float|bool|\ArrayObject|null
      */
-    public function normalize($object, $format = null, array $context = [])
+    public function normalize($object, $format = null, array $context = array())
     {
-        $data = [];
+        $data = array();
         $data['Name'] = $object->getName();
         $data['Description'] = $object->getDescription();
-        $values = [];
+        $values = array();
         foreach ($object->getSettable() as $value) {
             $values[] = $value;
         }
         $data['Settable'] = $values;
         $data['Path'] = $object->getPath();
-
+        foreach ($object as $key => $value_1) {
+            if (preg_match('/.*/', (string) $key)) {
+                $data[$key] = $value_1;
+            }
+        }
         return $data;
     }
 }

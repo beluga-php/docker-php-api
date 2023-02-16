@@ -1,41 +1,35 @@
 <?php
 
-declare(strict_types=1);
-
 namespace Docker\API\Normalizer;
 
-use Docker\API\Runtime\Normalizer\CheckArray;
 use Jane\Component\JsonSchemaRuntime\Reference;
+use Docker\API\Runtime\Normalizer\CheckArray;
+use Docker\API\Runtime\Normalizer\ValidatorTrait;
+use Symfony\Component\Serializer\Exception\InvalidArgumentException;
 use Symfony\Component\Serializer\Normalizer\DenormalizerAwareInterface;
 use Symfony\Component\Serializer\Normalizer\DenormalizerAwareTrait;
 use Symfony\Component\Serializer\Normalizer\DenormalizerInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerAwareInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerAwareTrait;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
-
 class HealthcheckResultNormalizer implements DenormalizerInterface, NormalizerInterface, DenormalizerAwareInterface, NormalizerAwareInterface
 {
-    use CheckArray;
     use DenormalizerAwareTrait;
     use NormalizerAwareTrait;
-
-    /**
-     * @return bool
-     */
-    public function supportsDenormalization($data, $type, $format = null)
+    use CheckArray;
+    use ValidatorTrait;
+    public function supportsDenormalization($data, $type, $format = null) : bool
     {
-        return 'Docker\\API\\Model\\HealthcheckResult' === $type;
+        return $type === 'Docker\\API\\Model\\HealthcheckResult';
     }
-
-    public function supportsNormalization($data, $format = null)
+    public function supportsNormalization($data, $format = null) : bool
     {
-        return \is_object($data) && 'Docker\\API\\Model\\HealthcheckResult' === $data::class;
+        return is_object($data) && get_class($data) === 'Docker\\API\\Model\\HealthcheckResult';
     }
-
     /**
      * @return mixed
      */
-    public function denormalize($data, $class, $format = null, array $context = [])
+    public function denormalize($data, $class, $format = null, array $context = array())
     {
         if (isset($data['$ref'])) {
             return new Reference($data['$ref'], $context['document-origin']);
@@ -47,49 +41,64 @@ class HealthcheckResultNormalizer implements DenormalizerInterface, NormalizerIn
         if (null === $data || false === \is_array($data)) {
             return $object;
         }
-        if (\array_key_exists('Start', $data) && null !== $data['Start']) {
-            $object->setStart(\DateTime::createFromFormat('Y-m-d\\TH:i:sP', $data['Start']));
-        } elseif (\array_key_exists('Start', $data) && null === $data['Start']) {
+        if (\array_key_exists('Start', $data) && $data['Start'] !== null) {
+            $object->setStart(\DateTime::createFromFormat('Y-m-d\\TH:i:s.uuP', $data['Start']));
+            unset($data['Start']);
+        }
+        elseif (\array_key_exists('Start', $data) && $data['Start'] === null) {
             $object->setStart(null);
         }
-        if (\array_key_exists('End', $data) && null !== $data['End']) {
+        if (\array_key_exists('End', $data) && $data['End'] !== null) {
             $object->setEnd($data['End']);
-        } elseif (\array_key_exists('End', $data) && null === $data['End']) {
+            unset($data['End']);
+        }
+        elseif (\array_key_exists('End', $data) && $data['End'] === null) {
             $object->setEnd(null);
         }
-        if (\array_key_exists('ExitCode', $data) && null !== $data['ExitCode']) {
+        if (\array_key_exists('ExitCode', $data) && $data['ExitCode'] !== null) {
             $object->setExitCode($data['ExitCode']);
-        } elseif (\array_key_exists('ExitCode', $data) && null === $data['ExitCode']) {
+            unset($data['ExitCode']);
+        }
+        elseif (\array_key_exists('ExitCode', $data) && $data['ExitCode'] === null) {
             $object->setExitCode(null);
         }
-        if (\array_key_exists('Output', $data) && null !== $data['Output']) {
+        if (\array_key_exists('Output', $data) && $data['Output'] !== null) {
             $object->setOutput($data['Output']);
-        } elseif (\array_key_exists('Output', $data) && null === $data['Output']) {
+            unset($data['Output']);
+        }
+        elseif (\array_key_exists('Output', $data) && $data['Output'] === null) {
             $object->setOutput(null);
         }
-
+        foreach ($data as $key => $value) {
+            if (preg_match('/.*/', (string) $key)) {
+                $object[$key] = $value;
+            }
+        }
         return $object;
     }
-
     /**
      * @return array|string|int|float|bool|\ArrayObject|null
      */
-    public function normalize($object, $format = null, array $context = [])
+    public function normalize($object, $format = null, array $context = array())
     {
-        $data = [];
-        if (null !== $object->getStart()) {
+        $data = array();
+        if ($object->isInitialized('start') && null !== $object->getStart()) {
             $data['Start'] = $object->getStart()->format('Y-m-d\\TH:i:sP');
         }
-        if (null !== $object->getEnd()) {
+        if ($object->isInitialized('end') && null !== $object->getEnd()) {
             $data['End'] = $object->getEnd();
         }
-        if (null !== $object->getExitCode()) {
+        if ($object->isInitialized('exitCode') && null !== $object->getExitCode()) {
             $data['ExitCode'] = $object->getExitCode();
         }
-        if (null !== $object->getOutput()) {
+        if ($object->isInitialized('output') && null !== $object->getOutput()) {
             $data['Output'] = $object->getOutput();
         }
-
+        foreach ($object as $key => $value) {
+            if (preg_match('/.*/', (string) $key)) {
+                $data[$key] = $value;
+            }
+        }
         return $data;
     }
 }

@@ -1,41 +1,35 @@
 <?php
 
-declare(strict_types=1);
-
 namespace Docker\API\Normalizer;
 
-use Docker\API\Runtime\Normalizer\CheckArray;
 use Jane\Component\JsonSchemaRuntime\Reference;
+use Docker\API\Runtime\Normalizer\CheckArray;
+use Docker\API\Runtime\Normalizer\ValidatorTrait;
+use Symfony\Component\Serializer\Exception\InvalidArgumentException;
 use Symfony\Component\Serializer\Normalizer\DenormalizerAwareInterface;
 use Symfony\Component\Serializer\Normalizer\DenormalizerAwareTrait;
 use Symfony\Component\Serializer\Normalizer\DenormalizerInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerAwareInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerAwareTrait;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
-
 class PeerNodeNormalizer implements DenormalizerInterface, NormalizerInterface, DenormalizerAwareInterface, NormalizerAwareInterface
 {
-    use CheckArray;
     use DenormalizerAwareTrait;
     use NormalizerAwareTrait;
-
-    /**
-     * @return bool
-     */
-    public function supportsDenormalization($data, $type, $format = null)
+    use CheckArray;
+    use ValidatorTrait;
+    public function supportsDenormalization($data, $type, $format = null) : bool
     {
-        return 'Docker\\API\\Model\\PeerNode' === $type;
+        return $type === 'Docker\\API\\Model\\PeerNode';
     }
-
-    public function supportsNormalization($data, $format = null)
+    public function supportsNormalization($data, $format = null) : bool
     {
-        return \is_object($data) && 'Docker\\API\\Model\\PeerNode' === $data::class;
+        return is_object($data) && get_class($data) === 'Docker\\API\\Model\\PeerNode';
     }
-
     /**
      * @return mixed
      */
-    public function denormalize($data, $class, $format = null, array $context = [])
+    public function denormalize($data, $class, $format = null, array $context = array())
     {
         if (isset($data['$ref'])) {
             return new Reference($data['$ref'], $context['document-origin']);
@@ -47,33 +41,44 @@ class PeerNodeNormalizer implements DenormalizerInterface, NormalizerInterface, 
         if (null === $data || false === \is_array($data)) {
             return $object;
         }
-        if (\array_key_exists('NodeID', $data) && null !== $data['NodeID']) {
+        if (\array_key_exists('NodeID', $data) && $data['NodeID'] !== null) {
             $object->setNodeID($data['NodeID']);
-        } elseif (\array_key_exists('NodeID', $data) && null === $data['NodeID']) {
+            unset($data['NodeID']);
+        }
+        elseif (\array_key_exists('NodeID', $data) && $data['NodeID'] === null) {
             $object->setNodeID(null);
         }
-        if (\array_key_exists('Addr', $data) && null !== $data['Addr']) {
+        if (\array_key_exists('Addr', $data) && $data['Addr'] !== null) {
             $object->setAddr($data['Addr']);
-        } elseif (\array_key_exists('Addr', $data) && null === $data['Addr']) {
+            unset($data['Addr']);
+        }
+        elseif (\array_key_exists('Addr', $data) && $data['Addr'] === null) {
             $object->setAddr(null);
         }
-
+        foreach ($data as $key => $value) {
+            if (preg_match('/.*/', (string) $key)) {
+                $object[$key] = $value;
+            }
+        }
         return $object;
     }
-
     /**
      * @return array|string|int|float|bool|\ArrayObject|null
      */
-    public function normalize($object, $format = null, array $context = [])
+    public function normalize($object, $format = null, array $context = array())
     {
-        $data = [];
-        if (null !== $object->getNodeID()) {
+        $data = array();
+        if ($object->isInitialized('nodeID') && null !== $object->getNodeID()) {
             $data['NodeID'] = $object->getNodeID();
         }
-        if (null !== $object->getAddr()) {
+        if ($object->isInitialized('addr') && null !== $object->getAddr()) {
             $data['Addr'] = $object->getAddr();
         }
-
+        foreach ($object as $key => $value) {
+            if (preg_match('/.*/', (string) $key)) {
+                $data[$key] = $value;
+            }
+        }
         return $data;
     }
 }

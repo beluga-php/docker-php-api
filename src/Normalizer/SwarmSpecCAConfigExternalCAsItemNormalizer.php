@@ -1,41 +1,35 @@
 <?php
 
-declare(strict_types=1);
-
 namespace Docker\API\Normalizer;
 
-use Docker\API\Runtime\Normalizer\CheckArray;
 use Jane\Component\JsonSchemaRuntime\Reference;
+use Docker\API\Runtime\Normalizer\CheckArray;
+use Docker\API\Runtime\Normalizer\ValidatorTrait;
+use Symfony\Component\Serializer\Exception\InvalidArgumentException;
 use Symfony\Component\Serializer\Normalizer\DenormalizerAwareInterface;
 use Symfony\Component\Serializer\Normalizer\DenormalizerAwareTrait;
 use Symfony\Component\Serializer\Normalizer\DenormalizerInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerAwareInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerAwareTrait;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
-
 class SwarmSpecCAConfigExternalCAsItemNormalizer implements DenormalizerInterface, NormalizerInterface, DenormalizerAwareInterface, NormalizerAwareInterface
 {
-    use CheckArray;
     use DenormalizerAwareTrait;
     use NormalizerAwareTrait;
-
-    /**
-     * @return bool
-     */
-    public function supportsDenormalization($data, $type, $format = null)
+    use CheckArray;
+    use ValidatorTrait;
+    public function supportsDenormalization($data, $type, $format = null) : bool
     {
-        return 'Docker\\API\\Model\\SwarmSpecCAConfigExternalCAsItem' === $type;
+        return $type === 'Docker\\API\\Model\\SwarmSpecCAConfigExternalCAsItem';
     }
-
-    public function supportsNormalization($data, $format = null)
+    public function supportsNormalization($data, $format = null) : bool
     {
-        return \is_object($data) && 'Docker\\API\\Model\\SwarmSpecCAConfigExternalCAsItem' === $data::class;
+        return is_object($data) && get_class($data) === 'Docker\\API\\Model\\SwarmSpecCAConfigExternalCAsItem';
     }
-
     /**
      * @return mixed
      */
-    public function denormalize($data, $class, $format = null, array $context = [])
+    public function denormalize($data, $class, $format = null, array $context = array())
     {
         if (isset($data['$ref'])) {
             return new Reference($data['$ref'], $context['document-origin']);
@@ -47,57 +41,72 @@ class SwarmSpecCAConfigExternalCAsItemNormalizer implements DenormalizerInterfac
         if (null === $data || false === \is_array($data)) {
             return $object;
         }
-        if (\array_key_exists('Protocol', $data) && null !== $data['Protocol']) {
+        if (\array_key_exists('Protocol', $data) && $data['Protocol'] !== null) {
             $object->setProtocol($data['Protocol']);
-        } elseif (\array_key_exists('Protocol', $data) && null === $data['Protocol']) {
+            unset($data['Protocol']);
+        }
+        elseif (\array_key_exists('Protocol', $data) && $data['Protocol'] === null) {
             $object->setProtocol(null);
         }
-        if (\array_key_exists('URL', $data) && null !== $data['URL']) {
+        if (\array_key_exists('URL', $data) && $data['URL'] !== null) {
             $object->setURL($data['URL']);
-        } elseif (\array_key_exists('URL', $data) && null === $data['URL']) {
+            unset($data['URL']);
+        }
+        elseif (\array_key_exists('URL', $data) && $data['URL'] === null) {
             $object->setURL(null);
         }
-        if (\array_key_exists('Options', $data) && null !== $data['Options']) {
-            $values = new \ArrayObject([], \ArrayObject::ARRAY_AS_PROPS);
+        if (\array_key_exists('Options', $data) && $data['Options'] !== null) {
+            $values = new \ArrayObject(array(), \ArrayObject::ARRAY_AS_PROPS);
             foreach ($data['Options'] as $key => $value) {
                 $values[$key] = $value;
             }
             $object->setOptions($values);
-        } elseif (\array_key_exists('Options', $data) && null === $data['Options']) {
+            unset($data['Options']);
+        }
+        elseif (\array_key_exists('Options', $data) && $data['Options'] === null) {
             $object->setOptions(null);
         }
-        if (\array_key_exists('CACert', $data) && null !== $data['CACert']) {
+        if (\array_key_exists('CACert', $data) && $data['CACert'] !== null) {
             $object->setCACert($data['CACert']);
-        } elseif (\array_key_exists('CACert', $data) && null === $data['CACert']) {
+            unset($data['CACert']);
+        }
+        elseif (\array_key_exists('CACert', $data) && $data['CACert'] === null) {
             $object->setCACert(null);
         }
-
+        foreach ($data as $key_1 => $value_1) {
+            if (preg_match('/.*/', (string) $key_1)) {
+                $object[$key_1] = $value_1;
+            }
+        }
         return $object;
     }
-
     /**
      * @return array|string|int|float|bool|\ArrayObject|null
      */
-    public function normalize($object, $format = null, array $context = [])
+    public function normalize($object, $format = null, array $context = array())
     {
-        $data = [];
-        if (null !== $object->getProtocol()) {
+        $data = array();
+        if ($object->isInitialized('protocol') && null !== $object->getProtocol()) {
             $data['Protocol'] = $object->getProtocol();
         }
-        if (null !== $object->getURL()) {
+        if ($object->isInitialized('uRL') && null !== $object->getURL()) {
             $data['URL'] = $object->getURL();
         }
-        if (null !== $object->getOptions()) {
-            $values = [];
+        if ($object->isInitialized('options') && null !== $object->getOptions()) {
+            $values = array();
             foreach ($object->getOptions() as $key => $value) {
                 $values[$key] = $value;
             }
             $data['Options'] = $values;
         }
-        if (null !== $object->getCACert()) {
+        if ($object->isInitialized('cACert') && null !== $object->getCACert()) {
             $data['CACert'] = $object->getCACert();
         }
-
+        foreach ($object as $key_1 => $value_1) {
+            if (preg_match('/.*/', (string) $key_1)) {
+                $data[$key_1] = $value_1;
+            }
+        }
         return $data;
     }
 }

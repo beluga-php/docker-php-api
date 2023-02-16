@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 namespace Docker\API\Exception;
 
 class UnauthorizedException extends \RuntimeException implements ClientException

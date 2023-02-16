@@ -1,62 +1,57 @@
 <?php
 
-declare(strict_types=1);
-
 namespace Docker\API\Endpoint;
 
 class ImageTag extends \Docker\API\Runtime\Client\BaseEndpoint implements \Docker\API\Runtime\Client\Endpoint
 {
-    use \Docker\API\Runtime\Client\EndpointTrait;
     protected $name;
-
+    protected $accept;
     /**
      * Tag an image so that it becomes part of a repository.
      *
-     * @param string $name            image name or ID to tag
-     * @param array  $queryParameters {
-     *
+     * @param string $name Image name or ID to tag.
+     * @param array $queryParameters {
      *     @var string $repo The repository to tag in. For example, `someuser/someimage`.
      *     @var string $tag The name of the new tag.
      * }
+     * @param array $accept Accept content header application/json|text/plain
      */
-    public function __construct(string $name, array $queryParameters = [])
+    public function __construct(string $name, array $queryParameters = array(), array $accept = array())
     {
         $this->name = $name;
         $this->queryParameters = $queryParameters;
+        $this->accept = $accept;
     }
-
-    public function getMethod(): string
+    use \Docker\API\Runtime\Client\EndpointTrait;
+    public function getMethod() : string
     {
         return 'POST';
     }
-
-    public function getUri(): string
+    public function getUri() : string
     {
-        return str_replace(['{name}'], [$this->name], '/images/{name}/tag');
+        return str_replace(array('{name}'), array($this->name), '/images/{name}/tag');
     }
-
-    public function getBody(\Symfony\Component\Serializer\SerializerInterface $serializer, $streamFactory = null): array
+    public function getBody(\Symfony\Component\Serializer\SerializerInterface $serializer, $streamFactory = null) : array
     {
-        return [[], null];
+        return array(array(), null);
     }
-
-    public function getExtraHeaders(): array
+    public function getExtraHeaders() : array
     {
-        return ['Accept' => ['application/json']];
+        if (empty($this->accept)) {
+            return array('Accept' => array('application/json', 'text/plain'));
+        }
+        return $this->accept;
     }
-
-    protected function getQueryOptionsResolver(): \Symfony\Component\OptionsResolver\OptionsResolver
+    protected function getQueryOptionsResolver() : \Symfony\Component\OptionsResolver\OptionsResolver
     {
         $optionsResolver = parent::getQueryOptionsResolver();
-        $optionsResolver->setDefined(['repo', 'tag']);
-        $optionsResolver->setRequired([]);
-        $optionsResolver->setDefaults([]);
-        $optionsResolver->setAllowedTypes('repo', ['string']);
-        $optionsResolver->setAllowedTypes('tag', ['string']);
-
+        $optionsResolver->setDefined(array('repo', 'tag'));
+        $optionsResolver->setRequired(array());
+        $optionsResolver->setDefaults(array());
+        $optionsResolver->addAllowedTypes('repo', array('string'));
+        $optionsResolver->addAllowedTypes('tag', array('string'));
         return $optionsResolver;
     }
-
     /**
      * {@inheritdoc}
      *
@@ -67,26 +62,27 @@ class ImageTag extends \Docker\API\Runtime\Client\BaseEndpoint implements \Docke
      *
      * @return null
      */
-    protected function transformResponseBody(string $body, int $status, \Symfony\Component\Serializer\SerializerInterface $serializer, ?string $contentType = null)
+    protected function transformResponseBody(\Psr\Http\Message\ResponseInterface $response, \Symfony\Component\Serializer\SerializerInterface $serializer, ?string $contentType = null)
     {
+        $status = $response->getStatusCode();
+        $body = (string) $response->getBody();
         if (201 === $status) {
         }
-        if ((null === $contentType) === false && (400 === $status && false !== mb_strpos($contentType, 'application/json'))) {
-            throw new \Docker\API\Exception\ImageTagBadRequestException($serializer->deserialize($body, 'Docker\\API\\Model\\ErrorResponse', 'json'));
+        if (is_null($contentType) === false && (400 === $status && mb_strpos($contentType, 'application/json') !== false)) {
+            throw new \Docker\API\Exception\ImageTagBadRequestException($serializer->deserialize($body, 'Docker\\API\\Model\\ErrorResponse', 'json'), $response);
         }
-        if ((null === $contentType) === false && (404 === $status && false !== mb_strpos($contentType, 'application/json'))) {
-            throw new \Docker\API\Exception\ImageTagNotFoundException($serializer->deserialize($body, 'Docker\\API\\Model\\ErrorResponse', 'json'));
+        if (is_null($contentType) === false && (404 === $status && mb_strpos($contentType, 'application/json') !== false)) {
+            throw new \Docker\API\Exception\ImageTagNotFoundException($serializer->deserialize($body, 'Docker\\API\\Model\\ErrorResponse', 'json'), $response);
         }
-        if ((null === $contentType) === false && (409 === $status && false !== mb_strpos($contentType, 'application/json'))) {
-            throw new \Docker\API\Exception\ImageTagConflictException($serializer->deserialize($body, 'Docker\\API\\Model\\ErrorResponse', 'json'));
+        if (is_null($contentType) === false && (409 === $status && mb_strpos($contentType, 'application/json') !== false)) {
+            throw new \Docker\API\Exception\ImageTagConflictException($serializer->deserialize($body, 'Docker\\API\\Model\\ErrorResponse', 'json'), $response);
         }
-        if ((null === $contentType) === false && (500 === $status && false !== mb_strpos($contentType, 'application/json'))) {
-            throw new \Docker\API\Exception\ImageTagInternalServerErrorException($serializer->deserialize($body, 'Docker\\API\\Model\\ErrorResponse', 'json'));
+        if (is_null($contentType) === false && (500 === $status && mb_strpos($contentType, 'application/json') !== false)) {
+            throw new \Docker\API\Exception\ImageTagInternalServerErrorException($serializer->deserialize($body, 'Docker\\API\\Model\\ErrorResponse', 'json'), $response);
         }
     }
-
-    public function getAuthenticationScopes(): array
+    public function getAuthenticationScopes() : array
     {
-        return [];
+        return array();
     }
 }

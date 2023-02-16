@@ -1,11 +1,17 @@
 <?php
 
-declare(strict_types=1);
-
 namespace Docker\API\Model;
 
-class ServicesCreatePostResponse201
+class ServicesCreatePostResponse201 extends \ArrayObject
 {
+    /**
+     * @var array
+     */
+    protected $initialized = array();
+    public function isInitialized($property) : bool
+    {
+        return array_key_exists($property, $this->initialized);
+    }
     /**
      * The ID of the created service.
      *
@@ -13,45 +19,53 @@ class ServicesCreatePostResponse201
      */
     protected $iD;
     /**
-     * Optional warning message.
+     * Optional warning message
      *
      * @var string|null
      */
     protected $warning;
-
     /**
      * The ID of the created service.
+     *
+     * @return string|null
      */
-    public function getID(): ?string
+    public function getID() : ?string
     {
         return $this->iD;
     }
-
     /**
      * The ID of the created service.
+     *
+     * @param string|null $iD
+     *
+     * @return self
      */
-    public function setID(?string $iD): self
+    public function setID(?string $iD) : self
     {
+        $this->initialized['iD'] = true;
         $this->iD = $iD;
-
         return $this;
     }
-
     /**
-     * Optional warning message.
+     * Optional warning message
+     *
+     * @return string|null
      */
-    public function getWarning(): ?string
+    public function getWarning() : ?string
     {
         return $this->warning;
     }
-
     /**
-     * Optional warning message.
+     * Optional warning message
+     *
+     * @param string|null $warning
+     *
+     * @return self
      */
-    public function setWarning(?string $warning): self
+    public function setWarning(?string $warning) : self
     {
+        $this->initialized['warning'] = true;
         $this->warning = $warning;
-
         return $this;
     }
 }

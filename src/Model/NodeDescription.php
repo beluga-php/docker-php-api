@@ -1,12 +1,20 @@
 <?php
 
-declare(strict_types=1);
-
 namespace Docker\API\Model;
 
-class NodeDescription
+class NodeDescription extends \ArrayObject
 {
     /**
+     * @var array
+     */
+    protected $initialized = array();
+    public function isInitialized($property) : bool
+    {
+        return array_key_exists($property, $this->initialized);
+    }
+    /**
+     * 
+     *
      * @var string|null
      */
     protected $hostname;
@@ -17,11 +25,12 @@ class NodeDescription
      */
     protected $platform;
     /**
-     * An object describing the resources which can be advertised by a node and
-     * requested by a task.
-     *
-     * @var ResourceObject|null
-     */
+    * An object describing the resources which can be advertised by a node and
+    requested by a task.
+    
+    *
+    * @var ResourceObject|null
+    */
     protected $resources;
     /**
      * EngineDescription provides information about an engine.
@@ -30,98 +39,129 @@ class NodeDescription
      */
     protected $engine;
     /**
-     * Information about the issuer of leaf TLS certificates and the trusted root
-     * CA certificate.
-     *
-     * @var TLSInfo|null
-     */
+    * Information about the issuer of leaf TLS certificates and the trusted root
+    CA certificate.
+    
+    *
+    * @var TLSInfo|null
+    */
     protected $tLSInfo;
-
-    public function getHostname(): ?string
+    /**
+     * 
+     *
+     * @return string|null
+     */
+    public function getHostname() : ?string
     {
         return $this->hostname;
     }
-
-    public function setHostname(?string $hostname): self
+    /**
+     * 
+     *
+     * @param string|null $hostname
+     *
+     * @return self
+     */
+    public function setHostname(?string $hostname) : self
     {
+        $this->initialized['hostname'] = true;
         $this->hostname = $hostname;
-
         return $this;
     }
-
     /**
      * Platform represents the platform (Arch/OS).
+     *
+     * @return Platform|null
      */
-    public function getPlatform(): ?Platform
+    public function getPlatform() : ?Platform
     {
         return $this->platform;
     }
-
     /**
      * Platform represents the platform (Arch/OS).
+     *
+     * @param Platform|null $platform
+     *
+     * @return self
      */
-    public function setPlatform(?Platform $platform): self
+    public function setPlatform(?Platform $platform) : self
     {
+        $this->initialized['platform'] = true;
         $this->platform = $platform;
-
         return $this;
     }
-
     /**
-     * An object describing the resources which can be advertised by a node and
-     * requested by a task.
-     */
-    public function getResources(): ?ResourceObject
+    * An object describing the resources which can be advertised by a node and
+    requested by a task.
+    
+    *
+    * @return ResourceObject|null
+    */
+    public function getResources() : ?ResourceObject
     {
         return $this->resources;
     }
-
     /**
-     * An object describing the resources which can be advertised by a node and
-     * requested by a task.
-     */
-    public function setResources(?ResourceObject $resources): self
+    * An object describing the resources which can be advertised by a node and
+    requested by a task.
+    
+    *
+    * @param ResourceObject|null $resources
+    *
+    * @return self
+    */
+    public function setResources(?ResourceObject $resources) : self
     {
+        $this->initialized['resources'] = true;
         $this->resources = $resources;
-
         return $this;
     }
-
     /**
      * EngineDescription provides information about an engine.
+     *
+     * @return EngineDescription|null
      */
-    public function getEngine(): ?EngineDescription
+    public function getEngine() : ?EngineDescription
     {
         return $this->engine;
     }
-
     /**
      * EngineDescription provides information about an engine.
+     *
+     * @param EngineDescription|null $engine
+     *
+     * @return self
      */
-    public function setEngine(?EngineDescription $engine): self
+    public function setEngine(?EngineDescription $engine) : self
     {
+        $this->initialized['engine'] = true;
         $this->engine = $engine;
-
         return $this;
     }
-
     /**
-     * Information about the issuer of leaf TLS certificates and the trusted root
-     * CA certificate.
-     */
-    public function getTLSInfo(): ?TLSInfo
+    * Information about the issuer of leaf TLS certificates and the trusted root
+    CA certificate.
+    
+    *
+    * @return TLSInfo|null
+    */
+    public function getTLSInfo() : ?TLSInfo
     {
         return $this->tLSInfo;
     }
-
     /**
-     * Information about the issuer of leaf TLS certificates and the trusted root
-     * CA certificate.
-     */
-    public function setTLSInfo(?TLSInfo $tLSInfo): self
+    * Information about the issuer of leaf TLS certificates and the trusted root
+    CA certificate.
+    
+    *
+    * @param TLSInfo|null $tLSInfo
+    *
+    * @return self
+    */
+    public function setTLSInfo(?TLSInfo $tLSInfo) : self
     {
+        $this->initialized['tLSInfo'] = true;
         $this->tLSInfo = $tLSInfo;
-
         return $this;
     }
 }

@@ -1,11 +1,17 @@
 <?php
 
-declare(strict_types=1);
-
 namespace Docker\API\Model;
 
-class SwarmInfo
+class SwarmInfo extends \ArrayObject
 {
+    /**
+     * @var array
+     */
+    protected $initialized = array();
+    public function isInitialized($property) : bool
+    {
+        return array_key_exists($property, $this->initialized);
+    }
     /**
      * Unique identifier of for this node in the swarm.
      *
@@ -13,11 +19,12 @@ class SwarmInfo
      */
     protected $nodeID = '';
     /**
-     * IP address at which this node can be reached by other nodes in the
-     * swarm.
-     *
-     * @var string|null
-     */
+    * IP address at which this node can be reached by other nodes in the
+    swarm.
+    
+    *
+    * @var string|null
+    */
     protected $nodeAddr = '';
     /**
      * Current local status of this node.
@@ -26,10 +33,14 @@ class SwarmInfo
      */
     protected $localNodeState = '';
     /**
+     * 
+     *
      * @var bool|null
      */
     protected $controlAvailable = false;
     /**
+     * 
+     *
      * @var string|null
      */
     protected $error = '';
@@ -52,168 +63,217 @@ class SwarmInfo
      */
     protected $managers;
     /**
-     * ClusterInfo represents information about the swarm as is returned by the
-     * "/info" endpoint. Join-tokens are not included.
-     *
-     * @var ClusterInfo|null
-     */
+    * ClusterInfo represents information about the swarm as is returned by the
+    "/info" endpoint. Join-tokens are not included.
+    
+    *
+    * @var ClusterInfo|null
+    */
     protected $cluster;
-
     /**
      * Unique identifier of for this node in the swarm.
+     *
+     * @return string|null
      */
-    public function getNodeID(): ?string
+    public function getNodeID() : ?string
     {
         return $this->nodeID;
     }
-
     /**
      * Unique identifier of for this node in the swarm.
+     *
+     * @param string|null $nodeID
+     *
+     * @return self
      */
-    public function setNodeID(?string $nodeID): self
+    public function setNodeID(?string $nodeID) : self
     {
+        $this->initialized['nodeID'] = true;
         $this->nodeID = $nodeID;
-
         return $this;
     }
-
     /**
-     * IP address at which this node can be reached by other nodes in the
-     * swarm.
-     */
-    public function getNodeAddr(): ?string
+    * IP address at which this node can be reached by other nodes in the
+    swarm.
+    
+    *
+    * @return string|null
+    */
+    public function getNodeAddr() : ?string
     {
         return $this->nodeAddr;
     }
-
     /**
-     * IP address at which this node can be reached by other nodes in the
-     * swarm.
-     */
-    public function setNodeAddr(?string $nodeAddr): self
+    * IP address at which this node can be reached by other nodes in the
+    swarm.
+    
+    *
+    * @param string|null $nodeAddr
+    *
+    * @return self
+    */
+    public function setNodeAddr(?string $nodeAddr) : self
     {
+        $this->initialized['nodeAddr'] = true;
         $this->nodeAddr = $nodeAddr;
-
         return $this;
     }
-
     /**
      * Current local status of this node.
+     *
+     * @return string|null
      */
-    public function getLocalNodeState(): ?string
+    public function getLocalNodeState() : ?string
     {
         return $this->localNodeState;
     }
-
     /**
      * Current local status of this node.
+     *
+     * @param string|null $localNodeState
+     *
+     * @return self
      */
-    public function setLocalNodeState(?string $localNodeState): self
+    public function setLocalNodeState(?string $localNodeState) : self
     {
+        $this->initialized['localNodeState'] = true;
         $this->localNodeState = $localNodeState;
-
         return $this;
     }
-
-    public function getControlAvailable(): ?bool
+    /**
+     * 
+     *
+     * @return bool|null
+     */
+    public function getControlAvailable() : ?bool
     {
         return $this->controlAvailable;
     }
-
-    public function setControlAvailable(?bool $controlAvailable): self
+    /**
+     * 
+     *
+     * @param bool|null $controlAvailable
+     *
+     * @return self
+     */
+    public function setControlAvailable(?bool $controlAvailable) : self
     {
+        $this->initialized['controlAvailable'] = true;
         $this->controlAvailable = $controlAvailable;
-
         return $this;
     }
-
-    public function getError(): ?string
+    /**
+     * 
+     *
+     * @return string|null
+     */
+    public function getError() : ?string
     {
         return $this->error;
     }
-
-    public function setError(?string $error): self
+    /**
+     * 
+     *
+     * @param string|null $error
+     *
+     * @return self
+     */
+    public function setError(?string $error) : self
     {
+        $this->initialized['error'] = true;
         $this->error = $error;
-
         return $this;
     }
-
     /**
      * List of ID's and addresses of other managers in the swarm.
      *
      * @return PeerNode[]|null
      */
-    public function getRemoteManagers(): ?array
+    public function getRemoteManagers() : ?array
     {
         return $this->remoteManagers;
     }
-
     /**
      * List of ID's and addresses of other managers in the swarm.
      *
      * @param PeerNode[]|null $remoteManagers
+     *
+     * @return self
      */
-    public function setRemoteManagers(?array $remoteManagers): self
+    public function setRemoteManagers(?array $remoteManagers) : self
     {
+        $this->initialized['remoteManagers'] = true;
         $this->remoteManagers = $remoteManagers;
-
         return $this;
     }
-
     /**
      * Total number of nodes in the swarm.
+     *
+     * @return int|null
      */
-    public function getNodes(): ?int
+    public function getNodes() : ?int
     {
         return $this->nodes;
     }
-
     /**
      * Total number of nodes in the swarm.
+     *
+     * @param int|null $nodes
+     *
+     * @return self
      */
-    public function setNodes(?int $nodes): self
+    public function setNodes(?int $nodes) : self
     {
+        $this->initialized['nodes'] = true;
         $this->nodes = $nodes;
-
         return $this;
     }
-
     /**
      * Total number of managers in the swarm.
+     *
+     * @return int|null
      */
-    public function getManagers(): ?int
+    public function getManagers() : ?int
     {
         return $this->managers;
     }
-
     /**
      * Total number of managers in the swarm.
+     *
+     * @param int|null $managers
+     *
+     * @return self
      */
-    public function setManagers(?int $managers): self
+    public function setManagers(?int $managers) : self
     {
+        $this->initialized['managers'] = true;
         $this->managers = $managers;
-
         return $this;
     }
-
     /**
-     * ClusterInfo represents information about the swarm as is returned by the
-     * "/info" endpoint. Join-tokens are not included.
-     */
-    public function getCluster(): ?ClusterInfo
+    * ClusterInfo represents information about the swarm as is returned by the
+    "/info" endpoint. Join-tokens are not included.
+    
+    *
+    * @return ClusterInfo|null
+    */
+    public function getCluster() : ?ClusterInfo
     {
         return $this->cluster;
     }
-
     /**
-     * ClusterInfo represents information about the swarm as is returned by the
-     * "/info" endpoint. Join-tokens are not included.
-     */
-    public function setCluster(?ClusterInfo $cluster): self
+    * ClusterInfo represents information about the swarm as is returned by the
+    "/info" endpoint. Join-tokens are not included.
+    
+    *
+    * @param ClusterInfo|null $cluster
+    *
+    * @return self
+    */
+    public function setCluster(?ClusterInfo $cluster) : self
     {
+        $this->initialized['cluster'] = true;
         $this->cluster = $cluster;
-
         return $this;
     }
 }

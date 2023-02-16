@@ -1,62 +1,57 @@
 <?php
 
-declare(strict_types=1);
-
 namespace Docker\API\Endpoint;
 
 class ContainerResize extends \Docker\API\Runtime\Client\BaseEndpoint implements \Docker\API\Runtime\Client\Endpoint
 {
-    use \Docker\API\Runtime\Client\EndpointTrait;
     protected $id;
-
+    protected $accept;
     /**
      * Resize the TTY for a container.
      *
-     * @param string $id              ID or name of the container
-     * @param array  $queryParameters {
-     *
+     * @param string $id ID or name of the container
+     * @param array $queryParameters {
      *     @var int $h Height of the TTY session in characters
      *     @var int $w Width of the TTY session in characters
      * }
+     * @param array $accept Accept content header text/plain|application/json
      */
-    public function __construct(string $id, array $queryParameters = [])
+    public function __construct(string $id, array $queryParameters = array(), array $accept = array())
     {
         $this->id = $id;
         $this->queryParameters = $queryParameters;
+        $this->accept = $accept;
     }
-
-    public function getMethod(): string
+    use \Docker\API\Runtime\Client\EndpointTrait;
+    public function getMethod() : string
     {
         return 'POST';
     }
-
-    public function getUri(): string
+    public function getUri() : string
     {
-        return str_replace(['{id}'], [$this->id], '/containers/{id}/resize');
+        return str_replace(array('{id}'), array($this->id), '/containers/{id}/resize');
     }
-
-    public function getBody(\Symfony\Component\Serializer\SerializerInterface $serializer, $streamFactory = null): array
+    public function getBody(\Symfony\Component\Serializer\SerializerInterface $serializer, $streamFactory = null) : array
     {
-        return [[], null];
+        return array(array(), null);
     }
-
-    public function getExtraHeaders(): array
+    public function getExtraHeaders() : array
     {
-        return ['Accept' => ['application/json']];
+        if (empty($this->accept)) {
+            return array('Accept' => array('text/plain', 'application/json'));
+        }
+        return $this->accept;
     }
-
-    protected function getQueryOptionsResolver(): \Symfony\Component\OptionsResolver\OptionsResolver
+    protected function getQueryOptionsResolver() : \Symfony\Component\OptionsResolver\OptionsResolver
     {
         $optionsResolver = parent::getQueryOptionsResolver();
-        $optionsResolver->setDefined(['h', 'w']);
-        $optionsResolver->setRequired([]);
-        $optionsResolver->setDefaults([]);
-        $optionsResolver->setAllowedTypes('h', ['int']);
-        $optionsResolver->setAllowedTypes('w', ['int']);
-
+        $optionsResolver->setDefined(array('h', 'w'));
+        $optionsResolver->setRequired(array());
+        $optionsResolver->setDefaults(array());
+        $optionsResolver->addAllowedTypes('h', array('int'));
+        $optionsResolver->addAllowedTypes('w', array('int'));
         return $optionsResolver;
     }
-
     /**
      * {@inheritdoc}
      *
@@ -64,19 +59,20 @@ class ContainerResize extends \Docker\API\Runtime\Client\BaseEndpoint implements
      *
      * @return null
      */
-    protected function transformResponseBody(string $body, int $status, \Symfony\Component\Serializer\SerializerInterface $serializer, ?string $contentType = null)
+    protected function transformResponseBody(\Psr\Http\Message\ResponseInterface $response, \Symfony\Component\Serializer\SerializerInterface $serializer, ?string $contentType = null)
     {
+        $status = $response->getStatusCode();
+        $body = (string) $response->getBody();
         if (200 === $status) {
         }
-        if ((null === $contentType) === false && (404 === $status && false !== mb_strpos($contentType, 'application/json'))) {
-            throw new \Docker\API\Exception\ContainerResizeNotFoundException();
+        if (is_null($contentType) === false && (404 === $status && mb_strpos($contentType, 'application/json') !== false)) {
+            throw new \Docker\API\Exception\ContainerResizeNotFoundException($response);
         }
         if (500 === $status) {
         }
     }
-
-    public function getAuthenticationScopes(): array
+    public function getAuthenticationScopes() : array
     {
-        return [];
+        return array();
     }
 }

@@ -1,41 +1,35 @@
 <?php
 
-declare(strict_types=1);
-
 namespace Docker\API\Normalizer;
 
-use Docker\API\Runtime\Normalizer\CheckArray;
 use Jane\Component\JsonSchemaRuntime\Reference;
+use Docker\API\Runtime\Normalizer\CheckArray;
+use Docker\API\Runtime\Normalizer\ValidatorTrait;
+use Symfony\Component\Serializer\Exception\InvalidArgumentException;
 use Symfony\Component\Serializer\Normalizer\DenormalizerAwareInterface;
 use Symfony\Component\Serializer\Normalizer\DenormalizerAwareTrait;
 use Symfony\Component\Serializer\Normalizer\DenormalizerInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerAwareInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerAwareTrait;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
-
 class PluginInterfaceTypeNormalizer implements DenormalizerInterface, NormalizerInterface, DenormalizerAwareInterface, NormalizerAwareInterface
 {
-    use CheckArray;
     use DenormalizerAwareTrait;
     use NormalizerAwareTrait;
-
-    /**
-     * @return bool
-     */
-    public function supportsDenormalization($data, $type, $format = null)
+    use CheckArray;
+    use ValidatorTrait;
+    public function supportsDenormalization($data, $type, $format = null) : bool
     {
-        return 'Docker\\API\\Model\\PluginInterfaceType' === $type;
+        return $type === 'Docker\\API\\Model\\PluginInterfaceType';
     }
-
-    public function supportsNormalization($data, $format = null)
+    public function supportsNormalization($data, $format = null) : bool
     {
-        return \is_object($data) && 'Docker\\API\\Model\\PluginInterfaceType' === $data::class;
+        return is_object($data) && get_class($data) === 'Docker\\API\\Model\\PluginInterfaceType';
     }
-
     /**
      * @return mixed
      */
-    public function denormalize($data, $class, $format = null, array $context = [])
+    public function denormalize($data, $class, $format = null, array $context = array())
     {
         if (isset($data['$ref'])) {
             return new Reference($data['$ref'], $context['document-origin']);
@@ -47,35 +41,48 @@ class PluginInterfaceTypeNormalizer implements DenormalizerInterface, Normalizer
         if (null === $data || false === \is_array($data)) {
             return $object;
         }
-        if (\array_key_exists('Prefix', $data) && null !== $data['Prefix']) {
+        if (\array_key_exists('Prefix', $data) && $data['Prefix'] !== null) {
             $object->setPrefix($data['Prefix']);
-        } elseif (\array_key_exists('Prefix', $data) && null === $data['Prefix']) {
+            unset($data['Prefix']);
+        }
+        elseif (\array_key_exists('Prefix', $data) && $data['Prefix'] === null) {
             $object->setPrefix(null);
         }
-        if (\array_key_exists('Capability', $data) && null !== $data['Capability']) {
+        if (\array_key_exists('Capability', $data) && $data['Capability'] !== null) {
             $object->setCapability($data['Capability']);
-        } elseif (\array_key_exists('Capability', $data) && null === $data['Capability']) {
+            unset($data['Capability']);
+        }
+        elseif (\array_key_exists('Capability', $data) && $data['Capability'] === null) {
             $object->setCapability(null);
         }
-        if (\array_key_exists('Version', $data) && null !== $data['Version']) {
+        if (\array_key_exists('Version', $data) && $data['Version'] !== null) {
             $object->setVersion($data['Version']);
-        } elseif (\array_key_exists('Version', $data) && null === $data['Version']) {
+            unset($data['Version']);
+        }
+        elseif (\array_key_exists('Version', $data) && $data['Version'] === null) {
             $object->setVersion(null);
         }
-
+        foreach ($data as $key => $value) {
+            if (preg_match('/.*/', (string) $key)) {
+                $object[$key] = $value;
+            }
+        }
         return $object;
     }
-
     /**
      * @return array|string|int|float|bool|\ArrayObject|null
      */
-    public function normalize($object, $format = null, array $context = [])
+    public function normalize($object, $format = null, array $context = array())
     {
-        $data = [];
+        $data = array();
         $data['Prefix'] = $object->getPrefix();
         $data['Capability'] = $object->getCapability();
         $data['Version'] = $object->getVersion();
-
+        foreach ($object as $key => $value) {
+            if (preg_match('/.*/', (string) $key)) {
+                $data[$key] = $value;
+            }
+        }
         return $data;
     }
 }

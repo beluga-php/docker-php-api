@@ -1,41 +1,35 @@
 <?php
 
-declare(strict_types=1);
-
 namespace Docker\API\Normalizer;
 
-use Docker\API\Runtime\Normalizer\CheckArray;
 use Jane\Component\JsonSchemaRuntime\Reference;
+use Docker\API\Runtime\Normalizer\CheckArray;
+use Docker\API\Runtime\Normalizer\ValidatorTrait;
+use Symfony\Component\Serializer\Exception\InvalidArgumentException;
 use Symfony\Component\Serializer\Normalizer\DenormalizerAwareInterface;
 use Symfony\Component\Serializer\Normalizer\DenormalizerAwareTrait;
 use Symfony\Component\Serializer\Normalizer\DenormalizerInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerAwareInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerAwareTrait;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
-
 class ServicesCreatePostResponse201Normalizer implements DenormalizerInterface, NormalizerInterface, DenormalizerAwareInterface, NormalizerAwareInterface
 {
-    use CheckArray;
     use DenormalizerAwareTrait;
     use NormalizerAwareTrait;
-
-    /**
-     * @return bool
-     */
-    public function supportsDenormalization($data, $type, $format = null)
+    use CheckArray;
+    use ValidatorTrait;
+    public function supportsDenormalization($data, $type, $format = null) : bool
     {
-        return 'Docker\\API\\Model\\ServicesCreatePostResponse201' === $type;
+        return $type === 'Docker\\API\\Model\\ServicesCreatePostResponse201';
     }
-
-    public function supportsNormalization($data, $format = null)
+    public function supportsNormalization($data, $format = null) : bool
     {
-        return \is_object($data) && 'Docker\\API\\Model\\ServicesCreatePostResponse201' === $data::class;
+        return is_object($data) && get_class($data) === 'Docker\\API\\Model\\ServicesCreatePostResponse201';
     }
-
     /**
      * @return mixed
      */
-    public function denormalize($data, $class, $format = null, array $context = [])
+    public function denormalize($data, $class, $format = null, array $context = array())
     {
         if (isset($data['$ref'])) {
             return new Reference($data['$ref'], $context['document-origin']);
@@ -47,33 +41,44 @@ class ServicesCreatePostResponse201Normalizer implements DenormalizerInterface, 
         if (null === $data || false === \is_array($data)) {
             return $object;
         }
-        if (\array_key_exists('ID', $data) && null !== $data['ID']) {
+        if (\array_key_exists('ID', $data) && $data['ID'] !== null) {
             $object->setID($data['ID']);
-        } elseif (\array_key_exists('ID', $data) && null === $data['ID']) {
+            unset($data['ID']);
+        }
+        elseif (\array_key_exists('ID', $data) && $data['ID'] === null) {
             $object->setID(null);
         }
-        if (\array_key_exists('Warning', $data) && null !== $data['Warning']) {
+        if (\array_key_exists('Warning', $data) && $data['Warning'] !== null) {
             $object->setWarning($data['Warning']);
-        } elseif (\array_key_exists('Warning', $data) && null === $data['Warning']) {
+            unset($data['Warning']);
+        }
+        elseif (\array_key_exists('Warning', $data) && $data['Warning'] === null) {
             $object->setWarning(null);
         }
-
+        foreach ($data as $key => $value) {
+            if (preg_match('/.*/', (string) $key)) {
+                $object[$key] = $value;
+            }
+        }
         return $object;
     }
-
     /**
      * @return array|string|int|float|bool|\ArrayObject|null
      */
-    public function normalize($object, $format = null, array $context = [])
+    public function normalize($object, $format = null, array $context = array())
     {
-        $data = [];
-        if (null !== $object->getID()) {
+        $data = array();
+        if ($object->isInitialized('iD') && null !== $object->getID()) {
             $data['ID'] = $object->getID();
         }
-        if (null !== $object->getWarning()) {
+        if ($object->isInitialized('warning') && null !== $object->getWarning()) {
             $data['Warning'] = $object->getWarning();
         }
-
+        foreach ($object as $key => $value) {
+            if (preg_match('/.*/', (string) $key)) {
+                $data[$key] = $value;
+            }
+        }
         return $data;
     }
 }

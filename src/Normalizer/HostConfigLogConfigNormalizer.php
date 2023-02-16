@@ -1,41 +1,35 @@
 <?php
 
-declare(strict_types=1);
-
 namespace Docker\API\Normalizer;
 
-use Docker\API\Runtime\Normalizer\CheckArray;
 use Jane\Component\JsonSchemaRuntime\Reference;
+use Docker\API\Runtime\Normalizer\CheckArray;
+use Docker\API\Runtime\Normalizer\ValidatorTrait;
+use Symfony\Component\Serializer\Exception\InvalidArgumentException;
 use Symfony\Component\Serializer\Normalizer\DenormalizerAwareInterface;
 use Symfony\Component\Serializer\Normalizer\DenormalizerAwareTrait;
 use Symfony\Component\Serializer\Normalizer\DenormalizerInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerAwareInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerAwareTrait;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
-
 class HostConfigLogConfigNormalizer implements DenormalizerInterface, NormalizerInterface, DenormalizerAwareInterface, NormalizerAwareInterface
 {
-    use CheckArray;
     use DenormalizerAwareTrait;
     use NormalizerAwareTrait;
-
-    /**
-     * @return bool
-     */
-    public function supportsDenormalization($data, $type, $format = null)
+    use CheckArray;
+    use ValidatorTrait;
+    public function supportsDenormalization($data, $type, $format = null) : bool
     {
-        return 'Docker\\API\\Model\\HostConfigLogConfig' === $type;
+        return $type === 'Docker\\API\\Model\\HostConfigLogConfig';
     }
-
-    public function supportsNormalization($data, $format = null)
+    public function supportsNormalization($data, $format = null) : bool
     {
-        return \is_object($data) && 'Docker\\API\\Model\\HostConfigLogConfig' === $data::class;
+        return is_object($data) && get_class($data) === 'Docker\\API\\Model\\HostConfigLogConfig';
     }
-
     /**
      * @return mixed
      */
-    public function denormalize($data, $class, $format = null, array $context = [])
+    public function denormalize($data, $class, $format = null, array $context = array())
     {
         if (isset($data['$ref'])) {
             return new Reference($data['$ref'], $context['document-origin']);
@@ -47,41 +41,52 @@ class HostConfigLogConfigNormalizer implements DenormalizerInterface, Normalizer
         if (null === $data || false === \is_array($data)) {
             return $object;
         }
-        if (\array_key_exists('Type', $data) && null !== $data['Type']) {
+        if (\array_key_exists('Type', $data) && $data['Type'] !== null) {
             $object->setType($data['Type']);
-        } elseif (\array_key_exists('Type', $data) && null === $data['Type']) {
+            unset($data['Type']);
+        }
+        elseif (\array_key_exists('Type', $data) && $data['Type'] === null) {
             $object->setType(null);
         }
-        if (\array_key_exists('Config', $data) && null !== $data['Config']) {
-            $values = new \ArrayObject([], \ArrayObject::ARRAY_AS_PROPS);
+        if (\array_key_exists('Config', $data) && $data['Config'] !== null) {
+            $values = new \ArrayObject(array(), \ArrayObject::ARRAY_AS_PROPS);
             foreach ($data['Config'] as $key => $value) {
                 $values[$key] = $value;
             }
             $object->setConfig($values);
-        } elseif (\array_key_exists('Config', $data) && null === $data['Config']) {
+            unset($data['Config']);
+        }
+        elseif (\array_key_exists('Config', $data) && $data['Config'] === null) {
             $object->setConfig(null);
         }
-
+        foreach ($data as $key_1 => $value_1) {
+            if (preg_match('/.*/', (string) $key_1)) {
+                $object[$key_1] = $value_1;
+            }
+        }
         return $object;
     }
-
     /**
      * @return array|string|int|float|bool|\ArrayObject|null
      */
-    public function normalize($object, $format = null, array $context = [])
+    public function normalize($object, $format = null, array $context = array())
     {
-        $data = [];
-        if (null !== $object->getType()) {
+        $data = array();
+        if ($object->isInitialized('type') && null !== $object->getType()) {
             $data['Type'] = $object->getType();
         }
-        if (null !== $object->getConfig()) {
-            $values = [];
+        if ($object->isInitialized('config') && null !== $object->getConfig()) {
+            $values = array();
             foreach ($object->getConfig() as $key => $value) {
                 $values[$key] = $value;
             }
             $data['Config'] = $values;
         }
-
+        foreach ($object as $key_1 => $value_1) {
+            if (preg_match('/.*/', (string) $key_1)) {
+                $data[$key_1] = $value_1;
+            }
+        }
         return $data;
     }
 }

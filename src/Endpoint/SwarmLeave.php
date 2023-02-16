@@ -1,57 +1,54 @@
 <?php
 
-declare(strict_types=1);
-
 namespace Docker\API\Endpoint;
 
 class SwarmLeave extends \Docker\API\Runtime\Client\BaseEndpoint implements \Docker\API\Runtime\Client\Endpoint
 {
-    use \Docker\API\Runtime\Client\EndpointTrait;
-
+    protected $accept;
     /**
-     * @param array $queryParameters {
-     *
-     *     @var bool $force Force leave swarm, even if this is the last manager or that it will
-     * break the cluster.
-     *
-     * }
-     */
-    public function __construct(array $queryParameters = [])
+    * 
+    *
+    * @param array $queryParameters {
+    *     @var bool $force Force leave swarm, even if this is the last manager or that it will
+    break the cluster.
+    
+    * }
+    * @param array $accept Accept content header application/json|text/plain
+    */
+    public function __construct(array $queryParameters = array(), array $accept = array())
     {
         $this->queryParameters = $queryParameters;
+        $this->accept = $accept;
     }
-
-    public function getMethod(): string
+    use \Docker\API\Runtime\Client\EndpointTrait;
+    public function getMethod() : string
     {
         return 'POST';
     }
-
-    public function getUri(): string
+    public function getUri() : string
     {
         return '/swarm/leave';
     }
-
-    public function getBody(\Symfony\Component\Serializer\SerializerInterface $serializer, $streamFactory = null): array
+    public function getBody(\Symfony\Component\Serializer\SerializerInterface $serializer, $streamFactory = null) : array
     {
-        return [[], null];
+        return array(array(), null);
     }
-
-    public function getExtraHeaders(): array
+    public function getExtraHeaders() : array
     {
-        return ['Accept' => ['application/json']];
+        if (empty($this->accept)) {
+            return array('Accept' => array('application/json', 'text/plain'));
+        }
+        return $this->accept;
     }
-
-    protected function getQueryOptionsResolver(): \Symfony\Component\OptionsResolver\OptionsResolver
+    protected function getQueryOptionsResolver() : \Symfony\Component\OptionsResolver\OptionsResolver
     {
         $optionsResolver = parent::getQueryOptionsResolver();
-        $optionsResolver->setDefined(['force']);
-        $optionsResolver->setRequired([]);
-        $optionsResolver->setDefaults(['force' => false]);
-        $optionsResolver->setAllowedTypes('force', ['bool']);
-
+        $optionsResolver->setDefined(array('force'));
+        $optionsResolver->setRequired(array());
+        $optionsResolver->setDefaults(array('force' => false));
+        $optionsResolver->addAllowedTypes('force', array('bool'));
         return $optionsResolver;
     }
-
     /**
      * {@inheritdoc}
      *
@@ -60,20 +57,21 @@ class SwarmLeave extends \Docker\API\Runtime\Client\BaseEndpoint implements \Doc
      *
      * @return null
      */
-    protected function transformResponseBody(string $body, int $status, \Symfony\Component\Serializer\SerializerInterface $serializer, ?string $contentType = null)
+    protected function transformResponseBody(\Psr\Http\Message\ResponseInterface $response, \Symfony\Component\Serializer\SerializerInterface $serializer, ?string $contentType = null)
     {
+        $status = $response->getStatusCode();
+        $body = (string) $response->getBody();
         if (200 === $status) {
         }
-        if ((null === $contentType) === false && (500 === $status && false !== mb_strpos($contentType, 'application/json'))) {
-            throw new \Docker\API\Exception\SwarmLeaveInternalServerErrorException($serializer->deserialize($body, 'Docker\\API\\Model\\ErrorResponse', 'json'));
+        if (is_null($contentType) === false && (500 === $status && mb_strpos($contentType, 'application/json') !== false)) {
+            throw new \Docker\API\Exception\SwarmLeaveInternalServerErrorException($serializer->deserialize($body, 'Docker\\API\\Model\\ErrorResponse', 'json'), $response);
         }
-        if ((null === $contentType) === false && (503 === $status && false !== mb_strpos($contentType, 'application/json'))) {
-            throw new \Docker\API\Exception\SwarmLeaveServiceUnavailableException($serializer->deserialize($body, 'Docker\\API\\Model\\ErrorResponse', 'json'));
+        if (is_null($contentType) === false && (503 === $status && mb_strpos($contentType, 'application/json') !== false)) {
+            throw new \Docker\API\Exception\SwarmLeaveServiceUnavailableException($serializer->deserialize($body, 'Docker\\API\\Model\\ErrorResponse', 'json'), $response);
         }
     }
-
-    public function getAuthenticationScopes(): array
+    public function getAuthenticationScopes() : array
     {
-        return [];
+        return array();
     }
 }

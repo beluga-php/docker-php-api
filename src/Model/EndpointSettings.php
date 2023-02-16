@@ -1,11 +1,17 @@
 <?php
 
-declare(strict_types=1);
-
 namespace Docker\API\Model;
 
-class EndpointSettings
+class EndpointSettings extends \ArrayObject
 {
+    /**
+     * @var array
+     */
+    protected $initialized = array();
+    public function isInitialized($property) : bool
+    {
+        return array_key_exists($property, $this->initialized);
+    }
     /**
      * EndpointIPAMConfig represents an endpoint's IPAM configuration.
      *
@@ -13,10 +19,14 @@ class EndpointSettings
      */
     protected $iPAMConfig;
     /**
+     * 
+     *
      * @var string[]|null
      */
     protected $links;
     /**
+     * 
+     *
      * @var string[]|null
      */
     protected $aliases;
@@ -75,250 +85,301 @@ class EndpointSettings
      */
     protected $macAddress;
     /**
-     * DriverOpts is a mapping of driver options and values. These options
-     * are passed directly to the driver and are driver specific.
-     *
-     * @var string[]|null
-     */
+    * DriverOpts is a mapping of driver options and values. These options
+    are passed directly to the driver and are driver specific.
+    
+    *
+    * @var string[]|null
+    */
     protected $driverOpts;
-
     /**
      * EndpointIPAMConfig represents an endpoint's IPAM configuration.
+     *
+     * @return EndpointIPAMConfig|null
      */
-    public function getIPAMConfig(): ?EndpointIPAMConfig
+    public function getIPAMConfig() : ?EndpointIPAMConfig
     {
         return $this->iPAMConfig;
     }
-
     /**
      * EndpointIPAMConfig represents an endpoint's IPAM configuration.
+     *
+     * @param EndpointIPAMConfig|null $iPAMConfig
+     *
+     * @return self
      */
-    public function setIPAMConfig(?EndpointIPAMConfig $iPAMConfig): self
+    public function setIPAMConfig(?EndpointIPAMConfig $iPAMConfig) : self
     {
+        $this->initialized['iPAMConfig'] = true;
         $this->iPAMConfig = $iPAMConfig;
-
         return $this;
     }
-
     /**
+     * 
+     *
      * @return string[]|null
      */
-    public function getLinks(): ?array
+    public function getLinks() : ?array
     {
         return $this->links;
     }
-
     /**
+     * 
+     *
      * @param string[]|null $links
+     *
+     * @return self
      */
-    public function setLinks(?array $links): self
+    public function setLinks(?array $links) : self
     {
+        $this->initialized['links'] = true;
         $this->links = $links;
-
         return $this;
     }
-
     /**
+     * 
+     *
      * @return string[]|null
      */
-    public function getAliases(): ?array
+    public function getAliases() : ?array
     {
         return $this->aliases;
     }
-
     /**
+     * 
+     *
      * @param string[]|null $aliases
+     *
+     * @return self
      */
-    public function setAliases(?array $aliases): self
+    public function setAliases(?array $aliases) : self
     {
+        $this->initialized['aliases'] = true;
         $this->aliases = $aliases;
-
         return $this;
     }
-
     /**
      * Unique ID of the network.
+     *
+     * @return string|null
      */
-    public function getNetworkID(): ?string
+    public function getNetworkID() : ?string
     {
         return $this->networkID;
     }
-
     /**
      * Unique ID of the network.
+     *
+     * @param string|null $networkID
+     *
+     * @return self
      */
-    public function setNetworkID(?string $networkID): self
+    public function setNetworkID(?string $networkID) : self
     {
+        $this->initialized['networkID'] = true;
         $this->networkID = $networkID;
-
         return $this;
     }
-
     /**
      * Unique ID for the service endpoint in a Sandbox.
+     *
+     * @return string|null
      */
-    public function getEndpointID(): ?string
+    public function getEndpointID() : ?string
     {
         return $this->endpointID;
     }
-
     /**
      * Unique ID for the service endpoint in a Sandbox.
+     *
+     * @param string|null $endpointID
+     *
+     * @return self
      */
-    public function setEndpointID(?string $endpointID): self
+    public function setEndpointID(?string $endpointID) : self
     {
+        $this->initialized['endpointID'] = true;
         $this->endpointID = $endpointID;
-
         return $this;
     }
-
     /**
      * Gateway address for this network.
+     *
+     * @return string|null
      */
-    public function getGateway(): ?string
+    public function getGateway() : ?string
     {
         return $this->gateway;
     }
-
     /**
      * Gateway address for this network.
+     *
+     * @param string|null $gateway
+     *
+     * @return self
      */
-    public function setGateway(?string $gateway): self
+    public function setGateway(?string $gateway) : self
     {
+        $this->initialized['gateway'] = true;
         $this->gateway = $gateway;
-
         return $this;
     }
-
     /**
      * IPv4 address.
+     *
+     * @return string|null
      */
-    public function getIPAddress(): ?string
+    public function getIPAddress() : ?string
     {
         return $this->iPAddress;
     }
-
     /**
      * IPv4 address.
+     *
+     * @param string|null $iPAddress
+     *
+     * @return self
      */
-    public function setIPAddress(?string $iPAddress): self
+    public function setIPAddress(?string $iPAddress) : self
     {
+        $this->initialized['iPAddress'] = true;
         $this->iPAddress = $iPAddress;
-
         return $this;
     }
-
     /**
      * Mask length of the IPv4 address.
+     *
+     * @return int|null
      */
-    public function getIPPrefixLen(): ?int
+    public function getIPPrefixLen() : ?int
     {
         return $this->iPPrefixLen;
     }
-
     /**
      * Mask length of the IPv4 address.
+     *
+     * @param int|null $iPPrefixLen
+     *
+     * @return self
      */
-    public function setIPPrefixLen(?int $iPPrefixLen): self
+    public function setIPPrefixLen(?int $iPPrefixLen) : self
     {
+        $this->initialized['iPPrefixLen'] = true;
         $this->iPPrefixLen = $iPPrefixLen;
-
         return $this;
     }
-
     /**
      * IPv6 gateway address.
+     *
+     * @return string|null
      */
-    public function getIPv6Gateway(): ?string
+    public function getIPv6Gateway() : ?string
     {
         return $this->iPv6Gateway;
     }
-
     /**
      * IPv6 gateway address.
+     *
+     * @param string|null $iPv6Gateway
+     *
+     * @return self
      */
-    public function setIPv6Gateway(?string $iPv6Gateway): self
+    public function setIPv6Gateway(?string $iPv6Gateway) : self
     {
+        $this->initialized['iPv6Gateway'] = true;
         $this->iPv6Gateway = $iPv6Gateway;
-
         return $this;
     }
-
     /**
      * Global IPv6 address.
+     *
+     * @return string|null
      */
-    public function getGlobalIPv6Address(): ?string
+    public function getGlobalIPv6Address() : ?string
     {
         return $this->globalIPv6Address;
     }
-
     /**
      * Global IPv6 address.
+     *
+     * @param string|null $globalIPv6Address
+     *
+     * @return self
      */
-    public function setGlobalIPv6Address(?string $globalIPv6Address): self
+    public function setGlobalIPv6Address(?string $globalIPv6Address) : self
     {
+        $this->initialized['globalIPv6Address'] = true;
         $this->globalIPv6Address = $globalIPv6Address;
-
         return $this;
     }
-
     /**
      * Mask length of the global IPv6 address.
+     *
+     * @return int|null
      */
-    public function getGlobalIPv6PrefixLen(): ?int
+    public function getGlobalIPv6PrefixLen() : ?int
     {
         return $this->globalIPv6PrefixLen;
     }
-
     /**
      * Mask length of the global IPv6 address.
+     *
+     * @param int|null $globalIPv6PrefixLen
+     *
+     * @return self
      */
-    public function setGlobalIPv6PrefixLen(?int $globalIPv6PrefixLen): self
+    public function setGlobalIPv6PrefixLen(?int $globalIPv6PrefixLen) : self
     {
+        $this->initialized['globalIPv6PrefixLen'] = true;
         $this->globalIPv6PrefixLen = $globalIPv6PrefixLen;
-
         return $this;
     }
-
     /**
      * MAC address for the endpoint on this network.
+     *
+     * @return string|null
      */
-    public function getMacAddress(): ?string
+    public function getMacAddress() : ?string
     {
         return $this->macAddress;
     }
-
     /**
      * MAC address for the endpoint on this network.
+     *
+     * @param string|null $macAddress
+     *
+     * @return self
      */
-    public function setMacAddress(?string $macAddress): self
+    public function setMacAddress(?string $macAddress) : self
     {
+        $this->initialized['macAddress'] = true;
         $this->macAddress = $macAddress;
-
         return $this;
     }
-
     /**
-     * DriverOpts is a mapping of driver options and values. These options
-     * are passed directly to the driver and are driver specific.
-     *
-     * @return string[]|null
-     */
-    public function getDriverOpts(): ?iterable
+    * DriverOpts is a mapping of driver options and values. These options
+    are passed directly to the driver and are driver specific.
+    
+    *
+    * @return string[]|null
+    */
+    public function getDriverOpts() : ?iterable
     {
         return $this->driverOpts;
     }
-
     /**
-     * DriverOpts is a mapping of driver options and values. These options
-     * are passed directly to the driver and are driver specific.
-     *
-     * @param string[]|null $driverOpts
-     */
-    public function setDriverOpts(?iterable $driverOpts): self
+    * DriverOpts is a mapping of driver options and values. These options
+    are passed directly to the driver and are driver specific.
+    
+    *
+    * @param string[]|null $driverOpts
+    *
+    * @return self
+    */
+    public function setDriverOpts(?iterable $driverOpts) : self
     {
+        $this->initialized['driverOpts'] = true;
         $this->driverOpts = $driverOpts;
-
         return $this;
     }
 }

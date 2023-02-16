@@ -1,52 +1,59 @@
 <?php
 
-declare(strict_types=1);
-
 namespace Docker\API\Endpoint;
 
 class SystemDataUsage extends \Docker\API\Runtime\Client\BaseEndpoint implements \Docker\API\Runtime\Client\Endpoint
 {
+    protected $accept;
+    /**
+     * 
+     *
+     * @param array $accept Accept content header application/json|text/plain
+     */
+    public function __construct(array $accept = array())
+    {
+        $this->accept = $accept;
+    }
     use \Docker\API\Runtime\Client\EndpointTrait;
-
-    public function getMethod(): string
+    public function getMethod() : string
     {
         return 'GET';
     }
-
-    public function getUri(): string
+    public function getUri() : string
     {
         return '/system/df';
     }
-
-    public function getBody(\Symfony\Component\Serializer\SerializerInterface $serializer, $streamFactory = null): array
+    public function getBody(\Symfony\Component\Serializer\SerializerInterface $serializer, $streamFactory = null) : array
     {
-        return [[], null];
+        return array(array(), null);
     }
-
-    public function getExtraHeaders(): array
+    public function getExtraHeaders() : array
     {
-        return ['Accept' => ['application/json']];
+        if (empty($this->accept)) {
+            return array('Accept' => array('application/json', 'text/plain'));
+        }
+        return $this->accept;
     }
-
     /**
      * {@inheritdoc}
      *
      * @throws \Docker\API\Exception\SystemDataUsageInternalServerErrorException
      *
-     * @return \Docker\API\Model\SystemDfGetResponse200|null
+     * @return null|\Docker\API\Model\SystemDfGetJsonResponse200
      */
-    protected function transformResponseBody(string $body, int $status, \Symfony\Component\Serializer\SerializerInterface $serializer, ?string $contentType = null)
+    protected function transformResponseBody(\Psr\Http\Message\ResponseInterface $response, \Symfony\Component\Serializer\SerializerInterface $serializer, ?string $contentType = null)
     {
-        if ((null === $contentType) === false && (200 === $status && false !== mb_strpos($contentType, 'application/json'))) {
-            return $serializer->deserialize($body, 'Docker\\API\\Model\\SystemDfGetResponse200', 'json');
+        $status = $response->getStatusCode();
+        $body = (string) $response->getBody();
+        if (is_null($contentType) === false && (200 === $status && mb_strpos($contentType, 'application/json') !== false)) {
+            return $serializer->deserialize($body, 'Docker\\API\\Model\\SystemDfGetJsonResponse200', 'json');
         }
-        if ((null === $contentType) === false && (500 === $status && false !== mb_strpos($contentType, 'application/json'))) {
-            throw new \Docker\API\Exception\SystemDataUsageInternalServerErrorException($serializer->deserialize($body, 'Docker\\API\\Model\\ErrorResponse', 'json'));
+        if (is_null($contentType) === false && (500 === $status && mb_strpos($contentType, 'application/json') !== false)) {
+            throw new \Docker\API\Exception\SystemDataUsageInternalServerErrorException($serializer->deserialize($body, 'Docker\\API\\Model\\ErrorResponse', 'json'), $response);
         }
     }
-
-    public function getAuthenticationScopes(): array
+    public function getAuthenticationScopes() : array
     {
-        return [];
+        return array();
     }
 }

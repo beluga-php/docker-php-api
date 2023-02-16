@@ -1,89 +1,155 @@
 <?php
 
-declare(strict_types=1);
-
 namespace Docker\API\Model;
 
-class ImagesSearchGetResponse200Item
+class ImagesSearchGetResponse200Item extends \ArrayObject
 {
     /**
+     * @var array
+     */
+    protected $initialized = array();
+    public function isInitialized($property) : bool
+    {
+        return array_key_exists($property, $this->initialized);
+    }
+    /**
+     * 
+     *
      * @var string|null
      */
     protected $description;
     /**
+     * 
+     *
      * @var bool|null
      */
     protected $isOfficial;
     /**
+     * 
+     *
      * @var bool|null
      */
     protected $isAutomated;
     /**
+     * 
+     *
      * @var string|null
      */
     protected $name;
     /**
+     * 
+     *
      * @var int|null
      */
     protected $starCount;
-
-    public function getDescription(): ?string
+    /**
+     * 
+     *
+     * @return string|null
+     */
+    public function getDescription() : ?string
     {
         return $this->description;
     }
-
-    public function setDescription(?string $description): self
+    /**
+     * 
+     *
+     * @param string|null $description
+     *
+     * @return self
+     */
+    public function setDescription(?string $description) : self
     {
+        $this->initialized['description'] = true;
         $this->description = $description;
-
         return $this;
     }
-
-    public function getIsOfficial(): ?bool
+    /**
+     * 
+     *
+     * @return bool|null
+     */
+    public function getIsOfficial() : ?bool
     {
         return $this->isOfficial;
     }
-
-    public function setIsOfficial(?bool $isOfficial): self
+    /**
+     * 
+     *
+     * @param bool|null $isOfficial
+     *
+     * @return self
+     */
+    public function setIsOfficial(?bool $isOfficial) : self
     {
+        $this->initialized['isOfficial'] = true;
         $this->isOfficial = $isOfficial;
-
         return $this;
     }
-
-    public function getIsAutomated(): ?bool
+    /**
+     * 
+     *
+     * @return bool|null
+     */
+    public function getIsAutomated() : ?bool
     {
         return $this->isAutomated;
     }
-
-    public function setIsAutomated(?bool $isAutomated): self
+    /**
+     * 
+     *
+     * @param bool|null $isAutomated
+     *
+     * @return self
+     */
+    public function setIsAutomated(?bool $isAutomated) : self
     {
+        $this->initialized['isAutomated'] = true;
         $this->isAutomated = $isAutomated;
-
         return $this;
     }
-
-    public function getName(): ?string
+    /**
+     * 
+     *
+     * @return string|null
+     */
+    public function getName() : ?string
     {
         return $this->name;
     }
-
-    public function setName(?string $name): self
+    /**
+     * 
+     *
+     * @param string|null $name
+     *
+     * @return self
+     */
+    public function setName(?string $name) : self
     {
+        $this->initialized['name'] = true;
         $this->name = $name;
-
         return $this;
     }
-
-    public function getStarCount(): ?int
+    /**
+     * 
+     *
+     * @return int|null
+     */
+    public function getStarCount() : ?int
     {
         return $this->starCount;
     }
-
-    public function setStarCount(?int $starCount): self
+    /**
+     * 
+     *
+     * @param int|null $starCount
+     *
+     * @return self
+     */
+    public function setStarCount(?int $starCount) : self
     {
+        $this->initialized['starCount'] = true;
         $this->starCount = $starCount;
-
         return $this;
     }
 }

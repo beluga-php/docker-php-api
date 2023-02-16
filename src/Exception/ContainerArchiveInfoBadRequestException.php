@@ -1,24 +1,29 @@
 <?php
 
-declare(strict_types=1);
-
 namespace Docker\API\Exception;
 
 class ContainerArchiveInfoBadRequestException extends BadRequestException
 {
     /**
-     * @var \Docker\API\Model\ContainersIdArchiveHeadResponse400
+     * @var \Docker\API\Model\ContainersIdArchiveHeadJsonResponse400
      */
-    private $containersIdArchiveHeadResponse400;
-
-    public function __construct(\Docker\API\Model\ContainersIdArchiveHeadResponse400 $containersIdArchiveHeadResponse400)
+    private $containersIdArchiveHeadJsonResponse400;
+    /**
+     * @var \Psr\Http\Message\ResponseInterface
+     */
+    private $response;
+    public function __construct(\Docker\API\Model\ContainersIdArchiveHeadJsonResponse400 $containersIdArchiveHeadJsonResponse400, \Psr\Http\Message\ResponseInterface $response)
     {
         parent::__construct('Bad parameter');
-        $this->containersIdArchiveHeadResponse400 = $containersIdArchiveHeadResponse400;
+        $this->containersIdArchiveHeadJsonResponse400 = $containersIdArchiveHeadJsonResponse400;
+        $this->response = $response;
     }
-
-    public function getContainersIdArchiveHeadResponse400(): \Docker\API\Model\ContainersIdArchiveHeadResponse400
+    public function getContainersIdArchiveHeadJsonResponse400() : \Docker\API\Model\ContainersIdArchiveHeadJsonResponse400
     {
-        return $this->containersIdArchiveHeadResponse400;
+        return $this->containersIdArchiveHeadJsonResponse400;
+    }
+    public function getResponse() : \Psr\Http\Message\ResponseInterface
+    {
+        return $this->response;
     }
 }

@@ -1,11 +1,17 @@
 <?php
 
-declare(strict_types=1);
-
 namespace Docker\API\Model;
 
-class SwarmSpecTaskDefaultsLogDriver
+class SwarmSpecTaskDefaultsLogDriver extends \ArrayObject
 {
+    /**
+     * @var array
+     */
+    protected $initialized = array();
+    public function isInitialized($property) : bool
+    {
+        return array_key_exists($property, $this->initialized);
+    }
     /**
      * The log driver to use as a default for new tasks.
      *
@@ -13,52 +19,59 @@ class SwarmSpecTaskDefaultsLogDriver
      */
     protected $name;
     /**
-     * Driver-specific options for the selectd log driver, specified
-     * as key/value pairs.
-     *
-     * @var string[]|null
-     */
+    * Driver-specific options for the selectd log driver, specified
+    as key/value pairs.
+    
+    *
+    * @var string[]|null
+    */
     protected $options;
-
     /**
      * The log driver to use as a default for new tasks.
+     *
+     * @return string|null
      */
-    public function getName(): ?string
+    public function getName() : ?string
     {
         return $this->name;
     }
-
     /**
      * The log driver to use as a default for new tasks.
+     *
+     * @param string|null $name
+     *
+     * @return self
      */
-    public function setName(?string $name): self
+    public function setName(?string $name) : self
     {
+        $this->initialized['name'] = true;
         $this->name = $name;
-
         return $this;
     }
-
     /**
-     * Driver-specific options for the selectd log driver, specified
-     * as key/value pairs.
-     *
-     * @return string[]|null
-     */
-    public function getOptions(): ?iterable
+    * Driver-specific options for the selectd log driver, specified
+    as key/value pairs.
+    
+    *
+    * @return string[]|null
+    */
+    public function getOptions() : ?iterable
     {
         return $this->options;
     }
-
     /**
-     * Driver-specific options for the selectd log driver, specified
-     * as key/value pairs.
-     *
-     * @param string[]|null $options
-     */
-    public function setOptions(?iterable $options): self
+    * Driver-specific options for the selectd log driver, specified
+    as key/value pairs.
+    
+    *
+    * @param string[]|null $options
+    *
+    * @return self
+    */
+    public function setOptions(?iterable $options) : self
     {
+        $this->initialized['options'] = true;
         $this->options = $options;
-
         return $this;
     }
 }

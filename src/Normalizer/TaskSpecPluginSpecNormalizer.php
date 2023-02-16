@@ -1,41 +1,35 @@
 <?php
 
-declare(strict_types=1);
-
 namespace Docker\API\Normalizer;
 
-use Docker\API\Runtime\Normalizer\CheckArray;
 use Jane\Component\JsonSchemaRuntime\Reference;
+use Docker\API\Runtime\Normalizer\CheckArray;
+use Docker\API\Runtime\Normalizer\ValidatorTrait;
+use Symfony\Component\Serializer\Exception\InvalidArgumentException;
 use Symfony\Component\Serializer\Normalizer\DenormalizerAwareInterface;
 use Symfony\Component\Serializer\Normalizer\DenormalizerAwareTrait;
 use Symfony\Component\Serializer\Normalizer\DenormalizerInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerAwareInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerAwareTrait;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
-
 class TaskSpecPluginSpecNormalizer implements DenormalizerInterface, NormalizerInterface, DenormalizerAwareInterface, NormalizerAwareInterface
 {
-    use CheckArray;
     use DenormalizerAwareTrait;
     use NormalizerAwareTrait;
-
-    /**
-     * @return bool
-     */
-    public function supportsDenormalization($data, $type, $format = null)
+    use CheckArray;
+    use ValidatorTrait;
+    public function supportsDenormalization($data, $type, $format = null) : bool
     {
-        return 'Docker\\API\\Model\\TaskSpecPluginSpec' === $type;
+        return $type === 'Docker\\API\\Model\\TaskSpecPluginSpec';
     }
-
-    public function supportsNormalization($data, $format = null)
+    public function supportsNormalization($data, $format = null) : bool
     {
-        return \is_object($data) && 'Docker\\API\\Model\\TaskSpecPluginSpec' === $data::class;
+        return is_object($data) && get_class($data) === 'Docker\\API\\Model\\TaskSpecPluginSpec';
     }
-
     /**
      * @return mixed
      */
-    public function denormalize($data, $class, $format = null, array $context = [])
+    public function denormalize($data, $class, $format = null, array $context = array())
     {
         if (isset($data['$ref'])) {
             return new Reference($data['$ref'], $context['document-origin']);
@@ -47,57 +41,72 @@ class TaskSpecPluginSpecNormalizer implements DenormalizerInterface, NormalizerI
         if (null === $data || false === \is_array($data)) {
             return $object;
         }
-        if (\array_key_exists('Name', $data) && null !== $data['Name']) {
+        if (\array_key_exists('Name', $data) && $data['Name'] !== null) {
             $object->setName($data['Name']);
-        } elseif (\array_key_exists('Name', $data) && null === $data['Name']) {
+            unset($data['Name']);
+        }
+        elseif (\array_key_exists('Name', $data) && $data['Name'] === null) {
             $object->setName(null);
         }
-        if (\array_key_exists('Remote', $data) && null !== $data['Remote']) {
+        if (\array_key_exists('Remote', $data) && $data['Remote'] !== null) {
             $object->setRemote($data['Remote']);
-        } elseif (\array_key_exists('Remote', $data) && null === $data['Remote']) {
+            unset($data['Remote']);
+        }
+        elseif (\array_key_exists('Remote', $data) && $data['Remote'] === null) {
             $object->setRemote(null);
         }
-        if (\array_key_exists('Disabled', $data) && null !== $data['Disabled']) {
+        if (\array_key_exists('Disabled', $data) && $data['Disabled'] !== null) {
             $object->setDisabled($data['Disabled']);
-        } elseif (\array_key_exists('Disabled', $data) && null === $data['Disabled']) {
+            unset($data['Disabled']);
+        }
+        elseif (\array_key_exists('Disabled', $data) && $data['Disabled'] === null) {
             $object->setDisabled(null);
         }
-        if (\array_key_exists('PluginPrivilege', $data) && null !== $data['PluginPrivilege']) {
-            $values = [];
+        if (\array_key_exists('PluginPrivilege', $data) && $data['PluginPrivilege'] !== null) {
+            $values = array();
             foreach ($data['PluginPrivilege'] as $value) {
                 $values[] = $this->denormalizer->denormalize($value, 'Docker\\API\\Model\\TaskSpecPluginSpecPluginPrivilegeItem', 'json', $context);
             }
             $object->setPluginPrivilege($values);
-        } elseif (\array_key_exists('PluginPrivilege', $data) && null === $data['PluginPrivilege']) {
+            unset($data['PluginPrivilege']);
+        }
+        elseif (\array_key_exists('PluginPrivilege', $data) && $data['PluginPrivilege'] === null) {
             $object->setPluginPrivilege(null);
         }
-
+        foreach ($data as $key => $value_1) {
+            if (preg_match('/.*/', (string) $key)) {
+                $object[$key] = $value_1;
+            }
+        }
         return $object;
     }
-
     /**
      * @return array|string|int|float|bool|\ArrayObject|null
      */
-    public function normalize($object, $format = null, array $context = [])
+    public function normalize($object, $format = null, array $context = array())
     {
-        $data = [];
-        if (null !== $object->getName()) {
+        $data = array();
+        if ($object->isInitialized('name') && null !== $object->getName()) {
             $data['Name'] = $object->getName();
         }
-        if (null !== $object->getRemote()) {
+        if ($object->isInitialized('remote') && null !== $object->getRemote()) {
             $data['Remote'] = $object->getRemote();
         }
-        if (null !== $object->getDisabled()) {
+        if ($object->isInitialized('disabled') && null !== $object->getDisabled()) {
             $data['Disabled'] = $object->getDisabled();
         }
-        if (null !== $object->getPluginPrivilege()) {
-            $values = [];
+        if ($object->isInitialized('pluginPrivilege') && null !== $object->getPluginPrivilege()) {
+            $values = array();
             foreach ($object->getPluginPrivilege() as $value) {
                 $values[] = $this->normalizer->normalize($value, 'json', $context);
             }
             $data['PluginPrivilege'] = $values;
         }
-
+        foreach ($object as $key => $value_1) {
+            if (preg_match('/.*/', (string) $key)) {
+                $data[$key] = $value_1;
+            }
+        }
         return $data;
     }
 }

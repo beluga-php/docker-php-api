@@ -1,41 +1,35 @@
 <?php
 
-declare(strict_types=1);
-
 namespace Docker\API\Normalizer;
 
-use Docker\API\Runtime\Normalizer\CheckArray;
 use Jane\Component\JsonSchemaRuntime\Reference;
+use Docker\API\Runtime\Normalizer\CheckArray;
+use Docker\API\Runtime\Normalizer\ValidatorTrait;
+use Symfony\Component\Serializer\Exception\InvalidArgumentException;
 use Symfony\Component\Serializer\Normalizer\DenormalizerAwareInterface;
 use Symfony\Component\Serializer\Normalizer\DenormalizerAwareTrait;
 use Symfony\Component\Serializer\Normalizer\DenormalizerInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerAwareInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerAwareTrait;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
-
 class ServiceSpecModeNormalizer implements DenormalizerInterface, NormalizerInterface, DenormalizerAwareInterface, NormalizerAwareInterface
 {
-    use CheckArray;
     use DenormalizerAwareTrait;
     use NormalizerAwareTrait;
-
-    /**
-     * @return bool
-     */
-    public function supportsDenormalization($data, $type, $format = null)
+    use CheckArray;
+    use ValidatorTrait;
+    public function supportsDenormalization($data, $type, $format = null) : bool
     {
-        return 'Docker\\API\\Model\\ServiceSpecMode' === $type;
+        return $type === 'Docker\\API\\Model\\ServiceSpecMode';
     }
-
-    public function supportsNormalization($data, $format = null)
+    public function supportsNormalization($data, $format = null) : bool
     {
-        return \is_object($data) && 'Docker\\API\\Model\\ServiceSpecMode' === $data::class;
+        return is_object($data) && get_class($data) === 'Docker\\API\\Model\\ServiceSpecMode';
     }
-
     /**
      * @return mixed
      */
-    public function denormalize($data, $class, $format = null, array $context = [])
+    public function denormalize($data, $class, $format = null, array $context = array())
     {
         if (isset($data['$ref'])) {
             return new Reference($data['$ref'], $context['document-origin']);
@@ -47,49 +41,64 @@ class ServiceSpecModeNormalizer implements DenormalizerInterface, NormalizerInte
         if (null === $data || false === \is_array($data)) {
             return $object;
         }
-        if (\array_key_exists('Replicated', $data) && null !== $data['Replicated']) {
+        if (\array_key_exists('Replicated', $data) && $data['Replicated'] !== null) {
             $object->setReplicated($this->denormalizer->denormalize($data['Replicated'], 'Docker\\API\\Model\\ServiceSpecModeReplicated', 'json', $context));
-        } elseif (\array_key_exists('Replicated', $data) && null === $data['Replicated']) {
+            unset($data['Replicated']);
+        }
+        elseif (\array_key_exists('Replicated', $data) && $data['Replicated'] === null) {
             $object->setReplicated(null);
         }
-        if (\array_key_exists('Global', $data) && null !== $data['Global']) {
+        if (\array_key_exists('Global', $data) && $data['Global'] !== null) {
             $object->setGlobal($this->denormalizer->denormalize($data['Global'], 'Docker\\API\\Model\\ServiceSpecModeGlobal', 'json', $context));
-        } elseif (\array_key_exists('Global', $data) && null === $data['Global']) {
+            unset($data['Global']);
+        }
+        elseif (\array_key_exists('Global', $data) && $data['Global'] === null) {
             $object->setGlobal(null);
         }
-        if (\array_key_exists('ReplicatedJob', $data) && null !== $data['ReplicatedJob']) {
+        if (\array_key_exists('ReplicatedJob', $data) && $data['ReplicatedJob'] !== null) {
             $object->setReplicatedJob($this->denormalizer->denormalize($data['ReplicatedJob'], 'Docker\\API\\Model\\ServiceSpecModeReplicatedJob', 'json', $context));
-        } elseif (\array_key_exists('ReplicatedJob', $data) && null === $data['ReplicatedJob']) {
+            unset($data['ReplicatedJob']);
+        }
+        elseif (\array_key_exists('ReplicatedJob', $data) && $data['ReplicatedJob'] === null) {
             $object->setReplicatedJob(null);
         }
-        if (\array_key_exists('GlobalJob', $data) && null !== $data['GlobalJob']) {
+        if (\array_key_exists('GlobalJob', $data) && $data['GlobalJob'] !== null) {
             $object->setGlobalJob($this->denormalizer->denormalize($data['GlobalJob'], 'Docker\\API\\Model\\ServiceSpecModeGlobalJob', 'json', $context));
-        } elseif (\array_key_exists('GlobalJob', $data) && null === $data['GlobalJob']) {
+            unset($data['GlobalJob']);
+        }
+        elseif (\array_key_exists('GlobalJob', $data) && $data['GlobalJob'] === null) {
             $object->setGlobalJob(null);
         }
-
+        foreach ($data as $key => $value) {
+            if (preg_match('/.*/', (string) $key)) {
+                $object[$key] = $value;
+            }
+        }
         return $object;
     }
-
     /**
      * @return array|string|int|float|bool|\ArrayObject|null
      */
-    public function normalize($object, $format = null, array $context = [])
+    public function normalize($object, $format = null, array $context = array())
     {
-        $data = [];
-        if (null !== $object->getReplicated()) {
+        $data = array();
+        if ($object->isInitialized('replicated') && null !== $object->getReplicated()) {
             $data['Replicated'] = $this->normalizer->normalize($object->getReplicated(), 'json', $context);
         }
-        if (null !== $object->getGlobal()) {
+        if ($object->isInitialized('global') && null !== $object->getGlobal()) {
             $data['Global'] = $this->normalizer->normalize($object->getGlobal(), 'json', $context);
         }
-        if (null !== $object->getReplicatedJob()) {
+        if ($object->isInitialized('replicatedJob') && null !== $object->getReplicatedJob()) {
             $data['ReplicatedJob'] = $this->normalizer->normalize($object->getReplicatedJob(), 'json', $context);
         }
-        if (null !== $object->getGlobalJob()) {
+        if ($object->isInitialized('globalJob') && null !== $object->getGlobalJob()) {
             $data['GlobalJob'] = $this->normalizer->normalize($object->getGlobalJob(), 'json', $context);
         }
-
+        foreach ($object as $key => $value) {
+            if (preg_match('/.*/', (string) $key)) {
+                $data[$key] = $value;
+            }
+        }
         return $data;
     }
 }
