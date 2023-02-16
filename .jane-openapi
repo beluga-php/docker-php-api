@@ -7,4 +7,5 @@ return [
   'openapi-file'          => __DIR__ . '/spec/v1.41.json',
   'reference'             => true,
   'strict'                => false,
+  'date-input-format'     => 'Y-m-d\TH:i:s.uuP',
 ];
