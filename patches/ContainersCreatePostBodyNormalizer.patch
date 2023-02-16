@@ -1,0 +1,13 @@
+diff --git a/src/Normalizer/ContainersCreatePostBodyNormalizer.php b/src/Normalizer/ContainersCreatePostBodyNormalizer.php
+index 603df3f..02e09ea 100644
+--- a/src/Normalizer/ContainersCreatePostBodyNormalizer.php
++++ b/src/Normalizer/ContainersCreatePostBodyNormalizer.php
+@@ -296,7 +296,7 @@ class ContainersCreatePostBodyNormalizer implements DenormalizerInterface, Norma
+         if ($object->isInitialized('exposedPorts') && null !== $object->getExposedPorts()) {
+             $values = array();
+             foreach ($object->getExposedPorts() as $key => $value) {
+-                $values[$key] = $this->normalizer->normalize($value, 'json', $context);
++                $values[$key] = new \ArrayObject(array($this->normalizer->normalize($value, 'json', $context)), \ArrayObject::ARRAY_AS_PROPS);
+             }
+             $data['ExposedPorts'] = $values;
+         }

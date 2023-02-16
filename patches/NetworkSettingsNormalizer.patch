@@ -1,0 +1,15 @@
+diff --git a/src/Normalizer/NetworkSettingsNormalizer.php b/src/Normalizer/NetworkSettingsNormalizer.php
+index dc48cc5..c680303 100644
+--- a/src/Normalizer/NetworkSettingsNormalizer.php
++++ b/src/Normalizer/NetworkSettingsNormalizer.php
+@@ -218,6 +218,10 @@ class NetworkSettingsNormalizer implements DenormalizerInterface, NormalizerInte
+         if ($object->isInitialized('ports') && null !== $object->getPorts()) {
+             $values = array();
+             foreach ($object->getPorts() as $key => $value) {
++                if ($value === null) {
++                    $values[$key] = null;
++                    continue;
++                }
+                 $values_1 = array();
+                 foreach ($value as $value_1) {
+                     $values_1[] = $this->normalizer->normalize($value_1, 'json', $context);

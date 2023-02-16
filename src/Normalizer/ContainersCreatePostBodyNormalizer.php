@@ -296,7 +296,7 @@ class ContainersCreatePostBodyNormalizer implements DenormalizerInterface, Norma
         if ($object->isInitialized('exposedPorts') && null !== $object->getExposedPorts()) {
             $values = array();
             foreach ($object->getExposedPorts() as $key => $value) {
-                $values[$key] = $this->normalizer->normalize($value, 'json', $context);
+                $values[$key] = new \ArrayObject(array($this->normalizer->normalize($value, 'json', $context)), \ArrayObject::ARRAY_AS_PROPS);
             }
             $data['ExposedPorts'] = $values;
         }
