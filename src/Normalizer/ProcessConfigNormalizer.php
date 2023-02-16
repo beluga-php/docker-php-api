@@ -1,35 +1,40 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Docker\API\Normalizer;
 
-use Jane\Component\JsonSchemaRuntime\Reference;
 use Docker\API\Runtime\Normalizer\CheckArray;
 use Docker\API\Runtime\Normalizer\ValidatorTrait;
-use Symfony\Component\Serializer\Exception\InvalidArgumentException;
+use Jane\Component\JsonSchemaRuntime\Reference;
 use Symfony\Component\Serializer\Normalizer\DenormalizerAwareInterface;
 use Symfony\Component\Serializer\Normalizer\DenormalizerAwareTrait;
 use Symfony\Component\Serializer\Normalizer\DenormalizerInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerAwareInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerAwareTrait;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
+
 class ProcessConfigNormalizer implements DenormalizerInterface, NormalizerInterface, DenormalizerAwareInterface, NormalizerAwareInterface
 {
+    use CheckArray;
     use DenormalizerAwareTrait;
     use NormalizerAwareTrait;
-    use CheckArray;
     use ValidatorTrait;
-    public function supportsDenormalization($data, $type, $format = null) : bool
+
+    public function supportsDenormalization($data, $type, $format = null): bool
     {
-        return $type === 'Docker\\API\\Model\\ProcessConfig';
+        return 'Docker\\API\\Model\\ProcessConfig' === $type;
     }
-    public function supportsNormalization($data, $format = null) : bool
+
+    public function supportsNormalization($data, $format = null): bool
     {
-        return is_object($data) && get_class($data) === 'Docker\\API\\Model\\ProcessConfig';
+        return \is_object($data) && 'Docker\\API\\Model\\ProcessConfig' === $data::class;
     }
+
     /**
      * @return mixed
      */
-    public function denormalize($data, $class, $format = null, array $context = array())
+    public function denormalize($data, $class, $format = null, array $context = [])
     {
         if (isset($data['$ref'])) {
             return new Reference($data['$ref'], $context['document-origin']);
@@ -41,43 +46,38 @@ class ProcessConfigNormalizer implements DenormalizerInterface, NormalizerInterf
         if (null === $data || false === \is_array($data)) {
             return $object;
         }
-        if (\array_key_exists('privileged', $data) && $data['privileged'] !== null) {
+        if (\array_key_exists('privileged', $data) && null !== $data['privileged']) {
             $object->setPrivileged($data['privileged']);
             unset($data['privileged']);
-        }
-        elseif (\array_key_exists('privileged', $data) && $data['privileged'] === null) {
+        } elseif (\array_key_exists('privileged', $data) && null === $data['privileged']) {
             $object->setPrivileged(null);
         }
-        if (\array_key_exists('user', $data) && $data['user'] !== null) {
+        if (\array_key_exists('user', $data) && null !== $data['user']) {
             $object->setUser($data['user']);
             unset($data['user']);
-        }
-        elseif (\array_key_exists('user', $data) && $data['user'] === null) {
+        } elseif (\array_key_exists('user', $data) && null === $data['user']) {
             $object->setUser(null);
         }
-        if (\array_key_exists('tty', $data) && $data['tty'] !== null) {
+        if (\array_key_exists('tty', $data) && null !== $data['tty']) {
             $object->setTty($data['tty']);
             unset($data['tty']);
-        }
-        elseif (\array_key_exists('tty', $data) && $data['tty'] === null) {
+        } elseif (\array_key_exists('tty', $data) && null === $data['tty']) {
             $object->setTty(null);
         }
-        if (\array_key_exists('entrypoint', $data) && $data['entrypoint'] !== null) {
+        if (\array_key_exists('entrypoint', $data) && null !== $data['entrypoint']) {
             $object->setEntrypoint($data['entrypoint']);
             unset($data['entrypoint']);
-        }
-        elseif (\array_key_exists('entrypoint', $data) && $data['entrypoint'] === null) {
+        } elseif (\array_key_exists('entrypoint', $data) && null === $data['entrypoint']) {
             $object->setEntrypoint(null);
         }
-        if (\array_key_exists('arguments', $data) && $data['arguments'] !== null) {
-            $values = array();
+        if (\array_key_exists('arguments', $data) && null !== $data['arguments']) {
+            $values = [];
             foreach ($data['arguments'] as $value) {
                 $values[] = $value;
             }
             $object->setArguments($values);
             unset($data['arguments']);
-        }
-        elseif (\array_key_exists('arguments', $data) && $data['arguments'] === null) {
+        } elseif (\array_key_exists('arguments', $data) && null === $data['arguments']) {
             $object->setArguments(null);
         }
         foreach ($data as $key => $value_1) {
@@ -85,14 +85,16 @@ class ProcessConfigNormalizer implements DenormalizerInterface, NormalizerInterf
                 $object[$key] = $value_1;
             }
         }
+
         return $object;
     }
+
     /**
      * @return array|string|int|float|bool|\ArrayObject|null
      */
-    public function normalize($object, $format = null, array $context = array())
+    public function normalize($object, $format = null, array $context = [])
     {
-        $data = array();
+        $data = [];
         if ($object->isInitialized('privileged') && null !== $object->getPrivileged()) {
             $data['privileged'] = $object->getPrivileged();
         }
@@ -106,7 +108,7 @@ class ProcessConfigNormalizer implements DenormalizerInterface, NormalizerInterf
             $data['entrypoint'] = $object->getEntrypoint();
         }
         if ($object->isInitialized('arguments') && null !== $object->getArguments()) {
-            $values = array();
+            $values = [];
             foreach ($object->getArguments() as $value) {
                 $values[] = $value;
             }
@@ -117,6 +119,7 @@ class ProcessConfigNormalizer implements DenormalizerInterface, NormalizerInterf
                 $data[$key] = $value_1;
             }
         }
+
         return $data;
     }
 }

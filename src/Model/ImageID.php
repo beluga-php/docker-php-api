@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Docker\API\Model;
 
 class ImageID extends \ArrayObject
@@ -7,37 +9,27 @@ class ImageID extends \ArrayObject
     /**
      * @var array
      */
-    protected $initialized = array();
-    public function isInitialized($property) : bool
+    protected $initialized = [];
+
+    public function isInitialized($property): bool
     {
-        return array_key_exists($property, $this->initialized);
+        return \array_key_exists($property, $this->initialized);
     }
     /**
-     * 
-     *
      * @var string|null
      */
     protected $iD;
-    /**
-     * 
-     *
-     * @return string|null
-     */
-    public function getID() : ?string
+
+    public function getID(): ?string
     {
         return $this->iD;
     }
-    /**
-     * 
-     *
-     * @param string|null $iD
-     *
-     * @return self
-     */
-    public function setID(?string $iD) : self
+
+    public function setID(?string $iD): self
     {
         $this->initialized['iD'] = true;
         $this->iD = $iD;
+
         return $this;
     }
 }

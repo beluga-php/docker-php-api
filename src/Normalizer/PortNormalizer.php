@@ -1,35 +1,40 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Docker\API\Normalizer;
 
-use Jane\Component\JsonSchemaRuntime\Reference;
 use Docker\API\Runtime\Normalizer\CheckArray;
 use Docker\API\Runtime\Normalizer\ValidatorTrait;
-use Symfony\Component\Serializer\Exception\InvalidArgumentException;
+use Jane\Component\JsonSchemaRuntime\Reference;
 use Symfony\Component\Serializer\Normalizer\DenormalizerAwareInterface;
 use Symfony\Component\Serializer\Normalizer\DenormalizerAwareTrait;
 use Symfony\Component\Serializer\Normalizer\DenormalizerInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerAwareInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerAwareTrait;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
+
 class PortNormalizer implements DenormalizerInterface, NormalizerInterface, DenormalizerAwareInterface, NormalizerAwareInterface
 {
+    use CheckArray;
     use DenormalizerAwareTrait;
     use NormalizerAwareTrait;
-    use CheckArray;
     use ValidatorTrait;
-    public function supportsDenormalization($data, $type, $format = null) : bool
+
+    public function supportsDenormalization($data, $type, $format = null): bool
     {
-        return $type === 'Docker\\API\\Model\\Port';
+        return 'Docker\\API\\Model\\Port' === $type;
     }
-    public function supportsNormalization($data, $format = null) : bool
+
+    public function supportsNormalization($data, $format = null): bool
     {
-        return is_object($data) && get_class($data) === 'Docker\\API\\Model\\Port';
+        return \is_object($data) && 'Docker\\API\\Model\\Port' === $data::class;
     }
+
     /**
      * @return mixed
      */
-    public function denormalize($data, $class, $format = null, array $context = array())
+    public function denormalize($data, $class, $format = null, array $context = [])
     {
         if (isset($data['$ref'])) {
             return new Reference($data['$ref'], $context['document-origin']);
@@ -41,32 +46,28 @@ class PortNormalizer implements DenormalizerInterface, NormalizerInterface, Deno
         if (null === $data || false === \is_array($data)) {
             return $object;
         }
-        if (\array_key_exists('IP', $data) && $data['IP'] !== null) {
+        if (\array_key_exists('IP', $data) && null !== $data['IP']) {
             $object->setIP($data['IP']);
             unset($data['IP']);
-        }
-        elseif (\array_key_exists('IP', $data) && $data['IP'] === null) {
+        } elseif (\array_key_exists('IP', $data) && null === $data['IP']) {
             $object->setIP(null);
         }
-        if (\array_key_exists('PrivatePort', $data) && $data['PrivatePort'] !== null) {
+        if (\array_key_exists('PrivatePort', $data) && null !== $data['PrivatePort']) {
             $object->setPrivatePort($data['PrivatePort']);
             unset($data['PrivatePort']);
-        }
-        elseif (\array_key_exists('PrivatePort', $data) && $data['PrivatePort'] === null) {
+        } elseif (\array_key_exists('PrivatePort', $data) && null === $data['PrivatePort']) {
             $object->setPrivatePort(null);
         }
-        if (\array_key_exists('PublicPort', $data) && $data['PublicPort'] !== null) {
+        if (\array_key_exists('PublicPort', $data) && null !== $data['PublicPort']) {
             $object->setPublicPort($data['PublicPort']);
             unset($data['PublicPort']);
-        }
-        elseif (\array_key_exists('PublicPort', $data) && $data['PublicPort'] === null) {
+        } elseif (\array_key_exists('PublicPort', $data) && null === $data['PublicPort']) {
             $object->setPublicPort(null);
         }
-        if (\array_key_exists('Type', $data) && $data['Type'] !== null) {
+        if (\array_key_exists('Type', $data) && null !== $data['Type']) {
             $object->setType($data['Type']);
             unset($data['Type']);
-        }
-        elseif (\array_key_exists('Type', $data) && $data['Type'] === null) {
+        } elseif (\array_key_exists('Type', $data) && null === $data['Type']) {
             $object->setType(null);
         }
         foreach ($data as $key => $value) {
@@ -74,14 +75,16 @@ class PortNormalizer implements DenormalizerInterface, NormalizerInterface, Deno
                 $object[$key] = $value;
             }
         }
+
         return $object;
     }
+
     /**
      * @return array|string|int|float|bool|\ArrayObject|null
      */
-    public function normalize($object, $format = null, array $context = array())
+    public function normalize($object, $format = null, array $context = [])
     {
-        $data = array();
+        $data = [];
         if ($object->isInitialized('iP') && null !== $object->getIP()) {
             $data['IP'] = $object->getIP();
         }
@@ -95,6 +98,7 @@ class PortNormalizer implements DenormalizerInterface, NormalizerInterface, Deno
                 $data[$key] = $value;
             }
         }
+
         return $data;
     }
 }

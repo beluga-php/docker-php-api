@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Docker\API\Model;
 
 class Plugin extends \ArrayObject
@@ -7,20 +9,17 @@ class Plugin extends \ArrayObject
     /**
      * @var array
      */
-    protected $initialized = array();
-    public function isInitialized($property) : bool
+    protected $initialized = [];
+
+    public function isInitialized($property): bool
     {
-        return array_key_exists($property, $this->initialized);
+        return \array_key_exists($property, $this->initialized);
     }
     /**
-     * 
-     *
      * @var string|null
      */
     protected $id;
     /**
-     * 
-     *
      * @var string|null
      */
     protected $name;
@@ -37,7 +36,7 @@ class Plugin extends \ArrayObject
      */
     protected $settings;
     /**
-     * plugin remote reference used to push/pull the plugin
+     * plugin remote reference used to push/pull the plugin.
      *
      * @var string|null
      */
@@ -48,136 +47,106 @@ class Plugin extends \ArrayObject
      * @var PluginConfig|null
      */
     protected $config;
-    /**
-     * 
-     *
-     * @return string|null
-     */
-    public function getId() : ?string
+
+    public function getId(): ?string
     {
         return $this->id;
     }
-    /**
-     * 
-     *
-     * @param string|null $id
-     *
-     * @return self
-     */
-    public function setId(?string $id) : self
+
+    public function setId(?string $id): self
     {
         $this->initialized['id'] = true;
         $this->id = $id;
+
         return $this;
     }
-    /**
-     * 
-     *
-     * @return string|null
-     */
-    public function getName() : ?string
+
+    public function getName(): ?string
     {
         return $this->name;
     }
-    /**
-     * 
-     *
-     * @param string|null $name
-     *
-     * @return self
-     */
-    public function setName(?string $name) : self
+
+    public function setName(?string $name): self
     {
         $this->initialized['name'] = true;
         $this->name = $name;
+
         return $this;
     }
+
     /**
      * True if the plugin is running. False if the plugin is not running, only installed.
-     *
-     * @return bool|null
      */
-    public function getEnabled() : ?bool
+    public function getEnabled(): ?bool
     {
         return $this->enabled;
     }
+
     /**
      * True if the plugin is running. False if the plugin is not running, only installed.
-     *
-     * @param bool|null $enabled
-     *
-     * @return self
      */
-    public function setEnabled(?bool $enabled) : self
+    public function setEnabled(?bool $enabled): self
     {
         $this->initialized['enabled'] = true;
         $this->enabled = $enabled;
+
         return $this;
     }
+
     /**
      * Settings that can be modified by users.
-     *
-     * @return PluginSettings|null
      */
-    public function getSettings() : ?PluginSettings
+    public function getSettings(): ?PluginSettings
     {
         return $this->settings;
     }
+
     /**
      * Settings that can be modified by users.
-     *
-     * @param PluginSettings|null $settings
-     *
-     * @return self
      */
-    public function setSettings(?PluginSettings $settings) : self
+    public function setSettings(?PluginSettings $settings): self
     {
         $this->initialized['settings'] = true;
         $this->settings = $settings;
+
         return $this;
     }
+
     /**
-     * plugin remote reference used to push/pull the plugin
-     *
-     * @return string|null
+     * plugin remote reference used to push/pull the plugin.
      */
-    public function getPluginReference() : ?string
+    public function getPluginReference(): ?string
     {
         return $this->pluginReference;
     }
+
     /**
-     * plugin remote reference used to push/pull the plugin
-     *
-     * @param string|null $pluginReference
-     *
-     * @return self
+     * plugin remote reference used to push/pull the plugin.
      */
-    public function setPluginReference(?string $pluginReference) : self
+    public function setPluginReference(?string $pluginReference): self
     {
         $this->initialized['pluginReference'] = true;
         $this->pluginReference = $pluginReference;
+
         return $this;
     }
+
     /**
      * The config of a plugin.
-     *
-     * @return PluginConfig|null
      */
-    public function getConfig() : ?PluginConfig
+    public function getConfig(): ?PluginConfig
     {
         return $this->config;
     }
+
     /**
      * The config of a plugin.
-     *
-     * @param PluginConfig|null $config
-     *
-     * @return self
      */
-    public function setConfig(?PluginConfig $config) : self
+    public function setConfig(?PluginConfig $config): self
     {
         $this->initialized['config'] = true;
         $this->config = $config;
+
         return $this;
     }
 }

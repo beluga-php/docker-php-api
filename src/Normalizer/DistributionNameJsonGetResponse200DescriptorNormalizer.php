@@ -1,35 +1,40 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Docker\API\Normalizer;
 
-use Jane\Component\JsonSchemaRuntime\Reference;
 use Docker\API\Runtime\Normalizer\CheckArray;
 use Docker\API\Runtime\Normalizer\ValidatorTrait;
-use Symfony\Component\Serializer\Exception\InvalidArgumentException;
+use Jane\Component\JsonSchemaRuntime\Reference;
 use Symfony\Component\Serializer\Normalizer\DenormalizerAwareInterface;
 use Symfony\Component\Serializer\Normalizer\DenormalizerAwareTrait;
 use Symfony\Component\Serializer\Normalizer\DenormalizerInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerAwareInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerAwareTrait;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
+
 class DistributionNameJsonGetResponse200DescriptorNormalizer implements DenormalizerInterface, NormalizerInterface, DenormalizerAwareInterface, NormalizerAwareInterface
 {
+    use CheckArray;
     use DenormalizerAwareTrait;
     use NormalizerAwareTrait;
-    use CheckArray;
     use ValidatorTrait;
-    public function supportsDenormalization($data, $type, $format = null) : bool
+
+    public function supportsDenormalization($data, $type, $format = null): bool
     {
-        return $type === 'Docker\\API\\Model\\DistributionNameJsonGetResponse200Descriptor';
+        return 'Docker\\API\\Model\\DistributionNameJsonGetResponse200Descriptor' === $type;
     }
-    public function supportsNormalization($data, $format = null) : bool
+
+    public function supportsNormalization($data, $format = null): bool
     {
-        return is_object($data) && get_class($data) === 'Docker\\API\\Model\\DistributionNameJsonGetResponse200Descriptor';
+        return \is_object($data) && 'Docker\\API\\Model\\DistributionNameJsonGetResponse200Descriptor' === $data::class;
     }
+
     /**
      * @return mixed
      */
-    public function denormalize($data, $class, $format = null, array $context = array())
+    public function denormalize($data, $class, $format = null, array $context = [])
     {
         if (isset($data['$ref'])) {
             return new Reference($data['$ref'], $context['document-origin']);
@@ -41,36 +46,32 @@ class DistributionNameJsonGetResponse200DescriptorNormalizer implements Denormal
         if (null === $data || false === \is_array($data)) {
             return $object;
         }
-        if (\array_key_exists('MediaType', $data) && $data['MediaType'] !== null) {
+        if (\array_key_exists('MediaType', $data) && null !== $data['MediaType']) {
             $object->setMediaType($data['MediaType']);
             unset($data['MediaType']);
-        }
-        elseif (\array_key_exists('MediaType', $data) && $data['MediaType'] === null) {
+        } elseif (\array_key_exists('MediaType', $data) && null === $data['MediaType']) {
             $object->setMediaType(null);
         }
-        if (\array_key_exists('Size', $data) && $data['Size'] !== null) {
+        if (\array_key_exists('Size', $data) && null !== $data['Size']) {
             $object->setSize($data['Size']);
             unset($data['Size']);
-        }
-        elseif (\array_key_exists('Size', $data) && $data['Size'] === null) {
+        } elseif (\array_key_exists('Size', $data) && null === $data['Size']) {
             $object->setSize(null);
         }
-        if (\array_key_exists('Digest', $data) && $data['Digest'] !== null) {
+        if (\array_key_exists('Digest', $data) && null !== $data['Digest']) {
             $object->setDigest($data['Digest']);
             unset($data['Digest']);
-        }
-        elseif (\array_key_exists('Digest', $data) && $data['Digest'] === null) {
+        } elseif (\array_key_exists('Digest', $data) && null === $data['Digest']) {
             $object->setDigest(null);
         }
-        if (\array_key_exists('URLs', $data) && $data['URLs'] !== null) {
-            $values = array();
+        if (\array_key_exists('URLs', $data) && null !== $data['URLs']) {
+            $values = [];
             foreach ($data['URLs'] as $value) {
                 $values[] = $value;
             }
             $object->setURLs($values);
             unset($data['URLs']);
-        }
-        elseif (\array_key_exists('URLs', $data) && $data['URLs'] === null) {
+        } elseif (\array_key_exists('URLs', $data) && null === $data['URLs']) {
             $object->setURLs(null);
         }
         foreach ($data as $key => $value_1) {
@@ -78,14 +79,16 @@ class DistributionNameJsonGetResponse200DescriptorNormalizer implements Denormal
                 $object[$key] = $value_1;
             }
         }
+
         return $object;
     }
+
     /**
      * @return array|string|int|float|bool|\ArrayObject|null
      */
-    public function normalize($object, $format = null, array $context = array())
+    public function normalize($object, $format = null, array $context = [])
     {
-        $data = array();
+        $data = [];
         if ($object->isInitialized('mediaType') && null !== $object->getMediaType()) {
             $data['MediaType'] = $object->getMediaType();
         }
@@ -96,7 +99,7 @@ class DistributionNameJsonGetResponse200DescriptorNormalizer implements Denormal
             $data['Digest'] = $object->getDigest();
         }
         if ($object->isInitialized('uRLs') && null !== $object->getURLs()) {
-            $values = array();
+            $values = [];
             foreach ($object->getURLs() as $value) {
                 $values[] = $value;
             }
@@ -107,6 +110,7 @@ class DistributionNameJsonGetResponse200DescriptorNormalizer implements Denormal
                 $data[$key] = $value_1;
             }
         }
+
         return $data;
     }
 }

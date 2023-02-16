@@ -1,35 +1,40 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Docker\API\Normalizer;
 
-use Jane\Component\JsonSchemaRuntime\Reference;
 use Docker\API\Runtime\Normalizer\CheckArray;
 use Docker\API\Runtime\Normalizer\ValidatorTrait;
-use Symfony\Component\Serializer\Exception\InvalidArgumentException;
+use Jane\Component\JsonSchemaRuntime\Reference;
 use Symfony\Component\Serializer\Normalizer\DenormalizerAwareInterface;
 use Symfony\Component\Serializer\Normalizer\DenormalizerAwareTrait;
 use Symfony\Component\Serializer\Normalizer\DenormalizerInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerAwareInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerAwareTrait;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
+
 class ContainersIdChangesGetResponse200ItemNormalizer implements DenormalizerInterface, NormalizerInterface, DenormalizerAwareInterface, NormalizerAwareInterface
 {
+    use CheckArray;
     use DenormalizerAwareTrait;
     use NormalizerAwareTrait;
-    use CheckArray;
     use ValidatorTrait;
-    public function supportsDenormalization($data, $type, $format = null) : bool
+
+    public function supportsDenormalization($data, $type, $format = null): bool
     {
-        return $type === 'Docker\\API\\Model\\ContainersIdChangesGetResponse200Item';
+        return 'Docker\\API\\Model\\ContainersIdChangesGetResponse200Item' === $type;
     }
-    public function supportsNormalization($data, $format = null) : bool
+
+    public function supportsNormalization($data, $format = null): bool
     {
-        return is_object($data) && get_class($data) === 'Docker\\API\\Model\\ContainersIdChangesGetResponse200Item';
+        return \is_object($data) && 'Docker\\API\\Model\\ContainersIdChangesGetResponse200Item' === $data::class;
     }
+
     /**
      * @return mixed
      */
-    public function denormalize($data, $class, $format = null, array $context = array())
+    public function denormalize($data, $class, $format = null, array $context = [])
     {
         if (isset($data['$ref'])) {
             return new Reference($data['$ref'], $context['document-origin']);
@@ -41,18 +46,16 @@ class ContainersIdChangesGetResponse200ItemNormalizer implements DenormalizerInt
         if (null === $data || false === \is_array($data)) {
             return $object;
         }
-        if (\array_key_exists('Path', $data) && $data['Path'] !== null) {
+        if (\array_key_exists('Path', $data) && null !== $data['Path']) {
             $object->setPath($data['Path']);
             unset($data['Path']);
-        }
-        elseif (\array_key_exists('Path', $data) && $data['Path'] === null) {
+        } elseif (\array_key_exists('Path', $data) && null === $data['Path']) {
             $object->setPath(null);
         }
-        if (\array_key_exists('Kind', $data) && $data['Kind'] !== null) {
+        if (\array_key_exists('Kind', $data) && null !== $data['Kind']) {
             $object->setKind($data['Kind']);
             unset($data['Kind']);
-        }
-        elseif (\array_key_exists('Kind', $data) && $data['Kind'] === null) {
+        } elseif (\array_key_exists('Kind', $data) && null === $data['Kind']) {
             $object->setKind(null);
         }
         foreach ($data as $key => $value) {
@@ -60,14 +63,16 @@ class ContainersIdChangesGetResponse200ItemNormalizer implements DenormalizerInt
                 $object[$key] = $value;
             }
         }
+
         return $object;
     }
+
     /**
      * @return array|string|int|float|bool|\ArrayObject|null
      */
-    public function normalize($object, $format = null, array $context = array())
+    public function normalize($object, $format = null, array $context = [])
     {
-        $data = array();
+        $data = [];
         $data['Path'] = $object->getPath();
         $data['Kind'] = $object->getKind();
         foreach ($object as $key => $value) {
@@ -75,6 +80,7 @@ class ContainersIdChangesGetResponse200ItemNormalizer implements DenormalizerInt
                 $data[$key] = $value;
             }
         }
+
         return $data;
     }
 }

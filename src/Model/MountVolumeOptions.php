@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Docker\API\Model;
 
 class MountVolumeOptions extends \ArrayObject
@@ -7,10 +9,11 @@ class MountVolumeOptions extends \ArrayObject
     /**
      * @var array
      */
-    protected $initialized = array();
-    public function isInitialized($property) : bool
+    protected $initialized = [];
+
+    public function isInitialized($property): bool
     {
-        return array_key_exists($property, $this->initialized);
+        return \array_key_exists($property, $this->initialized);
     }
     /**
      * Populate volume with data from the target.
@@ -25,75 +28,70 @@ class MountVolumeOptions extends \ArrayObject
      */
     protected $labels;
     /**
-     * Map of driver specific options
+     * Map of driver specific options.
      *
      * @var MountVolumeOptionsDriverConfig|null
      */
     protected $driverConfig;
+
     /**
      * Populate volume with data from the target.
-     *
-     * @return bool|null
      */
-    public function getNoCopy() : ?bool
+    public function getNoCopy(): ?bool
     {
         return $this->noCopy;
     }
+
     /**
      * Populate volume with data from the target.
-     *
-     * @param bool|null $noCopy
-     *
-     * @return self
      */
-    public function setNoCopy(?bool $noCopy) : self
+    public function setNoCopy(?bool $noCopy): self
     {
         $this->initialized['noCopy'] = true;
         $this->noCopy = $noCopy;
+
         return $this;
     }
+
     /**
      * User-defined key/value metadata.
      *
      * @return string[]|null
      */
-    public function getLabels() : ?iterable
+    public function getLabels(): ?iterable
     {
         return $this->labels;
     }
+
     /**
      * User-defined key/value metadata.
      *
      * @param string[]|null $labels
-     *
-     * @return self
      */
-    public function setLabels(?iterable $labels) : self
+    public function setLabels(?iterable $labels): self
     {
         $this->initialized['labels'] = true;
         $this->labels = $labels;
+
         return $this;
     }
+
     /**
-     * Map of driver specific options
-     *
-     * @return MountVolumeOptionsDriverConfig|null
+     * Map of driver specific options.
      */
-    public function getDriverConfig() : ?MountVolumeOptionsDriverConfig
+    public function getDriverConfig(): ?MountVolumeOptionsDriverConfig
     {
         return $this->driverConfig;
     }
+
     /**
-     * Map of driver specific options
-     *
-     * @param MountVolumeOptionsDriverConfig|null $driverConfig
-     *
-     * @return self
+     * Map of driver specific options.
      */
-    public function setDriverConfig(?MountVolumeOptionsDriverConfig $driverConfig) : self
+    public function setDriverConfig(?MountVolumeOptionsDriverConfig $driverConfig): self
     {
         $this->initialized['driverConfig'] = true;
         $this->driverConfig = $driverConfig;
+
         return $this;
     }
 }

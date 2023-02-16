@@ -1,35 +1,40 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Docker\API\Normalizer;
 
-use Jane\Component\JsonSchemaRuntime\Reference;
 use Docker\API\Runtime\Normalizer\CheckArray;
 use Docker\API\Runtime\Normalizer\ValidatorTrait;
-use Symfony\Component\Serializer\Exception\InvalidArgumentException;
+use Jane\Component\JsonSchemaRuntime\Reference;
 use Symfony\Component\Serializer\Normalizer\DenormalizerAwareInterface;
 use Symfony\Component\Serializer\Normalizer\DenormalizerAwareTrait;
 use Symfony\Component\Serializer\Normalizer\DenormalizerInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerAwareInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerAwareTrait;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
+
 class SystemVersionComponentsItemNormalizer implements DenormalizerInterface, NormalizerInterface, DenormalizerAwareInterface, NormalizerAwareInterface
 {
+    use CheckArray;
     use DenormalizerAwareTrait;
     use NormalizerAwareTrait;
-    use CheckArray;
     use ValidatorTrait;
-    public function supportsDenormalization($data, $type, $format = null) : bool
+
+    public function supportsDenormalization($data, $type, $format = null): bool
     {
-        return $type === 'Docker\\API\\Model\\SystemVersionComponentsItem';
+        return 'Docker\\API\\Model\\SystemVersionComponentsItem' === $type;
     }
-    public function supportsNormalization($data, $format = null) : bool
+
+    public function supportsNormalization($data, $format = null): bool
     {
-        return is_object($data) && get_class($data) === 'Docker\\API\\Model\\SystemVersionComponentsItem';
+        return \is_object($data) && 'Docker\\API\\Model\\SystemVersionComponentsItem' === $data::class;
     }
+
     /**
      * @return mixed
      */
-    public function denormalize($data, $class, $format = null, array $context = array())
+    public function denormalize($data, $class, $format = null, array $context = [])
     {
         if (isset($data['$ref'])) {
             return new Reference($data['$ref'], $context['document-origin']);
@@ -41,25 +46,22 @@ class SystemVersionComponentsItemNormalizer implements DenormalizerInterface, No
         if (null === $data || false === \is_array($data)) {
             return $object;
         }
-        if (\array_key_exists('Name', $data) && $data['Name'] !== null) {
+        if (\array_key_exists('Name', $data) && null !== $data['Name']) {
             $object->setName($data['Name']);
             unset($data['Name']);
-        }
-        elseif (\array_key_exists('Name', $data) && $data['Name'] === null) {
+        } elseif (\array_key_exists('Name', $data) && null === $data['Name']) {
             $object->setName(null);
         }
-        if (\array_key_exists('Version', $data) && $data['Version'] !== null) {
+        if (\array_key_exists('Version', $data) && null !== $data['Version']) {
             $object->setVersion($data['Version']);
             unset($data['Version']);
-        }
-        elseif (\array_key_exists('Version', $data) && $data['Version'] === null) {
+        } elseif (\array_key_exists('Version', $data) && null === $data['Version']) {
             $object->setVersion(null);
         }
-        if (\array_key_exists('Details', $data) && $data['Details'] !== null) {
+        if (\array_key_exists('Details', $data) && null !== $data['Details']) {
             $object->setDetails($this->denormalizer->denormalize($data['Details'], 'Docker\\API\\Model\\SystemVersionComponentsItemDetails', 'json', $context));
             unset($data['Details']);
-        }
-        elseif (\array_key_exists('Details', $data) && $data['Details'] === null) {
+        } elseif (\array_key_exists('Details', $data) && null === $data['Details']) {
             $object->setDetails(null);
         }
         foreach ($data as $key => $value) {
@@ -67,14 +69,16 @@ class SystemVersionComponentsItemNormalizer implements DenormalizerInterface, No
                 $object[$key] = $value;
             }
         }
+
         return $object;
     }
+
     /**
      * @return array|string|int|float|bool|\ArrayObject|null
      */
-    public function normalize($object, $format = null, array $context = array())
+    public function normalize($object, $format = null, array $context = [])
     {
-        $data = array();
+        $data = [];
         $data['Name'] = $object->getName();
         $data['Version'] = $object->getVersion();
         if ($object->isInitialized('details') && null !== $object->getDetails()) {
@@ -85,6 +89,7 @@ class SystemVersionComponentsItemNormalizer implements DenormalizerInterface, No
                 $data[$key] = $value;
             }
         }
+
         return $data;
     }
 }

@@ -1,59 +1,68 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Docker\API\Endpoint;
 
 class ImageGetAll extends \Docker\API\Runtime\Client\BaseEndpoint implements \Docker\API\Runtime\Client\Endpoint
 {
+    use \Docker\API\Runtime\Client\EndpointTrait;
+
     /**
-    * Get a tarball containing all images and metadata for several image
-    repositories.
-    
-    For each value of the `names` parameter: if it is a specific name and
-    tag (e.g. `ubuntu:latest`), then only that image (and its parents) are
-    returned; if it is an image ID, similarly only that image (and its parents)
-    are returned and there would be no names referenced in the 'repositories'
-    file for this image ID.
-    
-    For details on the format, see the [export image endpoint](#operation/ImageGet).
-    
-    *
-    * @param array $queryParameters {
-    *     @var array $names Image names to filter by
-    * }
-    */
-    public function __construct(array $queryParameters = array())
+     * Get a tarball containing all images and metadata for several image
+     * repositories.
+     *
+     * For each value of the `names` parameter: if it is a specific name and
+     * tag (e.g. `ubuntu:latest`), then only that image (and its parents) are
+     * returned; if it is an image ID, similarly only that image (and its parents)
+     * are returned and there would be no names referenced in the 'repositories'
+     * file for this image ID.
+     *
+     * For details on the format, see the [export image endpoint](#operation/ImageGet).
+     *
+     * @param array $queryParameters {
+     *
+     *     @var array $names Image names to filter by
+     * }
+     */
+    public function __construct(array $queryParameters = [])
     {
         $this->queryParameters = $queryParameters;
     }
-    use \Docker\API\Runtime\Client\EndpointTrait;
-    public function getMethod() : string
+
+    public function getMethod(): string
     {
         return 'GET';
     }
-    public function getUri() : string
+
+    public function getUri(): string
     {
         return '/images/get';
     }
-    public function getBody(\Symfony\Component\Serializer\SerializerInterface $serializer, $streamFactory = null) : array
+
+    public function getBody(\Symfony\Component\Serializer\SerializerInterface $serializer, $streamFactory = null): array
     {
-        return array(array(), null);
+        return [[], null];
     }
-    public function getExtraHeaders() : array
+
+    public function getExtraHeaders(): array
     {
-        return array('Accept' => array('application/x-tar'));
+        return ['Accept' => ['application/x-tar']];
     }
-    protected function getQueryOptionsResolver() : \Symfony\Component\OptionsResolver\OptionsResolver
+
+    protected function getQueryOptionsResolver(): \Symfony\Component\OptionsResolver\OptionsResolver
     {
         $optionsResolver = parent::getQueryOptionsResolver();
-        $optionsResolver->setDefined(array('names'));
-        $optionsResolver->setRequired(array());
-        $optionsResolver->setDefaults(array());
-        $optionsResolver->addAllowedTypes('names', array('array'));
+        $optionsResolver->setDefined(['names']);
+        $optionsResolver->setRequired([]);
+        $optionsResolver->setDefaults([]);
+        $optionsResolver->addAllowedTypes('names', ['array']);
+
         return $optionsResolver;
     }
+
     /**
      * {@inheritdoc}
-     *
      *
      * @return null
      */
@@ -66,8 +75,9 @@ class ImageGetAll extends \Docker\API\Runtime\Client\BaseEndpoint implements \Do
         if (500 === $status) {
         }
     }
-    public function getAuthenticationScopes() : array
+
+    public function getAuthenticationScopes(): array
     {
-        return array();
+        return [];
     }
 }

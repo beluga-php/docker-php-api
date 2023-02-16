@@ -1,35 +1,40 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Docker\API\Normalizer;
 
-use Jane\Component\JsonSchemaRuntime\Reference;
 use Docker\API\Runtime\Normalizer\CheckArray;
 use Docker\API\Runtime\Normalizer\ValidatorTrait;
-use Symfony\Component\Serializer\Exception\InvalidArgumentException;
+use Jane\Component\JsonSchemaRuntime\Reference;
 use Symfony\Component\Serializer\Normalizer\DenormalizerAwareInterface;
 use Symfony\Component\Serializer\Normalizer\DenormalizerAwareTrait;
 use Symfony\Component\Serializer\Normalizer\DenormalizerInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerAwareInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerAwareTrait;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
+
 class BuildInfoNormalizer implements DenormalizerInterface, NormalizerInterface, DenormalizerAwareInterface, NormalizerAwareInterface
 {
+    use CheckArray;
     use DenormalizerAwareTrait;
     use NormalizerAwareTrait;
-    use CheckArray;
     use ValidatorTrait;
-    public function supportsDenormalization($data, $type, $format = null) : bool
+
+    public function supportsDenormalization($data, $type, $format = null): bool
     {
-        return $type === 'Docker\\API\\Model\\BuildInfo';
+        return 'Docker\\API\\Model\\BuildInfo' === $type;
     }
-    public function supportsNormalization($data, $format = null) : bool
+
+    public function supportsNormalization($data, $format = null): bool
     {
-        return is_object($data) && get_class($data) === 'Docker\\API\\Model\\BuildInfo';
+        return \is_object($data) && 'Docker\\API\\Model\\BuildInfo' === $data::class;
     }
+
     /**
      * @return mixed
      */
-    public function denormalize($data, $class, $format = null, array $context = array())
+    public function denormalize($data, $class, $format = null, array $context = [])
     {
         if (isset($data['$ref'])) {
             return new Reference($data['$ref'], $context['document-origin']);
@@ -41,60 +46,52 @@ class BuildInfoNormalizer implements DenormalizerInterface, NormalizerInterface,
         if (null === $data || false === \is_array($data)) {
             return $object;
         }
-        if (\array_key_exists('id', $data) && $data['id'] !== null) {
+        if (\array_key_exists('id', $data) && null !== $data['id']) {
             $object->setId($data['id']);
             unset($data['id']);
-        }
-        elseif (\array_key_exists('id', $data) && $data['id'] === null) {
+        } elseif (\array_key_exists('id', $data) && null === $data['id']) {
             $object->setId(null);
         }
-        if (\array_key_exists('stream', $data) && $data['stream'] !== null) {
+        if (\array_key_exists('stream', $data) && null !== $data['stream']) {
             $object->setStream($data['stream']);
             unset($data['stream']);
-        }
-        elseif (\array_key_exists('stream', $data) && $data['stream'] === null) {
+        } elseif (\array_key_exists('stream', $data) && null === $data['stream']) {
             $object->setStream(null);
         }
-        if (\array_key_exists('error', $data) && $data['error'] !== null) {
+        if (\array_key_exists('error', $data) && null !== $data['error']) {
             $object->setError($data['error']);
             unset($data['error']);
-        }
-        elseif (\array_key_exists('error', $data) && $data['error'] === null) {
+        } elseif (\array_key_exists('error', $data) && null === $data['error']) {
             $object->setError(null);
         }
-        if (\array_key_exists('errorDetail', $data) && $data['errorDetail'] !== null) {
+        if (\array_key_exists('errorDetail', $data) && null !== $data['errorDetail']) {
             $object->setErrorDetail($this->denormalizer->denormalize($data['errorDetail'], 'Docker\\API\\Model\\ErrorDetail', 'json', $context));
             unset($data['errorDetail']);
-        }
-        elseif (\array_key_exists('errorDetail', $data) && $data['errorDetail'] === null) {
+        } elseif (\array_key_exists('errorDetail', $data) && null === $data['errorDetail']) {
             $object->setErrorDetail(null);
         }
-        if (\array_key_exists('status', $data) && $data['status'] !== null) {
+        if (\array_key_exists('status', $data) && null !== $data['status']) {
             $object->setStatus($data['status']);
             unset($data['status']);
-        }
-        elseif (\array_key_exists('status', $data) && $data['status'] === null) {
+        } elseif (\array_key_exists('status', $data) && null === $data['status']) {
             $object->setStatus(null);
         }
-        if (\array_key_exists('progress', $data) && $data['progress'] !== null) {
+        if (\array_key_exists('progress', $data) && null !== $data['progress']) {
             $object->setProgress($data['progress']);
             unset($data['progress']);
-        }
-        elseif (\array_key_exists('progress', $data) && $data['progress'] === null) {
+        } elseif (\array_key_exists('progress', $data) && null === $data['progress']) {
             $object->setProgress(null);
         }
-        if (\array_key_exists('progressDetail', $data) && $data['progressDetail'] !== null) {
+        if (\array_key_exists('progressDetail', $data) && null !== $data['progressDetail']) {
             $object->setProgressDetail($this->denormalizer->denormalize($data['progressDetail'], 'Docker\\API\\Model\\ProgressDetail', 'json', $context));
             unset($data['progressDetail']);
-        }
-        elseif (\array_key_exists('progressDetail', $data) && $data['progressDetail'] === null) {
+        } elseif (\array_key_exists('progressDetail', $data) && null === $data['progressDetail']) {
             $object->setProgressDetail(null);
         }
-        if (\array_key_exists('aux', $data) && $data['aux'] !== null) {
+        if (\array_key_exists('aux', $data) && null !== $data['aux']) {
             $object->setAux($this->denormalizer->denormalize($data['aux'], 'Docker\\API\\Model\\ImageID', 'json', $context));
             unset($data['aux']);
-        }
-        elseif (\array_key_exists('aux', $data) && $data['aux'] === null) {
+        } elseif (\array_key_exists('aux', $data) && null === $data['aux']) {
             $object->setAux(null);
         }
         foreach ($data as $key => $value) {
@@ -102,14 +99,16 @@ class BuildInfoNormalizer implements DenormalizerInterface, NormalizerInterface,
                 $object[$key] = $value;
             }
         }
+
         return $object;
     }
+
     /**
      * @return array|string|int|float|bool|\ArrayObject|null
      */
-    public function normalize($object, $format = null, array $context = array())
+    public function normalize($object, $format = null, array $context = [])
     {
-        $data = array();
+        $data = [];
         if ($object->isInitialized('id') && null !== $object->getId()) {
             $data['id'] = $object->getId();
         }
@@ -139,6 +138,7 @@ class BuildInfoNormalizer implements DenormalizerInterface, NormalizerInterface,
                 $data[$key] = $value;
             }
         }
+
         return $data;
     }
 }

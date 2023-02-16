@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Docker\API\Model;
 
 class EndpointPortConfig extends \ArrayObject
@@ -7,20 +9,17 @@ class EndpointPortConfig extends \ArrayObject
     /**
      * @var array
      */
-    protected $initialized = array();
-    public function isInitialized($property) : bool
+    protected $initialized = [];
+
+    public function isInitialized($property): bool
     {
-        return array_key_exists($property, $this->initialized);
+        return \array_key_exists($property, $this->initialized);
     }
     /**
-     * 
-     *
      * @var string|null
      */
     protected $name;
     /**
-     * 
-     *
      * @var string|null
      */
     protected $protocol;
@@ -37,146 +36,116 @@ class EndpointPortConfig extends \ArrayObject
      */
     protected $publishedPort;
     /**
-    * The mode in which port is published.
-    
-    <p><br /></p>
-    
-    - "ingress" makes the target port accessible on every node,
-     regardless of whether there is a task for the service running on
-     that node or not.
-    - "host" bypasses the routing mesh and publish the port directly on
-     the swarm node where that service is running.
-    
-    *
-    * @var string|null
-    */
-    protected $publishMode = 'ingress';
-    /**
-     * 
+     * The mode in which port is published.
      *
-     * @return string|null
+     * <p><br /></p>
+     *
+     * - "ingress" makes the target port accessible on every node,
+     * regardless of whether there is a task for the service running on
+     * that node or not.
+     * - "host" bypasses the routing mesh and publish the port directly on
+     * the swarm node where that service is running.
+     *
+     * @var string|null
      */
-    public function getName() : ?string
+    protected $publishMode = 'ingress';
+
+    public function getName(): ?string
     {
         return $this->name;
     }
-    /**
-     * 
-     *
-     * @param string|null $name
-     *
-     * @return self
-     */
-    public function setName(?string $name) : self
+
+    public function setName(?string $name): self
     {
         $this->initialized['name'] = true;
         $this->name = $name;
+
         return $this;
     }
-    /**
-     * 
-     *
-     * @return string|null
-     */
-    public function getProtocol() : ?string
+
+    public function getProtocol(): ?string
     {
         return $this->protocol;
     }
-    /**
-     * 
-     *
-     * @param string|null $protocol
-     *
-     * @return self
-     */
-    public function setProtocol(?string $protocol) : self
+
+    public function setProtocol(?string $protocol): self
     {
         $this->initialized['protocol'] = true;
         $this->protocol = $protocol;
+
         return $this;
     }
+
     /**
      * The port inside the container.
-     *
-     * @return int|null
      */
-    public function getTargetPort() : ?int
+    public function getTargetPort(): ?int
     {
         return $this->targetPort;
     }
+
     /**
      * The port inside the container.
-     *
-     * @param int|null $targetPort
-     *
-     * @return self
      */
-    public function setTargetPort(?int $targetPort) : self
+    public function setTargetPort(?int $targetPort): self
     {
         $this->initialized['targetPort'] = true;
         $this->targetPort = $targetPort;
+
         return $this;
     }
+
     /**
      * The port on the swarm hosts.
-     *
-     * @return int|null
      */
-    public function getPublishedPort() : ?int
+    public function getPublishedPort(): ?int
     {
         return $this->publishedPort;
     }
+
     /**
      * The port on the swarm hosts.
-     *
-     * @param int|null $publishedPort
-     *
-     * @return self
      */
-    public function setPublishedPort(?int $publishedPort) : self
+    public function setPublishedPort(?int $publishedPort): self
     {
         $this->initialized['publishedPort'] = true;
         $this->publishedPort = $publishedPort;
+
         return $this;
     }
+
     /**
-    * The mode in which port is published.
-    
-    <p><br /></p>
-    
-    - "ingress" makes the target port accessible on every node,
-     regardless of whether there is a task for the service running on
-     that node or not.
-    - "host" bypasses the routing mesh and publish the port directly on
-     the swarm node where that service is running.
-    
-    *
-    * @return string|null
-    */
-    public function getPublishMode() : ?string
+     * The mode in which port is published.
+     *
+     * <p><br /></p>
+     *
+     * - "ingress" makes the target port accessible on every node,
+     * regardless of whether there is a task for the service running on
+     * that node or not.
+     * - "host" bypasses the routing mesh and publish the port directly on
+     * the swarm node where that service is running.
+     */
+    public function getPublishMode(): ?string
     {
         return $this->publishMode;
     }
+
     /**
-    * The mode in which port is published.
-    
-    <p><br /></p>
-    
-    - "ingress" makes the target port accessible on every node,
-     regardless of whether there is a task for the service running on
-     that node or not.
-    - "host" bypasses the routing mesh and publish the port directly on
-     the swarm node where that service is running.
-    
-    *
-    * @param string|null $publishMode
-    *
-    * @return self
-    */
-    public function setPublishMode(?string $publishMode) : self
+     * The mode in which port is published.
+     *
+     * <p><br /></p>
+     *
+     * - "ingress" makes the target port accessible on every node,
+     * regardless of whether there is a task for the service running on
+     * that node or not.
+     * - "host" bypasses the routing mesh and publish the port directly on
+     * the swarm node where that service is running.
+     */
+    public function setPublishMode(?string $publishMode): self
     {
         $this->initialized['publishMode'] = true;
         $this->publishMode = $publishMode;
+
         return $this;
     }
 }

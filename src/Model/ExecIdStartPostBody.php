@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Docker\API\Model;
 
 class ExecIdStartPostBody extends \ArrayObject
@@ -7,10 +9,11 @@ class ExecIdStartPostBody extends \ArrayObject
     /**
      * @var array
      */
-    protected $initialized = array();
-    public function isInitialized($property) : bool
+    protected $initialized = [];
+
+    public function isInitialized($property): bool
     {
-        return array_key_exists($property, $this->initialized);
+        return \array_key_exists($property, $this->initialized);
     }
     /**
      * Detach from the command.
@@ -24,48 +27,42 @@ class ExecIdStartPostBody extends \ArrayObject
      * @var bool|null
      */
     protected $tty;
+
     /**
      * Detach from the command.
-     *
-     * @return bool|null
      */
-    public function getDetach() : ?bool
+    public function getDetach(): ?bool
     {
         return $this->detach;
     }
+
     /**
      * Detach from the command.
-     *
-     * @param bool|null $detach
-     *
-     * @return self
      */
-    public function setDetach(?bool $detach) : self
+    public function setDetach(?bool $detach): self
     {
         $this->initialized['detach'] = true;
         $this->detach = $detach;
+
         return $this;
     }
+
     /**
      * Allocate a pseudo-TTY.
-     *
-     * @return bool|null
      */
-    public function getTty() : ?bool
+    public function getTty(): ?bool
     {
         return $this->tty;
     }
+
     /**
      * Allocate a pseudo-TTY.
-     *
-     * @param bool|null $tty
-     *
-     * @return self
      */
-    public function setTty(?bool $tty) : self
+    public function setTty(?bool $tty): self
     {
         $this->initialized['tty'] = true;
         $this->tty = $tty;
+
         return $this;
     }
 }

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Docker\API\Model;
 
 class ImageSummary extends \ArrayObject
@@ -7,289 +9,198 @@ class ImageSummary extends \ArrayObject
     /**
      * @var array
      */
-    protected $initialized = array();
-    public function isInitialized($property) : bool
+    protected $initialized = [];
+
+    public function isInitialized($property): bool
     {
-        return array_key_exists($property, $this->initialized);
+        return \array_key_exists($property, $this->initialized);
     }
     /**
-     * 
-     *
      * @var string|null
      */
     protected $id;
     /**
-     * 
-     *
      * @var string|null
      */
     protected $parentId;
     /**
-     * 
-     *
      * @var string[]|null
      */
     protected $repoTags;
     /**
-     * 
-     *
      * @var string[]|null
      */
     protected $repoDigests;
     /**
-     * 
-     *
      * @var int|null
      */
     protected $created;
     /**
-     * 
-     *
      * @var int|null
      */
     protected $size;
     /**
-     * 
-     *
      * @var int|null
      */
     protected $sharedSize;
     /**
-     * 
-     *
      * @var int|null
      */
     protected $virtualSize;
     /**
-     * 
-     *
      * @var string[]|null
      */
     protected $labels;
     /**
-     * 
-     *
      * @var int|null
      */
     protected $containers;
-    /**
-     * 
-     *
-     * @return string|null
-     */
-    public function getId() : ?string
+
+    public function getId(): ?string
     {
         return $this->id;
     }
-    /**
-     * 
-     *
-     * @param string|null $id
-     *
-     * @return self
-     */
-    public function setId(?string $id) : self
+
+    public function setId(?string $id): self
     {
         $this->initialized['id'] = true;
         $this->id = $id;
+
         return $this;
     }
-    /**
-     * 
-     *
-     * @return string|null
-     */
-    public function getParentId() : ?string
+
+    public function getParentId(): ?string
     {
         return $this->parentId;
     }
-    /**
-     * 
-     *
-     * @param string|null $parentId
-     *
-     * @return self
-     */
-    public function setParentId(?string $parentId) : self
+
+    public function setParentId(?string $parentId): self
     {
         $this->initialized['parentId'] = true;
         $this->parentId = $parentId;
+
         return $this;
     }
+
     /**
-     * 
-     *
      * @return string[]|null
      */
-    public function getRepoTags() : ?array
+    public function getRepoTags(): ?array
     {
         return $this->repoTags;
     }
+
     /**
-     * 
-     *
      * @param string[]|null $repoTags
-     *
-     * @return self
      */
-    public function setRepoTags(?array $repoTags) : self
+    public function setRepoTags(?array $repoTags): self
     {
         $this->initialized['repoTags'] = true;
         $this->repoTags = $repoTags;
+
         return $this;
     }
+
     /**
-     * 
-     *
      * @return string[]|null
      */
-    public function getRepoDigests() : ?array
+    public function getRepoDigests(): ?array
     {
         return $this->repoDigests;
     }
+
     /**
-     * 
-     *
      * @param string[]|null $repoDigests
-     *
-     * @return self
      */
-    public function setRepoDigests(?array $repoDigests) : self
+    public function setRepoDigests(?array $repoDigests): self
     {
         $this->initialized['repoDigests'] = true;
         $this->repoDigests = $repoDigests;
+
         return $this;
     }
-    /**
-     * 
-     *
-     * @return int|null
-     */
-    public function getCreated() : ?int
+
+    public function getCreated(): ?int
     {
         return $this->created;
     }
-    /**
-     * 
-     *
-     * @param int|null $created
-     *
-     * @return self
-     */
-    public function setCreated(?int $created) : self
+
+    public function setCreated(?int $created): self
     {
         $this->initialized['created'] = true;
         $this->created = $created;
+
         return $this;
     }
-    /**
-     * 
-     *
-     * @return int|null
-     */
-    public function getSize() : ?int
+
+    public function getSize(): ?int
     {
         return $this->size;
     }
-    /**
-     * 
-     *
-     * @param int|null $size
-     *
-     * @return self
-     */
-    public function setSize(?int $size) : self
+
+    public function setSize(?int $size): self
     {
         $this->initialized['size'] = true;
         $this->size = $size;
+
         return $this;
     }
-    /**
-     * 
-     *
-     * @return int|null
-     */
-    public function getSharedSize() : ?int
+
+    public function getSharedSize(): ?int
     {
         return $this->sharedSize;
     }
-    /**
-     * 
-     *
-     * @param int|null $sharedSize
-     *
-     * @return self
-     */
-    public function setSharedSize(?int $sharedSize) : self
+
+    public function setSharedSize(?int $sharedSize): self
     {
         $this->initialized['sharedSize'] = true;
         $this->sharedSize = $sharedSize;
+
         return $this;
     }
-    /**
-     * 
-     *
-     * @return int|null
-     */
-    public function getVirtualSize() : ?int
+
+    public function getVirtualSize(): ?int
     {
         return $this->virtualSize;
     }
-    /**
-     * 
-     *
-     * @param int|null $virtualSize
-     *
-     * @return self
-     */
-    public function setVirtualSize(?int $virtualSize) : self
+
+    public function setVirtualSize(?int $virtualSize): self
     {
         $this->initialized['virtualSize'] = true;
         $this->virtualSize = $virtualSize;
+
         return $this;
     }
+
     /**
-     * 
-     *
      * @return string[]|null
      */
-    public function getLabels() : ?iterable
+    public function getLabels(): ?iterable
     {
         return $this->labels;
     }
+
     /**
-     * 
-     *
      * @param string[]|null $labels
-     *
-     * @return self
      */
-    public function setLabels(?iterable $labels) : self
+    public function setLabels(?iterable $labels): self
     {
         $this->initialized['labels'] = true;
         $this->labels = $labels;
+
         return $this;
     }
-    /**
-     * 
-     *
-     * @return int|null
-     */
-    public function getContainers() : ?int
+
+    public function getContainers(): ?int
     {
         return $this->containers;
     }
-    /**
-     * 
-     *
-     * @param int|null $containers
-     *
-     * @return self
-     */
-    public function setContainers(?int $containers) : self
+
+    public function setContainers(?int $containers): self
     {
         $this->initialized['containers'] = true;
         $this->containers = $containers;
+
         return $this;
     }
 }

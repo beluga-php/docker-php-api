@@ -1,42 +1,51 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Docker\API\Endpoint;
 
 class ContainerUnpause extends \Docker\API\Runtime\Client\BaseEndpoint implements \Docker\API\Runtime\Client\Endpoint
 {
+    use \Docker\API\Runtime\Client\EndpointTrait;
     protected $id;
     protected $accept;
+
     /**
      * Resume a container which has been paused.
      *
-     * @param string $id ID or name of the container
-     * @param array $accept Accept content header application/json|text/plain
+     * @param string $id     ID or name of the container
+     * @param array  $accept Accept content header application/json|text/plain
      */
-    public function __construct(string $id, array $accept = array())
+    public function __construct(string $id, array $accept = [])
     {
         $this->id = $id;
         $this->accept = $accept;
     }
-    use \Docker\API\Runtime\Client\EndpointTrait;
-    public function getMethod() : string
+
+    public function getMethod(): string
     {
         return 'POST';
     }
-    public function getUri() : string
+
+    public function getUri(): string
     {
-        return str_replace(array('{id}'), array($this->id), '/containers/{id}/unpause');
+        return str_replace(['{id}'], [$this->id], '/containers/{id}/unpause');
     }
-    public function getBody(\Symfony\Component\Serializer\SerializerInterface $serializer, $streamFactory = null) : array
+
+    public function getBody(\Symfony\Component\Serializer\SerializerInterface $serializer, $streamFactory = null): array
     {
-        return array(array(), null);
+        return [[], null];
     }
-    public function getExtraHeaders() : array
+
+    public function getExtraHeaders(): array
     {
         if (empty($this->accept)) {
-            return array('Accept' => array('application/json', 'text/plain'));
+            return ['Accept' => ['application/json', 'text/plain']];
         }
+
         return $this->accept;
     }
+
     /**
      * {@inheritdoc}
      *
@@ -51,15 +60,16 @@ class ContainerUnpause extends \Docker\API\Runtime\Client\BaseEndpoint implement
         $body = (string) $response->getBody();
         if (204 === $status) {
         }
-        if (is_null($contentType) === false && (404 === $status && mb_strpos($contentType, 'application/json') !== false)) {
+        if ((null === $contentType) === false && (404 === $status && false !== mb_strpos($contentType, 'application/json'))) {
             throw new \Docker\API\Exception\ContainerUnpauseNotFoundException($serializer->deserialize($body, 'Docker\\API\\Model\\ErrorResponse', 'json'), $response);
         }
-        if (is_null($contentType) === false && (500 === $status && mb_strpos($contentType, 'application/json') !== false)) {
+        if ((null === $contentType) === false && (500 === $status && false !== mb_strpos($contentType, 'application/json'))) {
             throw new \Docker\API\Exception\ContainerUnpauseInternalServerErrorException($serializer->deserialize($body, 'Docker\\API\\Model\\ErrorResponse', 'json'), $response);
         }
     }
-    public function getAuthenticationScopes() : array
+
+    public function getAuthenticationScopes(): array
     {
-        return array();
+        return [];
     }
 }

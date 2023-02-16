@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Docker\API\Model;
 
 class ContainerState extends \ArrayObject
@@ -7,34 +9,33 @@ class ContainerState extends \ArrayObject
     /**
      * @var array
      */
-    protected $initialized = array();
-    public function isInitialized($property) : bool
+    protected $initialized = [];
+
+    public function isInitialized($property): bool
     {
-        return array_key_exists($property, $this->initialized);
+        return \array_key_exists($property, $this->initialized);
     }
     /**
-    * String representation of the container state. Can be one of "created",
-    "running", "paused", "restarting", "removing", "exited", or "dead".
-    
-    *
-    * @var string|null
-    */
+     * String representation of the container state. Can be one of "created",
+     * "running", "paused", "restarting", "removing", "exited", or "dead".
+     *
+     * @var string|null
+     */
     protected $status;
     /**
-    * Whether this container is running.
-    
-    Note that a running container can be _paused_. The `Running` and `Paused`
-    booleans are not mutually exclusive:
-    
-    When pausing a container (on Linux), the freezer cgroup is used to suspend
-    all processes in the container. Freezing the process requires the process to
-    be running. As a result, paused containers are both `Running` _and_ `Paused`.
-    
-    Use the `Status` field instead to determine if a container's state is "running".
-    
-    *
-    * @var bool|null
-    */
+     * Whether this container is running.
+     *
+     * Note that a running container can be _paused_. The `Running` and `Paused`
+     * booleans are not mutually exclusive:
+     *
+     * When pausing a container (on Linux), the freezer cgroup is used to suspend
+     * all processes in the container. Freezing the process requires the process to
+     * be running. As a result, paused containers are both `Running` _and_ `Paused`.
+     *
+     * Use the `Status` field instead to determine if a container's state is "running".
+     *
+     * @var bool|null
+     */
     protected $running;
     /**
      * Whether this container is paused.
@@ -55,26 +56,22 @@ class ContainerState extends \ArrayObject
      */
     protected $oOMKilled;
     /**
-     * 
-     *
      * @var bool|null
      */
     protected $dead;
     /**
-     * The process ID of this container
+     * The process ID of this container.
      *
      * @var int|null
      */
     protected $pid;
     /**
-     * The last exit code of this container
+     * The last exit code of this container.
      *
      * @var int|null
      */
     protected $exitCode;
     /**
-     * 
-     *
      * @var string|null
      */
     protected $error;
@@ -96,292 +93,240 @@ class ContainerState extends \ArrayObject
      * @var Health|null
      */
     protected $health;
+
     /**
-    * String representation of the container state. Can be one of "created",
-    "running", "paused", "restarting", "removing", "exited", or "dead".
-    
-    *
-    * @return string|null
-    */
-    public function getStatus() : ?string
+     * String representation of the container state. Can be one of "created",
+     * "running", "paused", "restarting", "removing", "exited", or "dead".
+     */
+    public function getStatus(): ?string
     {
         return $this->status;
     }
+
     /**
-    * String representation of the container state. Can be one of "created",
-    "running", "paused", "restarting", "removing", "exited", or "dead".
-    
-    *
-    * @param string|null $status
-    *
-    * @return self
-    */
-    public function setStatus(?string $status) : self
+     * String representation of the container state. Can be one of "created",
+     * "running", "paused", "restarting", "removing", "exited", or "dead".
+     */
+    public function setStatus(?string $status): self
     {
         $this->initialized['status'] = true;
         $this->status = $status;
+
         return $this;
     }
+
     /**
-    * Whether this container is running.
-    
-    Note that a running container can be _paused_. The `Running` and `Paused`
-    booleans are not mutually exclusive:
-    
-    When pausing a container (on Linux), the freezer cgroup is used to suspend
-    all processes in the container. Freezing the process requires the process to
-    be running. As a result, paused containers are both `Running` _and_ `Paused`.
-    
-    Use the `Status` field instead to determine if a container's state is "running".
-    
-    *
-    * @return bool|null
-    */
-    public function getRunning() : ?bool
+     * Whether this container is running.
+     *
+     * Note that a running container can be _paused_. The `Running` and `Paused`
+     * booleans are not mutually exclusive:
+     *
+     * When pausing a container (on Linux), the freezer cgroup is used to suspend
+     * all processes in the container. Freezing the process requires the process to
+     * be running. As a result, paused containers are both `Running` _and_ `Paused`.
+     *
+     * Use the `Status` field instead to determine if a container's state is "running".
+     */
+    public function getRunning(): ?bool
     {
         return $this->running;
     }
+
     /**
-    * Whether this container is running.
-    
-    Note that a running container can be _paused_. The `Running` and `Paused`
-    booleans are not mutually exclusive:
-    
-    When pausing a container (on Linux), the freezer cgroup is used to suspend
-    all processes in the container. Freezing the process requires the process to
-    be running. As a result, paused containers are both `Running` _and_ `Paused`.
-    
-    Use the `Status` field instead to determine if a container's state is "running".
-    
-    *
-    * @param bool|null $running
-    *
-    * @return self
-    */
-    public function setRunning(?bool $running) : self
+     * Whether this container is running.
+     *
+     * Note that a running container can be _paused_. The `Running` and `Paused`
+     * booleans are not mutually exclusive:
+     *
+     * When pausing a container (on Linux), the freezer cgroup is used to suspend
+     * all processes in the container. Freezing the process requires the process to
+     * be running. As a result, paused containers are both `Running` _and_ `Paused`.
+     *
+     * Use the `Status` field instead to determine if a container's state is "running".
+     */
+    public function setRunning(?bool $running): self
     {
         $this->initialized['running'] = true;
         $this->running = $running;
+
         return $this;
     }
+
     /**
      * Whether this container is paused.
-     *
-     * @return bool|null
      */
-    public function getPaused() : ?bool
+    public function getPaused(): ?bool
     {
         return $this->paused;
     }
+
     /**
      * Whether this container is paused.
-     *
-     * @param bool|null $paused
-     *
-     * @return self
      */
-    public function setPaused(?bool $paused) : self
+    public function setPaused(?bool $paused): self
     {
         $this->initialized['paused'] = true;
         $this->paused = $paused;
+
         return $this;
     }
+
     /**
      * Whether this container is restarting.
-     *
-     * @return bool|null
      */
-    public function getRestarting() : ?bool
+    public function getRestarting(): ?bool
     {
         return $this->restarting;
     }
+
     /**
      * Whether this container is restarting.
-     *
-     * @param bool|null $restarting
-     *
-     * @return self
      */
-    public function setRestarting(?bool $restarting) : self
+    public function setRestarting(?bool $restarting): self
     {
         $this->initialized['restarting'] = true;
         $this->restarting = $restarting;
+
         return $this;
     }
+
     /**
      * Whether this container has been killed because it ran out of memory.
-     *
-     * @return bool|null
      */
-    public function getOOMKilled() : ?bool
+    public function getOOMKilled(): ?bool
     {
         return $this->oOMKilled;
     }
+
     /**
      * Whether this container has been killed because it ran out of memory.
-     *
-     * @param bool|null $oOMKilled
-     *
-     * @return self
      */
-    public function setOOMKilled(?bool $oOMKilled) : self
+    public function setOOMKilled(?bool $oOMKilled): self
     {
         $this->initialized['oOMKilled'] = true;
         $this->oOMKilled = $oOMKilled;
+
         return $this;
     }
-    /**
-     * 
-     *
-     * @return bool|null
-     */
-    public function getDead() : ?bool
+
+    public function getDead(): ?bool
     {
         return $this->dead;
     }
-    /**
-     * 
-     *
-     * @param bool|null $dead
-     *
-     * @return self
-     */
-    public function setDead(?bool $dead) : self
+
+    public function setDead(?bool $dead): self
     {
         $this->initialized['dead'] = true;
         $this->dead = $dead;
+
         return $this;
     }
+
     /**
-     * The process ID of this container
-     *
-     * @return int|null
+     * The process ID of this container.
      */
-    public function getPid() : ?int
+    public function getPid(): ?int
     {
         return $this->pid;
     }
+
     /**
-     * The process ID of this container
-     *
-     * @param int|null $pid
-     *
-     * @return self
+     * The process ID of this container.
      */
-    public function setPid(?int $pid) : self
+    public function setPid(?int $pid): self
     {
         $this->initialized['pid'] = true;
         $this->pid = $pid;
+
         return $this;
     }
+
     /**
-     * The last exit code of this container
-     *
-     * @return int|null
+     * The last exit code of this container.
      */
-    public function getExitCode() : ?int
+    public function getExitCode(): ?int
     {
         return $this->exitCode;
     }
+
     /**
-     * The last exit code of this container
-     *
-     * @param int|null $exitCode
-     *
-     * @return self
+     * The last exit code of this container.
      */
-    public function setExitCode(?int $exitCode) : self
+    public function setExitCode(?int $exitCode): self
     {
         $this->initialized['exitCode'] = true;
         $this->exitCode = $exitCode;
+
         return $this;
     }
-    /**
-     * 
-     *
-     * @return string|null
-     */
-    public function getError() : ?string
+
+    public function getError(): ?string
     {
         return $this->error;
     }
-    /**
-     * 
-     *
-     * @param string|null $error
-     *
-     * @return self
-     */
-    public function setError(?string $error) : self
+
+    public function setError(?string $error): self
     {
         $this->initialized['error'] = true;
         $this->error = $error;
+
         return $this;
     }
+
     /**
      * The time when this container was last started.
-     *
-     * @return string|null
      */
-    public function getStartedAt() : ?string
+    public function getStartedAt(): ?string
     {
         return $this->startedAt;
     }
+
     /**
      * The time when this container was last started.
-     *
-     * @param string|null $startedAt
-     *
-     * @return self
      */
-    public function setStartedAt(?string $startedAt) : self
+    public function setStartedAt(?string $startedAt): self
     {
         $this->initialized['startedAt'] = true;
         $this->startedAt = $startedAt;
+
         return $this;
     }
+
     /**
      * The time when this container last exited.
-     *
-     * @return string|null
      */
-    public function getFinishedAt() : ?string
+    public function getFinishedAt(): ?string
     {
         return $this->finishedAt;
     }
+
     /**
      * The time when this container last exited.
-     *
-     * @param string|null $finishedAt
-     *
-     * @return self
      */
-    public function setFinishedAt(?string $finishedAt) : self
+    public function setFinishedAt(?string $finishedAt): self
     {
         $this->initialized['finishedAt'] = true;
         $this->finishedAt = $finishedAt;
+
         return $this;
     }
+
     /**
      * Health stores information about the container's healthcheck results.
-     *
-     * @return Health|null
      */
-    public function getHealth() : ?Health
+    public function getHealth(): ?Health
     {
         return $this->health;
     }
+
     /**
      * Health stores information about the container's healthcheck results.
-     *
-     * @param Health|null $health
-     *
-     * @return self
      */
-    public function setHealth(?Health $health) : self
+    public function setHealth(?Health $health): self
     {
         $this->initialized['health'] = true;
         $this->health = $health;
+
         return $this;
     }
 }

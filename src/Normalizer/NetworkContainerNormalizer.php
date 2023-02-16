@@ -1,35 +1,40 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Docker\API\Normalizer;
 
-use Jane\Component\JsonSchemaRuntime\Reference;
 use Docker\API\Runtime\Normalizer\CheckArray;
 use Docker\API\Runtime\Normalizer\ValidatorTrait;
-use Symfony\Component\Serializer\Exception\InvalidArgumentException;
+use Jane\Component\JsonSchemaRuntime\Reference;
 use Symfony\Component\Serializer\Normalizer\DenormalizerAwareInterface;
 use Symfony\Component\Serializer\Normalizer\DenormalizerAwareTrait;
 use Symfony\Component\Serializer\Normalizer\DenormalizerInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerAwareInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerAwareTrait;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
+
 class NetworkContainerNormalizer implements DenormalizerInterface, NormalizerInterface, DenormalizerAwareInterface, NormalizerAwareInterface
 {
+    use CheckArray;
     use DenormalizerAwareTrait;
     use NormalizerAwareTrait;
-    use CheckArray;
     use ValidatorTrait;
-    public function supportsDenormalization($data, $type, $format = null) : bool
+
+    public function supportsDenormalization($data, $type, $format = null): bool
     {
-        return $type === 'Docker\\API\\Model\\NetworkContainer';
+        return 'Docker\\API\\Model\\NetworkContainer' === $type;
     }
-    public function supportsNormalization($data, $format = null) : bool
+
+    public function supportsNormalization($data, $format = null): bool
     {
-        return is_object($data) && get_class($data) === 'Docker\\API\\Model\\NetworkContainer';
+        return \is_object($data) && 'Docker\\API\\Model\\NetworkContainer' === $data::class;
     }
+
     /**
      * @return mixed
      */
-    public function denormalize($data, $class, $format = null, array $context = array())
+    public function denormalize($data, $class, $format = null, array $context = [])
     {
         if (isset($data['$ref'])) {
             return new Reference($data['$ref'], $context['document-origin']);
@@ -41,39 +46,34 @@ class NetworkContainerNormalizer implements DenormalizerInterface, NormalizerInt
         if (null === $data || false === \is_array($data)) {
             return $object;
         }
-        if (\array_key_exists('Name', $data) && $data['Name'] !== null) {
+        if (\array_key_exists('Name', $data) && null !== $data['Name']) {
             $object->setName($data['Name']);
             unset($data['Name']);
-        }
-        elseif (\array_key_exists('Name', $data) && $data['Name'] === null) {
+        } elseif (\array_key_exists('Name', $data) && null === $data['Name']) {
             $object->setName(null);
         }
-        if (\array_key_exists('EndpointID', $data) && $data['EndpointID'] !== null) {
+        if (\array_key_exists('EndpointID', $data) && null !== $data['EndpointID']) {
             $object->setEndpointID($data['EndpointID']);
             unset($data['EndpointID']);
-        }
-        elseif (\array_key_exists('EndpointID', $data) && $data['EndpointID'] === null) {
+        } elseif (\array_key_exists('EndpointID', $data) && null === $data['EndpointID']) {
             $object->setEndpointID(null);
         }
-        if (\array_key_exists('MacAddress', $data) && $data['MacAddress'] !== null) {
+        if (\array_key_exists('MacAddress', $data) && null !== $data['MacAddress']) {
             $object->setMacAddress($data['MacAddress']);
             unset($data['MacAddress']);
-        }
-        elseif (\array_key_exists('MacAddress', $data) && $data['MacAddress'] === null) {
+        } elseif (\array_key_exists('MacAddress', $data) && null === $data['MacAddress']) {
             $object->setMacAddress(null);
         }
-        if (\array_key_exists('IPv4Address', $data) && $data['IPv4Address'] !== null) {
+        if (\array_key_exists('IPv4Address', $data) && null !== $data['IPv4Address']) {
             $object->setIPv4Address($data['IPv4Address']);
             unset($data['IPv4Address']);
-        }
-        elseif (\array_key_exists('IPv4Address', $data) && $data['IPv4Address'] === null) {
+        } elseif (\array_key_exists('IPv4Address', $data) && null === $data['IPv4Address']) {
             $object->setIPv4Address(null);
         }
-        if (\array_key_exists('IPv6Address', $data) && $data['IPv6Address'] !== null) {
+        if (\array_key_exists('IPv6Address', $data) && null !== $data['IPv6Address']) {
             $object->setIPv6Address($data['IPv6Address']);
             unset($data['IPv6Address']);
-        }
-        elseif (\array_key_exists('IPv6Address', $data) && $data['IPv6Address'] === null) {
+        } elseif (\array_key_exists('IPv6Address', $data) && null === $data['IPv6Address']) {
             $object->setIPv6Address(null);
         }
         foreach ($data as $key => $value) {
@@ -81,14 +81,16 @@ class NetworkContainerNormalizer implements DenormalizerInterface, NormalizerInt
                 $object[$key] = $value;
             }
         }
+
         return $object;
     }
+
     /**
      * @return array|string|int|float|bool|\ArrayObject|null
      */
-    public function normalize($object, $format = null, array $context = array())
+    public function normalize($object, $format = null, array $context = [])
     {
-        $data = array();
+        $data = [];
         if ($object->isInitialized('name') && null !== $object->getName()) {
             $data['Name'] = $object->getName();
         }
@@ -109,6 +111,7 @@ class NetworkContainerNormalizer implements DenormalizerInterface, NormalizerInt
                 $data[$key] = $value;
             }
         }
+
         return $data;
     }
 }

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Docker\API\Model;
 
 class ResourcesUlimitsItem extends \ArrayObject
@@ -7,93 +9,85 @@ class ResourcesUlimitsItem extends \ArrayObject
     /**
      * @var array
      */
-    protected $initialized = array();
-    public function isInitialized($property) : bool
+    protected $initialized = [];
+
+    public function isInitialized($property): bool
     {
-        return array_key_exists($property, $this->initialized);
+        return \array_key_exists($property, $this->initialized);
     }
     /**
-     * Name of ulimit
+     * Name of ulimit.
      *
      * @var string|null
      */
     protected $name;
     /**
-     * Soft limit
+     * Soft limit.
      *
      * @var int|null
      */
     protected $soft;
     /**
-     * Hard limit
+     * Hard limit.
      *
      * @var int|null
      */
     protected $hard;
+
     /**
-     * Name of ulimit
-     *
-     * @return string|null
+     * Name of ulimit.
      */
-    public function getName() : ?string
+    public function getName(): ?string
     {
         return $this->name;
     }
+
     /**
-     * Name of ulimit
-     *
-     * @param string|null $name
-     *
-     * @return self
+     * Name of ulimit.
      */
-    public function setName(?string $name) : self
+    public function setName(?string $name): self
     {
         $this->initialized['name'] = true;
         $this->name = $name;
+
         return $this;
     }
+
     /**
-     * Soft limit
-     *
-     * @return int|null
+     * Soft limit.
      */
-    public function getSoft() : ?int
+    public function getSoft(): ?int
     {
         return $this->soft;
     }
+
     /**
-     * Soft limit
-     *
-     * @param int|null $soft
-     *
-     * @return self
+     * Soft limit.
      */
-    public function setSoft(?int $soft) : self
+    public function setSoft(?int $soft): self
     {
         $this->initialized['soft'] = true;
         $this->soft = $soft;
+
         return $this;
     }
+
     /**
-     * Hard limit
-     *
-     * @return int|null
+     * Hard limit.
      */
-    public function getHard() : ?int
+    public function getHard(): ?int
     {
         return $this->hard;
     }
+
     /**
-     * Hard limit
-     *
-     * @param int|null $hard
-     *
-     * @return self
+     * Hard limit.
      */
-    public function setHard(?int $hard) : self
+    public function setHard(?int $hard): self
     {
         $this->initialized['hard'] = true;
         $this->hard = $hard;
+
         return $this;
     }
 }

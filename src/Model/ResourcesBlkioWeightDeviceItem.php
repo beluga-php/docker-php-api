@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Docker\API\Model;
 
 class ResourcesBlkioWeightDeviceItem extends \ArrayObject
@@ -7,65 +9,44 @@ class ResourcesBlkioWeightDeviceItem extends \ArrayObject
     /**
      * @var array
      */
-    protected $initialized = array();
-    public function isInitialized($property) : bool
+    protected $initialized = [];
+
+    public function isInitialized($property): bool
     {
-        return array_key_exists($property, $this->initialized);
+        return \array_key_exists($property, $this->initialized);
     }
     /**
-     * 
-     *
      * @var string|null
      */
     protected $path;
     /**
-     * 
-     *
      * @var int|null
      */
     protected $weight;
-    /**
-     * 
-     *
-     * @return string|null
-     */
-    public function getPath() : ?string
+
+    public function getPath(): ?string
     {
         return $this->path;
     }
-    /**
-     * 
-     *
-     * @param string|null $path
-     *
-     * @return self
-     */
-    public function setPath(?string $path) : self
+
+    public function setPath(?string $path): self
     {
         $this->initialized['path'] = true;
         $this->path = $path;
+
         return $this;
     }
-    /**
-     * 
-     *
-     * @return int|null
-     */
-    public function getWeight() : ?int
+
+    public function getWeight(): ?int
     {
         return $this->weight;
     }
-    /**
-     * 
-     *
-     * @param int|null $weight
-     *
-     * @return self
-     */
-    public function setWeight(?int $weight) : self
+
+    public function setWeight(?int $weight): self
     {
         $this->initialized['weight'] = true;
         $this->weight = $weight;
+
         return $this;
     }
 }

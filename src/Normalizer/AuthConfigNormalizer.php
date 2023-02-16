@@ -1,35 +1,40 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Docker\API\Normalizer;
 
-use Jane\Component\JsonSchemaRuntime\Reference;
 use Docker\API\Runtime\Normalizer\CheckArray;
 use Docker\API\Runtime\Normalizer\ValidatorTrait;
-use Symfony\Component\Serializer\Exception\InvalidArgumentException;
+use Jane\Component\JsonSchemaRuntime\Reference;
 use Symfony\Component\Serializer\Normalizer\DenormalizerAwareInterface;
 use Symfony\Component\Serializer\Normalizer\DenormalizerAwareTrait;
 use Symfony\Component\Serializer\Normalizer\DenormalizerInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerAwareInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerAwareTrait;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
+
 class AuthConfigNormalizer implements DenormalizerInterface, NormalizerInterface, DenormalizerAwareInterface, NormalizerAwareInterface
 {
+    use CheckArray;
     use DenormalizerAwareTrait;
     use NormalizerAwareTrait;
-    use CheckArray;
     use ValidatorTrait;
-    public function supportsDenormalization($data, $type, $format = null) : bool
+
+    public function supportsDenormalization($data, $type, $format = null): bool
     {
-        return $type === 'Docker\\API\\Model\\AuthConfig';
+        return 'Docker\\API\\Model\\AuthConfig' === $type;
     }
-    public function supportsNormalization($data, $format = null) : bool
+
+    public function supportsNormalization($data, $format = null): bool
     {
-        return is_object($data) && get_class($data) === 'Docker\\API\\Model\\AuthConfig';
+        return \is_object($data) && 'Docker\\API\\Model\\AuthConfig' === $data::class;
     }
+
     /**
      * @return mixed
      */
-    public function denormalize($data, $class, $format = null, array $context = array())
+    public function denormalize($data, $class, $format = null, array $context = [])
     {
         if (isset($data['$ref'])) {
             return new Reference($data['$ref'], $context['document-origin']);
@@ -41,32 +46,28 @@ class AuthConfigNormalizer implements DenormalizerInterface, NormalizerInterface
         if (null === $data || false === \is_array($data)) {
             return $object;
         }
-        if (\array_key_exists('username', $data) && $data['username'] !== null) {
+        if (\array_key_exists('username', $data) && null !== $data['username']) {
             $object->setUsername($data['username']);
             unset($data['username']);
-        }
-        elseif (\array_key_exists('username', $data) && $data['username'] === null) {
+        } elseif (\array_key_exists('username', $data) && null === $data['username']) {
             $object->setUsername(null);
         }
-        if (\array_key_exists('password', $data) && $data['password'] !== null) {
+        if (\array_key_exists('password', $data) && null !== $data['password']) {
             $object->setPassword($data['password']);
             unset($data['password']);
-        }
-        elseif (\array_key_exists('password', $data) && $data['password'] === null) {
+        } elseif (\array_key_exists('password', $data) && null === $data['password']) {
             $object->setPassword(null);
         }
-        if (\array_key_exists('email', $data) && $data['email'] !== null) {
+        if (\array_key_exists('email', $data) && null !== $data['email']) {
             $object->setEmail($data['email']);
             unset($data['email']);
-        }
-        elseif (\array_key_exists('email', $data) && $data['email'] === null) {
+        } elseif (\array_key_exists('email', $data) && null === $data['email']) {
             $object->setEmail(null);
         }
-        if (\array_key_exists('serveraddress', $data) && $data['serveraddress'] !== null) {
+        if (\array_key_exists('serveraddress', $data) && null !== $data['serveraddress']) {
             $object->setServeraddress($data['serveraddress']);
             unset($data['serveraddress']);
-        }
-        elseif (\array_key_exists('serveraddress', $data) && $data['serveraddress'] === null) {
+        } elseif (\array_key_exists('serveraddress', $data) && null === $data['serveraddress']) {
             $object->setServeraddress(null);
         }
         foreach ($data as $key => $value) {
@@ -74,14 +75,16 @@ class AuthConfigNormalizer implements DenormalizerInterface, NormalizerInterface
                 $object[$key] = $value;
             }
         }
+
         return $object;
     }
+
     /**
      * @return array|string|int|float|bool|\ArrayObject|null
      */
-    public function normalize($object, $format = null, array $context = array())
+    public function normalize($object, $format = null, array $context = [])
     {
-        $data = array();
+        $data = [];
         if ($object->isInitialized('username') && null !== $object->getUsername()) {
             $data['username'] = $object->getUsername();
         }
@@ -99,6 +102,7 @@ class AuthConfigNormalizer implements DenormalizerInterface, NormalizerInterface
                 $data[$key] = $value;
             }
         }
+
         return $data;
     }
 }

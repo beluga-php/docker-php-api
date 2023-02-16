@@ -1,35 +1,40 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Docker\API\Normalizer;
 
-use Jane\Component\JsonSchemaRuntime\Reference;
 use Docker\API\Runtime\Normalizer\CheckArray;
 use Docker\API\Runtime\Normalizer\ValidatorTrait;
-use Symfony\Component\Serializer\Exception\InvalidArgumentException;
+use Jane\Component\JsonSchemaRuntime\Reference;
 use Symfony\Component\Serializer\Normalizer\DenormalizerAwareInterface;
 use Symfony\Component\Serializer\Normalizer\DenormalizerAwareTrait;
 use Symfony\Component\Serializer\Normalizer\DenormalizerInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerAwareInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerAwareTrait;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
+
 class PluginNormalizer implements DenormalizerInterface, NormalizerInterface, DenormalizerAwareInterface, NormalizerAwareInterface
 {
+    use CheckArray;
     use DenormalizerAwareTrait;
     use NormalizerAwareTrait;
-    use CheckArray;
     use ValidatorTrait;
-    public function supportsDenormalization($data, $type, $format = null) : bool
+
+    public function supportsDenormalization($data, $type, $format = null): bool
     {
-        return $type === 'Docker\\API\\Model\\Plugin';
+        return 'Docker\\API\\Model\\Plugin' === $type;
     }
-    public function supportsNormalization($data, $format = null) : bool
+
+    public function supportsNormalization($data, $format = null): bool
     {
-        return is_object($data) && get_class($data) === 'Docker\\API\\Model\\Plugin';
+        return \is_object($data) && 'Docker\\API\\Model\\Plugin' === $data::class;
     }
+
     /**
      * @return mixed
      */
-    public function denormalize($data, $class, $format = null, array $context = array())
+    public function denormalize($data, $class, $format = null, array $context = [])
     {
         if (isset($data['$ref'])) {
             return new Reference($data['$ref'], $context['document-origin']);
@@ -41,46 +46,40 @@ class PluginNormalizer implements DenormalizerInterface, NormalizerInterface, De
         if (null === $data || false === \is_array($data)) {
             return $object;
         }
-        if (\array_key_exists('Id', $data) && $data['Id'] !== null) {
+        if (\array_key_exists('Id', $data) && null !== $data['Id']) {
             $object->setId($data['Id']);
             unset($data['Id']);
-        }
-        elseif (\array_key_exists('Id', $data) && $data['Id'] === null) {
+        } elseif (\array_key_exists('Id', $data) && null === $data['Id']) {
             $object->setId(null);
         }
-        if (\array_key_exists('Name', $data) && $data['Name'] !== null) {
+        if (\array_key_exists('Name', $data) && null !== $data['Name']) {
             $object->setName($data['Name']);
             unset($data['Name']);
-        }
-        elseif (\array_key_exists('Name', $data) && $data['Name'] === null) {
+        } elseif (\array_key_exists('Name', $data) && null === $data['Name']) {
             $object->setName(null);
         }
-        if (\array_key_exists('Enabled', $data) && $data['Enabled'] !== null) {
+        if (\array_key_exists('Enabled', $data) && null !== $data['Enabled']) {
             $object->setEnabled($data['Enabled']);
             unset($data['Enabled']);
-        }
-        elseif (\array_key_exists('Enabled', $data) && $data['Enabled'] === null) {
+        } elseif (\array_key_exists('Enabled', $data) && null === $data['Enabled']) {
             $object->setEnabled(null);
         }
-        if (\array_key_exists('Settings', $data) && $data['Settings'] !== null) {
+        if (\array_key_exists('Settings', $data) && null !== $data['Settings']) {
             $object->setSettings($this->denormalizer->denormalize($data['Settings'], 'Docker\\API\\Model\\PluginSettings', 'json', $context));
             unset($data['Settings']);
-        }
-        elseif (\array_key_exists('Settings', $data) && $data['Settings'] === null) {
+        } elseif (\array_key_exists('Settings', $data) && null === $data['Settings']) {
             $object->setSettings(null);
         }
-        if (\array_key_exists('PluginReference', $data) && $data['PluginReference'] !== null) {
+        if (\array_key_exists('PluginReference', $data) && null !== $data['PluginReference']) {
             $object->setPluginReference($data['PluginReference']);
             unset($data['PluginReference']);
-        }
-        elseif (\array_key_exists('PluginReference', $data) && $data['PluginReference'] === null) {
+        } elseif (\array_key_exists('PluginReference', $data) && null === $data['PluginReference']) {
             $object->setPluginReference(null);
         }
-        if (\array_key_exists('Config', $data) && $data['Config'] !== null) {
+        if (\array_key_exists('Config', $data) && null !== $data['Config']) {
             $object->setConfig($this->denormalizer->denormalize($data['Config'], 'Docker\\API\\Model\\PluginConfig', 'json', $context));
             unset($data['Config']);
-        }
-        elseif (\array_key_exists('Config', $data) && $data['Config'] === null) {
+        } elseif (\array_key_exists('Config', $data) && null === $data['Config']) {
             $object->setConfig(null);
         }
         foreach ($data as $key => $value) {
@@ -88,14 +87,16 @@ class PluginNormalizer implements DenormalizerInterface, NormalizerInterface, De
                 $object[$key] = $value;
             }
         }
+
         return $object;
     }
+
     /**
      * @return array|string|int|float|bool|\ArrayObject|null
      */
-    public function normalize($object, $format = null, array $context = array())
+    public function normalize($object, $format = null, array $context = [])
     {
-        $data = array();
+        $data = [];
         if ($object->isInitialized('id') && null !== $object->getId()) {
             $data['Id'] = $object->getId();
         }
@@ -111,6 +112,7 @@ class PluginNormalizer implements DenormalizerInterface, NormalizerInterface, De
                 $data[$key] = $value;
             }
         }
+
         return $data;
     }
 }

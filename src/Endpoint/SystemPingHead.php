@@ -1,29 +1,35 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Docker\API\Endpoint;
 
 class SystemPingHead extends \Docker\API\Runtime\Client\BaseEndpoint implements \Docker\API\Runtime\Client\Endpoint
 {
     use \Docker\API\Runtime\Client\EndpointTrait;
-    public function getMethod() : string
+
+    public function getMethod(): string
     {
         return 'HEAD';
     }
-    public function getUri() : string
+
+    public function getUri(): string
     {
         return '/_ping';
     }
-    public function getBody(\Symfony\Component\Serializer\SerializerInterface $serializer, $streamFactory = null) : array
+
+    public function getBody(\Symfony\Component\Serializer\SerializerInterface $serializer, $streamFactory = null): array
     {
-        return array(array(), null);
+        return [[], null];
     }
-    public function getExtraHeaders() : array
+
+    public function getExtraHeaders(): array
     {
-        return array('Accept' => array('text/plain'));
+        return ['Accept' => ['text/plain']];
     }
+
     /**
      * {@inheritdoc}
-     *
      *
      * @return null
      */
@@ -36,8 +42,9 @@ class SystemPingHead extends \Docker\API\Runtime\Client\BaseEndpoint implements 
         if (500 === $status) {
         }
     }
-    public function getAuthenticationScopes() : array
+
+    public function getAuthenticationScopes(): array
     {
-        return array();
+        return [];
     }
 }

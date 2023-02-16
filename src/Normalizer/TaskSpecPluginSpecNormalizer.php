@@ -1,35 +1,40 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Docker\API\Normalizer;
 
-use Jane\Component\JsonSchemaRuntime\Reference;
 use Docker\API\Runtime\Normalizer\CheckArray;
 use Docker\API\Runtime\Normalizer\ValidatorTrait;
-use Symfony\Component\Serializer\Exception\InvalidArgumentException;
+use Jane\Component\JsonSchemaRuntime\Reference;
 use Symfony\Component\Serializer\Normalizer\DenormalizerAwareInterface;
 use Symfony\Component\Serializer\Normalizer\DenormalizerAwareTrait;
 use Symfony\Component\Serializer\Normalizer\DenormalizerInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerAwareInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerAwareTrait;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
+
 class TaskSpecPluginSpecNormalizer implements DenormalizerInterface, NormalizerInterface, DenormalizerAwareInterface, NormalizerAwareInterface
 {
+    use CheckArray;
     use DenormalizerAwareTrait;
     use NormalizerAwareTrait;
-    use CheckArray;
     use ValidatorTrait;
-    public function supportsDenormalization($data, $type, $format = null) : bool
+
+    public function supportsDenormalization($data, $type, $format = null): bool
     {
-        return $type === 'Docker\\API\\Model\\TaskSpecPluginSpec';
+        return 'Docker\\API\\Model\\TaskSpecPluginSpec' === $type;
     }
-    public function supportsNormalization($data, $format = null) : bool
+
+    public function supportsNormalization($data, $format = null): bool
     {
-        return is_object($data) && get_class($data) === 'Docker\\API\\Model\\TaskSpecPluginSpec';
+        return \is_object($data) && 'Docker\\API\\Model\\TaskSpecPluginSpec' === $data::class;
     }
+
     /**
      * @return mixed
      */
-    public function denormalize($data, $class, $format = null, array $context = array())
+    public function denormalize($data, $class, $format = null, array $context = [])
     {
         if (isset($data['$ref'])) {
             return new Reference($data['$ref'], $context['document-origin']);
@@ -41,36 +46,32 @@ class TaskSpecPluginSpecNormalizer implements DenormalizerInterface, NormalizerI
         if (null === $data || false === \is_array($data)) {
             return $object;
         }
-        if (\array_key_exists('Name', $data) && $data['Name'] !== null) {
+        if (\array_key_exists('Name', $data) && null !== $data['Name']) {
             $object->setName($data['Name']);
             unset($data['Name']);
-        }
-        elseif (\array_key_exists('Name', $data) && $data['Name'] === null) {
+        } elseif (\array_key_exists('Name', $data) && null === $data['Name']) {
             $object->setName(null);
         }
-        if (\array_key_exists('Remote', $data) && $data['Remote'] !== null) {
+        if (\array_key_exists('Remote', $data) && null !== $data['Remote']) {
             $object->setRemote($data['Remote']);
             unset($data['Remote']);
-        }
-        elseif (\array_key_exists('Remote', $data) && $data['Remote'] === null) {
+        } elseif (\array_key_exists('Remote', $data) && null === $data['Remote']) {
             $object->setRemote(null);
         }
-        if (\array_key_exists('Disabled', $data) && $data['Disabled'] !== null) {
+        if (\array_key_exists('Disabled', $data) && null !== $data['Disabled']) {
             $object->setDisabled($data['Disabled']);
             unset($data['Disabled']);
-        }
-        elseif (\array_key_exists('Disabled', $data) && $data['Disabled'] === null) {
+        } elseif (\array_key_exists('Disabled', $data) && null === $data['Disabled']) {
             $object->setDisabled(null);
         }
-        if (\array_key_exists('PluginPrivilege', $data) && $data['PluginPrivilege'] !== null) {
-            $values = array();
+        if (\array_key_exists('PluginPrivilege', $data) && null !== $data['PluginPrivilege']) {
+            $values = [];
             foreach ($data['PluginPrivilege'] as $value) {
                 $values[] = $this->denormalizer->denormalize($value, 'Docker\\API\\Model\\TaskSpecPluginSpecPluginPrivilegeItem', 'json', $context);
             }
             $object->setPluginPrivilege($values);
             unset($data['PluginPrivilege']);
-        }
-        elseif (\array_key_exists('PluginPrivilege', $data) && $data['PluginPrivilege'] === null) {
+        } elseif (\array_key_exists('PluginPrivilege', $data) && null === $data['PluginPrivilege']) {
             $object->setPluginPrivilege(null);
         }
         foreach ($data as $key => $value_1) {
@@ -78,14 +79,16 @@ class TaskSpecPluginSpecNormalizer implements DenormalizerInterface, NormalizerI
                 $object[$key] = $value_1;
             }
         }
+
         return $object;
     }
+
     /**
      * @return array|string|int|float|bool|\ArrayObject|null
      */
-    public function normalize($object, $format = null, array $context = array())
+    public function normalize($object, $format = null, array $context = [])
     {
-        $data = array();
+        $data = [];
         if ($object->isInitialized('name') && null !== $object->getName()) {
             $data['Name'] = $object->getName();
         }
@@ -96,7 +99,7 @@ class TaskSpecPluginSpecNormalizer implements DenormalizerInterface, NormalizerI
             $data['Disabled'] = $object->getDisabled();
         }
         if ($object->isInitialized('pluginPrivilege') && null !== $object->getPluginPrivilege()) {
-            $values = array();
+            $values = [];
             foreach ($object->getPluginPrivilege() as $value) {
                 $values[] = $this->normalizer->normalize($value, 'json', $context);
             }
@@ -107,6 +110,7 @@ class TaskSpecPluginSpecNormalizer implements DenormalizerInterface, NormalizerI
                 $data[$key] = $value_1;
             }
         }
+
         return $data;
     }
 }

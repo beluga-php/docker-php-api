@@ -1,35 +1,40 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Docker\API\Normalizer;
 
-use Jane\Component\JsonSchemaRuntime\Reference;
 use Docker\API\Runtime\Normalizer\CheckArray;
 use Docker\API\Runtime\Normalizer\ValidatorTrait;
-use Symfony\Component\Serializer\Exception\InvalidArgumentException;
+use Jane\Component\JsonSchemaRuntime\Reference;
 use Symfony\Component\Serializer\Normalizer\DenormalizerAwareInterface;
 use Symfony\Component\Serializer\Normalizer\DenormalizerAwareTrait;
 use Symfony\Component\Serializer\Normalizer\DenormalizerInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerAwareInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerAwareTrait;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
+
 class PluginConfigInterfaceNormalizer implements DenormalizerInterface, NormalizerInterface, DenormalizerAwareInterface, NormalizerAwareInterface
 {
+    use CheckArray;
     use DenormalizerAwareTrait;
     use NormalizerAwareTrait;
-    use CheckArray;
     use ValidatorTrait;
-    public function supportsDenormalization($data, $type, $format = null) : bool
+
+    public function supportsDenormalization($data, $type, $format = null): bool
     {
-        return $type === 'Docker\\API\\Model\\PluginConfigInterface';
+        return 'Docker\\API\\Model\\PluginConfigInterface' === $type;
     }
-    public function supportsNormalization($data, $format = null) : bool
+
+    public function supportsNormalization($data, $format = null): bool
     {
-        return is_object($data) && get_class($data) === 'Docker\\API\\Model\\PluginConfigInterface';
+        return \is_object($data) && 'Docker\\API\\Model\\PluginConfigInterface' === $data::class;
     }
+
     /**
      * @return mixed
      */
-    public function denormalize($data, $class, $format = null, array $context = array())
+    public function denormalize($data, $class, $format = null, array $context = [])
     {
         if (isset($data['$ref'])) {
             return new Reference($data['$ref'], $context['document-origin']);
@@ -41,29 +46,26 @@ class PluginConfigInterfaceNormalizer implements DenormalizerInterface, Normaliz
         if (null === $data || false === \is_array($data)) {
             return $object;
         }
-        if (\array_key_exists('Types', $data) && $data['Types'] !== null) {
-            $values = array();
+        if (\array_key_exists('Types', $data) && null !== $data['Types']) {
+            $values = [];
             foreach ($data['Types'] as $value) {
                 $values[] = $this->denormalizer->denormalize($value, 'Docker\\API\\Model\\PluginInterfaceType', 'json', $context);
             }
             $object->setTypes($values);
             unset($data['Types']);
-        }
-        elseif (\array_key_exists('Types', $data) && $data['Types'] === null) {
+        } elseif (\array_key_exists('Types', $data) && null === $data['Types']) {
             $object->setTypes(null);
         }
-        if (\array_key_exists('Socket', $data) && $data['Socket'] !== null) {
+        if (\array_key_exists('Socket', $data) && null !== $data['Socket']) {
             $object->setSocket($data['Socket']);
             unset($data['Socket']);
-        }
-        elseif (\array_key_exists('Socket', $data) && $data['Socket'] === null) {
+        } elseif (\array_key_exists('Socket', $data) && null === $data['Socket']) {
             $object->setSocket(null);
         }
-        if (\array_key_exists('ProtocolScheme', $data) && $data['ProtocolScheme'] !== null) {
+        if (\array_key_exists('ProtocolScheme', $data) && null !== $data['ProtocolScheme']) {
             $object->setProtocolScheme($data['ProtocolScheme']);
             unset($data['ProtocolScheme']);
-        }
-        elseif (\array_key_exists('ProtocolScheme', $data) && $data['ProtocolScheme'] === null) {
+        } elseif (\array_key_exists('ProtocolScheme', $data) && null === $data['ProtocolScheme']) {
             $object->setProtocolScheme(null);
         }
         foreach ($data as $key => $value_1) {
@@ -71,15 +73,17 @@ class PluginConfigInterfaceNormalizer implements DenormalizerInterface, Normaliz
                 $object[$key] = $value_1;
             }
         }
+
         return $object;
     }
+
     /**
      * @return array|string|int|float|bool|\ArrayObject|null
      */
-    public function normalize($object, $format = null, array $context = array())
+    public function normalize($object, $format = null, array $context = [])
     {
-        $data = array();
-        $values = array();
+        $data = [];
+        $values = [];
         foreach ($object->getTypes() as $value) {
             $values[] = $this->normalizer->normalize($value, 'json', $context);
         }
@@ -93,6 +97,7 @@ class PluginConfigInterfaceNormalizer implements DenormalizerInterface, Normaliz
                 $data[$key] = $value_1;
             }
         }
+
         return $data;
     }
 }

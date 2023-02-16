@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Docker\API\Model;
 
 class VolumesGetResponse200 extends \ArrayObject
@@ -7,13 +9,14 @@ class VolumesGetResponse200 extends \ArrayObject
     /**
      * @var array
      */
-    protected $initialized = array();
-    public function isInitialized($property) : bool
+    protected $initialized = [];
+
+    public function isInitialized($property): bool
     {
-        return array_key_exists($property, $this->initialized);
+        return \array_key_exists($property, $this->initialized);
     }
     /**
-     * List of volumes
+     * List of volumes.
      *
      * @var Volume[]|null
      */
@@ -24,48 +27,50 @@ class VolumesGetResponse200 extends \ArrayObject
      * @var string[]|null
      */
     protected $warnings;
+
     /**
-     * List of volumes
+     * List of volumes.
      *
      * @return Volume[]|null
      */
-    public function getVolumes() : ?array
+    public function getVolumes(): ?array
     {
         return $this->volumes;
     }
+
     /**
-     * List of volumes
+     * List of volumes.
      *
      * @param Volume[]|null $volumes
-     *
-     * @return self
      */
-    public function setVolumes(?array $volumes) : self
+    public function setVolumes(?array $volumes): self
     {
         $this->initialized['volumes'] = true;
         $this->volumes = $volumes;
+
         return $this;
     }
+
     /**
      * Warnings that occurred when fetching the list of volumes.
      *
      * @return string[]|null
      */
-    public function getWarnings() : ?array
+    public function getWarnings(): ?array
     {
         return $this->warnings;
     }
+
     /**
      * Warnings that occurred when fetching the list of volumes.
      *
      * @param string[]|null $warnings
-     *
-     * @return self
      */
-    public function setWarnings(?array $warnings) : self
+    public function setWarnings(?array $warnings): self
     {
         $this->initialized['warnings'] = true;
         $this->warnings = $warnings;
+
         return $this;
     }
 }

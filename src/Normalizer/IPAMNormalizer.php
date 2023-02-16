@@ -1,35 +1,40 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Docker\API\Normalizer;
 
-use Jane\Component\JsonSchemaRuntime\Reference;
 use Docker\API\Runtime\Normalizer\CheckArray;
 use Docker\API\Runtime\Normalizer\ValidatorTrait;
-use Symfony\Component\Serializer\Exception\InvalidArgumentException;
+use Jane\Component\JsonSchemaRuntime\Reference;
 use Symfony\Component\Serializer\Normalizer\DenormalizerAwareInterface;
 use Symfony\Component\Serializer\Normalizer\DenormalizerAwareTrait;
 use Symfony\Component\Serializer\Normalizer\DenormalizerInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerAwareInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerAwareTrait;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
+
 class IPAMNormalizer implements DenormalizerInterface, NormalizerInterface, DenormalizerAwareInterface, NormalizerAwareInterface
 {
+    use CheckArray;
     use DenormalizerAwareTrait;
     use NormalizerAwareTrait;
-    use CheckArray;
     use ValidatorTrait;
-    public function supportsDenormalization($data, $type, $format = null) : bool
+
+    public function supportsDenormalization($data, $type, $format = null): bool
     {
-        return $type === 'Docker\\API\\Model\\IPAM';
+        return 'Docker\\API\\Model\\IPAM' === $type;
     }
-    public function supportsNormalization($data, $format = null) : bool
+
+    public function supportsNormalization($data, $format = null): bool
     {
-        return is_object($data) && get_class($data) === 'Docker\\API\\Model\\IPAM';
+        return \is_object($data) && 'Docker\\API\\Model\\IPAM' === $data::class;
     }
+
     /**
      * @return mixed
      */
-    public function denormalize($data, $class, $format = null, array $context = array())
+    public function denormalize($data, $class, $format = null, array $context = [])
     {
         if (isset($data['$ref'])) {
             return new Reference($data['$ref'], $context['document-origin']);
@@ -41,17 +46,16 @@ class IPAMNormalizer implements DenormalizerInterface, NormalizerInterface, Deno
         if (null === $data || false === \is_array($data)) {
             return $object;
         }
-        if (\array_key_exists('Driver', $data) && $data['Driver'] !== null) {
+        if (\array_key_exists('Driver', $data) && null !== $data['Driver']) {
             $object->setDriver($data['Driver']);
             unset($data['Driver']);
-        }
-        elseif (\array_key_exists('Driver', $data) && $data['Driver'] === null) {
+        } elseif (\array_key_exists('Driver', $data) && null === $data['Driver']) {
             $object->setDriver(null);
         }
-        if (\array_key_exists('Config', $data) && $data['Config'] !== null) {
-            $values = array();
+        if (\array_key_exists('Config', $data) && null !== $data['Config']) {
+            $values = [];
             foreach ($data['Config'] as $value) {
-                $values_1 = new \ArrayObject(array(), \ArrayObject::ARRAY_AS_PROPS);
+                $values_1 = new \ArrayObject([], \ArrayObject::ARRAY_AS_PROPS);
                 foreach ($value as $key => $value_1) {
                     $values_1[$key] = $value_1;
                 }
@@ -59,19 +63,17 @@ class IPAMNormalizer implements DenormalizerInterface, NormalizerInterface, Deno
             }
             $object->setConfig($values);
             unset($data['Config']);
-        }
-        elseif (\array_key_exists('Config', $data) && $data['Config'] === null) {
+        } elseif (\array_key_exists('Config', $data) && null === $data['Config']) {
             $object->setConfig(null);
         }
-        if (\array_key_exists('Options', $data) && $data['Options'] !== null) {
-            $values_2 = new \ArrayObject(array(), \ArrayObject::ARRAY_AS_PROPS);
+        if (\array_key_exists('Options', $data) && null !== $data['Options']) {
+            $values_2 = new \ArrayObject([], \ArrayObject::ARRAY_AS_PROPS);
             foreach ($data['Options'] as $key_1 => $value_2) {
                 $values_2[$key_1] = $value_2;
             }
             $object->setOptions($values_2);
             unset($data['Options']);
-        }
-        elseif (\array_key_exists('Options', $data) && $data['Options'] === null) {
+        } elseif (\array_key_exists('Options', $data) && null === $data['Options']) {
             $object->setOptions(null);
         }
         foreach ($data as $key_2 => $value_3) {
@@ -79,21 +81,23 @@ class IPAMNormalizer implements DenormalizerInterface, NormalizerInterface, Deno
                 $object[$key_2] = $value_3;
             }
         }
+
         return $object;
     }
+
     /**
      * @return array|string|int|float|bool|\ArrayObject|null
      */
-    public function normalize($object, $format = null, array $context = array())
+    public function normalize($object, $format = null, array $context = [])
     {
-        $data = array();
+        $data = [];
         if ($object->isInitialized('driver') && null !== $object->getDriver()) {
             $data['Driver'] = $object->getDriver();
         }
         if ($object->isInitialized('config') && null !== $object->getConfig()) {
-            $values = array();
+            $values = [];
             foreach ($object->getConfig() as $value) {
-                $values_1 = array();
+                $values_1 = [];
                 foreach ($value as $key => $value_1) {
                     $values_1[$key] = $value_1;
                 }
@@ -102,7 +106,7 @@ class IPAMNormalizer implements DenormalizerInterface, NormalizerInterface, Deno
             $data['Config'] = $values;
         }
         if ($object->isInitialized('options') && null !== $object->getOptions()) {
-            $values_2 = array();
+            $values_2 = [];
             foreach ($object->getOptions() as $key_1 => $value_2) {
                 $values_2[$key_1] = $value_2;
             }
@@ -113,6 +117,7 @@ class IPAMNormalizer implements DenormalizerInterface, NormalizerInterface, Deno
                 $data[$key_2] = $value_3;
             }
         }
+
         return $data;
     }
 }

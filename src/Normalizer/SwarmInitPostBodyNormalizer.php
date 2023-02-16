@@ -1,35 +1,40 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Docker\API\Normalizer;
 
-use Jane\Component\JsonSchemaRuntime\Reference;
 use Docker\API\Runtime\Normalizer\CheckArray;
 use Docker\API\Runtime\Normalizer\ValidatorTrait;
-use Symfony\Component\Serializer\Exception\InvalidArgumentException;
+use Jane\Component\JsonSchemaRuntime\Reference;
 use Symfony\Component\Serializer\Normalizer\DenormalizerAwareInterface;
 use Symfony\Component\Serializer\Normalizer\DenormalizerAwareTrait;
 use Symfony\Component\Serializer\Normalizer\DenormalizerInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerAwareInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerAwareTrait;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
+
 class SwarmInitPostBodyNormalizer implements DenormalizerInterface, NormalizerInterface, DenormalizerAwareInterface, NormalizerAwareInterface
 {
+    use CheckArray;
     use DenormalizerAwareTrait;
     use NormalizerAwareTrait;
-    use CheckArray;
     use ValidatorTrait;
-    public function supportsDenormalization($data, $type, $format = null) : bool
+
+    public function supportsDenormalization($data, $type, $format = null): bool
     {
-        return $type === 'Docker\\API\\Model\\SwarmInitPostBody';
+        return 'Docker\\API\\Model\\SwarmInitPostBody' === $type;
     }
-    public function supportsNormalization($data, $format = null) : bool
+
+    public function supportsNormalization($data, $format = null): bool
     {
-        return is_object($data) && get_class($data) === 'Docker\\API\\Model\\SwarmInitPostBody';
+        return \is_object($data) && 'Docker\\API\\Model\\SwarmInitPostBody' === $data::class;
     }
+
     /**
      * @return mixed
      */
-    public function denormalize($data, $class, $format = null, array $context = array())
+    public function denormalize($data, $class, $format = null, array $context = [])
     {
         if (isset($data['$ref'])) {
             return new Reference($data['$ref'], $context['document-origin']);
@@ -41,64 +46,56 @@ class SwarmInitPostBodyNormalizer implements DenormalizerInterface, NormalizerIn
         if (null === $data || false === \is_array($data)) {
             return $object;
         }
-        if (\array_key_exists('ListenAddr', $data) && $data['ListenAddr'] !== null) {
+        if (\array_key_exists('ListenAddr', $data) && null !== $data['ListenAddr']) {
             $object->setListenAddr($data['ListenAddr']);
             unset($data['ListenAddr']);
-        }
-        elseif (\array_key_exists('ListenAddr', $data) && $data['ListenAddr'] === null) {
+        } elseif (\array_key_exists('ListenAddr', $data) && null === $data['ListenAddr']) {
             $object->setListenAddr(null);
         }
-        if (\array_key_exists('AdvertiseAddr', $data) && $data['AdvertiseAddr'] !== null) {
+        if (\array_key_exists('AdvertiseAddr', $data) && null !== $data['AdvertiseAddr']) {
             $object->setAdvertiseAddr($data['AdvertiseAddr']);
             unset($data['AdvertiseAddr']);
-        }
-        elseif (\array_key_exists('AdvertiseAddr', $data) && $data['AdvertiseAddr'] === null) {
+        } elseif (\array_key_exists('AdvertiseAddr', $data) && null === $data['AdvertiseAddr']) {
             $object->setAdvertiseAddr(null);
         }
-        if (\array_key_exists('DataPathAddr', $data) && $data['DataPathAddr'] !== null) {
+        if (\array_key_exists('DataPathAddr', $data) && null !== $data['DataPathAddr']) {
             $object->setDataPathAddr($data['DataPathAddr']);
             unset($data['DataPathAddr']);
-        }
-        elseif (\array_key_exists('DataPathAddr', $data) && $data['DataPathAddr'] === null) {
+        } elseif (\array_key_exists('DataPathAddr', $data) && null === $data['DataPathAddr']) {
             $object->setDataPathAddr(null);
         }
-        if (\array_key_exists('DataPathPort', $data) && $data['DataPathPort'] !== null) {
+        if (\array_key_exists('DataPathPort', $data) && null !== $data['DataPathPort']) {
             $object->setDataPathPort($data['DataPathPort']);
             unset($data['DataPathPort']);
-        }
-        elseif (\array_key_exists('DataPathPort', $data) && $data['DataPathPort'] === null) {
+        } elseif (\array_key_exists('DataPathPort', $data) && null === $data['DataPathPort']) {
             $object->setDataPathPort(null);
         }
-        if (\array_key_exists('DefaultAddrPool', $data) && $data['DefaultAddrPool'] !== null) {
-            $values = array();
+        if (\array_key_exists('DefaultAddrPool', $data) && null !== $data['DefaultAddrPool']) {
+            $values = [];
             foreach ($data['DefaultAddrPool'] as $value) {
                 $values[] = $value;
             }
             $object->setDefaultAddrPool($values);
             unset($data['DefaultAddrPool']);
-        }
-        elseif (\array_key_exists('DefaultAddrPool', $data) && $data['DefaultAddrPool'] === null) {
+        } elseif (\array_key_exists('DefaultAddrPool', $data) && null === $data['DefaultAddrPool']) {
             $object->setDefaultAddrPool(null);
         }
-        if (\array_key_exists('ForceNewCluster', $data) && $data['ForceNewCluster'] !== null) {
+        if (\array_key_exists('ForceNewCluster', $data) && null !== $data['ForceNewCluster']) {
             $object->setForceNewCluster($data['ForceNewCluster']);
             unset($data['ForceNewCluster']);
-        }
-        elseif (\array_key_exists('ForceNewCluster', $data) && $data['ForceNewCluster'] === null) {
+        } elseif (\array_key_exists('ForceNewCluster', $data) && null === $data['ForceNewCluster']) {
             $object->setForceNewCluster(null);
         }
-        if (\array_key_exists('SubnetSize', $data) && $data['SubnetSize'] !== null) {
+        if (\array_key_exists('SubnetSize', $data) && null !== $data['SubnetSize']) {
             $object->setSubnetSize($data['SubnetSize']);
             unset($data['SubnetSize']);
-        }
-        elseif (\array_key_exists('SubnetSize', $data) && $data['SubnetSize'] === null) {
+        } elseif (\array_key_exists('SubnetSize', $data) && null === $data['SubnetSize']) {
             $object->setSubnetSize(null);
         }
-        if (\array_key_exists('Spec', $data) && $data['Spec'] !== null) {
+        if (\array_key_exists('Spec', $data) && null !== $data['Spec']) {
             $object->setSpec($this->denormalizer->denormalize($data['Spec'], 'Docker\\API\\Model\\SwarmSpec', 'json', $context));
             unset($data['Spec']);
-        }
-        elseif (\array_key_exists('Spec', $data) && $data['Spec'] === null) {
+        } elseif (\array_key_exists('Spec', $data) && null === $data['Spec']) {
             $object->setSpec(null);
         }
         foreach ($data as $key => $value_1) {
@@ -106,14 +103,16 @@ class SwarmInitPostBodyNormalizer implements DenormalizerInterface, NormalizerIn
                 $object[$key] = $value_1;
             }
         }
+
         return $object;
     }
+
     /**
      * @return array|string|int|float|bool|\ArrayObject|null
      */
-    public function normalize($object, $format = null, array $context = array())
+    public function normalize($object, $format = null, array $context = [])
     {
-        $data = array();
+        $data = [];
         if ($object->isInitialized('listenAddr') && null !== $object->getListenAddr()) {
             $data['ListenAddr'] = $object->getListenAddr();
         }
@@ -127,7 +126,7 @@ class SwarmInitPostBodyNormalizer implements DenormalizerInterface, NormalizerIn
             $data['DataPathPort'] = $object->getDataPathPort();
         }
         if ($object->isInitialized('defaultAddrPool') && null !== $object->getDefaultAddrPool()) {
-            $values = array();
+            $values = [];
             foreach ($object->getDefaultAddrPool() as $value) {
                 $values[] = $value;
             }
@@ -147,6 +146,7 @@ class SwarmInitPostBodyNormalizer implements DenormalizerInterface, NormalizerIn
                 $data[$key] = $value_1;
             }
         }
+
         return $data;
     }
 }

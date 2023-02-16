@@ -1,35 +1,40 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Docker\API\Normalizer;
 
-use Jane\Component\JsonSchemaRuntime\Reference;
 use Docker\API\Runtime\Normalizer\CheckArray;
 use Docker\API\Runtime\Normalizer\ValidatorTrait;
-use Symfony\Component\Serializer\Exception\InvalidArgumentException;
+use Jane\Component\JsonSchemaRuntime\Reference;
 use Symfony\Component\Serializer\Normalizer\DenormalizerAwareInterface;
 use Symfony\Component\Serializer\Normalizer\DenormalizerAwareTrait;
 use Symfony\Component\Serializer\Normalizer\DenormalizerInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerAwareInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerAwareTrait;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
+
 class AuthPostResponse200Normalizer implements DenormalizerInterface, NormalizerInterface, DenormalizerAwareInterface, NormalizerAwareInterface
 {
+    use CheckArray;
     use DenormalizerAwareTrait;
     use NormalizerAwareTrait;
-    use CheckArray;
     use ValidatorTrait;
-    public function supportsDenormalization($data, $type, $format = null) : bool
+
+    public function supportsDenormalization($data, $type, $format = null): bool
     {
-        return $type === 'Docker\\API\\Model\\AuthPostResponse200';
+        return 'Docker\\API\\Model\\AuthPostResponse200' === $type;
     }
-    public function supportsNormalization($data, $format = null) : bool
+
+    public function supportsNormalization($data, $format = null): bool
     {
-        return is_object($data) && get_class($data) === 'Docker\\API\\Model\\AuthPostResponse200';
+        return \is_object($data) && 'Docker\\API\\Model\\AuthPostResponse200' === $data::class;
     }
+
     /**
      * @return mixed
      */
-    public function denormalize($data, $class, $format = null, array $context = array())
+    public function denormalize($data, $class, $format = null, array $context = [])
     {
         if (isset($data['$ref'])) {
             return new Reference($data['$ref'], $context['document-origin']);
@@ -41,18 +46,16 @@ class AuthPostResponse200Normalizer implements DenormalizerInterface, Normalizer
         if (null === $data || false === \is_array($data)) {
             return $object;
         }
-        if (\array_key_exists('Status', $data) && $data['Status'] !== null) {
+        if (\array_key_exists('Status', $data) && null !== $data['Status']) {
             $object->setStatus($data['Status']);
             unset($data['Status']);
-        }
-        elseif (\array_key_exists('Status', $data) && $data['Status'] === null) {
+        } elseif (\array_key_exists('Status', $data) && null === $data['Status']) {
             $object->setStatus(null);
         }
-        if (\array_key_exists('IdentityToken', $data) && $data['IdentityToken'] !== null) {
+        if (\array_key_exists('IdentityToken', $data) && null !== $data['IdentityToken']) {
             $object->setIdentityToken($data['IdentityToken']);
             unset($data['IdentityToken']);
-        }
-        elseif (\array_key_exists('IdentityToken', $data) && $data['IdentityToken'] === null) {
+        } elseif (\array_key_exists('IdentityToken', $data) && null === $data['IdentityToken']) {
             $object->setIdentityToken(null);
         }
         foreach ($data as $key => $value) {
@@ -60,14 +63,16 @@ class AuthPostResponse200Normalizer implements DenormalizerInterface, Normalizer
                 $object[$key] = $value;
             }
         }
+
         return $object;
     }
+
     /**
      * @return array|string|int|float|bool|\ArrayObject|null
      */
-    public function normalize($object, $format = null, array $context = array())
+    public function normalize($object, $format = null, array $context = [])
     {
-        $data = array();
+        $data = [];
         $data['Status'] = $object->getStatus();
         if ($object->isInitialized('identityToken') && null !== $object->getIdentityToken()) {
             $data['IdentityToken'] = $object->getIdentityToken();
@@ -77,6 +82,7 @@ class AuthPostResponse200Normalizer implements DenormalizerInterface, Normalizer
                 $data[$key] = $value;
             }
         }
+
         return $data;
     }
 }

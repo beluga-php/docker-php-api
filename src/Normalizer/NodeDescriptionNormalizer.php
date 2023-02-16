@@ -1,35 +1,40 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Docker\API\Normalizer;
 
-use Jane\Component\JsonSchemaRuntime\Reference;
 use Docker\API\Runtime\Normalizer\CheckArray;
 use Docker\API\Runtime\Normalizer\ValidatorTrait;
-use Symfony\Component\Serializer\Exception\InvalidArgumentException;
+use Jane\Component\JsonSchemaRuntime\Reference;
 use Symfony\Component\Serializer\Normalizer\DenormalizerAwareInterface;
 use Symfony\Component\Serializer\Normalizer\DenormalizerAwareTrait;
 use Symfony\Component\Serializer\Normalizer\DenormalizerInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerAwareInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerAwareTrait;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
+
 class NodeDescriptionNormalizer implements DenormalizerInterface, NormalizerInterface, DenormalizerAwareInterface, NormalizerAwareInterface
 {
+    use CheckArray;
     use DenormalizerAwareTrait;
     use NormalizerAwareTrait;
-    use CheckArray;
     use ValidatorTrait;
-    public function supportsDenormalization($data, $type, $format = null) : bool
+
+    public function supportsDenormalization($data, $type, $format = null): bool
     {
-        return $type === 'Docker\\API\\Model\\NodeDescription';
+        return 'Docker\\API\\Model\\NodeDescription' === $type;
     }
-    public function supportsNormalization($data, $format = null) : bool
+
+    public function supportsNormalization($data, $format = null): bool
     {
-        return is_object($data) && get_class($data) === 'Docker\\API\\Model\\NodeDescription';
+        return \is_object($data) && 'Docker\\API\\Model\\NodeDescription' === $data::class;
     }
+
     /**
      * @return mixed
      */
-    public function denormalize($data, $class, $format = null, array $context = array())
+    public function denormalize($data, $class, $format = null, array $context = [])
     {
         if (isset($data['$ref'])) {
             return new Reference($data['$ref'], $context['document-origin']);
@@ -41,39 +46,34 @@ class NodeDescriptionNormalizer implements DenormalizerInterface, NormalizerInte
         if (null === $data || false === \is_array($data)) {
             return $object;
         }
-        if (\array_key_exists('Hostname', $data) && $data['Hostname'] !== null) {
+        if (\array_key_exists('Hostname', $data) && null !== $data['Hostname']) {
             $object->setHostname($data['Hostname']);
             unset($data['Hostname']);
-        }
-        elseif (\array_key_exists('Hostname', $data) && $data['Hostname'] === null) {
+        } elseif (\array_key_exists('Hostname', $data) && null === $data['Hostname']) {
             $object->setHostname(null);
         }
-        if (\array_key_exists('Platform', $data) && $data['Platform'] !== null) {
+        if (\array_key_exists('Platform', $data) && null !== $data['Platform']) {
             $object->setPlatform($this->denormalizer->denormalize($data['Platform'], 'Docker\\API\\Model\\Platform', 'json', $context));
             unset($data['Platform']);
-        }
-        elseif (\array_key_exists('Platform', $data) && $data['Platform'] === null) {
+        } elseif (\array_key_exists('Platform', $data) && null === $data['Platform']) {
             $object->setPlatform(null);
         }
-        if (\array_key_exists('Resources', $data) && $data['Resources'] !== null) {
+        if (\array_key_exists('Resources', $data) && null !== $data['Resources']) {
             $object->setResources($this->denormalizer->denormalize($data['Resources'], 'Docker\\API\\Model\\ResourceObject', 'json', $context));
             unset($data['Resources']);
-        }
-        elseif (\array_key_exists('Resources', $data) && $data['Resources'] === null) {
+        } elseif (\array_key_exists('Resources', $data) && null === $data['Resources']) {
             $object->setResources(null);
         }
-        if (\array_key_exists('Engine', $data) && $data['Engine'] !== null) {
+        if (\array_key_exists('Engine', $data) && null !== $data['Engine']) {
             $object->setEngine($this->denormalizer->denormalize($data['Engine'], 'Docker\\API\\Model\\EngineDescription', 'json', $context));
             unset($data['Engine']);
-        }
-        elseif (\array_key_exists('Engine', $data) && $data['Engine'] === null) {
+        } elseif (\array_key_exists('Engine', $data) && null === $data['Engine']) {
             $object->setEngine(null);
         }
-        if (\array_key_exists('TLSInfo', $data) && $data['TLSInfo'] !== null) {
+        if (\array_key_exists('TLSInfo', $data) && null !== $data['TLSInfo']) {
             $object->setTLSInfo($this->denormalizer->denormalize($data['TLSInfo'], 'Docker\\API\\Model\\TLSInfo', 'json', $context));
             unset($data['TLSInfo']);
-        }
-        elseif (\array_key_exists('TLSInfo', $data) && $data['TLSInfo'] === null) {
+        } elseif (\array_key_exists('TLSInfo', $data) && null === $data['TLSInfo']) {
             $object->setTLSInfo(null);
         }
         foreach ($data as $key => $value) {
@@ -81,14 +81,16 @@ class NodeDescriptionNormalizer implements DenormalizerInterface, NormalizerInte
                 $object[$key] = $value;
             }
         }
+
         return $object;
     }
+
     /**
      * @return array|string|int|float|bool|\ArrayObject|null
      */
-    public function normalize($object, $format = null, array $context = array())
+    public function normalize($object, $format = null, array $context = [])
     {
-        $data = array();
+        $data = [];
         if ($object->isInitialized('hostname') && null !== $object->getHostname()) {
             $data['Hostname'] = $object->getHostname();
         }
@@ -109,6 +111,7 @@ class NodeDescriptionNormalizer implements DenormalizerInterface, NormalizerInte
                 $data[$key] = $value;
             }
         }
+
         return $data;
     }
 }

@@ -1,35 +1,40 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Docker\API\Normalizer;
 
-use Jane\Component\JsonSchemaRuntime\Reference;
 use Docker\API\Runtime\Normalizer\CheckArray;
 use Docker\API\Runtime\Normalizer\ValidatorTrait;
-use Symfony\Component\Serializer\Exception\InvalidArgumentException;
+use Jane\Component\JsonSchemaRuntime\Reference;
 use Symfony\Component\Serializer\Normalizer\DenormalizerAwareInterface;
 use Symfony\Component\Serializer\Normalizer\DenormalizerAwareTrait;
 use Symfony\Component\Serializer\Normalizer\DenormalizerInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerAwareInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerAwareTrait;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
+
 class SwarmSpecRaftNormalizer implements DenormalizerInterface, NormalizerInterface, DenormalizerAwareInterface, NormalizerAwareInterface
 {
+    use CheckArray;
     use DenormalizerAwareTrait;
     use NormalizerAwareTrait;
-    use CheckArray;
     use ValidatorTrait;
-    public function supportsDenormalization($data, $type, $format = null) : bool
+
+    public function supportsDenormalization($data, $type, $format = null): bool
     {
-        return $type === 'Docker\\API\\Model\\SwarmSpecRaft';
+        return 'Docker\\API\\Model\\SwarmSpecRaft' === $type;
     }
-    public function supportsNormalization($data, $format = null) : bool
+
+    public function supportsNormalization($data, $format = null): bool
     {
-        return is_object($data) && get_class($data) === 'Docker\\API\\Model\\SwarmSpecRaft';
+        return \is_object($data) && 'Docker\\API\\Model\\SwarmSpecRaft' === $data::class;
     }
+
     /**
      * @return mixed
      */
-    public function denormalize($data, $class, $format = null, array $context = array())
+    public function denormalize($data, $class, $format = null, array $context = [])
     {
         if (isset($data['$ref'])) {
             return new Reference($data['$ref'], $context['document-origin']);
@@ -41,39 +46,34 @@ class SwarmSpecRaftNormalizer implements DenormalizerInterface, NormalizerInterf
         if (null === $data || false === \is_array($data)) {
             return $object;
         }
-        if (\array_key_exists('SnapshotInterval', $data) && $data['SnapshotInterval'] !== null) {
+        if (\array_key_exists('SnapshotInterval', $data) && null !== $data['SnapshotInterval']) {
             $object->setSnapshotInterval($data['SnapshotInterval']);
             unset($data['SnapshotInterval']);
-        }
-        elseif (\array_key_exists('SnapshotInterval', $data) && $data['SnapshotInterval'] === null) {
+        } elseif (\array_key_exists('SnapshotInterval', $data) && null === $data['SnapshotInterval']) {
             $object->setSnapshotInterval(null);
         }
-        if (\array_key_exists('KeepOldSnapshots', $data) && $data['KeepOldSnapshots'] !== null) {
+        if (\array_key_exists('KeepOldSnapshots', $data) && null !== $data['KeepOldSnapshots']) {
             $object->setKeepOldSnapshots($data['KeepOldSnapshots']);
             unset($data['KeepOldSnapshots']);
-        }
-        elseif (\array_key_exists('KeepOldSnapshots', $data) && $data['KeepOldSnapshots'] === null) {
+        } elseif (\array_key_exists('KeepOldSnapshots', $data) && null === $data['KeepOldSnapshots']) {
             $object->setKeepOldSnapshots(null);
         }
-        if (\array_key_exists('LogEntriesForSlowFollowers', $data) && $data['LogEntriesForSlowFollowers'] !== null) {
+        if (\array_key_exists('LogEntriesForSlowFollowers', $data) && null !== $data['LogEntriesForSlowFollowers']) {
             $object->setLogEntriesForSlowFollowers($data['LogEntriesForSlowFollowers']);
             unset($data['LogEntriesForSlowFollowers']);
-        }
-        elseif (\array_key_exists('LogEntriesForSlowFollowers', $data) && $data['LogEntriesForSlowFollowers'] === null) {
+        } elseif (\array_key_exists('LogEntriesForSlowFollowers', $data) && null === $data['LogEntriesForSlowFollowers']) {
             $object->setLogEntriesForSlowFollowers(null);
         }
-        if (\array_key_exists('ElectionTick', $data) && $data['ElectionTick'] !== null) {
+        if (\array_key_exists('ElectionTick', $data) && null !== $data['ElectionTick']) {
             $object->setElectionTick($data['ElectionTick']);
             unset($data['ElectionTick']);
-        }
-        elseif (\array_key_exists('ElectionTick', $data) && $data['ElectionTick'] === null) {
+        } elseif (\array_key_exists('ElectionTick', $data) && null === $data['ElectionTick']) {
             $object->setElectionTick(null);
         }
-        if (\array_key_exists('HeartbeatTick', $data) && $data['HeartbeatTick'] !== null) {
+        if (\array_key_exists('HeartbeatTick', $data) && null !== $data['HeartbeatTick']) {
             $object->setHeartbeatTick($data['HeartbeatTick']);
             unset($data['HeartbeatTick']);
-        }
-        elseif (\array_key_exists('HeartbeatTick', $data) && $data['HeartbeatTick'] === null) {
+        } elseif (\array_key_exists('HeartbeatTick', $data) && null === $data['HeartbeatTick']) {
             $object->setHeartbeatTick(null);
         }
         foreach ($data as $key => $value) {
@@ -81,14 +81,16 @@ class SwarmSpecRaftNormalizer implements DenormalizerInterface, NormalizerInterf
                 $object[$key] = $value;
             }
         }
+
         return $object;
     }
+
     /**
      * @return array|string|int|float|bool|\ArrayObject|null
      */
-    public function normalize($object, $format = null, array $context = array())
+    public function normalize($object, $format = null, array $context = [])
     {
-        $data = array();
+        $data = [];
         if ($object->isInitialized('snapshotInterval') && null !== $object->getSnapshotInterval()) {
             $data['SnapshotInterval'] = $object->getSnapshotInterval();
         }
@@ -109,6 +111,7 @@ class SwarmSpecRaftNormalizer implements DenormalizerInterface, NormalizerInterf
                 $data[$key] = $value;
             }
         }
+
         return $data;
     }
 }

@@ -1,35 +1,40 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Docker\API\Normalizer;
 
-use Jane\Component\JsonSchemaRuntime\Reference;
 use Docker\API\Runtime\Normalizer\CheckArray;
 use Docker\API\Runtime\Normalizer\ValidatorTrait;
-use Symfony\Component\Serializer\Exception\InvalidArgumentException;
+use Jane\Component\JsonSchemaRuntime\Reference;
 use Symfony\Component\Serializer\Normalizer\DenormalizerAwareInterface;
 use Symfony\Component\Serializer\Normalizer\DenormalizerAwareTrait;
 use Symfony\Component\Serializer\Normalizer\DenormalizerInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerAwareInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerAwareTrait;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
+
 class ServiceJobStatusNormalizer implements DenormalizerInterface, NormalizerInterface, DenormalizerAwareInterface, NormalizerAwareInterface
 {
+    use CheckArray;
     use DenormalizerAwareTrait;
     use NormalizerAwareTrait;
-    use CheckArray;
     use ValidatorTrait;
-    public function supportsDenormalization($data, $type, $format = null) : bool
+
+    public function supportsDenormalization($data, $type, $format = null): bool
     {
-        return $type === 'Docker\\API\\Model\\ServiceJobStatus';
+        return 'Docker\\API\\Model\\ServiceJobStatus' === $type;
     }
-    public function supportsNormalization($data, $format = null) : bool
+
+    public function supportsNormalization($data, $format = null): bool
     {
-        return is_object($data) && get_class($data) === 'Docker\\API\\Model\\ServiceJobStatus';
+        return \is_object($data) && 'Docker\\API\\Model\\ServiceJobStatus' === $data::class;
     }
+
     /**
      * @return mixed
      */
-    public function denormalize($data, $class, $format = null, array $context = array())
+    public function denormalize($data, $class, $format = null, array $context = [])
     {
         if (isset($data['$ref'])) {
             return new Reference($data['$ref'], $context['document-origin']);
@@ -41,18 +46,16 @@ class ServiceJobStatusNormalizer implements DenormalizerInterface, NormalizerInt
         if (null === $data || false === \is_array($data)) {
             return $object;
         }
-        if (\array_key_exists('JobIteration', $data) && $data['JobIteration'] !== null) {
+        if (\array_key_exists('JobIteration', $data) && null !== $data['JobIteration']) {
             $object->setJobIteration($this->denormalizer->denormalize($data['JobIteration'], 'Docker\\API\\Model\\ObjectVersion', 'json', $context));
             unset($data['JobIteration']);
-        }
-        elseif (\array_key_exists('JobIteration', $data) && $data['JobIteration'] === null) {
+        } elseif (\array_key_exists('JobIteration', $data) && null === $data['JobIteration']) {
             $object->setJobIteration(null);
         }
-        if (\array_key_exists('LastExecution', $data) && $data['LastExecution'] !== null) {
+        if (\array_key_exists('LastExecution', $data) && null !== $data['LastExecution']) {
             $object->setLastExecution($data['LastExecution']);
             unset($data['LastExecution']);
-        }
-        elseif (\array_key_exists('LastExecution', $data) && $data['LastExecution'] === null) {
+        } elseif (\array_key_exists('LastExecution', $data) && null === $data['LastExecution']) {
             $object->setLastExecution(null);
         }
         foreach ($data as $key => $value) {
@@ -60,14 +63,16 @@ class ServiceJobStatusNormalizer implements DenormalizerInterface, NormalizerInt
                 $object[$key] = $value;
             }
         }
+
         return $object;
     }
+
     /**
      * @return array|string|int|float|bool|\ArrayObject|null
      */
-    public function normalize($object, $format = null, array $context = array())
+    public function normalize($object, $format = null, array $context = [])
     {
-        $data = array();
+        $data = [];
         if ($object->isInitialized('jobIteration') && null !== $object->getJobIteration()) {
             $data['JobIteration'] = $this->normalizer->normalize($object->getJobIteration(), 'json', $context);
         }
@@ -79,6 +84,7 @@ class ServiceJobStatusNormalizer implements DenormalizerInterface, NormalizerInt
                 $data[$key] = $value;
             }
         }
+
         return $data;
     }
 }

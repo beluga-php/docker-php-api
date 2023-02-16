@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Docker\API\Exception;
 
 class ConflictException extends \RuntimeException implements ClientException

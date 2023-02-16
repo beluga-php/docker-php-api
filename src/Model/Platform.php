@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Docker\API\Model;
 
 class Platform extends \ArrayObject
@@ -7,18 +9,18 @@ class Platform extends \ArrayObject
     /**
      * @var array
      */
-    protected $initialized = array();
-    public function isInitialized($property) : bool
+    protected $initialized = [];
+
+    public function isInitialized($property): bool
     {
-        return array_key_exists($property, $this->initialized);
+        return \array_key_exists($property, $this->initialized);
     }
     /**
-    * Architecture represents the hardware architecture (for example,
-    `x86_64`).
-    
-    *
-    * @var string|null
-    */
+     * Architecture represents the hardware architecture (for example,
+     * `x86_64`).
+     *
+     * @var string|null
+     */
     protected $architecture;
     /**
      * OS represents the Operating System (for example, `linux` or `windows`).
@@ -26,52 +28,44 @@ class Platform extends \ArrayObject
      * @var string|null
      */
     protected $oS;
+
     /**
-    * Architecture represents the hardware architecture (for example,
-    `x86_64`).
-    
-    *
-    * @return string|null
-    */
-    public function getArchitecture() : ?string
+     * Architecture represents the hardware architecture (for example,
+     * `x86_64`).
+     */
+    public function getArchitecture(): ?string
     {
         return $this->architecture;
     }
+
     /**
-    * Architecture represents the hardware architecture (for example,
-    `x86_64`).
-    
-    *
-    * @param string|null $architecture
-    *
-    * @return self
-    */
-    public function setArchitecture(?string $architecture) : self
+     * Architecture represents the hardware architecture (for example,
+     * `x86_64`).
+     */
+    public function setArchitecture(?string $architecture): self
     {
         $this->initialized['architecture'] = true;
         $this->architecture = $architecture;
+
         return $this;
     }
+
     /**
      * OS represents the Operating System (for example, `linux` or `windows`).
-     *
-     * @return string|null
      */
-    public function getOS() : ?string
+    public function getOS(): ?string
     {
         return $this->oS;
     }
+
     /**
      * OS represents the Operating System (for example, `linux` or `windows`).
-     *
-     * @param string|null $oS
-     *
-     * @return self
      */
-    public function setOS(?string $oS) : self
+    public function setOS(?string $oS): self
     {
         $this->initialized['oS'] = true;
         $this->oS = $oS;
+
         return $this;
     }
 }

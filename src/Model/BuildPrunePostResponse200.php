@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Docker\API\Model;
 
 class BuildPrunePostResponse200 extends \ArrayObject
@@ -7,65 +9,58 @@ class BuildPrunePostResponse200 extends \ArrayObject
     /**
      * @var array
      */
-    protected $initialized = array();
-    public function isInitialized($property) : bool
+    protected $initialized = [];
+
+    public function isInitialized($property): bool
     {
-        return array_key_exists($property, $this->initialized);
+        return \array_key_exists($property, $this->initialized);
     }
     /**
-     * 
-     *
      * @var string[]|null
      */
     protected $cachesDeleted;
     /**
-     * Disk space reclaimed in bytes
+     * Disk space reclaimed in bytes.
      *
      * @var int|null
      */
     protected $spaceReclaimed;
+
     /**
-     * 
-     *
      * @return string[]|null
      */
-    public function getCachesDeleted() : ?array
+    public function getCachesDeleted(): ?array
     {
         return $this->cachesDeleted;
     }
+
     /**
-     * 
-     *
      * @param string[]|null $cachesDeleted
-     *
-     * @return self
      */
-    public function setCachesDeleted(?array $cachesDeleted) : self
+    public function setCachesDeleted(?array $cachesDeleted): self
     {
         $this->initialized['cachesDeleted'] = true;
         $this->cachesDeleted = $cachesDeleted;
+
         return $this;
     }
+
     /**
-     * Disk space reclaimed in bytes
-     *
-     * @return int|null
+     * Disk space reclaimed in bytes.
      */
-    public function getSpaceReclaimed() : ?int
+    public function getSpaceReclaimed(): ?int
     {
         return $this->spaceReclaimed;
     }
+
     /**
-     * Disk space reclaimed in bytes
-     *
-     * @param int|null $spaceReclaimed
-     *
-     * @return self
+     * Disk space reclaimed in bytes.
      */
-    public function setSpaceReclaimed(?int $spaceReclaimed) : self
+    public function setSpaceReclaimed(?int $spaceReclaimed): self
     {
         $this->initialized['spaceReclaimed'] = true;
         $this->spaceReclaimed = $spaceReclaimed;
+
         return $this;
     }
 }

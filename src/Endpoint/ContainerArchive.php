@@ -1,55 +1,68 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Docker\API\Endpoint;
 
 class ContainerArchive extends \Docker\API\Runtime\Client\BaseEndpoint implements \Docker\API\Runtime\Client\Endpoint
 {
+    use \Docker\API\Runtime\Client\EndpointTrait;
     protected $id;
     protected $accept;
+
     /**
      * Get a tar archive of a resource in the filesystem of container id.
      *
-     * @param string $id ID or name of the container
-     * @param array $queryParameters {
+     * @param string $id              ID or name of the container
+     * @param array  $queryParameters {
+     *
      *     @var string $path Resource in the container’s filesystem to archive.
      * }
+     *
      * @param array $accept Accept content header application/x-tar|application/json
      */
-    public function __construct(string $id, array $queryParameters = array(), array $accept = array())
+    public function __construct(string $id, array $queryParameters = [], array $accept = [])
     {
         $this->id = $id;
         $this->queryParameters = $queryParameters;
         $this->accept = $accept;
     }
-    use \Docker\API\Runtime\Client\EndpointTrait;
-    public function getMethod() : string
+
+    public function getMethod(): string
     {
         return 'GET';
     }
-    public function getUri() : string
+
+    public function getUri(): string
     {
-        return str_replace(array('{id}'), array($this->id), '/containers/{id}/archive');
+        return str_replace(['{id}'], [$this->id], '/containers/{id}/archive');
     }
-    public function getBody(\Symfony\Component\Serializer\SerializerInterface $serializer, $streamFactory = null) : array
+
+    public function getBody(\Symfony\Component\Serializer\SerializerInterface $serializer, $streamFactory = null): array
     {
-        return array(array(), null);
+        return [[], null];
     }
-    public function getExtraHeaders() : array
+
+    public function getExtraHeaders(): array
     {
         if (empty($this->accept)) {
-            return array('Accept' => array('application/x-tar', 'application/json'));
+            return ['Accept' => ['application/x-tar', 'application/json']];
         }
+
         return $this->accept;
     }
-    protected function getQueryOptionsResolver() : \Symfony\Component\OptionsResolver\OptionsResolver
+
+    protected function getQueryOptionsResolver(): \Symfony\Component\OptionsResolver\OptionsResolver
     {
         $optionsResolver = parent::getQueryOptionsResolver();
-        $optionsResolver->setDefined(array('path'));
-        $optionsResolver->setRequired(array('path'));
-        $optionsResolver->setDefaults(array());
-        $optionsResolver->addAllowedTypes('path', array('string'));
+        $optionsResolver->setDefined(['path']);
+        $optionsResolver->setRequired(['path']);
+        $optionsResolver->setDefaults([]);
+        $optionsResolver->addAllowedTypes('path', ['string']);
+
         return $optionsResolver;
     }
+
     /**
      * {@inheritdoc}
      *
@@ -65,14 +78,15 @@ class ContainerArchive extends \Docker\API\Runtime\Client\BaseEndpoint implement
         }
         if (400 === $status) {
         }
-        if (is_null($contentType) === false && (404 === $status && mb_strpos($contentType, 'application/json') !== false)) {
+        if ((null === $contentType) === false && (404 === $status && false !== mb_strpos($contentType, 'application/json'))) {
             throw new \Docker\API\Exception\ContainerArchiveNotFoundException($response);
         }
         if (500 === $status) {
         }
     }
-    public function getAuthenticationScopes() : array
+
+    public function getAuthenticationScopes(): array
     {
-        return array();
+        return [];
     }
 }

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Docker\API\Model;
 
 class SystemInfoDefaultAddressPoolsItem extends \ArrayObject
@@ -7,65 +9,60 @@ class SystemInfoDefaultAddressPoolsItem extends \ArrayObject
     /**
      * @var array
      */
-    protected $initialized = array();
-    public function isInitialized($property) : bool
+    protected $initialized = [];
+
+    public function isInitialized($property): bool
     {
-        return array_key_exists($property, $this->initialized);
+        return \array_key_exists($property, $this->initialized);
     }
     /**
-     * The network address in CIDR format
+     * The network address in CIDR format.
      *
      * @var string|null
      */
     protected $base;
     /**
-     * The network pool size
+     * The network pool size.
      *
      * @var int|null
      */
     protected $size;
+
     /**
-     * The network address in CIDR format
-     *
-     * @return string|null
+     * The network address in CIDR format.
      */
-    public function getBase() : ?string
+    public function getBase(): ?string
     {
         return $this->base;
     }
+
     /**
-     * The network address in CIDR format
-     *
-     * @param string|null $base
-     *
-     * @return self
+     * The network address in CIDR format.
      */
-    public function setBase(?string $base) : self
+    public function setBase(?string $base): self
     {
         $this->initialized['base'] = true;
         $this->base = $base;
+
         return $this;
     }
+
     /**
-     * The network pool size
-     *
-     * @return int|null
+     * The network pool size.
      */
-    public function getSize() : ?int
+    public function getSize(): ?int
     {
         return $this->size;
     }
+
     /**
-     * The network pool size
-     *
-     * @param int|null $size
-     *
-     * @return self
+     * The network pool size.
      */
-    public function setSize(?int $size) : self
+    public function setSize(?int $size): self
     {
         $this->initialized['size'] = true;
         $this->size = $size;
+
         return $this;
     }
 }

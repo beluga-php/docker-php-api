@@ -1,35 +1,40 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Docker\API\Normalizer;
 
-use Jane\Component\JsonSchemaRuntime\Reference;
 use Docker\API\Runtime\Normalizer\CheckArray;
 use Docker\API\Runtime\Normalizer\ValidatorTrait;
-use Symfony\Component\Serializer\Exception\InvalidArgumentException;
+use Jane\Component\JsonSchemaRuntime\Reference;
 use Symfony\Component\Serializer\Normalizer\DenormalizerAwareInterface;
 use Symfony\Component\Serializer\Normalizer\DenormalizerAwareTrait;
 use Symfony\Component\Serializer\Normalizer\DenormalizerInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerAwareInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerAwareTrait;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
+
 class HealthConfigNormalizer implements DenormalizerInterface, NormalizerInterface, DenormalizerAwareInterface, NormalizerAwareInterface
 {
+    use CheckArray;
     use DenormalizerAwareTrait;
     use NormalizerAwareTrait;
-    use CheckArray;
     use ValidatorTrait;
-    public function supportsDenormalization($data, $type, $format = null) : bool
+
+    public function supportsDenormalization($data, $type, $format = null): bool
     {
-        return $type === 'Docker\\API\\Model\\HealthConfig';
+        return 'Docker\\API\\Model\\HealthConfig' === $type;
     }
-    public function supportsNormalization($data, $format = null) : bool
+
+    public function supportsNormalization($data, $format = null): bool
     {
-        return is_object($data) && get_class($data) === 'Docker\\API\\Model\\HealthConfig';
+        return \is_object($data) && 'Docker\\API\\Model\\HealthConfig' === $data::class;
     }
+
     /**
      * @return mixed
      */
-    public function denormalize($data, $class, $format = null, array $context = array())
+    public function denormalize($data, $class, $format = null, array $context = [])
     {
         if (isset($data['$ref'])) {
             return new Reference($data['$ref'], $context['document-origin']);
@@ -41,43 +46,38 @@ class HealthConfigNormalizer implements DenormalizerInterface, NormalizerInterfa
         if (null === $data || false === \is_array($data)) {
             return $object;
         }
-        if (\array_key_exists('Test', $data) && $data['Test'] !== null) {
-            $values = array();
+        if (\array_key_exists('Test', $data) && null !== $data['Test']) {
+            $values = [];
             foreach ($data['Test'] as $value) {
                 $values[] = $value;
             }
             $object->setTest($values);
             unset($data['Test']);
-        }
-        elseif (\array_key_exists('Test', $data) && $data['Test'] === null) {
+        } elseif (\array_key_exists('Test', $data) && null === $data['Test']) {
             $object->setTest(null);
         }
-        if (\array_key_exists('Interval', $data) && $data['Interval'] !== null) {
+        if (\array_key_exists('Interval', $data) && null !== $data['Interval']) {
             $object->setInterval($data['Interval']);
             unset($data['Interval']);
-        }
-        elseif (\array_key_exists('Interval', $data) && $data['Interval'] === null) {
+        } elseif (\array_key_exists('Interval', $data) && null === $data['Interval']) {
             $object->setInterval(null);
         }
-        if (\array_key_exists('Timeout', $data) && $data['Timeout'] !== null) {
+        if (\array_key_exists('Timeout', $data) && null !== $data['Timeout']) {
             $object->setTimeout($data['Timeout']);
             unset($data['Timeout']);
-        }
-        elseif (\array_key_exists('Timeout', $data) && $data['Timeout'] === null) {
+        } elseif (\array_key_exists('Timeout', $data) && null === $data['Timeout']) {
             $object->setTimeout(null);
         }
-        if (\array_key_exists('Retries', $data) && $data['Retries'] !== null) {
+        if (\array_key_exists('Retries', $data) && null !== $data['Retries']) {
             $object->setRetries($data['Retries']);
             unset($data['Retries']);
-        }
-        elseif (\array_key_exists('Retries', $data) && $data['Retries'] === null) {
+        } elseif (\array_key_exists('Retries', $data) && null === $data['Retries']) {
             $object->setRetries(null);
         }
-        if (\array_key_exists('StartPeriod', $data) && $data['StartPeriod'] !== null) {
+        if (\array_key_exists('StartPeriod', $data) && null !== $data['StartPeriod']) {
             $object->setStartPeriod($data['StartPeriod']);
             unset($data['StartPeriod']);
-        }
-        elseif (\array_key_exists('StartPeriod', $data) && $data['StartPeriod'] === null) {
+        } elseif (\array_key_exists('StartPeriod', $data) && null === $data['StartPeriod']) {
             $object->setStartPeriod(null);
         }
         foreach ($data as $key => $value_1) {
@@ -85,16 +85,18 @@ class HealthConfigNormalizer implements DenormalizerInterface, NormalizerInterfa
                 $object[$key] = $value_1;
             }
         }
+
         return $object;
     }
+
     /**
      * @return array|string|int|float|bool|\ArrayObject|null
      */
-    public function normalize($object, $format = null, array $context = array())
+    public function normalize($object, $format = null, array $context = [])
     {
-        $data = array();
+        $data = [];
         if ($object->isInitialized('test') && null !== $object->getTest()) {
-            $values = array();
+            $values = [];
             foreach ($object->getTest() as $value) {
                 $values[] = $value;
             }
@@ -117,6 +119,7 @@ class HealthConfigNormalizer implements DenormalizerInterface, NormalizerInterfa
                 $data[$key] = $value_1;
             }
         }
+
         return $data;
     }
 }

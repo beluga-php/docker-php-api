@@ -1,35 +1,40 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Docker\API\Normalizer;
 
-use Jane\Component\JsonSchemaRuntime\Reference;
 use Docker\API\Runtime\Normalizer\CheckArray;
 use Docker\API\Runtime\Normalizer\ValidatorTrait;
-use Symfony\Component\Serializer\Exception\InvalidArgumentException;
+use Jane\Component\JsonSchemaRuntime\Reference;
 use Symfony\Component\Serializer\Normalizer\DenormalizerAwareInterface;
 use Symfony\Component\Serializer\Normalizer\DenormalizerAwareTrait;
 use Symfony\Component\Serializer\Normalizer\DenormalizerInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerAwareInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerAwareTrait;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
+
 class ContainerStateNormalizer implements DenormalizerInterface, NormalizerInterface, DenormalizerAwareInterface, NormalizerAwareInterface
 {
+    use CheckArray;
     use DenormalizerAwareTrait;
     use NormalizerAwareTrait;
-    use CheckArray;
     use ValidatorTrait;
-    public function supportsDenormalization($data, $type, $format = null) : bool
+
+    public function supportsDenormalization($data, $type, $format = null): bool
     {
-        return $type === 'Docker\\API\\Model\\ContainerState';
+        return 'Docker\\API\\Model\\ContainerState' === $type;
     }
-    public function supportsNormalization($data, $format = null) : bool
+
+    public function supportsNormalization($data, $format = null): bool
     {
-        return is_object($data) && get_class($data) === 'Docker\\API\\Model\\ContainerState';
+        return \is_object($data) && 'Docker\\API\\Model\\ContainerState' === $data::class;
     }
+
     /**
      * @return mixed
      */
-    public function denormalize($data, $class, $format = null, array $context = array())
+    public function denormalize($data, $class, $format = null, array $context = [])
     {
         if (isset($data['$ref'])) {
             return new Reference($data['$ref'], $context['document-origin']);
@@ -41,88 +46,76 @@ class ContainerStateNormalizer implements DenormalizerInterface, NormalizerInter
         if (null === $data || false === \is_array($data)) {
             return $object;
         }
-        if (\array_key_exists('Status', $data) && $data['Status'] !== null) {
+        if (\array_key_exists('Status', $data) && null !== $data['Status']) {
             $object->setStatus($data['Status']);
             unset($data['Status']);
-        }
-        elseif (\array_key_exists('Status', $data) && $data['Status'] === null) {
+        } elseif (\array_key_exists('Status', $data) && null === $data['Status']) {
             $object->setStatus(null);
         }
-        if (\array_key_exists('Running', $data) && $data['Running'] !== null) {
+        if (\array_key_exists('Running', $data) && null !== $data['Running']) {
             $object->setRunning($data['Running']);
             unset($data['Running']);
-        }
-        elseif (\array_key_exists('Running', $data) && $data['Running'] === null) {
+        } elseif (\array_key_exists('Running', $data) && null === $data['Running']) {
             $object->setRunning(null);
         }
-        if (\array_key_exists('Paused', $data) && $data['Paused'] !== null) {
+        if (\array_key_exists('Paused', $data) && null !== $data['Paused']) {
             $object->setPaused($data['Paused']);
             unset($data['Paused']);
-        }
-        elseif (\array_key_exists('Paused', $data) && $data['Paused'] === null) {
+        } elseif (\array_key_exists('Paused', $data) && null === $data['Paused']) {
             $object->setPaused(null);
         }
-        if (\array_key_exists('Restarting', $data) && $data['Restarting'] !== null) {
+        if (\array_key_exists('Restarting', $data) && null !== $data['Restarting']) {
             $object->setRestarting($data['Restarting']);
             unset($data['Restarting']);
-        }
-        elseif (\array_key_exists('Restarting', $data) && $data['Restarting'] === null) {
+        } elseif (\array_key_exists('Restarting', $data) && null === $data['Restarting']) {
             $object->setRestarting(null);
         }
-        if (\array_key_exists('OOMKilled', $data) && $data['OOMKilled'] !== null) {
+        if (\array_key_exists('OOMKilled', $data) && null !== $data['OOMKilled']) {
             $object->setOOMKilled($data['OOMKilled']);
             unset($data['OOMKilled']);
-        }
-        elseif (\array_key_exists('OOMKilled', $data) && $data['OOMKilled'] === null) {
+        } elseif (\array_key_exists('OOMKilled', $data) && null === $data['OOMKilled']) {
             $object->setOOMKilled(null);
         }
-        if (\array_key_exists('Dead', $data) && $data['Dead'] !== null) {
+        if (\array_key_exists('Dead', $data) && null !== $data['Dead']) {
             $object->setDead($data['Dead']);
             unset($data['Dead']);
-        }
-        elseif (\array_key_exists('Dead', $data) && $data['Dead'] === null) {
+        } elseif (\array_key_exists('Dead', $data) && null === $data['Dead']) {
             $object->setDead(null);
         }
-        if (\array_key_exists('Pid', $data) && $data['Pid'] !== null) {
+        if (\array_key_exists('Pid', $data) && null !== $data['Pid']) {
             $object->setPid($data['Pid']);
             unset($data['Pid']);
-        }
-        elseif (\array_key_exists('Pid', $data) && $data['Pid'] === null) {
+        } elseif (\array_key_exists('Pid', $data) && null === $data['Pid']) {
             $object->setPid(null);
         }
-        if (\array_key_exists('ExitCode', $data) && $data['ExitCode'] !== null) {
+        if (\array_key_exists('ExitCode', $data) && null !== $data['ExitCode']) {
             $object->setExitCode($data['ExitCode']);
             unset($data['ExitCode']);
-        }
-        elseif (\array_key_exists('ExitCode', $data) && $data['ExitCode'] === null) {
+        } elseif (\array_key_exists('ExitCode', $data) && null === $data['ExitCode']) {
             $object->setExitCode(null);
         }
-        if (\array_key_exists('Error', $data) && $data['Error'] !== null) {
+        if (\array_key_exists('Error', $data) && null !== $data['Error']) {
             $object->setError($data['Error']);
             unset($data['Error']);
-        }
-        elseif (\array_key_exists('Error', $data) && $data['Error'] === null) {
+        } elseif (\array_key_exists('Error', $data) && null === $data['Error']) {
             $object->setError(null);
         }
-        if (\array_key_exists('StartedAt', $data) && $data['StartedAt'] !== null) {
+        if (\array_key_exists('StartedAt', $data) && null !== $data['StartedAt']) {
             $object->setStartedAt($data['StartedAt']);
             unset($data['StartedAt']);
-        }
-        elseif (\array_key_exists('StartedAt', $data) && $data['StartedAt'] === null) {
+        } elseif (\array_key_exists('StartedAt', $data) && null === $data['StartedAt']) {
             $object->setStartedAt(null);
         }
-        if (\array_key_exists('FinishedAt', $data) && $data['FinishedAt'] !== null) {
+        if (\array_key_exists('FinishedAt', $data) && null !== $data['FinishedAt']) {
             $object->setFinishedAt($data['FinishedAt']);
             unset($data['FinishedAt']);
-        }
-        elseif (\array_key_exists('FinishedAt', $data) && $data['FinishedAt'] === null) {
+        } elseif (\array_key_exists('FinishedAt', $data) && null === $data['FinishedAt']) {
             $object->setFinishedAt(null);
         }
-        if (\array_key_exists('Health', $data) && $data['Health'] !== null) {
+        if (\array_key_exists('Health', $data) && null !== $data['Health']) {
             $object->setHealth($this->denormalizer->denormalize($data['Health'], 'Docker\\API\\Model\\Health', 'json', $context));
             unset($data['Health']);
-        }
-        elseif (\array_key_exists('Health', $data) && $data['Health'] === null) {
+        } elseif (\array_key_exists('Health', $data) && null === $data['Health']) {
             $object->setHealth(null);
         }
         foreach ($data as $key => $value) {
@@ -130,14 +123,16 @@ class ContainerStateNormalizer implements DenormalizerInterface, NormalizerInter
                 $object[$key] = $value;
             }
         }
+
         return $object;
     }
+
     /**
      * @return array|string|int|float|bool|\ArrayObject|null
      */
-    public function normalize($object, $format = null, array $context = array())
+    public function normalize($object, $format = null, array $context = [])
     {
-        $data = array();
+        $data = [];
         if ($object->isInitialized('status') && null !== $object->getStatus()) {
             $data['Status'] = $object->getStatus();
         }
@@ -179,6 +174,7 @@ class ContainerStateNormalizer implements DenormalizerInterface, NormalizerInter
                 $data[$key] = $value;
             }
         }
+
         return $data;
     }
 }

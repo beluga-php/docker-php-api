@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Docker\API\Model;
 
 class ContainersIdArchiveHeadJsonResponse400 extends \ArrayObject
@@ -7,10 +9,11 @@ class ContainersIdArchiveHeadJsonResponse400 extends \ArrayObject
     /**
      * @var array
      */
-    protected $initialized = array();
-    public function isInitialized($property) : bool
+    protected $initialized = [];
+
+    public function isInitialized($property): bool
     {
-        return array_key_exists($property, $this->initialized);
+        return \array_key_exists($property, $this->initialized);
     }
     /**
      * Represents an error.
@@ -19,62 +22,53 @@ class ContainersIdArchiveHeadJsonResponse400 extends \ArrayObject
      */
     protected $errorResponse;
     /**
-    * The error message. Either "must specify path parameter"
-    (path cannot be empty) or "not a directory" (path was
-    asserted to be a directory but exists as a file).
-    
-    *
-    * @var string|null
-    */
+     * The error message. Either "must specify path parameter"
+     * (path cannot be empty) or "not a directory" (path was
+     * asserted to be a directory but exists as a file).
+     *
+     * @var string|null
+     */
     protected $message;
+
     /**
      * Represents an error.
-     *
-     * @return ErrorResponse|null
      */
-    public function getErrorResponse() : ?ErrorResponse
+    public function getErrorResponse(): ?ErrorResponse
     {
         return $this->errorResponse;
     }
+
     /**
      * Represents an error.
-     *
-     * @param ErrorResponse|null $errorResponse
-     *
-     * @return self
      */
-    public function setErrorResponse(?ErrorResponse $errorResponse) : self
+    public function setErrorResponse(?ErrorResponse $errorResponse): self
     {
         $this->initialized['errorResponse'] = true;
         $this->errorResponse = $errorResponse;
+
         return $this;
     }
+
     /**
-    * The error message. Either "must specify path parameter"
-    (path cannot be empty) or "not a directory" (path was
-    asserted to be a directory but exists as a file).
-    
-    *
-    * @return string|null
-    */
-    public function getMessage() : ?string
+     * The error message. Either "must specify path parameter"
+     * (path cannot be empty) or "not a directory" (path was
+     * asserted to be a directory but exists as a file).
+     */
+    public function getMessage(): ?string
     {
         return $this->message;
     }
+
     /**
-    * The error message. Either "must specify path parameter"
-    (path cannot be empty) or "not a directory" (path was
-    asserted to be a directory but exists as a file).
-    
-    *
-    * @param string|null $message
-    *
-    * @return self
-    */
-    public function setMessage(?string $message) : self
+     * The error message. Either "must specify path parameter"
+     * (path cannot be empty) or "not a directory" (path was
+     * asserted to be a directory but exists as a file).
+     */
+    public function setMessage(?string $message): self
     {
         $this->initialized['message'] = true;
         $this->message = $message;
+
         return $this;
     }
 }

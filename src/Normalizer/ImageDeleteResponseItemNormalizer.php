@@ -1,35 +1,40 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Docker\API\Normalizer;
 
-use Jane\Component\JsonSchemaRuntime\Reference;
 use Docker\API\Runtime\Normalizer\CheckArray;
 use Docker\API\Runtime\Normalizer\ValidatorTrait;
-use Symfony\Component\Serializer\Exception\InvalidArgumentException;
+use Jane\Component\JsonSchemaRuntime\Reference;
 use Symfony\Component\Serializer\Normalizer\DenormalizerAwareInterface;
 use Symfony\Component\Serializer\Normalizer\DenormalizerAwareTrait;
 use Symfony\Component\Serializer\Normalizer\DenormalizerInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerAwareInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerAwareTrait;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
+
 class ImageDeleteResponseItemNormalizer implements DenormalizerInterface, NormalizerInterface, DenormalizerAwareInterface, NormalizerAwareInterface
 {
+    use CheckArray;
     use DenormalizerAwareTrait;
     use NormalizerAwareTrait;
-    use CheckArray;
     use ValidatorTrait;
-    public function supportsDenormalization($data, $type, $format = null) : bool
+
+    public function supportsDenormalization($data, $type, $format = null): bool
     {
-        return $type === 'Docker\\API\\Model\\ImageDeleteResponseItem';
+        return 'Docker\\API\\Model\\ImageDeleteResponseItem' === $type;
     }
-    public function supportsNormalization($data, $format = null) : bool
+
+    public function supportsNormalization($data, $format = null): bool
     {
-        return is_object($data) && get_class($data) === 'Docker\\API\\Model\\ImageDeleteResponseItem';
+        return \is_object($data) && 'Docker\\API\\Model\\ImageDeleteResponseItem' === $data::class;
     }
+
     /**
      * @return mixed
      */
-    public function denormalize($data, $class, $format = null, array $context = array())
+    public function denormalize($data, $class, $format = null, array $context = [])
     {
         if (isset($data['$ref'])) {
             return new Reference($data['$ref'], $context['document-origin']);
@@ -41,18 +46,16 @@ class ImageDeleteResponseItemNormalizer implements DenormalizerInterface, Normal
         if (null === $data || false === \is_array($data)) {
             return $object;
         }
-        if (\array_key_exists('Untagged', $data) && $data['Untagged'] !== null) {
+        if (\array_key_exists('Untagged', $data) && null !== $data['Untagged']) {
             $object->setUntagged($data['Untagged']);
             unset($data['Untagged']);
-        }
-        elseif (\array_key_exists('Untagged', $data) && $data['Untagged'] === null) {
+        } elseif (\array_key_exists('Untagged', $data) && null === $data['Untagged']) {
             $object->setUntagged(null);
         }
-        if (\array_key_exists('Deleted', $data) && $data['Deleted'] !== null) {
+        if (\array_key_exists('Deleted', $data) && null !== $data['Deleted']) {
             $object->setDeleted($data['Deleted']);
             unset($data['Deleted']);
-        }
-        elseif (\array_key_exists('Deleted', $data) && $data['Deleted'] === null) {
+        } elseif (\array_key_exists('Deleted', $data) && null === $data['Deleted']) {
             $object->setDeleted(null);
         }
         foreach ($data as $key => $value) {
@@ -60,14 +63,16 @@ class ImageDeleteResponseItemNormalizer implements DenormalizerInterface, Normal
                 $object[$key] = $value;
             }
         }
+
         return $object;
     }
+
     /**
      * @return array|string|int|float|bool|\ArrayObject|null
      */
-    public function normalize($object, $format = null, array $context = array())
+    public function normalize($object, $format = null, array $context = [])
     {
-        $data = array();
+        $data = [];
         if ($object->isInitialized('untagged') && null !== $object->getUntagged()) {
             $data['Untagged'] = $object->getUntagged();
         }
@@ -79,6 +84,7 @@ class ImageDeleteResponseItemNormalizer implements DenormalizerInterface, Normal
                 $data[$key] = $value;
             }
         }
+
         return $data;
     }
 }

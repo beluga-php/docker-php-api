@@ -1,35 +1,40 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Docker\API\Normalizer;
 
-use Jane\Component\JsonSchemaRuntime\Reference;
 use Docker\API\Runtime\Normalizer\CheckArray;
 use Docker\API\Runtime\Normalizer\ValidatorTrait;
-use Symfony\Component\Serializer\Exception\InvalidArgumentException;
+use Jane\Component\JsonSchemaRuntime\Reference;
 use Symfony\Component\Serializer\Normalizer\DenormalizerAwareInterface;
 use Symfony\Component\Serializer\Normalizer\DenormalizerAwareTrait;
 use Symfony\Component\Serializer\Normalizer\DenormalizerInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerAwareInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerAwareTrait;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
+
 class TaskSpecContainerSpecPrivilegesSELinuxContextNormalizer implements DenormalizerInterface, NormalizerInterface, DenormalizerAwareInterface, NormalizerAwareInterface
 {
+    use CheckArray;
     use DenormalizerAwareTrait;
     use NormalizerAwareTrait;
-    use CheckArray;
     use ValidatorTrait;
-    public function supportsDenormalization($data, $type, $format = null) : bool
+
+    public function supportsDenormalization($data, $type, $format = null): bool
     {
-        return $type === 'Docker\\API\\Model\\TaskSpecContainerSpecPrivilegesSELinuxContext';
+        return 'Docker\\API\\Model\\TaskSpecContainerSpecPrivilegesSELinuxContext' === $type;
     }
-    public function supportsNormalization($data, $format = null) : bool
+
+    public function supportsNormalization($data, $format = null): bool
     {
-        return is_object($data) && get_class($data) === 'Docker\\API\\Model\\TaskSpecContainerSpecPrivilegesSELinuxContext';
+        return \is_object($data) && 'Docker\\API\\Model\\TaskSpecContainerSpecPrivilegesSELinuxContext' === $data::class;
     }
+
     /**
      * @return mixed
      */
-    public function denormalize($data, $class, $format = null, array $context = array())
+    public function denormalize($data, $class, $format = null, array $context = [])
     {
         if (isset($data['$ref'])) {
             return new Reference($data['$ref'], $context['document-origin']);
@@ -41,39 +46,34 @@ class TaskSpecContainerSpecPrivilegesSELinuxContextNormalizer implements Denorma
         if (null === $data || false === \is_array($data)) {
             return $object;
         }
-        if (\array_key_exists('Disable', $data) && $data['Disable'] !== null) {
+        if (\array_key_exists('Disable', $data) && null !== $data['Disable']) {
             $object->setDisable($data['Disable']);
             unset($data['Disable']);
-        }
-        elseif (\array_key_exists('Disable', $data) && $data['Disable'] === null) {
+        } elseif (\array_key_exists('Disable', $data) && null === $data['Disable']) {
             $object->setDisable(null);
         }
-        if (\array_key_exists('User', $data) && $data['User'] !== null) {
+        if (\array_key_exists('User', $data) && null !== $data['User']) {
             $object->setUser($data['User']);
             unset($data['User']);
-        }
-        elseif (\array_key_exists('User', $data) && $data['User'] === null) {
+        } elseif (\array_key_exists('User', $data) && null === $data['User']) {
             $object->setUser(null);
         }
-        if (\array_key_exists('Role', $data) && $data['Role'] !== null) {
+        if (\array_key_exists('Role', $data) && null !== $data['Role']) {
             $object->setRole($data['Role']);
             unset($data['Role']);
-        }
-        elseif (\array_key_exists('Role', $data) && $data['Role'] === null) {
+        } elseif (\array_key_exists('Role', $data) && null === $data['Role']) {
             $object->setRole(null);
         }
-        if (\array_key_exists('Type', $data) && $data['Type'] !== null) {
+        if (\array_key_exists('Type', $data) && null !== $data['Type']) {
             $object->setType($data['Type']);
             unset($data['Type']);
-        }
-        elseif (\array_key_exists('Type', $data) && $data['Type'] === null) {
+        } elseif (\array_key_exists('Type', $data) && null === $data['Type']) {
             $object->setType(null);
         }
-        if (\array_key_exists('Level', $data) && $data['Level'] !== null) {
+        if (\array_key_exists('Level', $data) && null !== $data['Level']) {
             $object->setLevel($data['Level']);
             unset($data['Level']);
-        }
-        elseif (\array_key_exists('Level', $data) && $data['Level'] === null) {
+        } elseif (\array_key_exists('Level', $data) && null === $data['Level']) {
             $object->setLevel(null);
         }
         foreach ($data as $key => $value) {
@@ -81,14 +81,16 @@ class TaskSpecContainerSpecPrivilegesSELinuxContextNormalizer implements Denorma
                 $object[$key] = $value;
             }
         }
+
         return $object;
     }
+
     /**
      * @return array|string|int|float|bool|\ArrayObject|null
      */
-    public function normalize($object, $format = null, array $context = array())
+    public function normalize($object, $format = null, array $context = [])
     {
-        $data = array();
+        $data = [];
         if ($object->isInitialized('disable') && null !== $object->getDisable()) {
             $data['Disable'] = $object->getDisable();
         }
@@ -109,6 +111,7 @@ class TaskSpecContainerSpecPrivilegesSELinuxContextNormalizer implements Denorma
                 $data[$key] = $value;
             }
         }
+
         return $data;
     }
 }

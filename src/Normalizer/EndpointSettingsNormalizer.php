@@ -1,35 +1,40 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Docker\API\Normalizer;
 
-use Jane\Component\JsonSchemaRuntime\Reference;
 use Docker\API\Runtime\Normalizer\CheckArray;
 use Docker\API\Runtime\Normalizer\ValidatorTrait;
-use Symfony\Component\Serializer\Exception\InvalidArgumentException;
+use Jane\Component\JsonSchemaRuntime\Reference;
 use Symfony\Component\Serializer\Normalizer\DenormalizerAwareInterface;
 use Symfony\Component\Serializer\Normalizer\DenormalizerAwareTrait;
 use Symfony\Component\Serializer\Normalizer\DenormalizerInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerAwareInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerAwareTrait;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
+
 class EndpointSettingsNormalizer implements DenormalizerInterface, NormalizerInterface, DenormalizerAwareInterface, NormalizerAwareInterface
 {
+    use CheckArray;
     use DenormalizerAwareTrait;
     use NormalizerAwareTrait;
-    use CheckArray;
     use ValidatorTrait;
-    public function supportsDenormalization($data, $type, $format = null) : bool
+
+    public function supportsDenormalization($data, $type, $format = null): bool
     {
-        return $type === 'Docker\\API\\Model\\EndpointSettings';
+        return 'Docker\\API\\Model\\EndpointSettings' === $type;
     }
-    public function supportsNormalization($data, $format = null) : bool
+
+    public function supportsNormalization($data, $format = null): bool
     {
-        return is_object($data) && get_class($data) === 'Docker\\API\\Model\\EndpointSettings';
+        return \is_object($data) && 'Docker\\API\\Model\\EndpointSettings' === $data::class;
     }
+
     /**
      * @return mixed
      */
-    public function denormalize($data, $class, $format = null, array $context = array())
+    public function denormalize($data, $class, $format = null, array $context = [])
     {
         if (isset($data['$ref'])) {
             return new Reference($data['$ref'], $context['document-origin']);
@@ -41,107 +46,94 @@ class EndpointSettingsNormalizer implements DenormalizerInterface, NormalizerInt
         if (null === $data || false === \is_array($data)) {
             return $object;
         }
-        if (\array_key_exists('IPAMConfig', $data) && $data['IPAMConfig'] !== null) {
+        if (\array_key_exists('IPAMConfig', $data) && null !== $data['IPAMConfig']) {
             $object->setIPAMConfig($this->denormalizer->denormalize($data['IPAMConfig'], 'Docker\\API\\Model\\EndpointIPAMConfig', 'json', $context));
             unset($data['IPAMConfig']);
-        }
-        elseif (\array_key_exists('IPAMConfig', $data) && $data['IPAMConfig'] === null) {
+        } elseif (\array_key_exists('IPAMConfig', $data) && null === $data['IPAMConfig']) {
             $object->setIPAMConfig(null);
         }
-        if (\array_key_exists('Links', $data) && $data['Links'] !== null) {
-            $values = array();
+        if (\array_key_exists('Links', $data) && null !== $data['Links']) {
+            $values = [];
             foreach ($data['Links'] as $value) {
                 $values[] = $value;
             }
             $object->setLinks($values);
             unset($data['Links']);
-        }
-        elseif (\array_key_exists('Links', $data) && $data['Links'] === null) {
+        } elseif (\array_key_exists('Links', $data) && null === $data['Links']) {
             $object->setLinks(null);
         }
-        if (\array_key_exists('Aliases', $data) && $data['Aliases'] !== null) {
-            $values_1 = array();
+        if (\array_key_exists('Aliases', $data) && null !== $data['Aliases']) {
+            $values_1 = [];
             foreach ($data['Aliases'] as $value_1) {
                 $values_1[] = $value_1;
             }
             $object->setAliases($values_1);
             unset($data['Aliases']);
-        }
-        elseif (\array_key_exists('Aliases', $data) && $data['Aliases'] === null) {
+        } elseif (\array_key_exists('Aliases', $data) && null === $data['Aliases']) {
             $object->setAliases(null);
         }
-        if (\array_key_exists('NetworkID', $data) && $data['NetworkID'] !== null) {
+        if (\array_key_exists('NetworkID', $data) && null !== $data['NetworkID']) {
             $object->setNetworkID($data['NetworkID']);
             unset($data['NetworkID']);
-        }
-        elseif (\array_key_exists('NetworkID', $data) && $data['NetworkID'] === null) {
+        } elseif (\array_key_exists('NetworkID', $data) && null === $data['NetworkID']) {
             $object->setNetworkID(null);
         }
-        if (\array_key_exists('EndpointID', $data) && $data['EndpointID'] !== null) {
+        if (\array_key_exists('EndpointID', $data) && null !== $data['EndpointID']) {
             $object->setEndpointID($data['EndpointID']);
             unset($data['EndpointID']);
-        }
-        elseif (\array_key_exists('EndpointID', $data) && $data['EndpointID'] === null) {
+        } elseif (\array_key_exists('EndpointID', $data) && null === $data['EndpointID']) {
             $object->setEndpointID(null);
         }
-        if (\array_key_exists('Gateway', $data) && $data['Gateway'] !== null) {
+        if (\array_key_exists('Gateway', $data) && null !== $data['Gateway']) {
             $object->setGateway($data['Gateway']);
             unset($data['Gateway']);
-        }
-        elseif (\array_key_exists('Gateway', $data) && $data['Gateway'] === null) {
+        } elseif (\array_key_exists('Gateway', $data) && null === $data['Gateway']) {
             $object->setGateway(null);
         }
-        if (\array_key_exists('IPAddress', $data) && $data['IPAddress'] !== null) {
+        if (\array_key_exists('IPAddress', $data) && null !== $data['IPAddress']) {
             $object->setIPAddress($data['IPAddress']);
             unset($data['IPAddress']);
-        }
-        elseif (\array_key_exists('IPAddress', $data) && $data['IPAddress'] === null) {
+        } elseif (\array_key_exists('IPAddress', $data) && null === $data['IPAddress']) {
             $object->setIPAddress(null);
         }
-        if (\array_key_exists('IPPrefixLen', $data) && $data['IPPrefixLen'] !== null) {
+        if (\array_key_exists('IPPrefixLen', $data) && null !== $data['IPPrefixLen']) {
             $object->setIPPrefixLen($data['IPPrefixLen']);
             unset($data['IPPrefixLen']);
-        }
-        elseif (\array_key_exists('IPPrefixLen', $data) && $data['IPPrefixLen'] === null) {
+        } elseif (\array_key_exists('IPPrefixLen', $data) && null === $data['IPPrefixLen']) {
             $object->setIPPrefixLen(null);
         }
-        if (\array_key_exists('IPv6Gateway', $data) && $data['IPv6Gateway'] !== null) {
+        if (\array_key_exists('IPv6Gateway', $data) && null !== $data['IPv6Gateway']) {
             $object->setIPv6Gateway($data['IPv6Gateway']);
             unset($data['IPv6Gateway']);
-        }
-        elseif (\array_key_exists('IPv6Gateway', $data) && $data['IPv6Gateway'] === null) {
+        } elseif (\array_key_exists('IPv6Gateway', $data) && null === $data['IPv6Gateway']) {
             $object->setIPv6Gateway(null);
         }
-        if (\array_key_exists('GlobalIPv6Address', $data) && $data['GlobalIPv6Address'] !== null) {
+        if (\array_key_exists('GlobalIPv6Address', $data) && null !== $data['GlobalIPv6Address']) {
             $object->setGlobalIPv6Address($data['GlobalIPv6Address']);
             unset($data['GlobalIPv6Address']);
-        }
-        elseif (\array_key_exists('GlobalIPv6Address', $data) && $data['GlobalIPv6Address'] === null) {
+        } elseif (\array_key_exists('GlobalIPv6Address', $data) && null === $data['GlobalIPv6Address']) {
             $object->setGlobalIPv6Address(null);
         }
-        if (\array_key_exists('GlobalIPv6PrefixLen', $data) && $data['GlobalIPv6PrefixLen'] !== null) {
+        if (\array_key_exists('GlobalIPv6PrefixLen', $data) && null !== $data['GlobalIPv6PrefixLen']) {
             $object->setGlobalIPv6PrefixLen($data['GlobalIPv6PrefixLen']);
             unset($data['GlobalIPv6PrefixLen']);
-        }
-        elseif (\array_key_exists('GlobalIPv6PrefixLen', $data) && $data['GlobalIPv6PrefixLen'] === null) {
+        } elseif (\array_key_exists('GlobalIPv6PrefixLen', $data) && null === $data['GlobalIPv6PrefixLen']) {
             $object->setGlobalIPv6PrefixLen(null);
         }
-        if (\array_key_exists('MacAddress', $data) && $data['MacAddress'] !== null) {
+        if (\array_key_exists('MacAddress', $data) && null !== $data['MacAddress']) {
             $object->setMacAddress($data['MacAddress']);
             unset($data['MacAddress']);
-        }
-        elseif (\array_key_exists('MacAddress', $data) && $data['MacAddress'] === null) {
+        } elseif (\array_key_exists('MacAddress', $data) && null === $data['MacAddress']) {
             $object->setMacAddress(null);
         }
-        if (\array_key_exists('DriverOpts', $data) && $data['DriverOpts'] !== null) {
-            $values_2 = new \ArrayObject(array(), \ArrayObject::ARRAY_AS_PROPS);
+        if (\array_key_exists('DriverOpts', $data) && null !== $data['DriverOpts']) {
+            $values_2 = new \ArrayObject([], \ArrayObject::ARRAY_AS_PROPS);
             foreach ($data['DriverOpts'] as $key => $value_2) {
                 $values_2[$key] = $value_2;
             }
             $object->setDriverOpts($values_2);
             unset($data['DriverOpts']);
-        }
-        elseif (\array_key_exists('DriverOpts', $data) && $data['DriverOpts'] === null) {
+        } elseif (\array_key_exists('DriverOpts', $data) && null === $data['DriverOpts']) {
             $object->setDriverOpts(null);
         }
         foreach ($data as $key_1 => $value_3) {
@@ -149,26 +141,28 @@ class EndpointSettingsNormalizer implements DenormalizerInterface, NormalizerInt
                 $object[$key_1] = $value_3;
             }
         }
+
         return $object;
     }
+
     /**
      * @return array|string|int|float|bool|\ArrayObject|null
      */
-    public function normalize($object, $format = null, array $context = array())
+    public function normalize($object, $format = null, array $context = [])
     {
-        $data = array();
+        $data = [];
         if ($object->isInitialized('iPAMConfig') && null !== $object->getIPAMConfig()) {
             $data['IPAMConfig'] = $this->normalizer->normalize($object->getIPAMConfig(), 'json', $context);
         }
         if ($object->isInitialized('links') && null !== $object->getLinks()) {
-            $values = array();
+            $values = [];
             foreach ($object->getLinks() as $value) {
                 $values[] = $value;
             }
             $data['Links'] = $values;
         }
         if ($object->isInitialized('aliases') && null !== $object->getAliases()) {
-            $values_1 = array();
+            $values_1 = [];
             foreach ($object->getAliases() as $value_1) {
                 $values_1[] = $value_1;
             }
@@ -202,7 +196,7 @@ class EndpointSettingsNormalizer implements DenormalizerInterface, NormalizerInt
             $data['MacAddress'] = $object->getMacAddress();
         }
         if ($object->isInitialized('driverOpts') && null !== $object->getDriverOpts()) {
-            $values_2 = array();
+            $values_2 = [];
             foreach ($object->getDriverOpts() as $key => $value_2) {
                 $values_2[$key] = $value_2;
             }
@@ -213,6 +207,7 @@ class EndpointSettingsNormalizer implements DenormalizerInterface, NormalizerInt
                 $data[$key_1] = $value_3;
             }
         }
+
         return $data;
     }
 }

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Docker\API\Model;
 
 class PluginConfig extends \ArrayObject
@@ -7,457 +9,316 @@ class PluginConfig extends \ArrayObject
     /**
      * @var array
      */
-    protected $initialized = array();
-    public function isInitialized($property) : bool
+    protected $initialized = [];
+
+    public function isInitialized($property): bool
     {
-        return array_key_exists($property, $this->initialized);
+        return \array_key_exists($property, $this->initialized);
     }
     /**
-     * Docker Version used to create the plugin
+     * Docker Version used to create the plugin.
      *
      * @var string|null
      */
     protected $dockerVersion;
     /**
-     * 
-     *
      * @var string|null
      */
     protected $description;
     /**
-     * 
-     *
      * @var string|null
      */
     protected $documentation;
     /**
-     * The interface between Docker and the plugin
+     * The interface between Docker and the plugin.
      *
      * @var PluginConfigInterface|null
      */
     protected $interface;
     /**
-     * 
-     *
      * @var string[]|null
      */
     protected $entrypoint;
     /**
-     * 
-     *
      * @var string|null
      */
     protected $workDir;
     /**
-     * 
-     *
      * @var PluginConfigUser|null
      */
     protected $user;
     /**
-     * 
-     *
      * @var PluginConfigNetwork|null
      */
     protected $network;
     /**
-     * 
-     *
      * @var PluginConfigLinux|null
      */
     protected $linux;
     /**
-     * 
-     *
      * @var string|null
      */
     protected $propagatedMount;
     /**
-     * 
-     *
      * @var bool|null
      */
     protected $ipcHost;
     /**
-     * 
-     *
      * @var bool|null
      */
     protected $pidHost;
     /**
-     * 
-     *
      * @var PluginMount[]|null
      */
     protected $mounts;
     /**
-     * 
-     *
      * @var PluginEnv[]|null
      */
     protected $env;
     /**
-     * 
-     *
      * @var PluginConfigArgs|null
      */
     protected $args;
     /**
-     * 
-     *
      * @var PluginConfigRootfs|null
      */
     protected $rootfs;
+
     /**
-     * Docker Version used to create the plugin
-     *
-     * @return string|null
+     * Docker Version used to create the plugin.
      */
-    public function getDockerVersion() : ?string
+    public function getDockerVersion(): ?string
     {
         return $this->dockerVersion;
     }
+
     /**
-     * Docker Version used to create the plugin
-     *
-     * @param string|null $dockerVersion
-     *
-     * @return self
+     * Docker Version used to create the plugin.
      */
-    public function setDockerVersion(?string $dockerVersion) : self
+    public function setDockerVersion(?string $dockerVersion): self
     {
         $this->initialized['dockerVersion'] = true;
         $this->dockerVersion = $dockerVersion;
+
         return $this;
     }
-    /**
-     * 
-     *
-     * @return string|null
-     */
-    public function getDescription() : ?string
+
+    public function getDescription(): ?string
     {
         return $this->description;
     }
-    /**
-     * 
-     *
-     * @param string|null $description
-     *
-     * @return self
-     */
-    public function setDescription(?string $description) : self
+
+    public function setDescription(?string $description): self
     {
         $this->initialized['description'] = true;
         $this->description = $description;
+
         return $this;
     }
-    /**
-     * 
-     *
-     * @return string|null
-     */
-    public function getDocumentation() : ?string
+
+    public function getDocumentation(): ?string
     {
         return $this->documentation;
     }
-    /**
-     * 
-     *
-     * @param string|null $documentation
-     *
-     * @return self
-     */
-    public function setDocumentation(?string $documentation) : self
+
+    public function setDocumentation(?string $documentation): self
     {
         $this->initialized['documentation'] = true;
         $this->documentation = $documentation;
+
         return $this;
     }
+
     /**
-     * The interface between Docker and the plugin
-     *
-     * @return PluginConfigInterface|null
+     * The interface between Docker and the plugin.
      */
-    public function getInterface() : ?PluginConfigInterface
+    public function getInterface(): ?PluginConfigInterface
     {
         return $this->interface;
     }
+
     /**
-     * The interface between Docker and the plugin
-     *
-     * @param PluginConfigInterface|null $interface
-     *
-     * @return self
+     * The interface between Docker and the plugin.
      */
-    public function setInterface(?PluginConfigInterface $interface) : self
+    public function setInterface(?PluginConfigInterface $interface): self
     {
         $this->initialized['interface'] = true;
         $this->interface = $interface;
+
         return $this;
     }
+
     /**
-     * 
-     *
      * @return string[]|null
      */
-    public function getEntrypoint() : ?array
+    public function getEntrypoint(): ?array
     {
         return $this->entrypoint;
     }
+
     /**
-     * 
-     *
      * @param string[]|null $entrypoint
-     *
-     * @return self
      */
-    public function setEntrypoint(?array $entrypoint) : self
+    public function setEntrypoint(?array $entrypoint): self
     {
         $this->initialized['entrypoint'] = true;
         $this->entrypoint = $entrypoint;
+
         return $this;
     }
-    /**
-     * 
-     *
-     * @return string|null
-     */
-    public function getWorkDir() : ?string
+
+    public function getWorkDir(): ?string
     {
         return $this->workDir;
     }
-    /**
-     * 
-     *
-     * @param string|null $workDir
-     *
-     * @return self
-     */
-    public function setWorkDir(?string $workDir) : self
+
+    public function setWorkDir(?string $workDir): self
     {
         $this->initialized['workDir'] = true;
         $this->workDir = $workDir;
+
         return $this;
     }
-    /**
-     * 
-     *
-     * @return PluginConfigUser|null
-     */
-    public function getUser() : ?PluginConfigUser
+
+    public function getUser(): ?PluginConfigUser
     {
         return $this->user;
     }
-    /**
-     * 
-     *
-     * @param PluginConfigUser|null $user
-     *
-     * @return self
-     */
-    public function setUser(?PluginConfigUser $user) : self
+
+    public function setUser(?PluginConfigUser $user): self
     {
         $this->initialized['user'] = true;
         $this->user = $user;
+
         return $this;
     }
-    /**
-     * 
-     *
-     * @return PluginConfigNetwork|null
-     */
-    public function getNetwork() : ?PluginConfigNetwork
+
+    public function getNetwork(): ?PluginConfigNetwork
     {
         return $this->network;
     }
-    /**
-     * 
-     *
-     * @param PluginConfigNetwork|null $network
-     *
-     * @return self
-     */
-    public function setNetwork(?PluginConfigNetwork $network) : self
+
+    public function setNetwork(?PluginConfigNetwork $network): self
     {
         $this->initialized['network'] = true;
         $this->network = $network;
+
         return $this;
     }
-    /**
-     * 
-     *
-     * @return PluginConfigLinux|null
-     */
-    public function getLinux() : ?PluginConfigLinux
+
+    public function getLinux(): ?PluginConfigLinux
     {
         return $this->linux;
     }
-    /**
-     * 
-     *
-     * @param PluginConfigLinux|null $linux
-     *
-     * @return self
-     */
-    public function setLinux(?PluginConfigLinux $linux) : self
+
+    public function setLinux(?PluginConfigLinux $linux): self
     {
         $this->initialized['linux'] = true;
         $this->linux = $linux;
+
         return $this;
     }
-    /**
-     * 
-     *
-     * @return string|null
-     */
-    public function getPropagatedMount() : ?string
+
+    public function getPropagatedMount(): ?string
     {
         return $this->propagatedMount;
     }
-    /**
-     * 
-     *
-     * @param string|null $propagatedMount
-     *
-     * @return self
-     */
-    public function setPropagatedMount(?string $propagatedMount) : self
+
+    public function setPropagatedMount(?string $propagatedMount): self
     {
         $this->initialized['propagatedMount'] = true;
         $this->propagatedMount = $propagatedMount;
+
         return $this;
     }
-    /**
-     * 
-     *
-     * @return bool|null
-     */
-    public function getIpcHost() : ?bool
+
+    public function getIpcHost(): ?bool
     {
         return $this->ipcHost;
     }
-    /**
-     * 
-     *
-     * @param bool|null $ipcHost
-     *
-     * @return self
-     */
-    public function setIpcHost(?bool $ipcHost) : self
+
+    public function setIpcHost(?bool $ipcHost): self
     {
         $this->initialized['ipcHost'] = true;
         $this->ipcHost = $ipcHost;
+
         return $this;
     }
-    /**
-     * 
-     *
-     * @return bool|null
-     */
-    public function getPidHost() : ?bool
+
+    public function getPidHost(): ?bool
     {
         return $this->pidHost;
     }
-    /**
-     * 
-     *
-     * @param bool|null $pidHost
-     *
-     * @return self
-     */
-    public function setPidHost(?bool $pidHost) : self
+
+    public function setPidHost(?bool $pidHost): self
     {
         $this->initialized['pidHost'] = true;
         $this->pidHost = $pidHost;
+
         return $this;
     }
+
     /**
-     * 
-     *
      * @return PluginMount[]|null
      */
-    public function getMounts() : ?array
+    public function getMounts(): ?array
     {
         return $this->mounts;
     }
+
     /**
-     * 
-     *
      * @param PluginMount[]|null $mounts
-     *
-     * @return self
      */
-    public function setMounts(?array $mounts) : self
+    public function setMounts(?array $mounts): self
     {
         $this->initialized['mounts'] = true;
         $this->mounts = $mounts;
+
         return $this;
     }
+
     /**
-     * 
-     *
      * @return PluginEnv[]|null
      */
-    public function getEnv() : ?array
+    public function getEnv(): ?array
     {
         return $this->env;
     }
+
     /**
-     * 
-     *
      * @param PluginEnv[]|null $env
-     *
-     * @return self
      */
-    public function setEnv(?array $env) : self
+    public function setEnv(?array $env): self
     {
         $this->initialized['env'] = true;
         $this->env = $env;
+
         return $this;
     }
-    /**
-     * 
-     *
-     * @return PluginConfigArgs|null
-     */
-    public function getArgs() : ?PluginConfigArgs
+
+    public function getArgs(): ?PluginConfigArgs
     {
         return $this->args;
     }
-    /**
-     * 
-     *
-     * @param PluginConfigArgs|null $args
-     *
-     * @return self
-     */
-    public function setArgs(?PluginConfigArgs $args) : self
+
+    public function setArgs(?PluginConfigArgs $args): self
     {
         $this->initialized['args'] = true;
         $this->args = $args;
+
         return $this;
     }
-    /**
-     * 
-     *
-     * @return PluginConfigRootfs|null
-     */
-    public function getRootfs() : ?PluginConfigRootfs
+
+    public function getRootfs(): ?PluginConfigRootfs
     {
         return $this->rootfs;
     }
-    /**
-     * 
-     *
-     * @param PluginConfigRootfs|null $rootfs
-     *
-     * @return self
-     */
-    public function setRootfs(?PluginConfigRootfs $rootfs) : self
+
+    public function setRootfs(?PluginConfigRootfs $rootfs): self
     {
         $this->initialized['rootfs'] = true;
         $this->rootfs = $rootfs;
+
         return $this;
     }
 }

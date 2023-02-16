@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Docker\API\Model;
 
 class ContainerSummaryItemHostConfig extends \ArrayObject
@@ -7,37 +9,27 @@ class ContainerSummaryItemHostConfig extends \ArrayObject
     /**
      * @var array
      */
-    protected $initialized = array();
-    public function isInitialized($property) : bool
+    protected $initialized = [];
+
+    public function isInitialized($property): bool
     {
-        return array_key_exists($property, $this->initialized);
+        return \array_key_exists($property, $this->initialized);
     }
     /**
-     * 
-     *
      * @var string|null
      */
     protected $networkMode;
-    /**
-     * 
-     *
-     * @return string|null
-     */
-    public function getNetworkMode() : ?string
+
+    public function getNetworkMode(): ?string
     {
         return $this->networkMode;
     }
-    /**
-     * 
-     *
-     * @param string|null $networkMode
-     *
-     * @return self
-     */
-    public function setNetworkMode(?string $networkMode) : self
+
+    public function setNetworkMode(?string $networkMode): self
     {
         $this->initialized['networkMode'] = true;
         $this->networkMode = $networkMode;
+
         return $this;
     }
 }

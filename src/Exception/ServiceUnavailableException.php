@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Docker\API\Exception;
 
 class ServiceUnavailableException extends \RuntimeException implements ServerException

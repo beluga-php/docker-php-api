@@ -1,35 +1,40 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Docker\API\Normalizer;
 
-use Jane\Component\JsonSchemaRuntime\Reference;
 use Docker\API\Runtime\Normalizer\CheckArray;
 use Docker\API\Runtime\Normalizer\ValidatorTrait;
-use Symfony\Component\Serializer\Exception\InvalidArgumentException;
+use Jane\Component\JsonSchemaRuntime\Reference;
 use Symfony\Component\Serializer\Normalizer\DenormalizerAwareInterface;
 use Symfony\Component\Serializer\Normalizer\DenormalizerAwareTrait;
 use Symfony\Component\Serializer\Normalizer\DenormalizerInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerAwareInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerAwareTrait;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
+
 class SwarmSpecOrchestrationNormalizer implements DenormalizerInterface, NormalizerInterface, DenormalizerAwareInterface, NormalizerAwareInterface
 {
+    use CheckArray;
     use DenormalizerAwareTrait;
     use NormalizerAwareTrait;
-    use CheckArray;
     use ValidatorTrait;
-    public function supportsDenormalization($data, $type, $format = null) : bool
+
+    public function supportsDenormalization($data, $type, $format = null): bool
     {
-        return $type === 'Docker\\API\\Model\\SwarmSpecOrchestration';
+        return 'Docker\\API\\Model\\SwarmSpecOrchestration' === $type;
     }
-    public function supportsNormalization($data, $format = null) : bool
+
+    public function supportsNormalization($data, $format = null): bool
     {
-        return is_object($data) && get_class($data) === 'Docker\\API\\Model\\SwarmSpecOrchestration';
+        return \is_object($data) && 'Docker\\API\\Model\\SwarmSpecOrchestration' === $data::class;
     }
+
     /**
      * @return mixed
      */
-    public function denormalize($data, $class, $format = null, array $context = array())
+    public function denormalize($data, $class, $format = null, array $context = [])
     {
         if (isset($data['$ref'])) {
             return new Reference($data['$ref'], $context['document-origin']);
@@ -41,11 +46,10 @@ class SwarmSpecOrchestrationNormalizer implements DenormalizerInterface, Normali
         if (null === $data || false === \is_array($data)) {
             return $object;
         }
-        if (\array_key_exists('TaskHistoryRetentionLimit', $data) && $data['TaskHistoryRetentionLimit'] !== null) {
+        if (\array_key_exists('TaskHistoryRetentionLimit', $data) && null !== $data['TaskHistoryRetentionLimit']) {
             $object->setTaskHistoryRetentionLimit($data['TaskHistoryRetentionLimit']);
             unset($data['TaskHistoryRetentionLimit']);
-        }
-        elseif (\array_key_exists('TaskHistoryRetentionLimit', $data) && $data['TaskHistoryRetentionLimit'] === null) {
+        } elseif (\array_key_exists('TaskHistoryRetentionLimit', $data) && null === $data['TaskHistoryRetentionLimit']) {
             $object->setTaskHistoryRetentionLimit(null);
         }
         foreach ($data as $key => $value) {
@@ -53,14 +57,16 @@ class SwarmSpecOrchestrationNormalizer implements DenormalizerInterface, Normali
                 $object[$key] = $value;
             }
         }
+
         return $object;
     }
+
     /**
      * @return array|string|int|float|bool|\ArrayObject|null
      */
-    public function normalize($object, $format = null, array $context = array())
+    public function normalize($object, $format = null, array $context = [])
     {
-        $data = array();
+        $data = [];
         if ($object->isInitialized('taskHistoryRetentionLimit') && null !== $object->getTaskHistoryRetentionLimit()) {
             $data['TaskHistoryRetentionLimit'] = $object->getTaskHistoryRetentionLimit();
         }
@@ -69,6 +75,7 @@ class SwarmSpecOrchestrationNormalizer implements DenormalizerInterface, Normali
                 $data[$key] = $value;
             }
         }
+
         return $data;
     }
 }

@@ -1,35 +1,40 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Docker\API\Normalizer;
 
-use Jane\Component\JsonSchemaRuntime\Reference;
 use Docker\API\Runtime\Normalizer\CheckArray;
 use Docker\API\Runtime\Normalizer\ValidatorTrait;
-use Symfony\Component\Serializer\Exception\InvalidArgumentException;
+use Jane\Component\JsonSchemaRuntime\Reference;
 use Symfony\Component\Serializer\Normalizer\DenormalizerAwareInterface;
 use Symfony\Component\Serializer\Normalizer\DenormalizerAwareTrait;
 use Symfony\Component\Serializer\Normalizer\DenormalizerInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerAwareInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerAwareTrait;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
+
 class SystemInfoNormalizer implements DenormalizerInterface, NormalizerInterface, DenormalizerAwareInterface, NormalizerAwareInterface
 {
+    use CheckArray;
     use DenormalizerAwareTrait;
     use NormalizerAwareTrait;
-    use CheckArray;
     use ValidatorTrait;
-    public function supportsDenormalization($data, $type, $format = null) : bool
+
+    public function supportsDenormalization($data, $type, $format = null): bool
     {
-        return $type === 'Docker\\API\\Model\\SystemInfo';
+        return 'Docker\\API\\Model\\SystemInfo' === $type;
     }
-    public function supportsNormalization($data, $format = null) : bool
+
+    public function supportsNormalization($data, $format = null): bool
     {
-        return is_object($data) && get_class($data) === 'Docker\\API\\Model\\SystemInfo';
+        return \is_object($data) && 'Docker\\API\\Model\\SystemInfo' === $data::class;
     }
+
     /**
      * @return mixed
      */
-    public function denormalize($data, $class, $format = null, array $context = array())
+    public function denormalize($data, $class, $format = null, array $context = [])
     {
         if (isset($data['$ref'])) {
             return new Reference($data['$ref'], $context['document-origin']);
@@ -41,59 +46,52 @@ class SystemInfoNormalizer implements DenormalizerInterface, NormalizerInterface
         if (null === $data || false === \is_array($data)) {
             return $object;
         }
-        if (\array_key_exists('ID', $data) && $data['ID'] !== null) {
+        if (\array_key_exists('ID', $data) && null !== $data['ID']) {
             $object->setID($data['ID']);
             unset($data['ID']);
-        }
-        elseif (\array_key_exists('ID', $data) && $data['ID'] === null) {
+        } elseif (\array_key_exists('ID', $data) && null === $data['ID']) {
             $object->setID(null);
         }
-        if (\array_key_exists('Containers', $data) && $data['Containers'] !== null) {
+        if (\array_key_exists('Containers', $data) && null !== $data['Containers']) {
             $object->setContainers($data['Containers']);
             unset($data['Containers']);
-        }
-        elseif (\array_key_exists('Containers', $data) && $data['Containers'] === null) {
+        } elseif (\array_key_exists('Containers', $data) && null === $data['Containers']) {
             $object->setContainers(null);
         }
-        if (\array_key_exists('ContainersRunning', $data) && $data['ContainersRunning'] !== null) {
+        if (\array_key_exists('ContainersRunning', $data) && null !== $data['ContainersRunning']) {
             $object->setContainersRunning($data['ContainersRunning']);
             unset($data['ContainersRunning']);
-        }
-        elseif (\array_key_exists('ContainersRunning', $data) && $data['ContainersRunning'] === null) {
+        } elseif (\array_key_exists('ContainersRunning', $data) && null === $data['ContainersRunning']) {
             $object->setContainersRunning(null);
         }
-        if (\array_key_exists('ContainersPaused', $data) && $data['ContainersPaused'] !== null) {
+        if (\array_key_exists('ContainersPaused', $data) && null !== $data['ContainersPaused']) {
             $object->setContainersPaused($data['ContainersPaused']);
             unset($data['ContainersPaused']);
-        }
-        elseif (\array_key_exists('ContainersPaused', $data) && $data['ContainersPaused'] === null) {
+        } elseif (\array_key_exists('ContainersPaused', $data) && null === $data['ContainersPaused']) {
             $object->setContainersPaused(null);
         }
-        if (\array_key_exists('ContainersStopped', $data) && $data['ContainersStopped'] !== null) {
+        if (\array_key_exists('ContainersStopped', $data) && null !== $data['ContainersStopped']) {
             $object->setContainersStopped($data['ContainersStopped']);
             unset($data['ContainersStopped']);
-        }
-        elseif (\array_key_exists('ContainersStopped', $data) && $data['ContainersStopped'] === null) {
+        } elseif (\array_key_exists('ContainersStopped', $data) && null === $data['ContainersStopped']) {
             $object->setContainersStopped(null);
         }
-        if (\array_key_exists('Images', $data) && $data['Images'] !== null) {
+        if (\array_key_exists('Images', $data) && null !== $data['Images']) {
             $object->setImages($data['Images']);
             unset($data['Images']);
-        }
-        elseif (\array_key_exists('Images', $data) && $data['Images'] === null) {
+        } elseif (\array_key_exists('Images', $data) && null === $data['Images']) {
             $object->setImages(null);
         }
-        if (\array_key_exists('Driver', $data) && $data['Driver'] !== null) {
+        if (\array_key_exists('Driver', $data) && null !== $data['Driver']) {
             $object->setDriver($data['Driver']);
             unset($data['Driver']);
-        }
-        elseif (\array_key_exists('Driver', $data) && $data['Driver'] === null) {
+        } elseif (\array_key_exists('Driver', $data) && null === $data['Driver']) {
             $object->setDriver(null);
         }
-        if (\array_key_exists('DriverStatus', $data) && $data['DriverStatus'] !== null) {
-            $values = array();
+        if (\array_key_exists('DriverStatus', $data) && null !== $data['DriverStatus']) {
+            $values = [];
             foreach ($data['DriverStatus'] as $value) {
-                $values_1 = array();
+                $values_1 = [];
                 foreach ($value as $value_1) {
                     $values_1[] = $value_1;
                 }
@@ -101,410 +99,355 @@ class SystemInfoNormalizer implements DenormalizerInterface, NormalizerInterface
             }
             $object->setDriverStatus($values);
             unset($data['DriverStatus']);
-        }
-        elseif (\array_key_exists('DriverStatus', $data) && $data['DriverStatus'] === null) {
+        } elseif (\array_key_exists('DriverStatus', $data) && null === $data['DriverStatus']) {
             $object->setDriverStatus(null);
         }
-        if (\array_key_exists('DockerRootDir', $data) && $data['DockerRootDir'] !== null) {
+        if (\array_key_exists('DockerRootDir', $data) && null !== $data['DockerRootDir']) {
             $object->setDockerRootDir($data['DockerRootDir']);
             unset($data['DockerRootDir']);
-        }
-        elseif (\array_key_exists('DockerRootDir', $data) && $data['DockerRootDir'] === null) {
+        } elseif (\array_key_exists('DockerRootDir', $data) && null === $data['DockerRootDir']) {
             $object->setDockerRootDir(null);
         }
-        if (\array_key_exists('Plugins', $data) && $data['Plugins'] !== null) {
+        if (\array_key_exists('Plugins', $data) && null !== $data['Plugins']) {
             $object->setPlugins($this->denormalizer->denormalize($data['Plugins'], 'Docker\\API\\Model\\PluginsInfo', 'json', $context));
             unset($data['Plugins']);
-        }
-        elseif (\array_key_exists('Plugins', $data) && $data['Plugins'] === null) {
+        } elseif (\array_key_exists('Plugins', $data) && null === $data['Plugins']) {
             $object->setPlugins(null);
         }
-        if (\array_key_exists('MemoryLimit', $data) && $data['MemoryLimit'] !== null) {
+        if (\array_key_exists('MemoryLimit', $data) && null !== $data['MemoryLimit']) {
             $object->setMemoryLimit($data['MemoryLimit']);
             unset($data['MemoryLimit']);
-        }
-        elseif (\array_key_exists('MemoryLimit', $data) && $data['MemoryLimit'] === null) {
+        } elseif (\array_key_exists('MemoryLimit', $data) && null === $data['MemoryLimit']) {
             $object->setMemoryLimit(null);
         }
-        if (\array_key_exists('SwapLimit', $data) && $data['SwapLimit'] !== null) {
+        if (\array_key_exists('SwapLimit', $data) && null !== $data['SwapLimit']) {
             $object->setSwapLimit($data['SwapLimit']);
             unset($data['SwapLimit']);
-        }
-        elseif (\array_key_exists('SwapLimit', $data) && $data['SwapLimit'] === null) {
+        } elseif (\array_key_exists('SwapLimit', $data) && null === $data['SwapLimit']) {
             $object->setSwapLimit(null);
         }
-        if (\array_key_exists('KernelMemory', $data) && $data['KernelMemory'] !== null) {
+        if (\array_key_exists('KernelMemory', $data) && null !== $data['KernelMemory']) {
             $object->setKernelMemory($data['KernelMemory']);
             unset($data['KernelMemory']);
-        }
-        elseif (\array_key_exists('KernelMemory', $data) && $data['KernelMemory'] === null) {
+        } elseif (\array_key_exists('KernelMemory', $data) && null === $data['KernelMemory']) {
             $object->setKernelMemory(null);
         }
-        if (\array_key_exists('CpuCfsPeriod', $data) && $data['CpuCfsPeriod'] !== null) {
+        if (\array_key_exists('CpuCfsPeriod', $data) && null !== $data['CpuCfsPeriod']) {
             $object->setCpuCfsPeriod($data['CpuCfsPeriod']);
             unset($data['CpuCfsPeriod']);
-        }
-        elseif (\array_key_exists('CpuCfsPeriod', $data) && $data['CpuCfsPeriod'] === null) {
+        } elseif (\array_key_exists('CpuCfsPeriod', $data) && null === $data['CpuCfsPeriod']) {
             $object->setCpuCfsPeriod(null);
         }
-        if (\array_key_exists('CpuCfsQuota', $data) && $data['CpuCfsQuota'] !== null) {
+        if (\array_key_exists('CpuCfsQuota', $data) && null !== $data['CpuCfsQuota']) {
             $object->setCpuCfsQuota($data['CpuCfsQuota']);
             unset($data['CpuCfsQuota']);
-        }
-        elseif (\array_key_exists('CpuCfsQuota', $data) && $data['CpuCfsQuota'] === null) {
+        } elseif (\array_key_exists('CpuCfsQuota', $data) && null === $data['CpuCfsQuota']) {
             $object->setCpuCfsQuota(null);
         }
-        if (\array_key_exists('CPUShares', $data) && $data['CPUShares'] !== null) {
+        if (\array_key_exists('CPUShares', $data) && null !== $data['CPUShares']) {
             $object->setCPUShares($data['CPUShares']);
             unset($data['CPUShares']);
-        }
-        elseif (\array_key_exists('CPUShares', $data) && $data['CPUShares'] === null) {
+        } elseif (\array_key_exists('CPUShares', $data) && null === $data['CPUShares']) {
             $object->setCPUShares(null);
         }
-        if (\array_key_exists('CPUSet', $data) && $data['CPUSet'] !== null) {
+        if (\array_key_exists('CPUSet', $data) && null !== $data['CPUSet']) {
             $object->setCPUSet($data['CPUSet']);
             unset($data['CPUSet']);
-        }
-        elseif (\array_key_exists('CPUSet', $data) && $data['CPUSet'] === null) {
+        } elseif (\array_key_exists('CPUSet', $data) && null === $data['CPUSet']) {
             $object->setCPUSet(null);
         }
-        if (\array_key_exists('PidsLimit', $data) && $data['PidsLimit'] !== null) {
+        if (\array_key_exists('PidsLimit', $data) && null !== $data['PidsLimit']) {
             $object->setPidsLimit($data['PidsLimit']);
             unset($data['PidsLimit']);
-        }
-        elseif (\array_key_exists('PidsLimit', $data) && $data['PidsLimit'] === null) {
+        } elseif (\array_key_exists('PidsLimit', $data) && null === $data['PidsLimit']) {
             $object->setPidsLimit(null);
         }
-        if (\array_key_exists('OomKillDisable', $data) && $data['OomKillDisable'] !== null) {
+        if (\array_key_exists('OomKillDisable', $data) && null !== $data['OomKillDisable']) {
             $object->setOomKillDisable($data['OomKillDisable']);
             unset($data['OomKillDisable']);
-        }
-        elseif (\array_key_exists('OomKillDisable', $data) && $data['OomKillDisable'] === null) {
+        } elseif (\array_key_exists('OomKillDisable', $data) && null === $data['OomKillDisable']) {
             $object->setOomKillDisable(null);
         }
-        if (\array_key_exists('IPv4Forwarding', $data) && $data['IPv4Forwarding'] !== null) {
+        if (\array_key_exists('IPv4Forwarding', $data) && null !== $data['IPv4Forwarding']) {
             $object->setIPv4Forwarding($data['IPv4Forwarding']);
             unset($data['IPv4Forwarding']);
-        }
-        elseif (\array_key_exists('IPv4Forwarding', $data) && $data['IPv4Forwarding'] === null) {
+        } elseif (\array_key_exists('IPv4Forwarding', $data) && null === $data['IPv4Forwarding']) {
             $object->setIPv4Forwarding(null);
         }
-        if (\array_key_exists('BridgeNfIptables', $data) && $data['BridgeNfIptables'] !== null) {
+        if (\array_key_exists('BridgeNfIptables', $data) && null !== $data['BridgeNfIptables']) {
             $object->setBridgeNfIptables($data['BridgeNfIptables']);
             unset($data['BridgeNfIptables']);
-        }
-        elseif (\array_key_exists('BridgeNfIptables', $data) && $data['BridgeNfIptables'] === null) {
+        } elseif (\array_key_exists('BridgeNfIptables', $data) && null === $data['BridgeNfIptables']) {
             $object->setBridgeNfIptables(null);
         }
-        if (\array_key_exists('BridgeNfIp6tables', $data) && $data['BridgeNfIp6tables'] !== null) {
+        if (\array_key_exists('BridgeNfIp6tables', $data) && null !== $data['BridgeNfIp6tables']) {
             $object->setBridgeNfIp6tables($data['BridgeNfIp6tables']);
             unset($data['BridgeNfIp6tables']);
-        }
-        elseif (\array_key_exists('BridgeNfIp6tables', $data) && $data['BridgeNfIp6tables'] === null) {
+        } elseif (\array_key_exists('BridgeNfIp6tables', $data) && null === $data['BridgeNfIp6tables']) {
             $object->setBridgeNfIp6tables(null);
         }
-        if (\array_key_exists('Debug', $data) && $data['Debug'] !== null) {
+        if (\array_key_exists('Debug', $data) && null !== $data['Debug']) {
             $object->setDebug($data['Debug']);
             unset($data['Debug']);
-        }
-        elseif (\array_key_exists('Debug', $data) && $data['Debug'] === null) {
+        } elseif (\array_key_exists('Debug', $data) && null === $data['Debug']) {
             $object->setDebug(null);
         }
-        if (\array_key_exists('NFd', $data) && $data['NFd'] !== null) {
+        if (\array_key_exists('NFd', $data) && null !== $data['NFd']) {
             $object->setNFd($data['NFd']);
             unset($data['NFd']);
-        }
-        elseif (\array_key_exists('NFd', $data) && $data['NFd'] === null) {
+        } elseif (\array_key_exists('NFd', $data) && null === $data['NFd']) {
             $object->setNFd(null);
         }
-        if (\array_key_exists('NGoroutines', $data) && $data['NGoroutines'] !== null) {
+        if (\array_key_exists('NGoroutines', $data) && null !== $data['NGoroutines']) {
             $object->setNGoroutines($data['NGoroutines']);
             unset($data['NGoroutines']);
-        }
-        elseif (\array_key_exists('NGoroutines', $data) && $data['NGoroutines'] === null) {
+        } elseif (\array_key_exists('NGoroutines', $data) && null === $data['NGoroutines']) {
             $object->setNGoroutines(null);
         }
-        if (\array_key_exists('SystemTime', $data) && $data['SystemTime'] !== null) {
+        if (\array_key_exists('SystemTime', $data) && null !== $data['SystemTime']) {
             $object->setSystemTime($data['SystemTime']);
             unset($data['SystemTime']);
-        }
-        elseif (\array_key_exists('SystemTime', $data) && $data['SystemTime'] === null) {
+        } elseif (\array_key_exists('SystemTime', $data) && null === $data['SystemTime']) {
             $object->setSystemTime(null);
         }
-        if (\array_key_exists('LoggingDriver', $data) && $data['LoggingDriver'] !== null) {
+        if (\array_key_exists('LoggingDriver', $data) && null !== $data['LoggingDriver']) {
             $object->setLoggingDriver($data['LoggingDriver']);
             unset($data['LoggingDriver']);
-        }
-        elseif (\array_key_exists('LoggingDriver', $data) && $data['LoggingDriver'] === null) {
+        } elseif (\array_key_exists('LoggingDriver', $data) && null === $data['LoggingDriver']) {
             $object->setLoggingDriver(null);
         }
-        if (\array_key_exists('CgroupDriver', $data) && $data['CgroupDriver'] !== null) {
+        if (\array_key_exists('CgroupDriver', $data) && null !== $data['CgroupDriver']) {
             $object->setCgroupDriver($data['CgroupDriver']);
             unset($data['CgroupDriver']);
-        }
-        elseif (\array_key_exists('CgroupDriver', $data) && $data['CgroupDriver'] === null) {
+        } elseif (\array_key_exists('CgroupDriver', $data) && null === $data['CgroupDriver']) {
             $object->setCgroupDriver(null);
         }
-        if (\array_key_exists('CgroupVersion', $data) && $data['CgroupVersion'] !== null) {
+        if (\array_key_exists('CgroupVersion', $data) && null !== $data['CgroupVersion']) {
             $object->setCgroupVersion($data['CgroupVersion']);
             unset($data['CgroupVersion']);
-        }
-        elseif (\array_key_exists('CgroupVersion', $data) && $data['CgroupVersion'] === null) {
+        } elseif (\array_key_exists('CgroupVersion', $data) && null === $data['CgroupVersion']) {
             $object->setCgroupVersion(null);
         }
-        if (\array_key_exists('NEventsListener', $data) && $data['NEventsListener'] !== null) {
+        if (\array_key_exists('NEventsListener', $data) && null !== $data['NEventsListener']) {
             $object->setNEventsListener($data['NEventsListener']);
             unset($data['NEventsListener']);
-        }
-        elseif (\array_key_exists('NEventsListener', $data) && $data['NEventsListener'] === null) {
+        } elseif (\array_key_exists('NEventsListener', $data) && null === $data['NEventsListener']) {
             $object->setNEventsListener(null);
         }
-        if (\array_key_exists('KernelVersion', $data) && $data['KernelVersion'] !== null) {
+        if (\array_key_exists('KernelVersion', $data) && null !== $data['KernelVersion']) {
             $object->setKernelVersion($data['KernelVersion']);
             unset($data['KernelVersion']);
-        }
-        elseif (\array_key_exists('KernelVersion', $data) && $data['KernelVersion'] === null) {
+        } elseif (\array_key_exists('KernelVersion', $data) && null === $data['KernelVersion']) {
             $object->setKernelVersion(null);
         }
-        if (\array_key_exists('OperatingSystem', $data) && $data['OperatingSystem'] !== null) {
+        if (\array_key_exists('OperatingSystem', $data) && null !== $data['OperatingSystem']) {
             $object->setOperatingSystem($data['OperatingSystem']);
             unset($data['OperatingSystem']);
-        }
-        elseif (\array_key_exists('OperatingSystem', $data) && $data['OperatingSystem'] === null) {
+        } elseif (\array_key_exists('OperatingSystem', $data) && null === $data['OperatingSystem']) {
             $object->setOperatingSystem(null);
         }
-        if (\array_key_exists('OSVersion', $data) && $data['OSVersion'] !== null) {
+        if (\array_key_exists('OSVersion', $data) && null !== $data['OSVersion']) {
             $object->setOSVersion($data['OSVersion']);
             unset($data['OSVersion']);
-        }
-        elseif (\array_key_exists('OSVersion', $data) && $data['OSVersion'] === null) {
+        } elseif (\array_key_exists('OSVersion', $data) && null === $data['OSVersion']) {
             $object->setOSVersion(null);
         }
-        if (\array_key_exists('OSType', $data) && $data['OSType'] !== null) {
+        if (\array_key_exists('OSType', $data) && null !== $data['OSType']) {
             $object->setOSType($data['OSType']);
             unset($data['OSType']);
-        }
-        elseif (\array_key_exists('OSType', $data) && $data['OSType'] === null) {
+        } elseif (\array_key_exists('OSType', $data) && null === $data['OSType']) {
             $object->setOSType(null);
         }
-        if (\array_key_exists('Architecture', $data) && $data['Architecture'] !== null) {
+        if (\array_key_exists('Architecture', $data) && null !== $data['Architecture']) {
             $object->setArchitecture($data['Architecture']);
             unset($data['Architecture']);
-        }
-        elseif (\array_key_exists('Architecture', $data) && $data['Architecture'] === null) {
+        } elseif (\array_key_exists('Architecture', $data) && null === $data['Architecture']) {
             $object->setArchitecture(null);
         }
-        if (\array_key_exists('NCPU', $data) && $data['NCPU'] !== null) {
+        if (\array_key_exists('NCPU', $data) && null !== $data['NCPU']) {
             $object->setNCPU($data['NCPU']);
             unset($data['NCPU']);
-        }
-        elseif (\array_key_exists('NCPU', $data) && $data['NCPU'] === null) {
+        } elseif (\array_key_exists('NCPU', $data) && null === $data['NCPU']) {
             $object->setNCPU(null);
         }
-        if (\array_key_exists('MemTotal', $data) && $data['MemTotal'] !== null) {
+        if (\array_key_exists('MemTotal', $data) && null !== $data['MemTotal']) {
             $object->setMemTotal($data['MemTotal']);
             unset($data['MemTotal']);
-        }
-        elseif (\array_key_exists('MemTotal', $data) && $data['MemTotal'] === null) {
+        } elseif (\array_key_exists('MemTotal', $data) && null === $data['MemTotal']) {
             $object->setMemTotal(null);
         }
-        if (\array_key_exists('IndexServerAddress', $data) && $data['IndexServerAddress'] !== null) {
+        if (\array_key_exists('IndexServerAddress', $data) && null !== $data['IndexServerAddress']) {
             $object->setIndexServerAddress($data['IndexServerAddress']);
             unset($data['IndexServerAddress']);
-        }
-        elseif (\array_key_exists('IndexServerAddress', $data) && $data['IndexServerAddress'] === null) {
+        } elseif (\array_key_exists('IndexServerAddress', $data) && null === $data['IndexServerAddress']) {
             $object->setIndexServerAddress(null);
         }
-        if (\array_key_exists('RegistryConfig', $data) && $data['RegistryConfig'] !== null) {
+        if (\array_key_exists('RegistryConfig', $data) && null !== $data['RegistryConfig']) {
             $object->setRegistryConfig($this->denormalizer->denormalize($data['RegistryConfig'], 'Docker\\API\\Model\\RegistryServiceConfig', 'json', $context));
             unset($data['RegistryConfig']);
-        }
-        elseif (\array_key_exists('RegistryConfig', $data) && $data['RegistryConfig'] === null) {
+        } elseif (\array_key_exists('RegistryConfig', $data) && null === $data['RegistryConfig']) {
             $object->setRegistryConfig(null);
         }
-        if (\array_key_exists('GenericResources', $data) && $data['GenericResources'] !== null) {
-            $values_2 = array();
+        if (\array_key_exists('GenericResources', $data) && null !== $data['GenericResources']) {
+            $values_2 = [];
             foreach ($data['GenericResources'] as $value_2) {
                 $values_2[] = $this->denormalizer->denormalize($value_2, 'Docker\\API\\Model\\GenericResourcesItem', 'json', $context);
             }
             $object->setGenericResources($values_2);
             unset($data['GenericResources']);
-        }
-        elseif (\array_key_exists('GenericResources', $data) && $data['GenericResources'] === null) {
+        } elseif (\array_key_exists('GenericResources', $data) && null === $data['GenericResources']) {
             $object->setGenericResources(null);
         }
-        if (\array_key_exists('HttpProxy', $data) && $data['HttpProxy'] !== null) {
+        if (\array_key_exists('HttpProxy', $data) && null !== $data['HttpProxy']) {
             $object->setHttpProxy($data['HttpProxy']);
             unset($data['HttpProxy']);
-        }
-        elseif (\array_key_exists('HttpProxy', $data) && $data['HttpProxy'] === null) {
+        } elseif (\array_key_exists('HttpProxy', $data) && null === $data['HttpProxy']) {
             $object->setHttpProxy(null);
         }
-        if (\array_key_exists('HttpsProxy', $data) && $data['HttpsProxy'] !== null) {
+        if (\array_key_exists('HttpsProxy', $data) && null !== $data['HttpsProxy']) {
             $object->setHttpsProxy($data['HttpsProxy']);
             unset($data['HttpsProxy']);
-        }
-        elseif (\array_key_exists('HttpsProxy', $data) && $data['HttpsProxy'] === null) {
+        } elseif (\array_key_exists('HttpsProxy', $data) && null === $data['HttpsProxy']) {
             $object->setHttpsProxy(null);
         }
-        if (\array_key_exists('NoProxy', $data) && $data['NoProxy'] !== null) {
+        if (\array_key_exists('NoProxy', $data) && null !== $data['NoProxy']) {
             $object->setNoProxy($data['NoProxy']);
             unset($data['NoProxy']);
-        }
-        elseif (\array_key_exists('NoProxy', $data) && $data['NoProxy'] === null) {
+        } elseif (\array_key_exists('NoProxy', $data) && null === $data['NoProxy']) {
             $object->setNoProxy(null);
         }
-        if (\array_key_exists('Name', $data) && $data['Name'] !== null) {
+        if (\array_key_exists('Name', $data) && null !== $data['Name']) {
             $object->setName($data['Name']);
             unset($data['Name']);
-        }
-        elseif (\array_key_exists('Name', $data) && $data['Name'] === null) {
+        } elseif (\array_key_exists('Name', $data) && null === $data['Name']) {
             $object->setName(null);
         }
-        if (\array_key_exists('Labels', $data) && $data['Labels'] !== null) {
-            $values_3 = array();
+        if (\array_key_exists('Labels', $data) && null !== $data['Labels']) {
+            $values_3 = [];
             foreach ($data['Labels'] as $value_3) {
                 $values_3[] = $value_3;
             }
             $object->setLabels($values_3);
             unset($data['Labels']);
-        }
-        elseif (\array_key_exists('Labels', $data) && $data['Labels'] === null) {
+        } elseif (\array_key_exists('Labels', $data) && null === $data['Labels']) {
             $object->setLabels(null);
         }
-        if (\array_key_exists('ExperimentalBuild', $data) && $data['ExperimentalBuild'] !== null) {
+        if (\array_key_exists('ExperimentalBuild', $data) && null !== $data['ExperimentalBuild']) {
             $object->setExperimentalBuild($data['ExperimentalBuild']);
             unset($data['ExperimentalBuild']);
-        }
-        elseif (\array_key_exists('ExperimentalBuild', $data) && $data['ExperimentalBuild'] === null) {
+        } elseif (\array_key_exists('ExperimentalBuild', $data) && null === $data['ExperimentalBuild']) {
             $object->setExperimentalBuild(null);
         }
-        if (\array_key_exists('ServerVersion', $data) && $data['ServerVersion'] !== null) {
+        if (\array_key_exists('ServerVersion', $data) && null !== $data['ServerVersion']) {
             $object->setServerVersion($data['ServerVersion']);
             unset($data['ServerVersion']);
-        }
-        elseif (\array_key_exists('ServerVersion', $data) && $data['ServerVersion'] === null) {
+        } elseif (\array_key_exists('ServerVersion', $data) && null === $data['ServerVersion']) {
             $object->setServerVersion(null);
         }
-        if (\array_key_exists('ClusterStore', $data) && $data['ClusterStore'] !== null) {
+        if (\array_key_exists('ClusterStore', $data) && null !== $data['ClusterStore']) {
             $object->setClusterStore($data['ClusterStore']);
             unset($data['ClusterStore']);
-        }
-        elseif (\array_key_exists('ClusterStore', $data) && $data['ClusterStore'] === null) {
+        } elseif (\array_key_exists('ClusterStore', $data) && null === $data['ClusterStore']) {
             $object->setClusterStore(null);
         }
-        if (\array_key_exists('ClusterAdvertise', $data) && $data['ClusterAdvertise'] !== null) {
+        if (\array_key_exists('ClusterAdvertise', $data) && null !== $data['ClusterAdvertise']) {
             $object->setClusterAdvertise($data['ClusterAdvertise']);
             unset($data['ClusterAdvertise']);
-        }
-        elseif (\array_key_exists('ClusterAdvertise', $data) && $data['ClusterAdvertise'] === null) {
+        } elseif (\array_key_exists('ClusterAdvertise', $data) && null === $data['ClusterAdvertise']) {
             $object->setClusterAdvertise(null);
         }
-        if (\array_key_exists('Runtimes', $data) && $data['Runtimes'] !== null) {
-            $values_4 = new \ArrayObject(array(), \ArrayObject::ARRAY_AS_PROPS);
+        if (\array_key_exists('Runtimes', $data) && null !== $data['Runtimes']) {
+            $values_4 = new \ArrayObject([], \ArrayObject::ARRAY_AS_PROPS);
             foreach ($data['Runtimes'] as $key => $value_4) {
                 $values_4[$key] = $this->denormalizer->denormalize($value_4, 'Docker\\API\\Model\\Runtime', 'json', $context);
             }
             $object->setRuntimes($values_4);
             unset($data['Runtimes']);
-        }
-        elseif (\array_key_exists('Runtimes', $data) && $data['Runtimes'] === null) {
+        } elseif (\array_key_exists('Runtimes', $data) && null === $data['Runtimes']) {
             $object->setRuntimes(null);
         }
-        if (\array_key_exists('DefaultRuntime', $data) && $data['DefaultRuntime'] !== null) {
+        if (\array_key_exists('DefaultRuntime', $data) && null !== $data['DefaultRuntime']) {
             $object->setDefaultRuntime($data['DefaultRuntime']);
             unset($data['DefaultRuntime']);
-        }
-        elseif (\array_key_exists('DefaultRuntime', $data) && $data['DefaultRuntime'] === null) {
+        } elseif (\array_key_exists('DefaultRuntime', $data) && null === $data['DefaultRuntime']) {
             $object->setDefaultRuntime(null);
         }
-        if (\array_key_exists('Swarm', $data) && $data['Swarm'] !== null) {
+        if (\array_key_exists('Swarm', $data) && null !== $data['Swarm']) {
             $object->setSwarm($this->denormalizer->denormalize($data['Swarm'], 'Docker\\API\\Model\\SwarmInfo', 'json', $context));
             unset($data['Swarm']);
-        }
-        elseif (\array_key_exists('Swarm', $data) && $data['Swarm'] === null) {
+        } elseif (\array_key_exists('Swarm', $data) && null === $data['Swarm']) {
             $object->setSwarm(null);
         }
-        if (\array_key_exists('LiveRestoreEnabled', $data) && $data['LiveRestoreEnabled'] !== null) {
+        if (\array_key_exists('LiveRestoreEnabled', $data) && null !== $data['LiveRestoreEnabled']) {
             $object->setLiveRestoreEnabled($data['LiveRestoreEnabled']);
             unset($data['LiveRestoreEnabled']);
-        }
-        elseif (\array_key_exists('LiveRestoreEnabled', $data) && $data['LiveRestoreEnabled'] === null) {
+        } elseif (\array_key_exists('LiveRestoreEnabled', $data) && null === $data['LiveRestoreEnabled']) {
             $object->setLiveRestoreEnabled(null);
         }
-        if (\array_key_exists('Isolation', $data) && $data['Isolation'] !== null) {
+        if (\array_key_exists('Isolation', $data) && null !== $data['Isolation']) {
             $object->setIsolation($data['Isolation']);
             unset($data['Isolation']);
-        }
-        elseif (\array_key_exists('Isolation', $data) && $data['Isolation'] === null) {
+        } elseif (\array_key_exists('Isolation', $data) && null === $data['Isolation']) {
             $object->setIsolation(null);
         }
-        if (\array_key_exists('InitBinary', $data) && $data['InitBinary'] !== null) {
+        if (\array_key_exists('InitBinary', $data) && null !== $data['InitBinary']) {
             $object->setInitBinary($data['InitBinary']);
             unset($data['InitBinary']);
-        }
-        elseif (\array_key_exists('InitBinary', $data) && $data['InitBinary'] === null) {
+        } elseif (\array_key_exists('InitBinary', $data) && null === $data['InitBinary']) {
             $object->setInitBinary(null);
         }
-        if (\array_key_exists('ContainerdCommit', $data) && $data['ContainerdCommit'] !== null) {
+        if (\array_key_exists('ContainerdCommit', $data) && null !== $data['ContainerdCommit']) {
             $object->setContainerdCommit($this->denormalizer->denormalize($data['ContainerdCommit'], 'Docker\\API\\Model\\Commit', 'json', $context));
             unset($data['ContainerdCommit']);
-        }
-        elseif (\array_key_exists('ContainerdCommit', $data) && $data['ContainerdCommit'] === null) {
+        } elseif (\array_key_exists('ContainerdCommit', $data) && null === $data['ContainerdCommit']) {
             $object->setContainerdCommit(null);
         }
-        if (\array_key_exists('RuncCommit', $data) && $data['RuncCommit'] !== null) {
+        if (\array_key_exists('RuncCommit', $data) && null !== $data['RuncCommit']) {
             $object->setRuncCommit($this->denormalizer->denormalize($data['RuncCommit'], 'Docker\\API\\Model\\Commit', 'json', $context));
             unset($data['RuncCommit']);
-        }
-        elseif (\array_key_exists('RuncCommit', $data) && $data['RuncCommit'] === null) {
+        } elseif (\array_key_exists('RuncCommit', $data) && null === $data['RuncCommit']) {
             $object->setRuncCommit(null);
         }
-        if (\array_key_exists('InitCommit', $data) && $data['InitCommit'] !== null) {
+        if (\array_key_exists('InitCommit', $data) && null !== $data['InitCommit']) {
             $object->setInitCommit($this->denormalizer->denormalize($data['InitCommit'], 'Docker\\API\\Model\\Commit', 'json', $context));
             unset($data['InitCommit']);
-        }
-        elseif (\array_key_exists('InitCommit', $data) && $data['InitCommit'] === null) {
+        } elseif (\array_key_exists('InitCommit', $data) && null === $data['InitCommit']) {
             $object->setInitCommit(null);
         }
-        if (\array_key_exists('SecurityOptions', $data) && $data['SecurityOptions'] !== null) {
-            $values_5 = array();
+        if (\array_key_exists('SecurityOptions', $data) && null !== $data['SecurityOptions']) {
+            $values_5 = [];
             foreach ($data['SecurityOptions'] as $value_5) {
                 $values_5[] = $value_5;
             }
             $object->setSecurityOptions($values_5);
             unset($data['SecurityOptions']);
-        }
-        elseif (\array_key_exists('SecurityOptions', $data) && $data['SecurityOptions'] === null) {
+        } elseif (\array_key_exists('SecurityOptions', $data) && null === $data['SecurityOptions']) {
             $object->setSecurityOptions(null);
         }
-        if (\array_key_exists('ProductLicense', $data) && $data['ProductLicense'] !== null) {
+        if (\array_key_exists('ProductLicense', $data) && null !== $data['ProductLicense']) {
             $object->setProductLicense($data['ProductLicense']);
             unset($data['ProductLicense']);
-        }
-        elseif (\array_key_exists('ProductLicense', $data) && $data['ProductLicense'] === null) {
+        } elseif (\array_key_exists('ProductLicense', $data) && null === $data['ProductLicense']) {
             $object->setProductLicense(null);
         }
-        if (\array_key_exists('DefaultAddressPools', $data) && $data['DefaultAddressPools'] !== null) {
-            $values_6 = array();
+        if (\array_key_exists('DefaultAddressPools', $data) && null !== $data['DefaultAddressPools']) {
+            $values_6 = [];
             foreach ($data['DefaultAddressPools'] as $value_6) {
                 $values_6[] = $this->denormalizer->denormalize($value_6, 'Docker\\API\\Model\\SystemInfoDefaultAddressPoolsItem', 'json', $context);
             }
             $object->setDefaultAddressPools($values_6);
             unset($data['DefaultAddressPools']);
-        }
-        elseif (\array_key_exists('DefaultAddressPools', $data) && $data['DefaultAddressPools'] === null) {
+        } elseif (\array_key_exists('DefaultAddressPools', $data) && null === $data['DefaultAddressPools']) {
             $object->setDefaultAddressPools(null);
         }
-        if (\array_key_exists('Warnings', $data) && $data['Warnings'] !== null) {
-            $values_7 = array();
+        if (\array_key_exists('Warnings', $data) && null !== $data['Warnings']) {
+            $values_7 = [];
             foreach ($data['Warnings'] as $value_7) {
                 $values_7[] = $value_7;
             }
             $object->setWarnings($values_7);
             unset($data['Warnings']);
-        }
-        elseif (\array_key_exists('Warnings', $data) && $data['Warnings'] === null) {
+        } elseif (\array_key_exists('Warnings', $data) && null === $data['Warnings']) {
             $object->setWarnings(null);
         }
         foreach ($data as $key_1 => $value_8) {
@@ -512,14 +455,16 @@ class SystemInfoNormalizer implements DenormalizerInterface, NormalizerInterface
                 $object[$key_1] = $value_8;
             }
         }
+
         return $object;
     }
+
     /**
      * @return array|string|int|float|bool|\ArrayObject|null
      */
-    public function normalize($object, $format = null, array $context = array())
+    public function normalize($object, $format = null, array $context = [])
     {
-        $data = array();
+        $data = [];
         if ($object->isInitialized('iD') && null !== $object->getID()) {
             $data['ID'] = $object->getID();
         }
@@ -542,9 +487,9 @@ class SystemInfoNormalizer implements DenormalizerInterface, NormalizerInterface
             $data['Driver'] = $object->getDriver();
         }
         if ($object->isInitialized('driverStatus') && null !== $object->getDriverStatus()) {
-            $values = array();
+            $values = [];
             foreach ($object->getDriverStatus() as $value) {
-                $values_1 = array();
+                $values_1 = [];
                 foreach ($value as $value_1) {
                     $values_1[] = $value_1;
                 }
@@ -646,7 +591,7 @@ class SystemInfoNormalizer implements DenormalizerInterface, NormalizerInterface
             $data['RegistryConfig'] = $this->normalizer->normalize($object->getRegistryConfig(), 'json', $context);
         }
         if ($object->isInitialized('genericResources') && null !== $object->getGenericResources()) {
-            $values_2 = array();
+            $values_2 = [];
             foreach ($object->getGenericResources() as $value_2) {
                 $values_2[] = $this->normalizer->normalize($value_2, 'json', $context);
             }
@@ -665,7 +610,7 @@ class SystemInfoNormalizer implements DenormalizerInterface, NormalizerInterface
             $data['Name'] = $object->getName();
         }
         if ($object->isInitialized('labels') && null !== $object->getLabels()) {
-            $values_3 = array();
+            $values_3 = [];
             foreach ($object->getLabels() as $value_3) {
                 $values_3[] = $value_3;
             }
@@ -684,7 +629,7 @@ class SystemInfoNormalizer implements DenormalizerInterface, NormalizerInterface
             $data['ClusterAdvertise'] = $object->getClusterAdvertise();
         }
         if ($object->isInitialized('runtimes') && null !== $object->getRuntimes()) {
-            $values_4 = array();
+            $values_4 = [];
             foreach ($object->getRuntimes() as $key => $value_4) {
                 $values_4[$key] = $this->normalizer->normalize($value_4, 'json', $context);
             }
@@ -715,7 +660,7 @@ class SystemInfoNormalizer implements DenormalizerInterface, NormalizerInterface
             $data['InitCommit'] = $this->normalizer->normalize($object->getInitCommit(), 'json', $context);
         }
         if ($object->isInitialized('securityOptions') && null !== $object->getSecurityOptions()) {
-            $values_5 = array();
+            $values_5 = [];
             foreach ($object->getSecurityOptions() as $value_5) {
                 $values_5[] = $value_5;
             }
@@ -725,14 +670,14 @@ class SystemInfoNormalizer implements DenormalizerInterface, NormalizerInterface
             $data['ProductLicense'] = $object->getProductLicense();
         }
         if ($object->isInitialized('defaultAddressPools') && null !== $object->getDefaultAddressPools()) {
-            $values_6 = array();
+            $values_6 = [];
             foreach ($object->getDefaultAddressPools() as $value_6) {
                 $values_6[] = $this->normalizer->normalize($value_6, 'json', $context);
             }
             $data['DefaultAddressPools'] = $values_6;
         }
         if ($object->isInitialized('warnings') && null !== $object->getWarnings()) {
-            $values_7 = array();
+            $values_7 = [];
             foreach ($object->getWarnings() as $value_7) {
                 $values_7[] = $value_7;
             }
@@ -743,6 +688,7 @@ class SystemInfoNormalizer implements DenormalizerInterface, NormalizerInterface
                 $data[$key_1] = $value_8;
             }
         }
+
         return $data;
     }
 }

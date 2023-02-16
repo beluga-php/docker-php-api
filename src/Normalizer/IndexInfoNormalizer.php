@@ -1,35 +1,40 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Docker\API\Normalizer;
 
-use Jane\Component\JsonSchemaRuntime\Reference;
 use Docker\API\Runtime\Normalizer\CheckArray;
 use Docker\API\Runtime\Normalizer\ValidatorTrait;
-use Symfony\Component\Serializer\Exception\InvalidArgumentException;
+use Jane\Component\JsonSchemaRuntime\Reference;
 use Symfony\Component\Serializer\Normalizer\DenormalizerAwareInterface;
 use Symfony\Component\Serializer\Normalizer\DenormalizerAwareTrait;
 use Symfony\Component\Serializer\Normalizer\DenormalizerInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerAwareInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerAwareTrait;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
+
 class IndexInfoNormalizer implements DenormalizerInterface, NormalizerInterface, DenormalizerAwareInterface, NormalizerAwareInterface
 {
+    use CheckArray;
     use DenormalizerAwareTrait;
     use NormalizerAwareTrait;
-    use CheckArray;
     use ValidatorTrait;
-    public function supportsDenormalization($data, $type, $format = null) : bool
+
+    public function supportsDenormalization($data, $type, $format = null): bool
     {
-        return $type === 'Docker\\API\\Model\\IndexInfo';
+        return 'Docker\\API\\Model\\IndexInfo' === $type;
     }
-    public function supportsNormalization($data, $format = null) : bool
+
+    public function supportsNormalization($data, $format = null): bool
     {
-        return is_object($data) && get_class($data) === 'Docker\\API\\Model\\IndexInfo';
+        return \is_object($data) && 'Docker\\API\\Model\\IndexInfo' === $data::class;
     }
+
     /**
      * @return mixed
      */
-    public function denormalize($data, $class, $format = null, array $context = array())
+    public function denormalize($data, $class, $format = null, array $context = [])
     {
         if (isset($data['$ref'])) {
             return new Reference($data['$ref'], $context['document-origin']);
@@ -41,36 +46,32 @@ class IndexInfoNormalizer implements DenormalizerInterface, NormalizerInterface,
         if (null === $data || false === \is_array($data)) {
             return $object;
         }
-        if (\array_key_exists('Name', $data) && $data['Name'] !== null) {
+        if (\array_key_exists('Name', $data) && null !== $data['Name']) {
             $object->setName($data['Name']);
             unset($data['Name']);
-        }
-        elseif (\array_key_exists('Name', $data) && $data['Name'] === null) {
+        } elseif (\array_key_exists('Name', $data) && null === $data['Name']) {
             $object->setName(null);
         }
-        if (\array_key_exists('Mirrors', $data) && $data['Mirrors'] !== null) {
-            $values = array();
+        if (\array_key_exists('Mirrors', $data) && null !== $data['Mirrors']) {
+            $values = [];
             foreach ($data['Mirrors'] as $value) {
                 $values[] = $value;
             }
             $object->setMirrors($values);
             unset($data['Mirrors']);
-        }
-        elseif (\array_key_exists('Mirrors', $data) && $data['Mirrors'] === null) {
+        } elseif (\array_key_exists('Mirrors', $data) && null === $data['Mirrors']) {
             $object->setMirrors(null);
         }
-        if (\array_key_exists('Secure', $data) && $data['Secure'] !== null) {
+        if (\array_key_exists('Secure', $data) && null !== $data['Secure']) {
             $object->setSecure($data['Secure']);
             unset($data['Secure']);
-        }
-        elseif (\array_key_exists('Secure', $data) && $data['Secure'] === null) {
+        } elseif (\array_key_exists('Secure', $data) && null === $data['Secure']) {
             $object->setSecure(null);
         }
-        if (\array_key_exists('Official', $data) && $data['Official'] !== null) {
+        if (\array_key_exists('Official', $data) && null !== $data['Official']) {
             $object->setOfficial($data['Official']);
             unset($data['Official']);
-        }
-        elseif (\array_key_exists('Official', $data) && $data['Official'] === null) {
+        } elseif (\array_key_exists('Official', $data) && null === $data['Official']) {
             $object->setOfficial(null);
         }
         foreach ($data as $key => $value_1) {
@@ -78,19 +79,21 @@ class IndexInfoNormalizer implements DenormalizerInterface, NormalizerInterface,
                 $object[$key] = $value_1;
             }
         }
+
         return $object;
     }
+
     /**
      * @return array|string|int|float|bool|\ArrayObject|null
      */
-    public function normalize($object, $format = null, array $context = array())
+    public function normalize($object, $format = null, array $context = [])
     {
-        $data = array();
+        $data = [];
         if ($object->isInitialized('name') && null !== $object->getName()) {
             $data['Name'] = $object->getName();
         }
         if ($object->isInitialized('mirrors') && null !== $object->getMirrors()) {
-            $values = array();
+            $values = [];
             foreach ($object->getMirrors() as $value) {
                 $values[] = $value;
             }
@@ -107,6 +110,7 @@ class IndexInfoNormalizer implements DenormalizerInterface, NormalizerInterface,
                 $data[$key] = $value_1;
             }
         }
+
         return $data;
     }
 }
