@@ -203,12 +203,12 @@ class ImageNormalizer implements DenormalizerInterface, NormalizerInterface, Den
         $data['Created'] = $object->getCreated();
         $data['Container'] = $object->getContainer();
         if ($object->isInitialized('containerConfig') && null !== $object->getContainerConfig()) {
-            $data['ContainerConfig'] = $this->normalizer->normalize($object->getContainerConfig(), 'json', $context);
+            $data['ContainerConfig'] = new \ArrayObject($this->normalizer->normalize($object->getContainerConfig(), 'json', $context), \ArrayObject::ARRAY_AS_PROPS);
         }
         $data['DockerVersion'] = $object->getDockerVersion();
         $data['Author'] = $object->getAuthor();
         if ($object->isInitialized('config') && null !== $object->getConfig()) {
-            $data['Config'] = $this->normalizer->normalize($object->getConfig(), 'json', $context);
+            $data['Config'] = new \ArrayObject($this->normalizer->normalize($object->getConfig(), 'json', $context), \ArrayObject::ARRAY_AS_PROPS);
         }
         $data['Architecture'] = $object->getArchitecture();
         $data['Os'] = $object->getOs();
@@ -217,10 +217,10 @@ class ImageNormalizer implements DenormalizerInterface, NormalizerInterface, Den
         }
         $data['Size'] = $object->getSize();
         $data['VirtualSize'] = $object->getVirtualSize();
-        $data['GraphDriver'] = $this->normalizer->normalize($object->getGraphDriver(), 'json', $context);
-        $data['RootFS'] = $this->normalizer->normalize($object->getRootFS(), 'json', $context);
+        $data['GraphDriver'] = new \ArrayObject($this->normalizer->normalize($object->getGraphDriver(), 'json', $context), \ArrayObject::ARRAY_AS_PROPS);
+        $data['RootFS'] = new \ArrayObject($this->normalizer->normalize($object->getRootFS(), 'json', $context), \ArrayObject::ARRAY_AS_PROPS);
         if ($object->isInitialized('metadata') && null !== $object->getMetadata()) {
-            $data['Metadata'] = $this->normalizer->normalize($object->getMetadata(), 'json', $context);
+            $data['Metadata'] = new \ArrayObject($this->normalizer->normalize($object->getMetadata(), 'json', $context), \ArrayObject::ARRAY_AS_PROPS);
         }
         foreach ($object as $key => $value_2) {
             if (preg_match('/.*/', (string) $key)) {

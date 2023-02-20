@@ -74,10 +74,10 @@ class TaskSpecContainerSpecPrivilegesNormalizer implements DenormalizerInterface
     {
         $data = [];
         if ($object->isInitialized('credentialSpec') && null !== $object->getCredentialSpec()) {
-            $data['CredentialSpec'] = $this->normalizer->normalize($object->getCredentialSpec(), 'json', $context);
+            $data['CredentialSpec'] = new \ArrayObject($this->normalizer->normalize($object->getCredentialSpec(), 'json', $context), \ArrayObject::ARRAY_AS_PROPS);
         }
         if ($object->isInitialized('sELinuxContext') && null !== $object->getSELinuxContext()) {
-            $data['SELinuxContext'] = $this->normalizer->normalize($object->getSELinuxContext(), 'json', $context);
+            $data['SELinuxContext'] = new \ArrayObject($this->normalizer->normalize($object->getSELinuxContext(), 'json', $context), \ArrayObject::ARRAY_AS_PROPS);
         }
         foreach ($object as $key => $value) {
             if (preg_match('/.*/', (string) $key)) {

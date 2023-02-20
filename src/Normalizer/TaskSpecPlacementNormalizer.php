@@ -107,7 +107,7 @@ class TaskSpecPlacementNormalizer implements DenormalizerInterface, NormalizerIn
         if ($object->isInitialized('preferences') && null !== $object->getPreferences()) {
             $values_1 = [];
             foreach ($object->getPreferences() as $value_1) {
-                $values_1[] = $this->normalizer->normalize($value_1, 'json', $context);
+                $values_1[] = new \ArrayObject($this->normalizer->normalize($value_1, 'json', $context), \ArrayObject::ARRAY_AS_PROPS);
             }
             $data['Preferences'] = $values_1;
         }
@@ -117,7 +117,7 @@ class TaskSpecPlacementNormalizer implements DenormalizerInterface, NormalizerIn
         if ($object->isInitialized('platforms') && null !== $object->getPlatforms()) {
             $values_2 = [];
             foreach ($object->getPlatforms() as $value_2) {
-                $values_2[] = $this->normalizer->normalize($value_2, 'json', $context);
+                $values_2[] = new \ArrayObject($this->normalizer->normalize($value_2, 'json', $context), \ArrayObject::ARRAY_AS_PROPS);
             }
             $data['Platforms'] = $values_2;
         }
