@@ -117,29 +117,29 @@ class SwarmSpecNormalizer implements DenormalizerInterface, NormalizerInterface,
             $data['Name'] = $object->getName();
         }
         if ($object->isInitialized('labels') && null !== $object->getLabels()) {
-            $values = [];
+            $values = new \ArrayObject([], \ArrayObject::ARRAY_AS_PROPS);
             foreach ($object->getLabels() as $key => $value) {
                 $values[$key] = $value;
             }
             $data['Labels'] = $values;
         }
         if ($object->isInitialized('orchestration') && null !== $object->getOrchestration()) {
-            $data['Orchestration'] = $this->normalizer->normalize($object->getOrchestration(), 'json', $context);
+            $data['Orchestration'] = new \ArrayObject($this->normalizer->normalize($object->getOrchestration(), 'json', $context), \ArrayObject::ARRAY_AS_PROPS);
         }
         if ($object->isInitialized('raft') && null !== $object->getRaft()) {
-            $data['Raft'] = $this->normalizer->normalize($object->getRaft(), 'json', $context);
+            $data['Raft'] = new \ArrayObject($this->normalizer->normalize($object->getRaft(), 'json', $context), \ArrayObject::ARRAY_AS_PROPS);
         }
         if ($object->isInitialized('dispatcher') && null !== $object->getDispatcher()) {
-            $data['Dispatcher'] = $this->normalizer->normalize($object->getDispatcher(), 'json', $context);
+            $data['Dispatcher'] = new \ArrayObject($this->normalizer->normalize($object->getDispatcher(), 'json', $context), \ArrayObject::ARRAY_AS_PROPS);
         }
         if ($object->isInitialized('cAConfig') && null !== $object->getCAConfig()) {
-            $data['CAConfig'] = $this->normalizer->normalize($object->getCAConfig(), 'json', $context);
+            $data['CAConfig'] = new \ArrayObject($this->normalizer->normalize($object->getCAConfig(), 'json', $context), \ArrayObject::ARRAY_AS_PROPS);
         }
         if ($object->isInitialized('encryptionConfig') && null !== $object->getEncryptionConfig()) {
-            $data['EncryptionConfig'] = $this->normalizer->normalize($object->getEncryptionConfig(), 'json', $context);
+            $data['EncryptionConfig'] = new \ArrayObject($this->normalizer->normalize($object->getEncryptionConfig(), 'json', $context), \ArrayObject::ARRAY_AS_PROPS);
         }
         if ($object->isInitialized('taskDefaults') && null !== $object->getTaskDefaults()) {
-            $data['TaskDefaults'] = $this->normalizer->normalize($object->getTaskDefaults(), 'json', $context);
+            $data['TaskDefaults'] = new \ArrayObject($this->normalizer->normalize($object->getTaskDefaults(), 'json', $context), \ArrayObject::ARRAY_AS_PROPS);
         }
         foreach ($object as $key_1 => $value_1) {
             if (preg_match('/.*/', (string) $key_1)) {

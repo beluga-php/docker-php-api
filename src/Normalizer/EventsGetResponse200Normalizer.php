@@ -98,7 +98,7 @@ class EventsGetResponse200Normalizer implements DenormalizerInterface, Normalize
             $data['Action'] = $object->getAction();
         }
         if ($object->isInitialized('actor') && null !== $object->getActor()) {
-            $data['Actor'] = $this->normalizer->normalize($object->getActor(), 'json', $context);
+            $data['Actor'] = new \ArrayObject($this->normalizer->normalize($object->getActor(), 'json', $context), \ArrayObject::ARRAY_AS_PROPS);
         }
         if ($object->isInitialized('time') && null !== $object->getTime()) {
             $data['time'] = $object->getTime();

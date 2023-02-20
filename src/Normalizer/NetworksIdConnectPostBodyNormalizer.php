@@ -77,7 +77,7 @@ class NetworksIdConnectPostBodyNormalizer implements DenormalizerInterface, Norm
             $data['Container'] = $object->getContainer();
         }
         if ($object->isInitialized('endpointConfig') && null !== $object->getEndpointConfig()) {
-            $data['EndpointConfig'] = $this->normalizer->normalize($object->getEndpointConfig(), 'json', $context);
+            $data['EndpointConfig'] = new \ArrayObject($this->normalizer->normalize($object->getEndpointConfig(), 'json', $context), \ArrayObject::ARRAY_AS_PROPS);
         }
         foreach ($object as $key => $value) {
             if (preg_match('/.*/', (string) $key)) {

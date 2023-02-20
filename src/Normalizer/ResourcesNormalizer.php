@@ -304,35 +304,35 @@ class ResourcesNormalizer implements DenormalizerInterface, NormalizerInterface,
         if ($object->isInitialized('blkioWeightDevice') && null !== $object->getBlkioWeightDevice()) {
             $values = [];
             foreach ($object->getBlkioWeightDevice() as $value) {
-                $values[] = $this->normalizer->normalize($value, 'json', $context);
+                $values[] = new \ArrayObject($this->normalizer->normalize($value, 'json', $context), \ArrayObject::ARRAY_AS_PROPS);
             }
             $data['BlkioWeightDevice'] = $values;
         }
         if ($object->isInitialized('blkioDeviceReadBps') && null !== $object->getBlkioDeviceReadBps()) {
             $values_1 = [];
             foreach ($object->getBlkioDeviceReadBps() as $value_1) {
-                $values_1[] = $this->normalizer->normalize($value_1, 'json', $context);
+                $values_1[] = new \ArrayObject($this->normalizer->normalize($value_1, 'json', $context), \ArrayObject::ARRAY_AS_PROPS);
             }
             $data['BlkioDeviceReadBps'] = $values_1;
         }
         if ($object->isInitialized('blkioDeviceWriteBps') && null !== $object->getBlkioDeviceWriteBps()) {
             $values_2 = [];
             foreach ($object->getBlkioDeviceWriteBps() as $value_2) {
-                $values_2[] = $this->normalizer->normalize($value_2, 'json', $context);
+                $values_2[] = new \ArrayObject($this->normalizer->normalize($value_2, 'json', $context), \ArrayObject::ARRAY_AS_PROPS);
             }
             $data['BlkioDeviceWriteBps'] = $values_2;
         }
         if ($object->isInitialized('blkioDeviceReadIOps') && null !== $object->getBlkioDeviceReadIOps()) {
             $values_3 = [];
             foreach ($object->getBlkioDeviceReadIOps() as $value_3) {
-                $values_3[] = $this->normalizer->normalize($value_3, 'json', $context);
+                $values_3[] = new \ArrayObject($this->normalizer->normalize($value_3, 'json', $context), \ArrayObject::ARRAY_AS_PROPS);
             }
             $data['BlkioDeviceReadIOps'] = $values_3;
         }
         if ($object->isInitialized('blkioDeviceWriteIOps') && null !== $object->getBlkioDeviceWriteIOps()) {
             $values_4 = [];
             foreach ($object->getBlkioDeviceWriteIOps() as $value_4) {
-                $values_4[] = $this->normalizer->normalize($value_4, 'json', $context);
+                $values_4[] = new \ArrayObject($this->normalizer->normalize($value_4, 'json', $context), \ArrayObject::ARRAY_AS_PROPS);
             }
             $data['BlkioDeviceWriteIOps'] = $values_4;
         }
@@ -357,7 +357,7 @@ class ResourcesNormalizer implements DenormalizerInterface, NormalizerInterface,
         if ($object->isInitialized('devices') && null !== $object->getDevices()) {
             $values_5 = [];
             foreach ($object->getDevices() as $value_5) {
-                $values_5[] = $this->normalizer->normalize($value_5, 'json', $context);
+                $values_5[] = new \ArrayObject($this->normalizer->normalize($value_5, 'json', $context), \ArrayObject::ARRAY_AS_PROPS);
             }
             $data['Devices'] = $values_5;
         }
@@ -371,7 +371,7 @@ class ResourcesNormalizer implements DenormalizerInterface, NormalizerInterface,
         if ($object->isInitialized('deviceRequests') && null !== $object->getDeviceRequests()) {
             $values_7 = [];
             foreach ($object->getDeviceRequests() as $value_7) {
-                $values_7[] = $this->normalizer->normalize($value_7, 'json', $context);
+                $values_7[] = new \ArrayObject($this->normalizer->normalize($value_7, 'json', $context), \ArrayObject::ARRAY_AS_PROPS);
             }
             $data['DeviceRequests'] = $values_7;
         }
@@ -405,7 +405,7 @@ class ResourcesNormalizer implements DenormalizerInterface, NormalizerInterface,
         if ($object->isInitialized('ulimits') && null !== $object->getUlimits()) {
             $values_8 = [];
             foreach ($object->getUlimits() as $value_8) {
-                $values_8[] = $this->normalizer->normalize($value_8, 'json', $context);
+                $values_8[] = new \ArrayObject($this->normalizer->normalize($value_8, 'json', $context), \ArrayObject::ARRAY_AS_PROPS);
             }
             $data['Ulimits'] = $values_8;
         }

@@ -138,12 +138,12 @@ class SystemVersionNormalizer implements DenormalizerInterface, NormalizerInterf
     {
         $data = [];
         if ($object->isInitialized('platform') && null !== $object->getPlatform()) {
-            $data['Platform'] = $this->normalizer->normalize($object->getPlatform(), 'json', $context);
+            $data['Platform'] = new \ArrayObject($this->normalizer->normalize($object->getPlatform(), 'json', $context), \ArrayObject::ARRAY_AS_PROPS);
         }
         if ($object->isInitialized('components') && null !== $object->getComponents()) {
             $values = [];
             foreach ($object->getComponents() as $value) {
-                $values[] = $this->normalizer->normalize($value, 'json', $context);
+                $values[] = new \ArrayObject($this->normalizer->normalize($value, 'json', $context), \ArrayObject::ARRAY_AS_PROPS);
             }
             $data['Components'] = $values;
         }

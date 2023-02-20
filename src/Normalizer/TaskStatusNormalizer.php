@@ -104,7 +104,7 @@ class TaskStatusNormalizer implements DenormalizerInterface, NormalizerInterface
             $data['Err'] = $object->getErr();
         }
         if ($object->isInitialized('containerStatus') && null !== $object->getContainerStatus()) {
-            $data['ContainerStatus'] = $this->normalizer->normalize($object->getContainerStatus(), 'json', $context);
+            $data['ContainerStatus'] = new \ArrayObject($this->normalizer->normalize($object->getContainerStatus(), 'json', $context), \ArrayObject::ARRAY_AS_PROPS);
         }
         foreach ($object as $key => $value) {
             if (preg_match('/.*/', (string) $key)) {

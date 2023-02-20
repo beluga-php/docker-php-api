@@ -240,7 +240,7 @@ class ContainersIdJsonGetResponse200Normalizer implements DenormalizerInterface,
             $data['Args'] = $values;
         }
         if ($object->isInitialized('state') && null !== $object->getState()) {
-            $data['State'] = $this->normalizer->normalize($object->getState(), 'json', $context);
+            $data['State'] = new \ArrayObject($this->normalizer->normalize($object->getState(), 'json', $context), \ArrayObject::ARRAY_AS_PROPS);
         }
         if ($object->isInitialized('image') && null !== $object->getImage()) {
             $data['Image'] = $object->getImage();
@@ -286,10 +286,10 @@ class ContainersIdJsonGetResponse200Normalizer implements DenormalizerInterface,
             $data['ExecIDs'] = $values_1;
         }
         if ($object->isInitialized('hostConfig') && null !== $object->getHostConfig()) {
-            $data['HostConfig'] = $this->normalizer->normalize($object->getHostConfig(), 'json', $context);
+            $data['HostConfig'] = new \ArrayObject($this->normalizer->normalize($object->getHostConfig(), 'json', $context), \ArrayObject::ARRAY_AS_PROPS);
         }
         if ($object->isInitialized('graphDriver') && null !== $object->getGraphDriver()) {
-            $data['GraphDriver'] = $this->normalizer->normalize($object->getGraphDriver(), 'json', $context);
+            $data['GraphDriver'] = new \ArrayObject($this->normalizer->normalize($object->getGraphDriver(), 'json', $context), \ArrayObject::ARRAY_AS_PROPS);
         }
         if ($object->isInitialized('sizeRw') && null !== $object->getSizeRw()) {
             $data['SizeRw'] = $object->getSizeRw();
@@ -300,15 +300,15 @@ class ContainersIdJsonGetResponse200Normalizer implements DenormalizerInterface,
         if ($object->isInitialized('mounts') && null !== $object->getMounts()) {
             $values_2 = [];
             foreach ($object->getMounts() as $value_2) {
-                $values_2[] = $this->normalizer->normalize($value_2, 'json', $context);
+                $values_2[] = new \ArrayObject($this->normalizer->normalize($value_2, 'json', $context), \ArrayObject::ARRAY_AS_PROPS);
             }
             $data['Mounts'] = $values_2;
         }
         if ($object->isInitialized('config') && null !== $object->getConfig()) {
-            $data['Config'] = $this->normalizer->normalize($object->getConfig(), 'json', $context);
+            $data['Config'] = new \ArrayObject($this->normalizer->normalize($object->getConfig(), 'json', $context), \ArrayObject::ARRAY_AS_PROPS);
         }
         if ($object->isInitialized('networkSettings') && null !== $object->getNetworkSettings()) {
-            $data['NetworkSettings'] = $this->normalizer->normalize($object->getNetworkSettings(), 'json', $context);
+            $data['NetworkSettings'] = new \ArrayObject($this->normalizer->normalize($object->getNetworkSettings(), 'json', $context), \ArrayObject::ARRAY_AS_PROPS);
         }
         foreach ($object as $key => $value_3) {
             if (preg_match('/.*/', (string) $key)) {

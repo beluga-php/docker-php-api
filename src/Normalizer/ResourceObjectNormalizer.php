@@ -92,7 +92,7 @@ class ResourceObjectNormalizer implements DenormalizerInterface, NormalizerInter
         if ($object->isInitialized('genericResources') && null !== $object->getGenericResources()) {
             $values = [];
             foreach ($object->getGenericResources() as $value) {
-                $values[] = $this->normalizer->normalize($value, 'json', $context);
+                $values[] = new \ArrayObject($this->normalizer->normalize($value, 'json', $context), \ArrayObject::ARRAY_AS_PROPS);
             }
             $data['GenericResources'] = $values;
         }

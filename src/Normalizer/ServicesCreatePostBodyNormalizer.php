@@ -121,33 +121,33 @@ class ServicesCreatePostBodyNormalizer implements DenormalizerInterface, Normali
             $data['Name'] = $object->getName();
         }
         if ($object->isInitialized('labels') && null !== $object->getLabels()) {
-            $values = [];
+            $values = new \ArrayObject([], \ArrayObject::ARRAY_AS_PROPS);
             foreach ($object->getLabels() as $key => $value) {
                 $values[$key] = $value;
             }
             $data['Labels'] = $values;
         }
         if ($object->isInitialized('taskTemplate') && null !== $object->getTaskTemplate()) {
-            $data['TaskTemplate'] = $this->normalizer->normalize($object->getTaskTemplate(), 'json', $context);
+            $data['TaskTemplate'] = new \ArrayObject($this->normalizer->normalize($object->getTaskTemplate(), 'json', $context), \ArrayObject::ARRAY_AS_PROPS);
         }
         if ($object->isInitialized('mode') && null !== $object->getMode()) {
-            $data['Mode'] = $this->normalizer->normalize($object->getMode(), 'json', $context);
+            $data['Mode'] = new \ArrayObject($this->normalizer->normalize($object->getMode(), 'json', $context), \ArrayObject::ARRAY_AS_PROPS);
         }
         if ($object->isInitialized('updateConfig') && null !== $object->getUpdateConfig()) {
-            $data['UpdateConfig'] = $this->normalizer->normalize($object->getUpdateConfig(), 'json', $context);
+            $data['UpdateConfig'] = new \ArrayObject($this->normalizer->normalize($object->getUpdateConfig(), 'json', $context), \ArrayObject::ARRAY_AS_PROPS);
         }
         if ($object->isInitialized('rollbackConfig') && null !== $object->getRollbackConfig()) {
-            $data['RollbackConfig'] = $this->normalizer->normalize($object->getRollbackConfig(), 'json', $context);
+            $data['RollbackConfig'] = new \ArrayObject($this->normalizer->normalize($object->getRollbackConfig(), 'json', $context), \ArrayObject::ARRAY_AS_PROPS);
         }
         if ($object->isInitialized('networks') && null !== $object->getNetworks()) {
             $values_1 = [];
             foreach ($object->getNetworks() as $value_1) {
-                $values_1[] = $this->normalizer->normalize($value_1, 'json', $context);
+                $values_1[] = new \ArrayObject($this->normalizer->normalize($value_1, 'json', $context), \ArrayObject::ARRAY_AS_PROPS);
             }
             $data['Networks'] = $values_1;
         }
         if ($object->isInitialized('endpointSpec') && null !== $object->getEndpointSpec()) {
-            $data['EndpointSpec'] = $this->normalizer->normalize($object->getEndpointSpec(), 'json', $context);
+            $data['EndpointSpec'] = new \ArrayObject($this->normalizer->normalize($object->getEndpointSpec(), 'json', $context), \ArrayObject::ARRAY_AS_PROPS);
         }
         foreach ($object as $key_1 => $value_2) {
             if (preg_match('/.*/', (string) $key_1)) {

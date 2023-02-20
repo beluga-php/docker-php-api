@@ -72,9 +72,9 @@ class ContainerSummaryItemNetworkSettingsNormalizer implements DenormalizerInter
     {
         $data = [];
         if ($object->isInitialized('networks') && null !== $object->getNetworks()) {
-            $values = [];
+            $values = new \ArrayObject([], \ArrayObject::ARRAY_AS_PROPS);
             foreach ($object->getNetworks() as $key => $value) {
-                $values[$key] = $this->normalizer->normalize($value, 'json', $context);
+                $values[$key] = new \ArrayObject($this->normalizer->normalize($value, 'json', $context), \ArrayObject::ARRAY_AS_PROPS);
             }
             $data['Networks'] = $values;
         }

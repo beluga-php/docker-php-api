@@ -135,7 +135,7 @@ class SwarmNormalizer implements DenormalizerInterface, NormalizerInterface, Den
             $data['ID'] = $object->getID();
         }
         if ($object->isInitialized('version') && null !== $object->getVersion()) {
-            $data['Version'] = $this->normalizer->normalize($object->getVersion(), 'json', $context);
+            $data['Version'] = new \ArrayObject($this->normalizer->normalize($object->getVersion(), 'json', $context), \ArrayObject::ARRAY_AS_PROPS);
         }
         if ($object->isInitialized('createdAt') && null !== $object->getCreatedAt()) {
             $data['CreatedAt'] = $object->getCreatedAt();
@@ -144,10 +144,10 @@ class SwarmNormalizer implements DenormalizerInterface, NormalizerInterface, Den
             $data['UpdatedAt'] = $object->getUpdatedAt();
         }
         if ($object->isInitialized('spec') && null !== $object->getSpec()) {
-            $data['Spec'] = $this->normalizer->normalize($object->getSpec(), 'json', $context);
+            $data['Spec'] = new \ArrayObject($this->normalizer->normalize($object->getSpec(), 'json', $context), \ArrayObject::ARRAY_AS_PROPS);
         }
         if ($object->isInitialized('tLSInfo') && null !== $object->getTLSInfo()) {
-            $data['TLSInfo'] = $this->normalizer->normalize($object->getTLSInfo(), 'json', $context);
+            $data['TLSInfo'] = new \ArrayObject($this->normalizer->normalize($object->getTLSInfo(), 'json', $context), \ArrayObject::ARRAY_AS_PROPS);
         }
         if ($object->isInitialized('rootRotationInProgress') && null !== $object->getRootRotationInProgress()) {
             $data['RootRotationInProgress'] = $object->getRootRotationInProgress();
@@ -166,7 +166,7 @@ class SwarmNormalizer implements DenormalizerInterface, NormalizerInterface, Den
             $data['SubnetSize'] = $object->getSubnetSize();
         }
         if ($object->isInitialized('joinTokens') && null !== $object->getJoinTokens()) {
-            $data['JoinTokens'] = $this->normalizer->normalize($object->getJoinTokens(), 'json', $context);
+            $data['JoinTokens'] = new \ArrayObject($this->normalizer->normalize($object->getJoinTokens(), 'json', $context), \ArrayObject::ARRAY_AS_PROPS);
         }
         foreach ($object as $key => $value_1) {
             if (preg_match('/.*/', (string) $key)) {

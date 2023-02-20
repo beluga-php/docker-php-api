@@ -92,7 +92,7 @@ class HealthNormalizer implements DenormalizerInterface, NormalizerInterface, De
         if ($object->isInitialized('log') && null !== $object->getLog()) {
             $values = [];
             foreach ($object->getLog() as $value) {
-                $values[] = $this->normalizer->normalize($value, 'json', $context);
+                $values[] = new \ArrayObject($this->normalizer->normalize($value, 'json', $context), \ArrayObject::ARRAY_AS_PROPS);
             }
             $data['Log'] = $values;
         }

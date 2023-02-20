@@ -501,7 +501,7 @@ class SystemInfoNormalizer implements DenormalizerInterface, NormalizerInterface
             $data['DockerRootDir'] = $object->getDockerRootDir();
         }
         if ($object->isInitialized('plugins') && null !== $object->getPlugins()) {
-            $data['Plugins'] = $this->normalizer->normalize($object->getPlugins(), 'json', $context);
+            $data['Plugins'] = new \ArrayObject($this->normalizer->normalize($object->getPlugins(), 'json', $context), \ArrayObject::ARRAY_AS_PROPS);
         }
         if ($object->isInitialized('memoryLimit') && null !== $object->getMemoryLimit()) {
             $data['MemoryLimit'] = $object->getMemoryLimit();
@@ -588,12 +588,12 @@ class SystemInfoNormalizer implements DenormalizerInterface, NormalizerInterface
             $data['IndexServerAddress'] = $object->getIndexServerAddress();
         }
         if ($object->isInitialized('registryConfig') && null !== $object->getRegistryConfig()) {
-            $data['RegistryConfig'] = $this->normalizer->normalize($object->getRegistryConfig(), 'json', $context);
+            $data['RegistryConfig'] = new \ArrayObject($this->normalizer->normalize($object->getRegistryConfig(), 'json', $context), \ArrayObject::ARRAY_AS_PROPS);
         }
         if ($object->isInitialized('genericResources') && null !== $object->getGenericResources()) {
             $values_2 = [];
             foreach ($object->getGenericResources() as $value_2) {
-                $values_2[] = $this->normalizer->normalize($value_2, 'json', $context);
+                $values_2[] = new \ArrayObject($this->normalizer->normalize($value_2, 'json', $context), \ArrayObject::ARRAY_AS_PROPS);
             }
             $data['GenericResources'] = $values_2;
         }
@@ -629,9 +629,9 @@ class SystemInfoNormalizer implements DenormalizerInterface, NormalizerInterface
             $data['ClusterAdvertise'] = $object->getClusterAdvertise();
         }
         if ($object->isInitialized('runtimes') && null !== $object->getRuntimes()) {
-            $values_4 = [];
+            $values_4 = new \ArrayObject([], \ArrayObject::ARRAY_AS_PROPS);
             foreach ($object->getRuntimes() as $key => $value_4) {
-                $values_4[$key] = $this->normalizer->normalize($value_4, 'json', $context);
+                $values_4[$key] = new \ArrayObject($this->normalizer->normalize($value_4, 'json', $context), \ArrayObject::ARRAY_AS_PROPS);
             }
             $data['Runtimes'] = $values_4;
         }
@@ -639,7 +639,7 @@ class SystemInfoNormalizer implements DenormalizerInterface, NormalizerInterface
             $data['DefaultRuntime'] = $object->getDefaultRuntime();
         }
         if ($object->isInitialized('swarm') && null !== $object->getSwarm()) {
-            $data['Swarm'] = $this->normalizer->normalize($object->getSwarm(), 'json', $context);
+            $data['Swarm'] = new \ArrayObject($this->normalizer->normalize($object->getSwarm(), 'json', $context), \ArrayObject::ARRAY_AS_PROPS);
         }
         if ($object->isInitialized('liveRestoreEnabled') && null !== $object->getLiveRestoreEnabled()) {
             $data['LiveRestoreEnabled'] = $object->getLiveRestoreEnabled();
@@ -651,13 +651,13 @@ class SystemInfoNormalizer implements DenormalizerInterface, NormalizerInterface
             $data['InitBinary'] = $object->getInitBinary();
         }
         if ($object->isInitialized('containerdCommit') && null !== $object->getContainerdCommit()) {
-            $data['ContainerdCommit'] = $this->normalizer->normalize($object->getContainerdCommit(), 'json', $context);
+            $data['ContainerdCommit'] = new \ArrayObject($this->normalizer->normalize($object->getContainerdCommit(), 'json', $context), \ArrayObject::ARRAY_AS_PROPS);
         }
         if ($object->isInitialized('runcCommit') && null !== $object->getRuncCommit()) {
-            $data['RuncCommit'] = $this->normalizer->normalize($object->getRuncCommit(), 'json', $context);
+            $data['RuncCommit'] = new \ArrayObject($this->normalizer->normalize($object->getRuncCommit(), 'json', $context), \ArrayObject::ARRAY_AS_PROPS);
         }
         if ($object->isInitialized('initCommit') && null !== $object->getInitCommit()) {
-            $data['InitCommit'] = $this->normalizer->normalize($object->getInitCommit(), 'json', $context);
+            $data['InitCommit'] = new \ArrayObject($this->normalizer->normalize($object->getInitCommit(), 'json', $context), \ArrayObject::ARRAY_AS_PROPS);
         }
         if ($object->isInitialized('securityOptions') && null !== $object->getSecurityOptions()) {
             $values_5 = [];
@@ -672,7 +672,7 @@ class SystemInfoNormalizer implements DenormalizerInterface, NormalizerInterface
         if ($object->isInitialized('defaultAddressPools') && null !== $object->getDefaultAddressPools()) {
             $values_6 = [];
             foreach ($object->getDefaultAddressPools() as $value_6) {
-                $values_6[] = $this->normalizer->normalize($value_6, 'json', $context);
+                $values_6[] = new \ArrayObject($this->normalizer->normalize($value_6, 'json', $context), \ArrayObject::ARRAY_AS_PROPS);
             }
             $data['DefaultAddressPools'] = $values_6;
         }
