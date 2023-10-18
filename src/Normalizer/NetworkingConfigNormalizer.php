@@ -69,9 +69,9 @@ class NetworkingConfigNormalizer implements DenormalizerInterface, NormalizerInt
     {
         $data = [];
         if ($object->isInitialized('endpointsConfig') && null !== $object->getEndpointsConfig()) {
-            $values = [];
+            $values = new \ArrayObject([], \ArrayObject::ARRAY_AS_PROPS);
             foreach ($object->getEndpointsConfig() as $key => $value) {
-                $values[$key] = $this->normalizer->normalize($value, 'json', $context);
+                $values[$key] = null === $value ? null : new \ArrayObject($this->normalizer->normalize($value, 'json', $context), \ArrayObject::ARRAY_AS_PROPS);
             }
             $data['EndpointsConfig'] = $values;
         }

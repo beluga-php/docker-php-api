@@ -143,20 +143,20 @@ class NetworksCreatePostBodyNormalizer implements DenormalizerInterface, Normali
             $data['Ingress'] = $object->getIngress();
         }
         if ($object->isInitialized('iPAM') && null !== $object->getIPAM()) {
-            $data['IPAM'] = $this->normalizer->normalize($object->getIPAM(), 'json', $context);
+            $data['IPAM'] = null === $object->getIPAM() ? null : new \ArrayObject($this->normalizer->normalize($object->getIPAM(), 'json', $context), \ArrayObject::ARRAY_AS_PROPS);
         }
         if ($object->isInitialized('enableIPv6') && null !== $object->getEnableIPv6()) {
             $data['EnableIPv6'] = $object->getEnableIPv6();
         }
         if ($object->isInitialized('options') && null !== $object->getOptions()) {
-            $values = [];
+            $values = new \ArrayObject([], \ArrayObject::ARRAY_AS_PROPS);
             foreach ($object->getOptions() as $key => $value) {
                 $values[$key] = $value;
             }
             $data['Options'] = $values;
         }
         if ($object->isInitialized('labels') && null !== $object->getLabels()) {
-            $values_1 = [];
+            $values_1 = new \ArrayObject([], \ArrayObject::ARRAY_AS_PROPS);
             foreach ($object->getLabels() as $key_1 => $value_1) {
                 $values_1[$key_1] = $value_1;
             }

@@ -114,7 +114,7 @@ class SystemDfGetJsonResponse200Normalizer implements DenormalizerInterface, Nor
         if ($object->isInitialized('images') && null !== $object->getImages()) {
             $values = [];
             foreach ($object->getImages() as $value) {
-                $values[] = $this->normalizer->normalize($value, 'json', $context);
+                $values[] = null === $value ? null : new \ArrayObject($this->normalizer->normalize($value, 'json', $context), \ArrayObject::ARRAY_AS_PROPS);
             }
             $data['Images'] = $values;
         }
@@ -123,7 +123,7 @@ class SystemDfGetJsonResponse200Normalizer implements DenormalizerInterface, Nor
             foreach ($object->getContainers() as $value_1) {
                 $values_2 = [];
                 foreach ($value_1 as $value_2) {
-                    $values_2[] = $this->normalizer->normalize($value_2, 'json', $context);
+                    $values_2[] = null === $value_2 ? null : new \ArrayObject($this->normalizer->normalize($value_2, 'json', $context), \ArrayObject::ARRAY_AS_PROPS);
                 }
                 $values_1[] = $values_2;
             }
@@ -132,14 +132,14 @@ class SystemDfGetJsonResponse200Normalizer implements DenormalizerInterface, Nor
         if ($object->isInitialized('volumes') && null !== $object->getVolumes()) {
             $values_3 = [];
             foreach ($object->getVolumes() as $value_3) {
-                $values_3[] = $this->normalizer->normalize($value_3, 'json', $context);
+                $values_3[] = null === $value_3 ? null : new \ArrayObject($this->normalizer->normalize($value_3, 'json', $context), \ArrayObject::ARRAY_AS_PROPS);
             }
             $data['Volumes'] = $values_3;
         }
         if ($object->isInitialized('buildCache') && null !== $object->getBuildCache()) {
             $values_4 = [];
             foreach ($object->getBuildCache() as $value_4) {
-                $values_4[] = $this->normalizer->normalize($value_4, 'json', $context);
+                $values_4[] = null === $value_4 ? null : new \ArrayObject($this->normalizer->normalize($value_4, 'json', $context), \ArrayObject::ARRAY_AS_PROPS);
             }
             $data['BuildCache'] = $values_4;
         }

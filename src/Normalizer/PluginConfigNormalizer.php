@@ -171,7 +171,7 @@ class PluginConfigNormalizer implements DenormalizerInterface, NormalizerInterfa
         }
         $data['Description'] = $object->getDescription();
         $data['Documentation'] = $object->getDocumentation();
-        $data['Interface'] = $this->normalizer->normalize($object->getInterface(), 'json', $context);
+        $data['Interface'] = null === $object->getInterface() ? null : new \ArrayObject($this->normalizer->normalize($object->getInterface(), 'json', $context), \ArrayObject::ARRAY_AS_PROPS);
         $values = [];
         foreach ($object->getEntrypoint() as $value) {
             $values[] = $value;
@@ -179,26 +179,26 @@ class PluginConfigNormalizer implements DenormalizerInterface, NormalizerInterfa
         $data['Entrypoint'] = $values;
         $data['WorkDir'] = $object->getWorkDir();
         if ($object->isInitialized('user') && null !== $object->getUser()) {
-            $data['User'] = $this->normalizer->normalize($object->getUser(), 'json', $context);
+            $data['User'] = null === $object->getUser() ? null : new \ArrayObject($this->normalizer->normalize($object->getUser(), 'json', $context), \ArrayObject::ARRAY_AS_PROPS);
         }
-        $data['Network'] = $this->normalizer->normalize($object->getNetwork(), 'json', $context);
-        $data['Linux'] = $this->normalizer->normalize($object->getLinux(), 'json', $context);
+        $data['Network'] = null === $object->getNetwork() ? null : new \ArrayObject($this->normalizer->normalize($object->getNetwork(), 'json', $context), \ArrayObject::ARRAY_AS_PROPS);
+        $data['Linux'] = null === $object->getLinux() ? null : new \ArrayObject($this->normalizer->normalize($object->getLinux(), 'json', $context), \ArrayObject::ARRAY_AS_PROPS);
         $data['PropagatedMount'] = $object->getPropagatedMount();
         $data['IpcHost'] = $object->getIpcHost();
         $data['PidHost'] = $object->getPidHost();
         $values_1 = [];
         foreach ($object->getMounts() as $value_1) {
-            $values_1[] = $this->normalizer->normalize($value_1, 'json', $context);
+            $values_1[] = null === $value_1 ? null : new \ArrayObject($this->normalizer->normalize($value_1, 'json', $context), \ArrayObject::ARRAY_AS_PROPS);
         }
         $data['Mounts'] = $values_1;
         $values_2 = [];
         foreach ($object->getEnv() as $value_2) {
-            $values_2[] = $this->normalizer->normalize($value_2, 'json', $context);
+            $values_2[] = null === $value_2 ? null : new \ArrayObject($this->normalizer->normalize($value_2, 'json', $context), \ArrayObject::ARRAY_AS_PROPS);
         }
         $data['Env'] = $values_2;
-        $data['Args'] = $this->normalizer->normalize($object->getArgs(), 'json', $context);
+        $data['Args'] = null === $object->getArgs() ? null : new \ArrayObject($this->normalizer->normalize($object->getArgs(), 'json', $context), \ArrayObject::ARRAY_AS_PROPS);
         if ($object->isInitialized('rootfs') && null !== $object->getRootfs()) {
-            $data['rootfs'] = $this->normalizer->normalize($object->getRootfs(), 'json', $context);
+            $data['rootfs'] = null === $object->getRootfs() ? null : new \ArrayObject($this->normalizer->normalize($object->getRootfs(), 'json', $context), \ArrayObject::ARRAY_AS_PROPS);
         }
         foreach ($object as $key => $value_3) {
             if (preg_match('/.*/', (string) $key)) {

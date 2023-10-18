@@ -90,7 +90,7 @@ class ConfigsCreatePostBodyNormalizer implements DenormalizerInterface, Normaliz
             $data['Name'] = $object->getName();
         }
         if ($object->isInitialized('labels') && null !== $object->getLabels()) {
-            $values = [];
+            $values = new \ArrayObject([], \ArrayObject::ARRAY_AS_PROPS);
             foreach ($object->getLabels() as $key => $value) {
                 $values[$key] = $value;
             }
@@ -100,7 +100,7 @@ class ConfigsCreatePostBodyNormalizer implements DenormalizerInterface, Normaliz
             $data['Data'] = $object->getData();
         }
         if ($object->isInitialized('templating') && null !== $object->getTemplating()) {
-            $data['Templating'] = $this->normalizer->normalize($object->getTemplating(), 'json', $context);
+            $data['Templating'] = null === $object->getTemplating() ? null : new \ArrayObject($this->normalizer->normalize($object->getTemplating(), 'json', $context), \ArrayObject::ARRAY_AS_PROPS);
         }
         foreach ($object as $key_1 => $value_1) {
             if (preg_match('/.*/', (string) $key_1)) {

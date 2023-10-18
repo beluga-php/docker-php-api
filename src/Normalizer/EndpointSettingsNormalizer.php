@@ -149,7 +149,7 @@ class EndpointSettingsNormalizer implements DenormalizerInterface, NormalizerInt
     {
         $data = [];
         if ($object->isInitialized('iPAMConfig') && null !== $object->getIPAMConfig()) {
-            $data['IPAMConfig'] = $this->normalizer->normalize($object->getIPAMConfig(), 'json', $context);
+            $data['IPAMConfig'] = null === $object->getIPAMConfig() ? null : new \ArrayObject($this->normalizer->normalize($object->getIPAMConfig(), 'json', $context), \ArrayObject::ARRAY_AS_PROPS);
         }
         if ($object->isInitialized('links') && null !== $object->getLinks()) {
             $values = [];
@@ -193,7 +193,7 @@ class EndpointSettingsNormalizer implements DenormalizerInterface, NormalizerInt
             $data['MacAddress'] = $object->getMacAddress();
         }
         if ($object->isInitialized('driverOpts') && null !== $object->getDriverOpts()) {
-            $values_2 = [];
+            $values_2 = new \ArrayObject([], \ArrayObject::ARRAY_AS_PROPS);
             foreach ($object->getDriverOpts() as $key => $value_2) {
                 $values_2[$key] = $value_2;
             }

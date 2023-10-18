@@ -79,7 +79,7 @@ class SystemVersionComponentsItemNormalizer implements DenormalizerInterface, No
         $data['Name'] = $object->getName();
         $data['Version'] = $object->getVersion();
         if ($object->isInitialized('details') && null !== $object->getDetails()) {
-            $data['Details'] = $this->normalizer->normalize($object->getDetails(), 'json', $context);
+            $data['Details'] = null === $object->getDetails() ? null : new \ArrayObject($this->normalizer->normalize($object->getDetails(), 'json', $context), \ArrayObject::ARRAY_AS_PROPS);
         }
         foreach ($object as $key => $value) {
             if (preg_match('/.*/', (string) $key)) {

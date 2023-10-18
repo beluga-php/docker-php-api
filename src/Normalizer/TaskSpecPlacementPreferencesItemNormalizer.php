@@ -65,7 +65,7 @@ class TaskSpecPlacementPreferencesItemNormalizer implements DenormalizerInterfac
     {
         $data = [];
         if ($object->isInitialized('spread') && null !== $object->getSpread()) {
-            $data['Spread'] = $this->normalizer->normalize($object->getSpread(), 'json', $context);
+            $data['Spread'] = null === $object->getSpread() ? null : new \ArrayObject($this->normalizer->normalize($object->getSpread(), 'json', $context), \ArrayObject::ARRAY_AS_PROPS);
         }
         foreach ($object as $key => $value) {
             if (preg_match('/.*/', (string) $key)) {

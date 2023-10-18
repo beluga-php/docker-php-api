@@ -126,7 +126,7 @@ class ClusterInfoNormalizer implements DenormalizerInterface, NormalizerInterfac
             $data['ID'] = $object->getID();
         }
         if ($object->isInitialized('version') && null !== $object->getVersion()) {
-            $data['Version'] = $this->normalizer->normalize($object->getVersion(), 'json', $context);
+            $data['Version'] = null === $object->getVersion() ? null : new \ArrayObject($this->normalizer->normalize($object->getVersion(), 'json', $context), \ArrayObject::ARRAY_AS_PROPS);
         }
         if ($object->isInitialized('createdAt') && null !== $object->getCreatedAt()) {
             $data['CreatedAt'] = $object->getCreatedAt();
@@ -135,10 +135,10 @@ class ClusterInfoNormalizer implements DenormalizerInterface, NormalizerInterfac
             $data['UpdatedAt'] = $object->getUpdatedAt();
         }
         if ($object->isInitialized('spec') && null !== $object->getSpec()) {
-            $data['Spec'] = $this->normalizer->normalize($object->getSpec(), 'json', $context);
+            $data['Spec'] = null === $object->getSpec() ? null : new \ArrayObject($this->normalizer->normalize($object->getSpec(), 'json', $context), \ArrayObject::ARRAY_AS_PROPS);
         }
         if ($object->isInitialized('tLSInfo') && null !== $object->getTLSInfo()) {
-            $data['TLSInfo'] = $this->normalizer->normalize($object->getTLSInfo(), 'json', $context);
+            $data['TLSInfo'] = null === $object->getTLSInfo() ? null : new \ArrayObject($this->normalizer->normalize($object->getTLSInfo(), 'json', $context), \ArrayObject::ARRAY_AS_PROPS);
         }
         if ($object->isInitialized('rootRotationInProgress') && null !== $object->getRootRotationInProgress()) {
             $data['RootRotationInProgress'] = $object->getRootRotationInProgress();

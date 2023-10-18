@@ -76,10 +76,6 @@ class NetworkSettingsNormalizer implements DenormalizerInterface, NormalizerInte
         if (\array_key_exists('Ports', $data) && null !== $data['Ports']) {
             $values = new \ArrayObject([], \ArrayObject::ARRAY_AS_PROPS);
             foreach ($data['Ports'] as $key => $value) {
-                if (null === $value) {
-                    $values[$key] = null;
-                    continue;
-                }
                 $values_1 = [];
                 foreach ($value as $value_1) {
                     $values_1[] = $this->denormalizer->denormalize($value_1, 'Docker\\API\\Model\\PortBinding', 'json', $context);
@@ -206,15 +202,11 @@ class NetworkSettingsNormalizer implements DenormalizerInterface, NormalizerInte
             $data['LinkLocalIPv6PrefixLen'] = $object->getLinkLocalIPv6PrefixLen();
         }
         if ($object->isInitialized('ports') && null !== $object->getPorts()) {
-            $values = [];
+            $values = new \ArrayObject([], \ArrayObject::ARRAY_AS_PROPS);
             foreach ($object->getPorts() as $key => $value) {
-                if (null === $value) {
-                    $values[$key] = null;
-                    continue;
-                }
                 $values_1 = [];
                 foreach ($value as $value_1) {
-                    $values_1[] = $this->normalizer->normalize($value_1, 'json', $context);
+                    $values_1[] = null === $value_1 ? null : new \ArrayObject($this->normalizer->normalize($value_1, 'json', $context), \ArrayObject::ARRAY_AS_PROPS);
                 }
                 $values[$key] = $values_1;
             }
@@ -226,14 +218,14 @@ class NetworkSettingsNormalizer implements DenormalizerInterface, NormalizerInte
         if ($object->isInitialized('secondaryIPAddresses') && null !== $object->getSecondaryIPAddresses()) {
             $values_2 = [];
             foreach ($object->getSecondaryIPAddresses() as $value_2) {
-                $values_2[] = $this->normalizer->normalize($value_2, 'json', $context);
+                $values_2[] = null === $value_2 ? null : new \ArrayObject($this->normalizer->normalize($value_2, 'json', $context), \ArrayObject::ARRAY_AS_PROPS);
             }
             $data['SecondaryIPAddresses'] = $values_2;
         }
         if ($object->isInitialized('secondaryIPv6Addresses') && null !== $object->getSecondaryIPv6Addresses()) {
             $values_3 = [];
             foreach ($object->getSecondaryIPv6Addresses() as $value_3) {
-                $values_3[] = $this->normalizer->normalize($value_3, 'json', $context);
+                $values_3[] = null === $value_3 ? null : new \ArrayObject($this->normalizer->normalize($value_3, 'json', $context), \ArrayObject::ARRAY_AS_PROPS);
             }
             $data['SecondaryIPv6Addresses'] = $values_3;
         }
@@ -262,9 +254,9 @@ class NetworkSettingsNormalizer implements DenormalizerInterface, NormalizerInte
             $data['MacAddress'] = $object->getMacAddress();
         }
         if ($object->isInitialized('networks') && null !== $object->getNetworks()) {
-            $values_4 = [];
+            $values_4 = new \ArrayObject([], \ArrayObject::ARRAY_AS_PROPS);
             foreach ($object->getNetworks() as $key_1 => $value_4) {
-                $values_4[$key_1] = $this->normalizer->normalize($value_4, 'json', $context);
+                $values_4[$key_1] = null === $value_4 ? null : new \ArrayObject($this->normalizer->normalize($value_4, 'json', $context), \ArrayObject::ARRAY_AS_PROPS);
             }
             $data['Networks'] = $values_4;
         }

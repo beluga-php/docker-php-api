@@ -77,7 +77,7 @@ class TaskSpecContainerSpecSecretsItemNormalizer implements DenormalizerInterfac
     {
         $data = [];
         if ($object->isInitialized('file') && null !== $object->getFile()) {
-            $data['File'] = $this->normalizer->normalize($object->getFile(), 'json', $context);
+            $data['File'] = null === $object->getFile() ? null : new \ArrayObject($this->normalizer->normalize($object->getFile(), 'json', $context), \ArrayObject::ARRAY_AS_PROPS);
         }
         if ($object->isInitialized('secretID') && null !== $object->getSecretID()) {
             $data['SecretID'] = $object->getSecretID();

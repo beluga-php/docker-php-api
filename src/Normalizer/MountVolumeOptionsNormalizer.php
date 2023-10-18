@@ -84,14 +84,14 @@ class MountVolumeOptionsNormalizer implements DenormalizerInterface, NormalizerI
             $data['NoCopy'] = $object->getNoCopy();
         }
         if ($object->isInitialized('labels') && null !== $object->getLabels()) {
-            $values = [];
+            $values = new \ArrayObject([], \ArrayObject::ARRAY_AS_PROPS);
             foreach ($object->getLabels() as $key => $value) {
                 $values[$key] = $value;
             }
             $data['Labels'] = $values;
         }
         if ($object->isInitialized('driverConfig') && null !== $object->getDriverConfig()) {
-            $data['DriverConfig'] = $this->normalizer->normalize($object->getDriverConfig(), 'json', $context);
+            $data['DriverConfig'] = null === $object->getDriverConfig() ? null : new \ArrayObject($this->normalizer->normalize($object->getDriverConfig(), 'json', $context), \ArrayObject::ARRAY_AS_PROPS);
         }
         foreach ($object as $key_1 => $value_1) {
             if (preg_match('/.*/', (string) $key_1)) {

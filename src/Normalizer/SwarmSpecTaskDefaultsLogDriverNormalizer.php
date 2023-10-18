@@ -78,7 +78,7 @@ class SwarmSpecTaskDefaultsLogDriverNormalizer implements DenormalizerInterface,
             $data['Name'] = $object->getName();
         }
         if ($object->isInitialized('options') && null !== $object->getOptions()) {
-            $values = [];
+            $values = new \ArrayObject([], \ArrayObject::ARRAY_AS_PROPS);
             foreach ($object->getOptions() as $key => $value) {
                 $values[$key] = $value;
             }

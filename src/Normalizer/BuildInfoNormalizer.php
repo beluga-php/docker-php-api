@@ -116,7 +116,7 @@ class BuildInfoNormalizer implements DenormalizerInterface, NormalizerInterface,
             $data['error'] = $object->getError();
         }
         if ($object->isInitialized('errorDetail') && null !== $object->getErrorDetail()) {
-            $data['errorDetail'] = $this->normalizer->normalize($object->getErrorDetail(), 'json', $context);
+            $data['errorDetail'] = null === $object->getErrorDetail() ? null : new \ArrayObject($this->normalizer->normalize($object->getErrorDetail(), 'json', $context), \ArrayObject::ARRAY_AS_PROPS);
         }
         if ($object->isInitialized('status') && null !== $object->getStatus()) {
             $data['status'] = $object->getStatus();
@@ -125,10 +125,10 @@ class BuildInfoNormalizer implements DenormalizerInterface, NormalizerInterface,
             $data['progress'] = $object->getProgress();
         }
         if ($object->isInitialized('progressDetail') && null !== $object->getProgressDetail()) {
-            $data['progressDetail'] = $this->normalizer->normalize($object->getProgressDetail(), 'json', $context);
+            $data['progressDetail'] = null === $object->getProgressDetail() ? null : new \ArrayObject($this->normalizer->normalize($object->getProgressDetail(), 'json', $context), \ArrayObject::ARRAY_AS_PROPS);
         }
         if ($object->isInitialized('aux') && null !== $object->getAux()) {
-            $data['aux'] = $this->normalizer->normalize($object->getAux(), 'json', $context);
+            $data['aux'] = null === $object->getAux() ? null : new \ArrayObject($this->normalizer->normalize($object->getAux(), 'json', $context), \ArrayObject::ARRAY_AS_PROPS);
         }
         foreach ($object as $key => $value) {
             if (preg_match('/.*/', (string) $key)) {

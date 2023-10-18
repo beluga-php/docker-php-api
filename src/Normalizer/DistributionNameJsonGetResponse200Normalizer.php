@@ -74,10 +74,10 @@ class DistributionNameJsonGetResponse200Normalizer implements DenormalizerInterf
     public function normalize($object, $format = null, array $context = [])
     {
         $data = [];
-        $data['Descriptor'] = $this->normalizer->normalize($object->getDescriptor(), 'json', $context);
+        $data['Descriptor'] = null === $object->getDescriptor() ? null : new \ArrayObject($this->normalizer->normalize($object->getDescriptor(), 'json', $context), \ArrayObject::ARRAY_AS_PROPS);
         $values = [];
         foreach ($object->getPlatforms() as $value) {
-            $values[] = $this->normalizer->normalize($value, 'json', $context);
+            $values[] = null === $value ? null : new \ArrayObject($this->normalizer->normalize($value, 'json', $context), \ArrayObject::ARRAY_AS_PROPS);
         }
         $data['Platforms'] = $values;
         foreach ($object as $key => $value_1) {

@@ -71,7 +71,7 @@ class ContainersIdArchiveHeadJsonResponse400Normalizer implements DenormalizerIn
     {
         $data = [];
         if ($object->isInitialized('errorResponse') && null !== $object->getErrorResponse()) {
-            $data['ErrorResponse'] = $this->normalizer->normalize($object->getErrorResponse(), 'json', $context);
+            $data['ErrorResponse'] = null === $object->getErrorResponse() ? null : new \ArrayObject($this->normalizer->normalize($object->getErrorResponse(), 'json', $context), \ArrayObject::ARRAY_AS_PROPS);
         }
         if ($object->isInitialized('message') && null !== $object->getMessage()) {
             $data['message'] = $object->getMessage();
