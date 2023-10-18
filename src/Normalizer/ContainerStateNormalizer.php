@@ -164,7 +164,7 @@ class ContainerStateNormalizer implements DenormalizerInterface, NormalizerInter
             $data['FinishedAt'] = $object->getFinishedAt();
         }
         if ($object->isInitialized('health') && null !== $object->getHealth()) {
-            $data['Health'] = $this->normalizer->normalize($object->getHealth(), 'json', $context);
+            $data['Health'] = null === $object->getHealth() ? null : new \ArrayObject($this->normalizer->normalize($object->getHealth(), 'json', $context), \ArrayObject::ARRAY_AS_PROPS);
         }
         foreach ($object as $key => $value) {
             if (preg_match('/.*/', (string) $key)) {

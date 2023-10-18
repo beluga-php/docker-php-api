@@ -108,7 +108,7 @@ class ClusterVolumeNormalizer implements DenormalizerInterface, NormalizerInterf
             $data['ID'] = $object->getID();
         }
         if ($object->isInitialized('version') && null !== $object->getVersion()) {
-            $data['Version'] = $this->normalizer->normalize($object->getVersion(), 'json', $context);
+            $data['Version'] = null === $object->getVersion() ? null : new \ArrayObject($this->normalizer->normalize($object->getVersion(), 'json', $context), \ArrayObject::ARRAY_AS_PROPS);
         }
         if ($object->isInitialized('createdAt') && null !== $object->getCreatedAt()) {
             $data['CreatedAt'] = $object->getCreatedAt();
@@ -117,15 +117,15 @@ class ClusterVolumeNormalizer implements DenormalizerInterface, NormalizerInterf
             $data['UpdatedAt'] = $object->getUpdatedAt();
         }
         if ($object->isInitialized('spec') && null !== $object->getSpec()) {
-            $data['Spec'] = $this->normalizer->normalize($object->getSpec(), 'json', $context);
+            $data['Spec'] = null === $object->getSpec() ? null : new \ArrayObject($this->normalizer->normalize($object->getSpec(), 'json', $context), \ArrayObject::ARRAY_AS_PROPS);
         }
         if ($object->isInitialized('info') && null !== $object->getInfo()) {
-            $data['Info'] = $this->normalizer->normalize($object->getInfo(), 'json', $context);
+            $data['Info'] = null === $object->getInfo() ? null : new \ArrayObject($this->normalizer->normalize($object->getInfo(), 'json', $context), \ArrayObject::ARRAY_AS_PROPS);
         }
         if ($object->isInitialized('publishStatus') && null !== $object->getPublishStatus()) {
             $values = [];
             foreach ($object->getPublishStatus() as $value) {
-                $values[] = $this->normalizer->normalize($value, 'json', $context);
+                $values[] = null === $value ? null : new \ArrayObject($this->normalizer->normalize($value, 'json', $context), \ArrayObject::ARRAY_AS_PROPS);
             }
             $data['PublishStatus'] = $values;
         }

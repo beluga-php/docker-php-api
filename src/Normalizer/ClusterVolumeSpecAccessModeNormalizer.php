@@ -111,20 +111,20 @@ class ClusterVolumeSpecAccessModeNormalizer implements DenormalizerInterface, No
             $data['Sharing'] = $object->getSharing();
         }
         if ($object->isInitialized('mountVolume') && null !== $object->getMountVolume()) {
-            $data['MountVolume'] = $this->normalizer->normalize($object->getMountVolume(), 'json', $context);
+            $data['MountVolume'] = null === $object->getMountVolume() ? null : new \ArrayObject($this->normalizer->normalize($object->getMountVolume(), 'json', $context), \ArrayObject::ARRAY_AS_PROPS);
         }
         if ($object->isInitialized('secrets') && null !== $object->getSecrets()) {
             $values = [];
             foreach ($object->getSecrets() as $value) {
-                $values[] = $this->normalizer->normalize($value, 'json', $context);
+                $values[] = null === $value ? null : new \ArrayObject($this->normalizer->normalize($value, 'json', $context), \ArrayObject::ARRAY_AS_PROPS);
             }
             $data['Secrets'] = $values;
         }
         if ($object->isInitialized('accessibilityRequirements') && null !== $object->getAccessibilityRequirements()) {
-            $data['AccessibilityRequirements'] = $this->normalizer->normalize($object->getAccessibilityRequirements(), 'json', $context);
+            $data['AccessibilityRequirements'] = null === $object->getAccessibilityRequirements() ? null : new \ArrayObject($this->normalizer->normalize($object->getAccessibilityRequirements(), 'json', $context), \ArrayObject::ARRAY_AS_PROPS);
         }
         if ($object->isInitialized('capacityRange') && null !== $object->getCapacityRange()) {
-            $data['CapacityRange'] = $this->normalizer->normalize($object->getCapacityRange(), 'json', $context);
+            $data['CapacityRange'] = null === $object->getCapacityRange() ? null : new \ArrayObject($this->normalizer->normalize($object->getCapacityRange(), 'json', $context), \ArrayObject::ARRAY_AS_PROPS);
         }
         if ($object->isInitialized('availability') && null !== $object->getAvailability()) {
             $data['Availability'] = $object->getAvailability();

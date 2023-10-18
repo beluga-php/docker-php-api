@@ -189,7 +189,7 @@ class ContainerSummaryNormalizer implements DenormalizerInterface, NormalizerInt
         if ($object->isInitialized('ports') && null !== $object->getPorts()) {
             $values_1 = [];
             foreach ($object->getPorts() as $value_1) {
-                $values_1[] = $this->normalizer->normalize($value_1, 'json', $context);
+                $values_1[] = null === $value_1 ? null : new \ArrayObject($this->normalizer->normalize($value_1, 'json', $context), \ArrayObject::ARRAY_AS_PROPS);
             }
             $data['Ports'] = $values_1;
         }
@@ -200,7 +200,7 @@ class ContainerSummaryNormalizer implements DenormalizerInterface, NormalizerInt
             $data['SizeRootFs'] = $object->getSizeRootFs();
         }
         if ($object->isInitialized('labels') && null !== $object->getLabels()) {
-            $values_2 = [];
+            $values_2 = new \ArrayObject([], \ArrayObject::ARRAY_AS_PROPS);
             foreach ($object->getLabels() as $key => $value_2) {
                 $values_2[$key] = $value_2;
             }
@@ -213,15 +213,15 @@ class ContainerSummaryNormalizer implements DenormalizerInterface, NormalizerInt
             $data['Status'] = $object->getStatus();
         }
         if ($object->isInitialized('hostConfig') && null !== $object->getHostConfig()) {
-            $data['HostConfig'] = $this->normalizer->normalize($object->getHostConfig(), 'json', $context);
+            $data['HostConfig'] = null === $object->getHostConfig() ? null : new \ArrayObject($this->normalizer->normalize($object->getHostConfig(), 'json', $context), \ArrayObject::ARRAY_AS_PROPS);
         }
         if ($object->isInitialized('networkSettings') && null !== $object->getNetworkSettings()) {
-            $data['NetworkSettings'] = $this->normalizer->normalize($object->getNetworkSettings(), 'json', $context);
+            $data['NetworkSettings'] = null === $object->getNetworkSettings() ? null : new \ArrayObject($this->normalizer->normalize($object->getNetworkSettings(), 'json', $context), \ArrayObject::ARRAY_AS_PROPS);
         }
         if ($object->isInitialized('mounts') && null !== $object->getMounts()) {
             $values_3 = [];
             foreach ($object->getMounts() as $value_3) {
-                $values_3[] = $this->normalizer->normalize($value_3, 'json', $context);
+                $values_3[] = null === $value_3 ? null : new \ArrayObject($this->normalizer->normalize($value_3, 'json', $context), \ArrayObject::ARRAY_AS_PROPS);
             }
             $data['Mounts'] = $values_3;
         }

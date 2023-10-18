@@ -96,7 +96,7 @@ class IPAMConfigNormalizer implements DenormalizerInterface, NormalizerInterface
             $data['Gateway'] = $object->getGateway();
         }
         if ($object->isInitialized('auxiliaryAddresses') && null !== $object->getAuxiliaryAddresses()) {
-            $values = [];
+            $values = new \ArrayObject([], \ArrayObject::ARRAY_AS_PROPS);
             foreach ($object->getAuxiliaryAddresses() as $key => $value) {
                 $values[$key] = $value;
             }

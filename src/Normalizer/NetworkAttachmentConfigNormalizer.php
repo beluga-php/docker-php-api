@@ -95,7 +95,7 @@ class NetworkAttachmentConfigNormalizer implements DenormalizerInterface, Normal
             $data['Aliases'] = $values;
         }
         if ($object->isInitialized('driverOpts') && null !== $object->getDriverOpts()) {
-            $values_1 = [];
+            $values_1 = new \ArrayObject([], \ArrayObject::ARRAY_AS_PROPS);
             foreach ($object->getDriverOpts() as $key => $value_1) {
                 $values_1[$key] = $value_1;
             }

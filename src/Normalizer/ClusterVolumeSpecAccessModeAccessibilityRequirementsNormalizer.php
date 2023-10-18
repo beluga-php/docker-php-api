@@ -89,7 +89,7 @@ class ClusterVolumeSpecAccessModeAccessibilityRequirementsNormalizer implements 
         if ($object->isInitialized('requisite') && null !== $object->getRequisite()) {
             $values = [];
             foreach ($object->getRequisite() as $value) {
-                $values_1 = [];
+                $values_1 = new \ArrayObject([], \ArrayObject::ARRAY_AS_PROPS);
                 foreach ($value as $key => $value_1) {
                     $values_1[$key] = $value_1;
                 }
@@ -100,7 +100,7 @@ class ClusterVolumeSpecAccessModeAccessibilityRequirementsNormalizer implements 
         if ($object->isInitialized('preferred') && null !== $object->getPreferred()) {
             $values_2 = [];
             foreach ($object->getPreferred() as $value_2) {
-                $values_3 = [];
+                $values_3 = new \ArrayObject([], \ArrayObject::ARRAY_AS_PROPS);
                 foreach ($value_2 as $key_1 => $value_3) {
                     $values_3[$key_1] = $value_3;
                 }

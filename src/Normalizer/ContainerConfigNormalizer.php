@@ -259,9 +259,9 @@ class ContainerConfigNormalizer implements DenormalizerInterface, NormalizerInte
             $data['AttachStderr'] = $object->getAttachStderr();
         }
         if ($object->isInitialized('exposedPorts') && null !== $object->getExposedPorts()) {
-            $values = [];
+            $values = new \ArrayObject([], \ArrayObject::ARRAY_AS_PROPS);
             foreach ($object->getExposedPorts() as $key => $value) {
-                $values[$key] = $this->normalizer->normalize($value, 'json', $context);
+                $values[$key] = null === $value ? null : new \ArrayObject($this->normalizer->normalize($value, 'json', $context), \ArrayObject::ARRAY_AS_PROPS);
             }
             $data['ExposedPorts'] = $values;
         }
@@ -289,7 +289,7 @@ class ContainerConfigNormalizer implements DenormalizerInterface, NormalizerInte
             $data['Cmd'] = $values_2;
         }
         if ($object->isInitialized('healthcheck') && null !== $object->getHealthcheck()) {
-            $data['Healthcheck'] = $this->normalizer->normalize($object->getHealthcheck(), 'json', $context);
+            $data['Healthcheck'] = null === $object->getHealthcheck() ? null : new \ArrayObject($this->normalizer->normalize($object->getHealthcheck(), 'json', $context), \ArrayObject::ARRAY_AS_PROPS);
         }
         if ($object->isInitialized('argsEscaped') && null !== $object->getArgsEscaped()) {
             $data['ArgsEscaped'] = $object->getArgsEscaped();
@@ -298,9 +298,9 @@ class ContainerConfigNormalizer implements DenormalizerInterface, NormalizerInte
             $data['Image'] = $object->getImage();
         }
         if ($object->isInitialized('volumes') && null !== $object->getVolumes()) {
-            $values_3 = [];
+            $values_3 = new \ArrayObject([], \ArrayObject::ARRAY_AS_PROPS);
             foreach ($object->getVolumes() as $key_1 => $value_3) {
-                $values_3[$key_1] = $this->normalizer->normalize($value_3, 'json', $context);
+                $values_3[$key_1] = null === $value_3 ? null : new \ArrayObject($this->normalizer->normalize($value_3, 'json', $context), \ArrayObject::ARRAY_AS_PROPS);
             }
             $data['Volumes'] = $values_3;
         }
@@ -328,7 +328,7 @@ class ContainerConfigNormalizer implements DenormalizerInterface, NormalizerInte
             $data['OnBuild'] = $values_5;
         }
         if ($object->isInitialized('labels') && null !== $object->getLabels()) {
-            $values_6 = [];
+            $values_6 = new \ArrayObject([], \ArrayObject::ARRAY_AS_PROPS);
             foreach ($object->getLabels() as $key_2 => $value_6) {
                 $values_6[$key_2] = $value_6;
             }

@@ -87,7 +87,7 @@ class ClusterVolumePublishStatusItemNormalizer implements DenormalizerInterface,
             $data['State'] = $object->getState();
         }
         if ($object->isInitialized('publishContext') && null !== $object->getPublishContext()) {
-            $values = [];
+            $values = new \ArrayObject([], \ArrayObject::ARRAY_AS_PROPS);
             foreach ($object->getPublishContext() as $key => $value) {
                 $values[$key] = $value;
             }

@@ -137,28 +137,28 @@ class VolumeNormalizer implements DenormalizerInterface, NormalizerInterface, De
             $data['CreatedAt'] = $object->getCreatedAt();
         }
         if ($object->isInitialized('status') && null !== $object->getStatus()) {
-            $values = [];
+            $values = new \ArrayObject([], \ArrayObject::ARRAY_AS_PROPS);
             foreach ($object->getStatus() as $key => $value) {
-                $values[$key] = $this->normalizer->normalize($value, 'json', $context);
+                $values[$key] = null === $value ? null : new \ArrayObject($this->normalizer->normalize($value, 'json', $context), \ArrayObject::ARRAY_AS_PROPS);
             }
             $data['Status'] = $values;
         }
-        $values_1 = [];
+        $values_1 = new \ArrayObject([], \ArrayObject::ARRAY_AS_PROPS);
         foreach ($object->getLabels() as $key_1 => $value_1) {
             $values_1[$key_1] = $value_1;
         }
         $data['Labels'] = $values_1;
         $data['Scope'] = $object->getScope();
         if ($object->isInitialized('clusterVolume') && null !== $object->getClusterVolume()) {
-            $data['ClusterVolume'] = $this->normalizer->normalize($object->getClusterVolume(), 'json', $context);
+            $data['ClusterVolume'] = null === $object->getClusterVolume() ? null : new \ArrayObject($this->normalizer->normalize($object->getClusterVolume(), 'json', $context), \ArrayObject::ARRAY_AS_PROPS);
         }
-        $values_2 = [];
+        $values_2 = new \ArrayObject([], \ArrayObject::ARRAY_AS_PROPS);
         foreach ($object->getOptions() as $key_2 => $value_2) {
             $values_2[$key_2] = $value_2;
         }
         $data['Options'] = $values_2;
         if ($object->isInitialized('usageData') && null !== $object->getUsageData()) {
-            $data['UsageData'] = $this->normalizer->normalize($object->getUsageData(), 'json', $context);
+            $data['UsageData'] = null === $object->getUsageData() ? null : new \ArrayObject($this->normalizer->normalize($object->getUsageData(), 'json', $context), \ArrayObject::ARRAY_AS_PROPS);
         }
         foreach ($object as $key_3 => $value_3) {
             if (preg_match('/.*/', (string) $key_3)) {

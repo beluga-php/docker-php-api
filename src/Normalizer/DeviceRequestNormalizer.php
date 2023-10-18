@@ -129,7 +129,7 @@ class DeviceRequestNormalizer implements DenormalizerInterface, NormalizerInterf
             $data['Capabilities'] = $values_1;
         }
         if ($object->isInitialized('options') && null !== $object->getOptions()) {
-            $values_3 = [];
+            $values_3 = new \ArrayObject([], \ArrayObject::ARRAY_AS_PROPS);
             foreach ($object->getOptions() as $key => $value_3) {
                 $values_3[$key] = $value_3;
             }

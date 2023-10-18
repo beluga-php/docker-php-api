@@ -98,7 +98,7 @@ class SwarmSpecCAConfigNormalizer implements DenormalizerInterface, NormalizerIn
         if ($object->isInitialized('externalCAs') && null !== $object->getExternalCAs()) {
             $values = [];
             foreach ($object->getExternalCAs() as $value) {
-                $values[] = $this->normalizer->normalize($value, 'json', $context);
+                $values[] = null === $value ? null : new \ArrayObject($this->normalizer->normalize($value, 'json', $context), \ArrayObject::ARRAY_AS_PROPS);
             }
             $data['ExternalCAs'] = $values;
         }

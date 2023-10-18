@@ -71,10 +71,10 @@ class TaskSpecResourcesNormalizer implements DenormalizerInterface, NormalizerIn
     {
         $data = [];
         if ($object->isInitialized('limits') && null !== $object->getLimits()) {
-            $data['Limits'] = $this->normalizer->normalize($object->getLimits(), 'json', $context);
+            $data['Limits'] = null === $object->getLimits() ? null : new \ArrayObject($this->normalizer->normalize($object->getLimits(), 'json', $context), \ArrayObject::ARRAY_AS_PROPS);
         }
         if ($object->isInitialized('reservations') && null !== $object->getReservations()) {
-            $data['Reservations'] = $this->normalizer->normalize($object->getReservations(), 'json', $context);
+            $data['Reservations'] = null === $object->getReservations() ? null : new \ArrayObject($this->normalizer->normalize($object->getReservations(), 'json', $context), \ArrayObject::ARRAY_AS_PROPS);
         }
         foreach ($object as $key => $value) {
             if (preg_match('/.*/', (string) $key)) {

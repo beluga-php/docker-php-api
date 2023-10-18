@@ -103,21 +103,21 @@ class VolumeCreateOptionsNormalizer implements DenormalizerInterface, Normalizer
             $data['Driver'] = $object->getDriver();
         }
         if ($object->isInitialized('driverOpts') && null !== $object->getDriverOpts()) {
-            $values = [];
+            $values = new \ArrayObject([], \ArrayObject::ARRAY_AS_PROPS);
             foreach ($object->getDriverOpts() as $key => $value) {
                 $values[$key] = $value;
             }
             $data['DriverOpts'] = $values;
         }
         if ($object->isInitialized('labels') && null !== $object->getLabels()) {
-            $values_1 = [];
+            $values_1 = new \ArrayObject([], \ArrayObject::ARRAY_AS_PROPS);
             foreach ($object->getLabels() as $key_1 => $value_1) {
                 $values_1[$key_1] = $value_1;
             }
             $data['Labels'] = $values_1;
         }
         if ($object->isInitialized('clusterVolumeSpec') && null !== $object->getClusterVolumeSpec()) {
-            $data['ClusterVolumeSpec'] = $this->normalizer->normalize($object->getClusterVolumeSpec(), 'json', $context);
+            $data['ClusterVolumeSpec'] = null === $object->getClusterVolumeSpec() ? null : new \ArrayObject($this->normalizer->normalize($object->getClusterVolumeSpec(), 'json', $context), \ArrayObject::ARRAY_AS_PROPS);
         }
         foreach ($object as $key_2 => $value_2) {
             if (preg_match('/.*/', (string) $key_2)) {

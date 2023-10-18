@@ -130,9 +130,9 @@ class RegistryServiceConfigNormalizer implements DenormalizerInterface, Normaliz
             $data['InsecureRegistryCIDRs'] = $values_2;
         }
         if ($object->isInitialized('indexConfigs') && null !== $object->getIndexConfigs()) {
-            $values_3 = [];
+            $values_3 = new \ArrayObject([], \ArrayObject::ARRAY_AS_PROPS);
             foreach ($object->getIndexConfigs() as $key => $value_3) {
-                $values_3[$key] = $this->normalizer->normalize($value_3, 'json', $context);
+                $values_3[$key] = null === $value_3 ? null : new \ArrayObject($this->normalizer->normalize($value_3, 'json', $context), \ArrayObject::ARRAY_AS_PROPS);
             }
             $data['IndexConfigs'] = $values_3;
         }

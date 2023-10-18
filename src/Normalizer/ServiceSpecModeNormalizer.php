@@ -83,16 +83,16 @@ class ServiceSpecModeNormalizer implements DenormalizerInterface, NormalizerInte
     {
         $data = [];
         if ($object->isInitialized('replicated') && null !== $object->getReplicated()) {
-            $data['Replicated'] = $this->normalizer->normalize($object->getReplicated(), 'json', $context);
+            $data['Replicated'] = null === $object->getReplicated() ? null : new \ArrayObject($this->normalizer->normalize($object->getReplicated(), 'json', $context), \ArrayObject::ARRAY_AS_PROPS);
         }
         if ($object->isInitialized('global') && null !== $object->getGlobal()) {
-            $data['Global'] = $this->normalizer->normalize($object->getGlobal(), 'json', $context);
+            $data['Global'] = null === $object->getGlobal() ? null : new \ArrayObject($this->normalizer->normalize($object->getGlobal(), 'json', $context), \ArrayObject::ARRAY_AS_PROPS);
         }
         if ($object->isInitialized('replicatedJob') && null !== $object->getReplicatedJob()) {
-            $data['ReplicatedJob'] = $this->normalizer->normalize($object->getReplicatedJob(), 'json', $context);
+            $data['ReplicatedJob'] = null === $object->getReplicatedJob() ? null : new \ArrayObject($this->normalizer->normalize($object->getReplicatedJob(), 'json', $context), \ArrayObject::ARRAY_AS_PROPS);
         }
         if ($object->isInitialized('globalJob') && null !== $object->getGlobalJob()) {
-            $data['GlobalJob'] = $this->normalizer->normalize($object->getGlobalJob(), 'json', $context);
+            $data['GlobalJob'] = null === $object->getGlobalJob() ? null : new \ArrayObject($this->normalizer->normalize($object->getGlobalJob(), 'json', $context), \ArrayObject::ARRAY_AS_PROPS);
         }
         foreach ($object as $key => $value) {
             if (preg_match('/.*/', (string) $key)) {

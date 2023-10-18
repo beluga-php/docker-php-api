@@ -216,7 +216,7 @@ class ImageInspectNormalizer implements DenormalizerInterface, NormalizerInterfa
             $data['Container'] = $object->getContainer();
         }
         if ($object->isInitialized('containerConfig') && null !== $object->getContainerConfig()) {
-            $data['ContainerConfig'] = $this->normalizer->normalize($object->getContainerConfig(), 'json', $context);
+            $data['ContainerConfig'] = null === $object->getContainerConfig() ? null : new \ArrayObject($this->normalizer->normalize($object->getContainerConfig(), 'json', $context), \ArrayObject::ARRAY_AS_PROPS);
         }
         if ($object->isInitialized('dockerVersion') && null !== $object->getDockerVersion()) {
             $data['DockerVersion'] = $object->getDockerVersion();
@@ -225,7 +225,7 @@ class ImageInspectNormalizer implements DenormalizerInterface, NormalizerInterfa
             $data['Author'] = $object->getAuthor();
         }
         if ($object->isInitialized('config') && null !== $object->getConfig()) {
-            $data['Config'] = $this->normalizer->normalize($object->getConfig(), 'json', $context);
+            $data['Config'] = null === $object->getConfig() ? null : new \ArrayObject($this->normalizer->normalize($object->getConfig(), 'json', $context), \ArrayObject::ARRAY_AS_PROPS);
         }
         if ($object->isInitialized('architecture') && null !== $object->getArchitecture()) {
             $data['Architecture'] = $object->getArchitecture();
@@ -246,13 +246,13 @@ class ImageInspectNormalizer implements DenormalizerInterface, NormalizerInterfa
             $data['VirtualSize'] = $object->getVirtualSize();
         }
         if ($object->isInitialized('graphDriver') && null !== $object->getGraphDriver()) {
-            $data['GraphDriver'] = $this->normalizer->normalize($object->getGraphDriver(), 'json', $context);
+            $data['GraphDriver'] = null === $object->getGraphDriver() ? null : new \ArrayObject($this->normalizer->normalize($object->getGraphDriver(), 'json', $context), \ArrayObject::ARRAY_AS_PROPS);
         }
         if ($object->isInitialized('rootFS') && null !== $object->getRootFS()) {
-            $data['RootFS'] = $this->normalizer->normalize($object->getRootFS(), 'json', $context);
+            $data['RootFS'] = null === $object->getRootFS() ? null : new \ArrayObject($this->normalizer->normalize($object->getRootFS(), 'json', $context), \ArrayObject::ARRAY_AS_PROPS);
         }
         if ($object->isInitialized('metadata') && null !== $object->getMetadata()) {
-            $data['Metadata'] = $this->normalizer->normalize($object->getMetadata(), 'json', $context);
+            $data['Metadata'] = null === $object->getMetadata() ? null : new \ArrayObject($this->normalizer->normalize($object->getMetadata(), 'json', $context), \ArrayObject::ARRAY_AS_PROPS);
         }
         foreach ($object as $key => $value_2) {
             if (preg_match('/.*/', (string) $key)) {

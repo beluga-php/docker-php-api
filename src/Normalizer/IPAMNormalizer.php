@@ -90,12 +90,12 @@ class IPAMNormalizer implements DenormalizerInterface, NormalizerInterface, Deno
         if ($object->isInitialized('config') && null !== $object->getConfig()) {
             $values = [];
             foreach ($object->getConfig() as $value) {
-                $values[] = $this->normalizer->normalize($value, 'json', $context);
+                $values[] = null === $value ? null : new \ArrayObject($this->normalizer->normalize($value, 'json', $context), \ArrayObject::ARRAY_AS_PROPS);
             }
             $data['Config'] = $values;
         }
         if ($object->isInitialized('options') && null !== $object->getOptions()) {
-            $values_1 = [];
+            $values_1 = new \ArrayObject([], \ArrayObject::ARRAY_AS_PROPS);
             foreach ($object->getOptions() as $key => $value_1) {
                 $values_1[$key] = $value_1;
             }

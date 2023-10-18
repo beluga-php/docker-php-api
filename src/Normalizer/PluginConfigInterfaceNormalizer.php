@@ -82,7 +82,7 @@ class PluginConfigInterfaceNormalizer implements DenormalizerInterface, Normaliz
         $data = [];
         $values = [];
         foreach ($object->getTypes() as $value) {
-            $values[] = $this->normalizer->normalize($value, 'json', $context);
+            $values[] = null === $value ? null : new \ArrayObject($this->normalizer->normalize($value, 'json', $context), \ArrayObject::ARRAY_AS_PROPS);
         }
         $data['Types'] = $values;
         $data['Socket'] = $object->getSocket();

@@ -74,7 +74,7 @@ class ClusterVolumeSpecNormalizer implements DenormalizerInterface, NormalizerIn
             $data['Group'] = $object->getGroup();
         }
         if ($object->isInitialized('accessMode') && null !== $object->getAccessMode()) {
-            $data['AccessMode'] = $this->normalizer->normalize($object->getAccessMode(), 'json', $context);
+            $data['AccessMode'] = null === $object->getAccessMode() ? null : new \ArrayObject($this->normalizer->normalize($object->getAccessMode(), 'json', $context), \ArrayObject::ARRAY_AS_PROPS);
         }
         foreach ($object as $key => $value) {
             if (preg_match('/.*/', (string) $key)) {

@@ -98,7 +98,7 @@ class ClusterVolumeInfoNormalizer implements DenormalizerInterface, NormalizerIn
             $data['CapacityBytes'] = $object->getCapacityBytes();
         }
         if ($object->isInitialized('volumeContext') && null !== $object->getVolumeContext()) {
-            $values = [];
+            $values = new \ArrayObject([], \ArrayObject::ARRAY_AS_PROPS);
             foreach ($object->getVolumeContext() as $key => $value) {
                 $values[$key] = $value;
             }
@@ -110,7 +110,7 @@ class ClusterVolumeInfoNormalizer implements DenormalizerInterface, NormalizerIn
         if ($object->isInitialized('accessibleTopology') && null !== $object->getAccessibleTopology()) {
             $values_1 = [];
             foreach ($object->getAccessibleTopology() as $value_1) {
-                $values_2 = [];
+                $values_2 = new \ArrayObject([], \ArrayObject::ARRAY_AS_PROPS);
                 foreach ($value_1 as $key_1 => $value_2) {
                     $values_2[$key_1] = $value_2;
                 }

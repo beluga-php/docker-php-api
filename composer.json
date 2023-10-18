@@ -8,7 +8,7 @@
         "sort-packages": true,
         "preferred-install": "dist",
         "allow-plugins": {
-            "php-http/discovery": true
+            "php-http/discovery": false
         }
     },
     "minimum-stability": "dev",
@@ -22,29 +22,31 @@
         {
             "type": "github",
             "url": "https://github.com/flavioheleno"
-        },
-        {
-            "type": "patreon",
-            "url": "https://www.patreon.com/flavioheleno"
         }
     ],
     "require": {
         "php": ">=8.1",
-        "ext-json": "*",
         "ext-mbstring": "*",
-        "jane-php/open-api-runtime": "^7.4",
-        "nyholm/psr7": "^1.8",
+        "jane-php/json-schema-runtime": "^7.5",
+        "jane-php/open-api-runtime": "^7.5",
+        "php-http/client-common": "^2.7",
+        "php-http/discovery": "^1.19",
+        "php-http/multipart-stream-builder": "^1.3",
         "psr/http-client": "^1.0",
         "psr/http-factory": "^1.0",
-        "psr/http-message": "^1.0 || ^2.0"
+        "psr/http-message": "^2.0",
+        "psr/http-client-implementation": "*",
+        "psr/http-factory-implementation": "*",
+        "psr/http-message-implementation": "*",
+        "symfony/deprecation-contracts": "^3.3",
+        "symfony/options-resolver": "^6.3",
+        "symfony/serializer": "^6.3",
+        "symfony/validator": "^6.3"
     },
     "require-dev": {
         "friendsofphp/php-cs-fixer": "^3.8",
-        "jane-php/json-schema": "^7.4",
-        "jane-php/open-api-3": "^7.4"
-    },
-    "suggest": {
-        "php-http/socket-client": "Socket-based HTTP Client to use the API"
+        "jane-php/open-api-3": "^7.4",
+        "roave/security-advisories": "dev-latest"
     },
     "conflict": {
         "docker-php/docker-php-api": "*"
@@ -59,7 +61,8 @@
     },
     "extra": {
         "branch-alias": {
-            "dev-main": "7.1.42.x-dev",
+            "dev-main": "7.1.43.x-dev",
+            "7.1.42": "7.1.42.x-dev",
             "7.1.41": "7.1.41.x-dev",
             "6.1.41": "6.1.41.x-dev",
             "6.1.36": "6.1.36.x-dev"
