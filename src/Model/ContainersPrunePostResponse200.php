@@ -18,7 +18,7 @@ class ContainersPrunePostResponse200 extends \ArrayObject
     /**
      * Container IDs that were deleted.
      *
-     * @var string[]|null
+     * @var list<string>|null
      */
     protected $containersDeleted;
     /**
@@ -31,7 +31,7 @@ class ContainersPrunePostResponse200 extends \ArrayObject
     /**
      * Container IDs that were deleted.
      *
-     * @return string[]|null
+     * @return list<string>|null
      */
     public function getContainersDeleted(): ?array
     {
@@ -41,7 +41,7 @@ class ContainersPrunePostResponse200 extends \ArrayObject
     /**
      * Container IDs that were deleted.
      *
-     * @param string[]|null $containersDeleted
+     * @param list<string>|null $containersDeleted
      */
     public function setContainersDeleted(?array $containersDeleted): self
     {

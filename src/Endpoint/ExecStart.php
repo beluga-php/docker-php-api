@@ -18,7 +18,7 @@ class ExecStart extends \Docker\API\Runtime\Client\BaseEndpoint implements \Dock
      * @param string $id     Exec instance ID
      * @param array  $accept Accept content header application/vnd.docker.raw-stream|application/vnd.docker.multiplexed-stream
      */
-    public function __construct(string $id, \Docker\API\Model\ExecIdStartPostBody $requestBody = null, array $accept = [])
+    public function __construct(string $id, ?\Docker\API\Model\ExecIdStartPostBody $requestBody = null, array $accept = [])
     {
         $this->id = $id;
         $this->body = $requestBody;
@@ -56,7 +56,7 @@ class ExecStart extends \Docker\API\Runtime\Client\BaseEndpoint implements \Dock
     /**
      * @return null
      */
-    protected function transformResponseBody(\Psr\Http\Message\ResponseInterface $response, \Symfony\Component\Serializer\SerializerInterface $serializer, string $contentType = null)
+    protected function transformResponseBody(\Psr\Http\Message\ResponseInterface $response, \Symfony\Component\Serializer\SerializerInterface $serializer, ?string $contentType = null)
     {
         $status = $response->getStatusCode();
         $body = (string) $response->getBody();

@@ -22,7 +22,7 @@ class SystemVersion extends \ArrayObject
     /**
      * Information about system components.
      *
-     * @var SystemVersionComponentsItem[]|null
+     * @var list<SystemVersionComponentsItem>|null
      */
     protected $components;
     /**
@@ -107,7 +107,7 @@ class SystemVersion extends \ArrayObject
     /**
      * Information about system components.
      *
-     * @return SystemVersionComponentsItem[]|null
+     * @return list<SystemVersionComponentsItem>|null
      */
     public function getComponents(): ?array
     {
@@ -117,7 +117,7 @@ class SystemVersion extends \ArrayObject
     /**
      * Information about system components.
      *
-     * @param SystemVersionComponentsItem[]|null $components
+     * @param list<SystemVersionComponentsItem>|null $components
      */
     public function setComponents(?array $components): self
     {

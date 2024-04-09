@@ -22,13 +22,13 @@ class IPAM extends \ArrayObject
      */
     protected $driver = 'default';
     /**
-     * List of IPAM configuration options, specified as a map:.
+     * List of IPAM configuration options, specified as a map:
      *
      * ```
      * {"Subnet": <CIDR>, "IPRange": <CIDR>, "Gateway": <IP address>, "AuxAddress": <device_name:IP address>}
      * ```
      *
-     * @var IPAMConfig[]|null
+     * @var list<IPAMConfig>|null
      */
     protected $config;
     /**
@@ -58,13 +58,13 @@ class IPAM extends \ArrayObject
     }
 
     /**
-     * List of IPAM configuration options, specified as a map:.
+     * List of IPAM configuration options, specified as a map:
      *
      * ```
      * {"Subnet": <CIDR>, "IPRange": <CIDR>, "Gateway": <IP address>, "AuxAddress": <device_name:IP address>}
      * ```
      *
-     * @return IPAMConfig[]|null
+     * @return list<IPAMConfig>|null
      */
     public function getConfig(): ?array
     {
@@ -72,13 +72,13 @@ class IPAM extends \ArrayObject
     }
 
     /**
-     * List of IPAM configuration options, specified as a map:.
+     * List of IPAM configuration options, specified as a map:
      *
      * ```
      * {"Subnet": <CIDR>, "IPRange": <CIDR>, "Gateway": <IP address>, "AuxAddress": <device_name:IP address>}
      * ```
      *
-     * @param IPAMConfig[]|null $config
+     * @param list<IPAMConfig>|null $config
      */
     public function setConfig(?array $config): self
     {

@@ -22,11 +22,11 @@ class ServiceEndpoint extends \ArrayObject
      */
     protected $spec;
     /**
-     * @var EndpointPortConfig[]|null
+     * @var list<EndpointPortConfig>|null
      */
     protected $ports;
     /**
-     * @var ServiceEndpointVirtualIPsItem[]|null
+     * @var list<ServiceEndpointVirtualIPsItem>|null
      */
     protected $virtualIPs;
 
@@ -50,7 +50,7 @@ class ServiceEndpoint extends \ArrayObject
     }
 
     /**
-     * @return EndpointPortConfig[]|null
+     * @return list<EndpointPortConfig>|null
      */
     public function getPorts(): ?array
     {
@@ -58,7 +58,7 @@ class ServiceEndpoint extends \ArrayObject
     }
 
     /**
-     * @param EndpointPortConfig[]|null $ports
+     * @param list<EndpointPortConfig>|null $ports
      */
     public function setPorts(?array $ports): self
     {
@@ -69,7 +69,7 @@ class ServiceEndpoint extends \ArrayObject
     }
 
     /**
-     * @return ServiceEndpointVirtualIPsItem[]|null
+     * @return list<ServiceEndpointVirtualIPsItem>|null
      */
     public function getVirtualIPs(): ?array
     {
@@ -77,7 +77,7 @@ class ServiceEndpoint extends \ArrayObject
     }
 
     /**
-     * @param ServiceEndpointVirtualIPsItem[]|null $virtualIPs
+     * @param list<ServiceEndpointVirtualIPsItem>|null $virtualIPs
      */
     public function setVirtualIPs(?array $virtualIPs): self
     {

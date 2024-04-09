@@ -24,7 +24,7 @@ class EngineDescription extends \ArrayObject
      */
     protected $labels;
     /**
-     * @var EngineDescriptionPluginsItem[]|null
+     * @var list<EngineDescriptionPluginsItem>|null
      */
     protected $plugins;
 
@@ -61,7 +61,7 @@ class EngineDescription extends \ArrayObject
     }
 
     /**
-     * @return EngineDescriptionPluginsItem[]|null
+     * @return list<EngineDescriptionPluginsItem>|null
      */
     public function getPlugins(): ?array
     {
@@ -69,7 +69,7 @@ class EngineDescription extends \ArrayObject
     }
 
     /**
-     * @param EngineDescriptionPluginsItem[]|null $plugins
+     * @param list<EngineDescriptionPluginsItem>|null $plugins
      */
     public function setPlugins(?array $plugins): self
     {

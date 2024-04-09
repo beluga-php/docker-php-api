@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Docker\API;
 
-class Client extends \Docker\API\Runtime\Client\Client
+class Client extends Runtime\Client\Client
 {
     /**
      * Returns a list of containers. For details on the format, see the
@@ -46,14 +46,14 @@ class Client extends \Docker\API\Runtime\Client\Client
      *
      * @param string $fetch Fetch mode to use (can be OBJECT or RESPONSE)
      *
-     * @throws \Docker\API\Exception\ContainerListBadRequestException
-     * @throws \Docker\API\Exception\ContainerListInternalServerErrorException
+     * @throws Exception\ContainerListBadRequestException
+     * @throws Exception\ContainerListInternalServerErrorException
      *
      * @return \Docker\API\Model\ContainerSummary[]|\Psr\Http\Message\ResponseInterface|null
      */
     public function containerList(array $queryParameters = [], string $fetch = self::FETCH_OBJECT)
     {
-        return $this->executeEndpoint(new \Docker\API\Endpoint\ContainerList($queryParameters), $fetch);
+        return $this->executeEndpoint(new Endpoint\ContainerList($queryParameters), $fetch);
     }
 
     /**
@@ -82,16 +82,16 @@ class Client extends \Docker\API\Runtime\Client\Client
      *
      * @param string $fetch Fetch mode to use (can be OBJECT or RESPONSE)
      *
-     * @throws \Docker\API\Exception\ContainerCreateBadRequestException
-     * @throws \Docker\API\Exception\ContainerCreateNotFoundException
-     * @throws \Docker\API\Exception\ContainerCreateConflictException
-     * @throws \Docker\API\Exception\ContainerCreateInternalServerErrorException
+     * @throws Exception\ContainerCreateBadRequestException
+     * @throws Exception\ContainerCreateNotFoundException
+     * @throws Exception\ContainerCreateConflictException
+     * @throws Exception\ContainerCreateInternalServerErrorException
      *
-     * @return \Docker\API\Model\ContainerCreateResponse|\Psr\Http\Message\ResponseInterface|null
+     * @return Model\ContainerCreateResponse|\Psr\Http\Message\ResponseInterface|null
      */
-    public function containerCreate(Model\ContainersCreatePostBody $requestBody = null, array $queryParameters = [], string $fetch = self::FETCH_OBJECT)
+    public function containerCreate(?Model\ContainersCreatePostBody $requestBody = null, array $queryParameters = [], string $fetch = self::FETCH_OBJECT)
     {
-        return $this->executeEndpoint(new \Docker\API\Endpoint\ContainerCreate($requestBody, $queryParameters), $fetch);
+        return $this->executeEndpoint(new Endpoint\ContainerCreate($requestBody, $queryParameters), $fetch);
     }
 
     /**
@@ -105,14 +105,14 @@ class Client extends \Docker\API\Runtime\Client\Client
      *
      * @param string $fetch Fetch mode to use (can be OBJECT or RESPONSE)
      *
-     * @throws \Docker\API\Exception\ContainerInspectNotFoundException
-     * @throws \Docker\API\Exception\ContainerInspectInternalServerErrorException
+     * @throws Exception\ContainerInspectNotFoundException
+     * @throws Exception\ContainerInspectInternalServerErrorException
      *
-     * @return \Docker\API\Model\ContainersIdJsonGetResponse200|\Psr\Http\Message\ResponseInterface|null
+     * @return Model\ContainersIdJsonGetResponse200|\Psr\Http\Message\ResponseInterface|null
      */
     public function containerInspect(string $id, array $queryParameters = [], string $fetch = self::FETCH_OBJECT)
     {
-        return $this->executeEndpoint(new \Docker\API\Endpoint\ContainerInspect($id, $queryParameters), $fetch);
+        return $this->executeEndpoint(new Endpoint\ContainerInspect($id, $queryParameters), $fetch);
     }
 
     /**
@@ -128,14 +128,14 @@ class Client extends \Docker\API\Runtime\Client\Client
      * @param string $fetch  Fetch mode to use (can be OBJECT or RESPONSE)
      * @param array  $accept Accept content header application/json|text/plain
      *
-     * @throws \Docker\API\Exception\ContainerTopNotFoundException
-     * @throws \Docker\API\Exception\ContainerTopInternalServerErrorException
+     * @throws Exception\ContainerTopNotFoundException
+     * @throws Exception\ContainerTopInternalServerErrorException
      *
-     * @return \Docker\API\Model\ContainersIdTopGetJsonResponse200|\Psr\Http\Message\ResponseInterface|null
+     * @return Model\ContainersIdTopGetJsonResponse200|\Psr\Http\Message\ResponseInterface|null
      */
     public function containerTop(string $id, array $queryParameters = [], string $fetch = self::FETCH_OBJECT, array $accept = [])
     {
-        return $this->executeEndpoint(new \Docker\API\Endpoint\ContainerTop($id, $queryParameters, $accept), $fetch);
+        return $this->executeEndpoint(new Endpoint\ContainerTop($id, $queryParameters, $accept), $fetch);
     }
 
     /**
@@ -161,18 +161,18 @@ class Client extends \Docker\API\Runtime\Client\Client
      * @param string $fetch  Fetch mode to use (can be OBJECT or RESPONSE)
      * @param array  $accept Accept content header application/vnd.docker.raw-stream|application/vnd.docker.multiplexed-stream|application/json
      *
-     * @throws \Docker\API\Exception\ContainerLogsNotFoundException
+     * @throws Exception\ContainerLogsNotFoundException
      *
      * @return \Psr\Http\Message\ResponseInterface|null
      */
     public function containerLogs(string $id, array $queryParameters = [], string $fetch = self::FETCH_OBJECT, array $accept = [])
     {
-        return $this->executeEndpoint(new \Docker\API\Endpoint\ContainerLogs($id, $queryParameters, $accept), $fetch);
+        return $this->executeEndpoint(new Endpoint\ContainerLogs($id, $queryParameters, $accept), $fetch);
     }
 
     /**
      * Returns which files in a container's filesystem have been added, deleted,
-     * or modified. The `Kind` of modification can be one of:.
+     * or modified. The `Kind` of modification can be one of:
      *
      * - `0`: Modified ("C")
      * - `1`: Added ("A")
@@ -181,14 +181,14 @@ class Client extends \Docker\API\Runtime\Client\Client
      * @param string $id    ID or name of the container
      * @param string $fetch Fetch mode to use (can be OBJECT or RESPONSE)
      *
-     * @throws \Docker\API\Exception\ContainerChangesNotFoundException
-     * @throws \Docker\API\Exception\ContainerChangesInternalServerErrorException
+     * @throws Exception\ContainerChangesNotFoundException
+     * @throws Exception\ContainerChangesInternalServerErrorException
      *
      * @return \Docker\API\Model\FilesystemChange[]|\Psr\Http\Message\ResponseInterface|null
      */
     public function containerChanges(string $id, string $fetch = self::FETCH_OBJECT)
     {
-        return $this->executeEndpoint(new \Docker\API\Endpoint\ContainerChanges($id), $fetch);
+        return $this->executeEndpoint(new Endpoint\ContainerChanges($id), $fetch);
     }
 
     /**
@@ -198,13 +198,13 @@ class Client extends \Docker\API\Runtime\Client\Client
      * @param string $fetch  Fetch mode to use (can be OBJECT or RESPONSE)
      * @param array  $accept Accept content header application/octet-stream|application/json
      *
-     * @throws \Docker\API\Exception\ContainerExportNotFoundException
+     * @throws Exception\ContainerExportNotFoundException
      *
      * @return \Psr\Http\Message\ResponseInterface|null
      */
     public function containerExport(string $id, string $fetch = self::FETCH_OBJECT, array $accept = [])
     {
-        return $this->executeEndpoint(new \Docker\API\Endpoint\ContainerExport($id, $accept), $fetch);
+        return $this->executeEndpoint(new Endpoint\ContainerExport($id, $accept), $fetch);
     }
 
     /**
@@ -247,14 +247,14 @@ class Client extends \Docker\API\Runtime\Client\Client
      *
      * @param string $fetch Fetch mode to use (can be OBJECT or RESPONSE)
      *
-     * @throws \Docker\API\Exception\ContainerStatsNotFoundException
-     * @throws \Docker\API\Exception\ContainerStatsInternalServerErrorException
+     * @throws Exception\ContainerStatsNotFoundException
+     * @throws Exception\ContainerStatsInternalServerErrorException
      *
      * @return \Psr\Http\Message\ResponseInterface|null
      */
     public function containerStats(string $id, array $queryParameters = [], string $fetch = self::FETCH_OBJECT)
     {
-        return $this->executeEndpoint(new \Docker\API\Endpoint\ContainerStats($id, $queryParameters), $fetch);
+        return $this->executeEndpoint(new Endpoint\ContainerStats($id, $queryParameters), $fetch);
     }
 
     /**
@@ -270,13 +270,13 @@ class Client extends \Docker\API\Runtime\Client\Client
      * @param string $fetch  Fetch mode to use (can be OBJECT or RESPONSE)
      * @param array  $accept Accept content header text/plain|application/json
      *
-     * @throws \Docker\API\Exception\ContainerResizeNotFoundException
+     * @throws Exception\ContainerResizeNotFoundException
      *
      * @return \Psr\Http\Message\ResponseInterface|null
      */
     public function containerResize(string $id, array $queryParameters = [], string $fetch = self::FETCH_OBJECT, array $accept = [])
     {
-        return $this->executeEndpoint(new \Docker\API\Endpoint\ContainerResize($id, $queryParameters, $accept), $fetch);
+        return $this->executeEndpoint(new Endpoint\ContainerResize($id, $queryParameters, $accept), $fetch);
     }
 
     /**
@@ -292,14 +292,14 @@ class Client extends \Docker\API\Runtime\Client\Client
      * @param string $fetch  Fetch mode to use (can be OBJECT or RESPONSE)
      * @param array  $accept Accept content header application/json|text/plain
      *
-     * @throws \Docker\API\Exception\ContainerStartNotFoundException
-     * @throws \Docker\API\Exception\ContainerStartInternalServerErrorException
+     * @throws Exception\ContainerStartNotFoundException
+     * @throws Exception\ContainerStartInternalServerErrorException
      *
      * @return \Psr\Http\Message\ResponseInterface|null
      */
     public function containerStart(string $id, array $queryParameters = [], string $fetch = self::FETCH_OBJECT, array $accept = [])
     {
-        return $this->executeEndpoint(new \Docker\API\Endpoint\ContainerStart($id, $queryParameters, $accept), $fetch);
+        return $this->executeEndpoint(new Endpoint\ContainerStart($id, $queryParameters, $accept), $fetch);
     }
 
     /**
@@ -313,14 +313,14 @@ class Client extends \Docker\API\Runtime\Client\Client
      * @param string $fetch  Fetch mode to use (can be OBJECT or RESPONSE)
      * @param array  $accept Accept content header application/json|text/plain
      *
-     * @throws \Docker\API\Exception\ContainerStopNotFoundException
-     * @throws \Docker\API\Exception\ContainerStopInternalServerErrorException
+     * @throws Exception\ContainerStopNotFoundException
+     * @throws Exception\ContainerStopInternalServerErrorException
      *
      * @return \Psr\Http\Message\ResponseInterface|null
      */
     public function containerStop(string $id, array $queryParameters = [], string $fetch = self::FETCH_OBJECT, array $accept = [])
     {
-        return $this->executeEndpoint(new \Docker\API\Endpoint\ContainerStop($id, $queryParameters, $accept), $fetch);
+        return $this->executeEndpoint(new Endpoint\ContainerStop($id, $queryParameters, $accept), $fetch);
     }
 
     /**
@@ -334,14 +334,14 @@ class Client extends \Docker\API\Runtime\Client\Client
      * @param string $fetch  Fetch mode to use (can be OBJECT or RESPONSE)
      * @param array  $accept Accept content header application/json|text/plain
      *
-     * @throws \Docker\API\Exception\ContainerRestartNotFoundException
-     * @throws \Docker\API\Exception\ContainerRestartInternalServerErrorException
+     * @throws Exception\ContainerRestartNotFoundException
+     * @throws Exception\ContainerRestartInternalServerErrorException
      *
      * @return \Psr\Http\Message\ResponseInterface|null
      */
     public function containerRestart(string $id, array $queryParameters = [], string $fetch = self::FETCH_OBJECT, array $accept = [])
     {
-        return $this->executeEndpoint(new \Docker\API\Endpoint\ContainerRestart($id, $queryParameters, $accept), $fetch);
+        return $this->executeEndpoint(new Endpoint\ContainerRestart($id, $queryParameters, $accept), $fetch);
     }
 
     /**
@@ -358,15 +358,15 @@ class Client extends \Docker\API\Runtime\Client\Client
      * @param string $fetch  Fetch mode to use (can be OBJECT or RESPONSE)
      * @param array  $accept Accept content header application/json|text/plain
      *
-     * @throws \Docker\API\Exception\ContainerKillNotFoundException
-     * @throws \Docker\API\Exception\ContainerKillConflictException
-     * @throws \Docker\API\Exception\ContainerKillInternalServerErrorException
+     * @throws Exception\ContainerKillNotFoundException
+     * @throws Exception\ContainerKillConflictException
+     * @throws Exception\ContainerKillInternalServerErrorException
      *
      * @return \Psr\Http\Message\ResponseInterface|null
      */
     public function containerKill(string $id, array $queryParameters = [], string $fetch = self::FETCH_OBJECT, array $accept = [])
     {
-        return $this->executeEndpoint(new \Docker\API\Endpoint\ContainerKill($id, $queryParameters, $accept), $fetch);
+        return $this->executeEndpoint(new Endpoint\ContainerKill($id, $queryParameters, $accept), $fetch);
     }
 
     /**
@@ -376,14 +376,14 @@ class Client extends \Docker\API\Runtime\Client\Client
      * @param string $id    ID or name of the container
      * @param string $fetch Fetch mode to use (can be OBJECT or RESPONSE)
      *
-     * @throws \Docker\API\Exception\ContainerUpdateNotFoundException
-     * @throws \Docker\API\Exception\ContainerUpdateInternalServerErrorException
+     * @throws Exception\ContainerUpdateNotFoundException
+     * @throws Exception\ContainerUpdateInternalServerErrorException
      *
-     * @return \Docker\API\Model\ContainersIdUpdatePostResponse200|\Psr\Http\Message\ResponseInterface|null
+     * @return Model\ContainersIdUpdatePostResponse200|\Psr\Http\Message\ResponseInterface|null
      */
-    public function containerUpdate(string $id, Model\ContainersIdUpdatePostBody $requestBody = null, string $fetch = self::FETCH_OBJECT)
+    public function containerUpdate(string $id, ?Model\ContainersIdUpdatePostBody $requestBody = null, string $fetch = self::FETCH_OBJECT)
     {
-        return $this->executeEndpoint(new \Docker\API\Endpoint\ContainerUpdate($id, $requestBody), $fetch);
+        return $this->executeEndpoint(new Endpoint\ContainerUpdate($id, $requestBody), $fetch);
     }
 
     /**
@@ -396,15 +396,15 @@ class Client extends \Docker\API\Runtime\Client\Client
      * @param string $fetch  Fetch mode to use (can be OBJECT or RESPONSE)
      * @param array  $accept Accept content header application/json|text/plain
      *
-     * @throws \Docker\API\Exception\ContainerRenameNotFoundException
-     * @throws \Docker\API\Exception\ContainerRenameConflictException
-     * @throws \Docker\API\Exception\ContainerRenameInternalServerErrorException
+     * @throws Exception\ContainerRenameNotFoundException
+     * @throws Exception\ContainerRenameConflictException
+     * @throws Exception\ContainerRenameInternalServerErrorException
      *
      * @return \Psr\Http\Message\ResponseInterface|null
      */
     public function containerRename(string $id, array $queryParameters = [], string $fetch = self::FETCH_OBJECT, array $accept = [])
     {
-        return $this->executeEndpoint(new \Docker\API\Endpoint\ContainerRename($id, $queryParameters, $accept), $fetch);
+        return $this->executeEndpoint(new Endpoint\ContainerRename($id, $queryParameters, $accept), $fetch);
     }
 
     /**
@@ -419,14 +419,14 @@ class Client extends \Docker\API\Runtime\Client\Client
      * @param string $fetch  Fetch mode to use (can be OBJECT or RESPONSE)
      * @param array  $accept Accept content header application/json|text/plain
      *
-     * @throws \Docker\API\Exception\ContainerPauseNotFoundException
-     * @throws \Docker\API\Exception\ContainerPauseInternalServerErrorException
+     * @throws Exception\ContainerPauseNotFoundException
+     * @throws Exception\ContainerPauseInternalServerErrorException
      *
      * @return \Psr\Http\Message\ResponseInterface|null
      */
     public function containerPause(string $id, string $fetch = self::FETCH_OBJECT, array $accept = [])
     {
-        return $this->executeEndpoint(new \Docker\API\Endpoint\ContainerPause($id, $accept), $fetch);
+        return $this->executeEndpoint(new Endpoint\ContainerPause($id, $accept), $fetch);
     }
 
     /**
@@ -436,14 +436,14 @@ class Client extends \Docker\API\Runtime\Client\Client
      * @param string $fetch  Fetch mode to use (can be OBJECT or RESPONSE)
      * @param array  $accept Accept content header application/json|text/plain
      *
-     * @throws \Docker\API\Exception\ContainerUnpauseNotFoundException
-     * @throws \Docker\API\Exception\ContainerUnpauseInternalServerErrorException
+     * @throws Exception\ContainerUnpauseNotFoundException
+     * @throws Exception\ContainerUnpauseInternalServerErrorException
      *
      * @return \Psr\Http\Message\ResponseInterface|null
      */
     public function containerUnpause(string $id, string $fetch = self::FETCH_OBJECT, array $accept = [])
     {
-        return $this->executeEndpoint(new \Docker\API\Endpoint\ContainerUnpause($id, $accept), $fetch);
+        return $this->executeEndpoint(new Endpoint\ContainerUnpause($id, $accept), $fetch);
     }
 
     /**
@@ -565,13 +565,13 @@ class Client extends \Docker\API\Runtime\Client\Client
      * @param string $fetch  Fetch mode to use (can be OBJECT or RESPONSE)
      * @param array  $accept Accept content header application/vnd.docker.raw-stream|application/vnd.docker.multiplexed-stream|application/json
      *
-     * @throws \Docker\API\Exception\ContainerAttachNotFoundException
+     * @throws Exception\ContainerAttachNotFoundException
      *
      * @return \Psr\Http\Message\ResponseInterface|null
      */
     public function containerAttach(string $id, array $queryParameters = [], string $fetch = self::FETCH_OBJECT, array $accept = [])
     {
-        return $this->executeEndpoint(new \Docker\API\Endpoint\ContainerAttach($id, $queryParameters, $accept), $fetch);
+        return $this->executeEndpoint(new Endpoint\ContainerAttach($id, $queryParameters, $accept), $fetch);
     }
 
     /**
@@ -591,15 +591,15 @@ class Client extends \Docker\API\Runtime\Client\Client
      * @param string $fetch  Fetch mode to use (can be OBJECT or RESPONSE)
      * @param array  $accept Accept content header application/json|text/plain
      *
-     * @throws \Docker\API\Exception\ContainerAttachWebsocketBadRequestException
-     * @throws \Docker\API\Exception\ContainerAttachWebsocketNotFoundException
-     * @throws \Docker\API\Exception\ContainerAttachWebsocketInternalServerErrorException
+     * @throws Exception\ContainerAttachWebsocketBadRequestException
+     * @throws Exception\ContainerAttachWebsocketNotFoundException
+     * @throws Exception\ContainerAttachWebsocketInternalServerErrorException
      *
      * @return \Psr\Http\Message\ResponseInterface|null
      */
     public function containerAttachWebsocket(string $id, array $queryParameters = [], string $fetch = self::FETCH_OBJECT, array $accept = [])
     {
-        return $this->executeEndpoint(new \Docker\API\Endpoint\ContainerAttachWebsocket($id, $queryParameters, $accept), $fetch);
+        return $this->executeEndpoint(new Endpoint\ContainerAttachWebsocket($id, $queryParameters, $accept), $fetch);
     }
 
     /**
@@ -616,15 +616,15 @@ class Client extends \Docker\API\Runtime\Client\Client
      *
      * @param string $fetch Fetch mode to use (can be OBJECT or RESPONSE)
      *
-     * @throws \Docker\API\Exception\ContainerWaitBadRequestException
-     * @throws \Docker\API\Exception\ContainerWaitNotFoundException
-     * @throws \Docker\API\Exception\ContainerWaitInternalServerErrorException
+     * @throws Exception\ContainerWaitBadRequestException
+     * @throws Exception\ContainerWaitNotFoundException
+     * @throws Exception\ContainerWaitInternalServerErrorException
      *
-     * @return \Docker\API\Model\ContainerWaitResponse|\Psr\Http\Message\ResponseInterface|null
+     * @return Model\ContainerWaitResponse|\Psr\Http\Message\ResponseInterface|null
      */
     public function containerWait(string $id, array $queryParameters = [], string $fetch = self::FETCH_OBJECT)
     {
-        return $this->executeEndpoint(new \Docker\API\Endpoint\ContainerWait($id, $queryParameters), $fetch);
+        return $this->executeEndpoint(new Endpoint\ContainerWait($id, $queryParameters), $fetch);
     }
 
     /**
@@ -639,16 +639,16 @@ class Client extends \Docker\API\Runtime\Client\Client
      * @param string $fetch  Fetch mode to use (can be OBJECT or RESPONSE)
      * @param array  $accept Accept content header application/json|text/plain
      *
-     * @throws \Docker\API\Exception\ContainerDeleteBadRequestException
-     * @throws \Docker\API\Exception\ContainerDeleteNotFoundException
-     * @throws \Docker\API\Exception\ContainerDeleteConflictException
-     * @throws \Docker\API\Exception\ContainerDeleteInternalServerErrorException
+     * @throws Exception\ContainerDeleteBadRequestException
+     * @throws Exception\ContainerDeleteNotFoundException
+     * @throws Exception\ContainerDeleteConflictException
+     * @throws Exception\ContainerDeleteInternalServerErrorException
      *
      * @return \Psr\Http\Message\ResponseInterface|null
      */
     public function containerDelete(string $id, array $queryParameters = [], string $fetch = self::FETCH_OBJECT, array $accept = [])
     {
-        return $this->executeEndpoint(new \Docker\API\Endpoint\ContainerDelete($id, $queryParameters, $accept), $fetch);
+        return $this->executeEndpoint(new Endpoint\ContainerDelete($id, $queryParameters, $accept), $fetch);
     }
 
     /**
@@ -663,13 +663,13 @@ class Client extends \Docker\API\Runtime\Client\Client
      * @param string $fetch  Fetch mode to use (can be OBJECT or RESPONSE)
      * @param array  $accept Accept content header application/x-tar|application/json
      *
-     * @throws \Docker\API\Exception\ContainerArchiveNotFoundException
+     * @throws Exception\ContainerArchiveNotFoundException
      *
      * @return \Psr\Http\Message\ResponseInterface|null
      */
     public function containerArchive(string $id, array $queryParameters = [], string $fetch = self::FETCH_OBJECT, array $accept = [])
     {
-        return $this->executeEndpoint(new \Docker\API\Endpoint\ContainerArchive($id, $queryParameters, $accept), $fetch);
+        return $this->executeEndpoint(new Endpoint\ContainerArchive($id, $queryParameters, $accept), $fetch);
     }
 
     /**
@@ -686,15 +686,15 @@ class Client extends \Docker\API\Runtime\Client\Client
      * @param string $fetch  Fetch mode to use (can be OBJECT or RESPONSE)
      * @param array  $accept Accept content header application/json|text/plain
      *
-     * @throws \Docker\API\Exception\ContainerArchiveInfoBadRequestException
-     * @throws \Docker\API\Exception\ContainerArchiveInfoNotFoundException
-     * @throws \Docker\API\Exception\ContainerArchiveInfoInternalServerErrorException
+     * @throws Exception\ContainerArchiveInfoBadRequestException
+     * @throws Exception\ContainerArchiveInfoNotFoundException
+     * @throws Exception\ContainerArchiveInfoInternalServerErrorException
      *
      * @return \Psr\Http\Message\ResponseInterface|null
      */
     public function containerArchiveInfo(string $id, array $queryParameters = [], string $fetch = self::FETCH_OBJECT, array $accept = [])
     {
-        return $this->executeEndpoint(new \Docker\API\Endpoint\ContainerArchiveInfo($id, $queryParameters, $accept), $fetch);
+        return $this->executeEndpoint(new Endpoint\ContainerArchiveInfo($id, $queryParameters, $accept), $fetch);
     }
 
     /**
@@ -718,16 +718,16 @@ class Client extends \Docker\API\Runtime\Client\Client
      * @param string $fetch  Fetch mode to use (can be OBJECT or RESPONSE)
      * @param array  $accept Accept content header application/json|text/plain
      *
-     * @throws \Docker\API\Exception\PutContainerArchiveBadRequestException
-     * @throws \Docker\API\Exception\PutContainerArchiveForbiddenException
-     * @throws \Docker\API\Exception\PutContainerArchiveNotFoundException
-     * @throws \Docker\API\Exception\PutContainerArchiveInternalServerErrorException
+     * @throws Exception\PutContainerArchiveBadRequestException
+     * @throws Exception\PutContainerArchiveForbiddenException
+     * @throws Exception\PutContainerArchiveNotFoundException
+     * @throws Exception\PutContainerArchiveInternalServerErrorException
      *
      * @return \Psr\Http\Message\ResponseInterface|null
      */
     public function putContainerArchive(string $id, $requestBody = null, array $queryParameters = [], string $fetch = self::FETCH_OBJECT, array $accept = [])
     {
-        return $this->executeEndpoint(new \Docker\API\Endpoint\PutContainerArchive($id, $requestBody, $queryParameters, $accept), $fetch);
+        return $this->executeEndpoint(new Endpoint\PutContainerArchive($id, $requestBody, $queryParameters, $accept), $fetch);
     }
 
     /**
@@ -743,13 +743,13 @@ class Client extends \Docker\API\Runtime\Client\Client
      *
      * @param string $fetch Fetch mode to use (can be OBJECT or RESPONSE)
      *
-     * @throws \Docker\API\Exception\ContainerPruneInternalServerErrorException
+     * @throws Exception\ContainerPruneInternalServerErrorException
      *
-     * @return \Docker\API\Model\ContainersPrunePostResponse200|\Psr\Http\Message\ResponseInterface|null
+     * @return Model\ContainersPrunePostResponse200|\Psr\Http\Message\ResponseInterface|null
      */
     public function containerPrune(array $queryParameters = [], string $fetch = self::FETCH_OBJECT)
     {
-        return $this->executeEndpoint(new \Docker\API\Endpoint\ContainerPrune($queryParameters), $fetch);
+        return $this->executeEndpoint(new Endpoint\ContainerPrune($queryParameters), $fetch);
     }
 
     /**
@@ -774,13 +774,13 @@ class Client extends \Docker\API\Runtime\Client\Client
      *
      * @param string $fetch Fetch mode to use (can be OBJECT or RESPONSE)
      *
-     * @throws \Docker\API\Exception\ImageListInternalServerErrorException
+     * @throws Exception\ImageListInternalServerErrorException
      *
      * @return \Docker\API\Model\ImageSummary[]|\Psr\Http\Message\ResponseInterface|null
      */
     public function imageList(array $queryParameters = [], string $fetch = self::FETCH_OBJECT)
     {
-        return $this->executeEndpoint(new \Docker\API\Endpoint\ImageList($queryParameters), $fetch);
+        return $this->executeEndpoint(new Endpoint\ImageList($queryParameters), $fetch);
     }
 
     /**
@@ -854,14 +854,14 @@ class Client extends \Docker\API\Runtime\Client\Client
      *
      * @param string $fetch Fetch mode to use (can be OBJECT or RESPONSE)
      *
-     * @throws \Docker\API\Exception\ImageBuildBadRequestException
-     * @throws \Docker\API\Exception\ImageBuildInternalServerErrorException
+     * @throws Exception\ImageBuildBadRequestException
+     * @throws Exception\ImageBuildInternalServerErrorException
      *
      * @return \Psr\Http\Message\ResponseInterface|null
      */
     public function imageBuild($requestBody = null, array $queryParameters = [], array $headerParameters = [], string $fetch = self::FETCH_OBJECT)
     {
-        return $this->executeEndpoint(new \Docker\API\Endpoint\ImageBuild($requestBody, $queryParameters, $headerParameters), $fetch);
+        return $this->executeEndpoint(new Endpoint\ImageBuild($requestBody, $queryParameters, $headerParameters), $fetch);
     }
 
     /**
@@ -887,13 +887,13 @@ class Client extends \Docker\API\Runtime\Client\Client
      *
      * @param string $fetch Fetch mode to use (can be OBJECT or RESPONSE)
      *
-     * @throws \Docker\API\Exception\BuildPruneInternalServerErrorException
+     * @throws Exception\BuildPruneInternalServerErrorException
      *
-     * @return \Docker\API\Model\BuildPrunePostResponse200|\Psr\Http\Message\ResponseInterface|null
+     * @return Model\BuildPrunePostResponse200|\Psr\Http\Message\ResponseInterface|null
      */
     public function buildPrune(array $queryParameters = [], string $fetch = self::FETCH_OBJECT)
     {
-        return $this->executeEndpoint(new \Docker\API\Endpoint\BuildPrune($queryParameters), $fetch);
+        return $this->executeEndpoint(new Endpoint\BuildPrune($queryParameters), $fetch);
     }
 
     /**
@@ -941,14 +941,14 @@ class Client extends \Docker\API\Runtime\Client\Client
      *
      * @param string $fetch Fetch mode to use (can be OBJECT or RESPONSE)
      *
-     * @throws \Docker\API\Exception\ImageCreateNotFoundException
-     * @throws \Docker\API\Exception\ImageCreateInternalServerErrorException
+     * @throws Exception\ImageCreateNotFoundException
+     * @throws Exception\ImageCreateInternalServerErrorException
      *
      * @return \Psr\Http\Message\ResponseInterface|null
      */
-    public function imageCreate(string $requestBody = null, array $queryParameters = [], array $headerParameters = [], string $fetch = self::FETCH_OBJECT)
+    public function imageCreate(?string $requestBody = null, array $queryParameters = [], array $headerParameters = [], string $fetch = self::FETCH_OBJECT)
     {
-        return $this->executeEndpoint(new \Docker\API\Endpoint\ImageCreate($requestBody, $queryParameters, $headerParameters), $fetch);
+        return $this->executeEndpoint(new Endpoint\ImageCreate($requestBody, $queryParameters, $headerParameters), $fetch);
     }
 
     /**
@@ -957,14 +957,14 @@ class Client extends \Docker\API\Runtime\Client\Client
      * @param string $name  Image name or id
      * @param string $fetch Fetch mode to use (can be OBJECT or RESPONSE)
      *
-     * @throws \Docker\API\Exception\ImageInspectNotFoundException
-     * @throws \Docker\API\Exception\ImageInspectInternalServerErrorException
+     * @throws Exception\ImageInspectNotFoundException
+     * @throws Exception\ImageInspectInternalServerErrorException
      *
-     * @return \Docker\API\Model\ImageInspect|\Psr\Http\Message\ResponseInterface|null
+     * @return Model\ImageInspect|\Psr\Http\Message\ResponseInterface|null
      */
     public function imageInspect(string $name, string $fetch = self::FETCH_OBJECT)
     {
-        return $this->executeEndpoint(new \Docker\API\Endpoint\ImageInspect($name), $fetch);
+        return $this->executeEndpoint(new Endpoint\ImageInspect($name), $fetch);
     }
 
     /**
@@ -973,14 +973,14 @@ class Client extends \Docker\API\Runtime\Client\Client
      * @param string $name  Image name or ID
      * @param string $fetch Fetch mode to use (can be OBJECT or RESPONSE)
      *
-     * @throws \Docker\API\Exception\ImageHistoryNotFoundException
-     * @throws \Docker\API\Exception\ImageHistoryInternalServerErrorException
+     * @throws Exception\ImageHistoryNotFoundException
+     * @throws Exception\ImageHistoryInternalServerErrorException
      *
      * @return \Docker\API\Model\ImagesNameHistoryGetResponse200Item[]|\Psr\Http\Message\ResponseInterface|null
      */
     public function imageHistory(string $name, string $fetch = self::FETCH_OBJECT)
     {
-        return $this->executeEndpoint(new \Docker\API\Endpoint\ImageHistory($name), $fetch);
+        return $this->executeEndpoint(new Endpoint\ImageHistory($name), $fetch);
     }
 
     /**
@@ -1010,14 +1010,14 @@ class Client extends \Docker\API\Runtime\Client\Client
      * @param string $fetch  Fetch mode to use (can be OBJECT or RESPONSE)
      * @param array  $accept Accept content header application/json|text/plain
      *
-     * @throws \Docker\API\Exception\ImagePushNotFoundException
-     * @throws \Docker\API\Exception\ImagePushInternalServerErrorException
+     * @throws Exception\ImagePushNotFoundException
+     * @throws Exception\ImagePushInternalServerErrorException
      *
      * @return \Psr\Http\Message\ResponseInterface|null
      */
     public function imagePush(string $name, array $queryParameters = [], array $headerParameters = [], string $fetch = self::FETCH_OBJECT, array $accept = [])
     {
-        return $this->executeEndpoint(new \Docker\API\Endpoint\ImagePush($name, $queryParameters, $headerParameters, $accept), $fetch);
+        return $this->executeEndpoint(new Endpoint\ImagePush($name, $queryParameters, $headerParameters, $accept), $fetch);
     }
 
     /**
@@ -1033,16 +1033,16 @@ class Client extends \Docker\API\Runtime\Client\Client
      * @param string $fetch  Fetch mode to use (can be OBJECT or RESPONSE)
      * @param array  $accept Accept content header application/json|text/plain
      *
-     * @throws \Docker\API\Exception\ImageTagBadRequestException
-     * @throws \Docker\API\Exception\ImageTagNotFoundException
-     * @throws \Docker\API\Exception\ImageTagConflictException
-     * @throws \Docker\API\Exception\ImageTagInternalServerErrorException
+     * @throws Exception\ImageTagBadRequestException
+     * @throws Exception\ImageTagNotFoundException
+     * @throws Exception\ImageTagConflictException
+     * @throws Exception\ImageTagInternalServerErrorException
      *
      * @return \Psr\Http\Message\ResponseInterface|null
      */
     public function imageTag(string $name, array $queryParameters = [], string $fetch = self::FETCH_OBJECT, array $accept = [])
     {
-        return $this->executeEndpoint(new \Docker\API\Endpoint\ImageTag($name, $queryParameters, $accept), $fetch);
+        return $this->executeEndpoint(new Endpoint\ImageTag($name, $queryParameters, $accept), $fetch);
     }
 
     /**
@@ -1061,15 +1061,15 @@ class Client extends \Docker\API\Runtime\Client\Client
      *
      * @param string $fetch Fetch mode to use (can be OBJECT or RESPONSE)
      *
-     * @throws \Docker\API\Exception\ImageDeleteNotFoundException
-     * @throws \Docker\API\Exception\ImageDeleteConflictException
-     * @throws \Docker\API\Exception\ImageDeleteInternalServerErrorException
+     * @throws Exception\ImageDeleteNotFoundException
+     * @throws Exception\ImageDeleteConflictException
+     * @throws Exception\ImageDeleteInternalServerErrorException
      *
      * @return \Docker\API\Model\ImageDeleteResponseItem[]|\Psr\Http\Message\ResponseInterface|null
      */
     public function imageDelete(string $name, array $queryParameters = [], string $fetch = self::FETCH_OBJECT)
     {
-        return $this->executeEndpoint(new \Docker\API\Endpoint\ImageDelete($name, $queryParameters), $fetch);
+        return $this->executeEndpoint(new Endpoint\ImageDelete($name, $queryParameters), $fetch);
     }
 
     /**
@@ -1089,13 +1089,13 @@ class Client extends \Docker\API\Runtime\Client\Client
      *
      * @param string $fetch Fetch mode to use (can be OBJECT or RESPONSE)
      *
-     * @throws \Docker\API\Exception\ImageSearchInternalServerErrorException
+     * @throws Exception\ImageSearchInternalServerErrorException
      *
      * @return \Docker\API\Model\ImagesSearchGetResponse200Item[]|\Psr\Http\Message\ResponseInterface|null
      */
     public function imageSearch(array $queryParameters = [], string $fetch = self::FETCH_OBJECT)
     {
-        return $this->executeEndpoint(new \Docker\API\Endpoint\ImageSearch($queryParameters), $fetch);
+        return $this->executeEndpoint(new Endpoint\ImageSearch($queryParameters), $fetch);
     }
 
     /**
@@ -1113,13 +1113,13 @@ class Client extends \Docker\API\Runtime\Client\Client
      *
      * @param string $fetch Fetch mode to use (can be OBJECT or RESPONSE)
      *
-     * @throws \Docker\API\Exception\ImagePruneInternalServerErrorException
+     * @throws Exception\ImagePruneInternalServerErrorException
      *
-     * @return \Docker\API\Model\ImagesPrunePostResponse200|\Psr\Http\Message\ResponseInterface|null
+     * @return Model\ImagesPrunePostResponse200|\Psr\Http\Message\ResponseInterface|null
      */
     public function imagePrune(array $queryParameters = [], string $fetch = self::FETCH_OBJECT)
     {
-        return $this->executeEndpoint(new \Docker\API\Endpoint\ImagePrune($queryParameters), $fetch);
+        return $this->executeEndpoint(new Endpoint\ImagePrune($queryParameters), $fetch);
     }
 
     /**
@@ -1128,38 +1128,38 @@ class Client extends \Docker\API\Runtime\Client\Client
      *
      * @param string $fetch Fetch mode to use (can be OBJECT or RESPONSE)
      *
-     * @throws \Docker\API\Exception\SystemAuthUnauthorizedException
-     * @throws \Docker\API\Exception\SystemAuthInternalServerErrorException
+     * @throws Exception\SystemAuthUnauthorizedException
+     * @throws Exception\SystemAuthInternalServerErrorException
      *
-     * @return \Docker\API\Model\AuthPostResponse200|\Psr\Http\Message\ResponseInterface|null
+     * @return Model\AuthPostResponse200|\Psr\Http\Message\ResponseInterface|null
      */
-    public function systemAuth(Model\AuthConfig $requestBody = null, string $fetch = self::FETCH_OBJECT)
+    public function systemAuth(?Model\AuthConfig $requestBody = null, string $fetch = self::FETCH_OBJECT)
     {
-        return $this->executeEndpoint(new \Docker\API\Endpoint\SystemAuth($requestBody), $fetch);
+        return $this->executeEndpoint(new Endpoint\SystemAuth($requestBody), $fetch);
     }
 
     /**
      * @param string $fetch Fetch mode to use (can be OBJECT or RESPONSE)
      *
-     * @throws \Docker\API\Exception\SystemInfoInternalServerErrorException
+     * @throws Exception\SystemInfoInternalServerErrorException
      *
-     * @return \Docker\API\Model\SystemInfo|\Psr\Http\Message\ResponseInterface|null
+     * @return Model\SystemInfo|\Psr\Http\Message\ResponseInterface|null
      */
     public function systemInfo(string $fetch = self::FETCH_OBJECT)
     {
-        return $this->executeEndpoint(new \Docker\API\Endpoint\SystemInfo(), $fetch);
+        return $this->executeEndpoint(new Endpoint\SystemInfo(), $fetch);
     }
 
     /**
      * @param string $fetch Fetch mode to use (can be OBJECT or RESPONSE)
      *
-     * @throws \Docker\API\Exception\SystemVersionInternalServerErrorException
+     * @throws Exception\SystemVersionInternalServerErrorException
      *
-     * @return \Docker\API\Model\SystemVersion|\Psr\Http\Message\ResponseInterface|null
+     * @return Model\SystemVersion|\Psr\Http\Message\ResponseInterface|null
      */
     public function systemVersion(string $fetch = self::FETCH_OBJECT)
     {
-        return $this->executeEndpoint(new \Docker\API\Endpoint\SystemVersion(), $fetch);
+        return $this->executeEndpoint(new Endpoint\SystemVersion(), $fetch);
     }
 
     /**
@@ -1169,7 +1169,7 @@ class Client extends \Docker\API\Runtime\Client\Client
      */
     public function systemPing(string $fetch = self::FETCH_OBJECT)
     {
-        return $this->executeEndpoint(new \Docker\API\Endpoint\SystemPing(), $fetch);
+        return $this->executeEndpoint(new Endpoint\SystemPing(), $fetch);
     }
 
     /**
@@ -1179,7 +1179,7 @@ class Client extends \Docker\API\Runtime\Client\Client
      */
     public function systemPingHead(string $fetch = self::FETCH_OBJECT)
     {
-        return $this->executeEndpoint(new \Docker\API\Endpoint\SystemPingHead(), $fetch);
+        return $this->executeEndpoint(new Endpoint\SystemPingHead(), $fetch);
     }
 
     /**
@@ -1196,14 +1196,14 @@ class Client extends \Docker\API\Runtime\Client\Client
      *
      * @param string $fetch Fetch mode to use (can be OBJECT or RESPONSE)
      *
-     * @throws \Docker\API\Exception\ImageCommitNotFoundException
-     * @throws \Docker\API\Exception\ImageCommitInternalServerErrorException
+     * @throws Exception\ImageCommitNotFoundException
+     * @throws Exception\ImageCommitInternalServerErrorException
      *
-     * @return \Docker\API\Model\IdResponse|\Psr\Http\Message\ResponseInterface|null
+     * @return Model\IdResponse|\Psr\Http\Message\ResponseInterface|null
      */
-    public function imageCommit(Model\ContainerConfig $requestBody = null, array $queryParameters = [], string $fetch = self::FETCH_OBJECT)
+    public function imageCommit(?Model\ContainerConfig $requestBody = null, array $queryParameters = [], string $fetch = self::FETCH_OBJECT)
     {
-        return $this->executeEndpoint(new \Docker\API\Endpoint\ImageCommit($requestBody, $queryParameters), $fetch);
+        return $this->executeEndpoint(new Endpoint\ImageCommit($requestBody, $queryParameters), $fetch);
     }
 
     /**
@@ -1256,14 +1256,14 @@ class Client extends \Docker\API\Runtime\Client\Client
      *
      * @param string $fetch Fetch mode to use (can be OBJECT or RESPONSE)
      *
-     * @throws \Docker\API\Exception\SystemEventsBadRequestException
-     * @throws \Docker\API\Exception\SystemEventsInternalServerErrorException
+     * @throws Exception\SystemEventsBadRequestException
+     * @throws Exception\SystemEventsInternalServerErrorException
      *
-     * @return \Docker\API\Model\EventMessage|\Psr\Http\Message\ResponseInterface|null
+     * @return Model\EventMessage|\Psr\Http\Message\ResponseInterface|null
      */
     public function systemEvents(array $queryParameters = [], string $fetch = self::FETCH_OBJECT)
     {
-        return $this->executeEndpoint(new \Docker\API\Endpoint\SystemEvents($queryParameters), $fetch);
+        return $this->executeEndpoint(new Endpoint\SystemEvents($queryParameters), $fetch);
     }
 
     /**
@@ -1275,13 +1275,13 @@ class Client extends \Docker\API\Runtime\Client\Client
      * @param string $fetch  Fetch mode to use (can be OBJECT or RESPONSE)
      * @param array  $accept Accept content header application/json|text/plain
      *
-     * @throws \Docker\API\Exception\SystemDataUsageInternalServerErrorException
+     * @throws Exception\SystemDataUsageInternalServerErrorException
      *
-     * @return \Docker\API\Model\SystemDfGetJsonResponse200|\Psr\Http\Message\ResponseInterface|null
+     * @return Model\SystemDfGetJsonResponse200|\Psr\Http\Message\ResponseInterface|null
      */
     public function systemDataUsage(array $queryParameters = [], string $fetch = self::FETCH_OBJECT, array $accept = [])
     {
-        return $this->executeEndpoint(new \Docker\API\Endpoint\SystemDataUsage($queryParameters, $accept), $fetch);
+        return $this->executeEndpoint(new Endpoint\SystemDataUsage($queryParameters, $accept), $fetch);
     }
 
     /**
@@ -1316,7 +1316,7 @@ class Client extends \Docker\API\Runtime\Client\Client
      */
     public function imageGet(string $name, string $fetch = self::FETCH_OBJECT)
     {
-        return $this->executeEndpoint(new \Docker\API\Endpoint\ImageGet($name), $fetch);
+        return $this->executeEndpoint(new Endpoint\ImageGet($name), $fetch);
     }
 
     /**
@@ -1342,7 +1342,7 @@ class Client extends \Docker\API\Runtime\Client\Client
      */
     public function imageGetAll(array $queryParameters = [], string $fetch = self::FETCH_OBJECT)
     {
-        return $this->executeEndpoint(new \Docker\API\Endpoint\ImageGetAll($queryParameters), $fetch);
+        return $this->executeEndpoint(new Endpoint\ImageGetAll($queryParameters), $fetch);
     }
 
     /**
@@ -1358,13 +1358,13 @@ class Client extends \Docker\API\Runtime\Client\Client
      *
      * @param string $fetch Fetch mode to use (can be OBJECT or RESPONSE)
      *
-     * @throws \Docker\API\Exception\ImageLoadInternalServerErrorException
+     * @throws Exception\ImageLoadInternalServerErrorException
      *
      * @return \Psr\Http\Message\ResponseInterface|null
      */
     public function imageLoad($requestBody = null, array $queryParameters = [], string $fetch = self::FETCH_OBJECT)
     {
-        return $this->executeEndpoint(new \Docker\API\Endpoint\ImageLoad($requestBody, $queryParameters), $fetch);
+        return $this->executeEndpoint(new Endpoint\ImageLoad($requestBody, $queryParameters), $fetch);
     }
 
     /**
@@ -1373,15 +1373,15 @@ class Client extends \Docker\API\Runtime\Client\Client
      * @param string $id    ID or name of container
      * @param string $fetch Fetch mode to use (can be OBJECT or RESPONSE)
      *
-     * @throws \Docker\API\Exception\ContainerExecNotFoundException
-     * @throws \Docker\API\Exception\ContainerExecConflictException
-     * @throws \Docker\API\Exception\ContainerExecInternalServerErrorException
+     * @throws Exception\ContainerExecNotFoundException
+     * @throws Exception\ContainerExecConflictException
+     * @throws Exception\ContainerExecInternalServerErrorException
      *
-     * @return \Docker\API\Model\IdResponse|\Psr\Http\Message\ResponseInterface|null
+     * @return Model\IdResponse|\Psr\Http\Message\ResponseInterface|null
      */
-    public function containerExec(string $id, Model\ContainersIdExecPostBody $requestBody = null, string $fetch = self::FETCH_OBJECT)
+    public function containerExec(string $id, ?Model\ContainersIdExecPostBody $requestBody = null, string $fetch = self::FETCH_OBJECT)
     {
-        return $this->executeEndpoint(new \Docker\API\Endpoint\ContainerExec($id, $requestBody), $fetch);
+        return $this->executeEndpoint(new Endpoint\ContainerExec($id, $requestBody), $fetch);
     }
 
     /**
@@ -1395,9 +1395,9 @@ class Client extends \Docker\API\Runtime\Client\Client
      *
      * @return \Psr\Http\Message\ResponseInterface|null
      */
-    public function execStart(string $id, Model\ExecIdStartPostBody $requestBody = null, string $fetch = self::FETCH_OBJECT, array $accept = [])
+    public function execStart(string $id, ?Model\ExecIdStartPostBody $requestBody = null, string $fetch = self::FETCH_OBJECT, array $accept = [])
     {
-        return $this->executeEndpoint(new \Docker\API\Endpoint\ExecStart($id, $requestBody, $accept), $fetch);
+        return $this->executeEndpoint(new Endpoint\ExecStart($id, $requestBody, $accept), $fetch);
     }
 
     /**
@@ -1414,15 +1414,15 @@ class Client extends \Docker\API\Runtime\Client\Client
      * @param string $fetch  Fetch mode to use (can be OBJECT or RESPONSE)
      * @param array  $accept Accept content header application/json|text/plain
      *
-     * @throws \Docker\API\Exception\ExecResizeBadRequestException
-     * @throws \Docker\API\Exception\ExecResizeNotFoundException
-     * @throws \Docker\API\Exception\ExecResizeInternalServerErrorException
+     * @throws Exception\ExecResizeBadRequestException
+     * @throws Exception\ExecResizeNotFoundException
+     * @throws Exception\ExecResizeInternalServerErrorException
      *
      * @return \Psr\Http\Message\ResponseInterface|null
      */
     public function execResize(string $id, array $queryParameters = [], string $fetch = self::FETCH_OBJECT, array $accept = [])
     {
-        return $this->executeEndpoint(new \Docker\API\Endpoint\ExecResize($id, $queryParameters, $accept), $fetch);
+        return $this->executeEndpoint(new Endpoint\ExecResize($id, $queryParameters, $accept), $fetch);
     }
 
     /**
@@ -1431,14 +1431,14 @@ class Client extends \Docker\API\Runtime\Client\Client
      * @param string $id    Exec instance ID
      * @param string $fetch Fetch mode to use (can be OBJECT or RESPONSE)
      *
-     * @throws \Docker\API\Exception\ExecInspectNotFoundException
-     * @throws \Docker\API\Exception\ExecInspectInternalServerErrorException
+     * @throws Exception\ExecInspectNotFoundException
+     * @throws Exception\ExecInspectInternalServerErrorException
      *
-     * @return \Docker\API\Model\ExecIdJsonGetResponse200|\Psr\Http\Message\ResponseInterface|null
+     * @return Model\ExecIdJsonGetResponse200|\Psr\Http\Message\ResponseInterface|null
      */
     public function execInspect(string $id, string $fetch = self::FETCH_OBJECT)
     {
-        return $this->executeEndpoint(new \Docker\API\Endpoint\ExecInspect($id), $fetch);
+        return $this->executeEndpoint(new Endpoint\ExecInspect($id), $fetch);
     }
 
     /**
@@ -1460,25 +1460,25 @@ class Client extends \Docker\API\Runtime\Client\Client
      *
      * @param string $fetch Fetch mode to use (can be OBJECT or RESPONSE)
      *
-     * @throws \Docker\API\Exception\VolumeListInternalServerErrorException
+     * @throws Exception\VolumeListInternalServerErrorException
      *
-     * @return \Docker\API\Model\VolumeListResponse|\Psr\Http\Message\ResponseInterface|null
+     * @return Model\VolumeListResponse|\Psr\Http\Message\ResponseInterface|null
      */
     public function volumeList(array $queryParameters = [], string $fetch = self::FETCH_OBJECT)
     {
-        return $this->executeEndpoint(new \Docker\API\Endpoint\VolumeList($queryParameters), $fetch);
+        return $this->executeEndpoint(new Endpoint\VolumeList($queryParameters), $fetch);
     }
 
     /**
      * @param string $fetch Fetch mode to use (can be OBJECT or RESPONSE)
      *
-     * @throws \Docker\API\Exception\VolumeCreateInternalServerErrorException
+     * @throws Exception\VolumeCreateInternalServerErrorException
      *
-     * @return \Docker\API\Model\Volume|\Psr\Http\Message\ResponseInterface|null
+     * @return Model\Volume|\Psr\Http\Message\ResponseInterface|null
      */
-    public function volumeCreate(Model\VolumeCreateOptions $requestBody = null, string $fetch = self::FETCH_OBJECT)
+    public function volumeCreate(?Model\VolumeCreateOptions $requestBody = null, string $fetch = self::FETCH_OBJECT)
     {
-        return $this->executeEndpoint(new \Docker\API\Endpoint\VolumeCreate($requestBody), $fetch);
+        return $this->executeEndpoint(new Endpoint\VolumeCreate($requestBody), $fetch);
     }
 
     /**
@@ -1493,29 +1493,29 @@ class Client extends \Docker\API\Runtime\Client\Client
      * @param string $fetch  Fetch mode to use (can be OBJECT or RESPONSE)
      * @param array  $accept Accept content header application/json|text/plain
      *
-     * @throws \Docker\API\Exception\VolumeDeleteNotFoundException
-     * @throws \Docker\API\Exception\VolumeDeleteConflictException
-     * @throws \Docker\API\Exception\VolumeDeleteInternalServerErrorException
+     * @throws Exception\VolumeDeleteNotFoundException
+     * @throws Exception\VolumeDeleteConflictException
+     * @throws Exception\VolumeDeleteInternalServerErrorException
      *
      * @return \Psr\Http\Message\ResponseInterface|null
      */
     public function volumeDelete(string $name, array $queryParameters = [], string $fetch = self::FETCH_OBJECT, array $accept = [])
     {
-        return $this->executeEndpoint(new \Docker\API\Endpoint\VolumeDelete($name, $queryParameters, $accept), $fetch);
+        return $this->executeEndpoint(new Endpoint\VolumeDelete($name, $queryParameters, $accept), $fetch);
     }
 
     /**
      * @param string $name  Volume name or ID
      * @param string $fetch Fetch mode to use (can be OBJECT or RESPONSE)
      *
-     * @throws \Docker\API\Exception\VolumeInspectNotFoundException
-     * @throws \Docker\API\Exception\VolumeInspectInternalServerErrorException
+     * @throws Exception\VolumeInspectNotFoundException
+     * @throws Exception\VolumeInspectInternalServerErrorException
      *
-     * @return \Docker\API\Model\Volume|\Psr\Http\Message\ResponseInterface|null
+     * @return Model\Volume|\Psr\Http\Message\ResponseInterface|null
      */
     public function volumeInspect(string $name, string $fetch = self::FETCH_OBJECT)
     {
-        return $this->executeEndpoint(new \Docker\API\Endpoint\VolumeInspect($name), $fetch);
+        return $this->executeEndpoint(new Endpoint\VolumeInspect($name), $fetch);
     }
 
     /**
@@ -1530,16 +1530,16 @@ class Client extends \Docker\API\Runtime\Client\Client
      *
      * @param string $fetch Fetch mode to use (can be OBJECT or RESPONSE)
      *
-     * @throws \Docker\API\Exception\VolumeUpdateBadRequestException
-     * @throws \Docker\API\Exception\VolumeUpdateNotFoundException
-     * @throws \Docker\API\Exception\VolumeUpdateInternalServerErrorException
-     * @throws \Docker\API\Exception\VolumeUpdateServiceUnavailableException
+     * @throws Exception\VolumeUpdateBadRequestException
+     * @throws Exception\VolumeUpdateNotFoundException
+     * @throws Exception\VolumeUpdateInternalServerErrorException
+     * @throws Exception\VolumeUpdateServiceUnavailableException
      *
      * @return \Psr\Http\Message\ResponseInterface|null
      */
-    public function volumeUpdate(string $name, Model\VolumesNamePutBody $requestBody = null, array $queryParameters = [], string $fetch = self::FETCH_OBJECT)
+    public function volumeUpdate(string $name, ?Model\VolumesNamePutBody $requestBody = null, array $queryParameters = [], string $fetch = self::FETCH_OBJECT)
     {
-        return $this->executeEndpoint(new \Docker\API\Endpoint\VolumeUpdate($name, $requestBody, $queryParameters), $fetch);
+        return $this->executeEndpoint(new Endpoint\VolumeUpdate($name, $requestBody, $queryParameters), $fetch);
     }
 
     /**
@@ -1555,13 +1555,13 @@ class Client extends \Docker\API\Runtime\Client\Client
      *
      * @param string $fetch Fetch mode to use (can be OBJECT or RESPONSE)
      *
-     * @throws \Docker\API\Exception\VolumePruneInternalServerErrorException
+     * @throws Exception\VolumePruneInternalServerErrorException
      *
-     * @return \Docker\API\Model\VolumesPrunePostResponse200|\Psr\Http\Message\ResponseInterface|null
+     * @return Model\VolumesPrunePostResponse200|\Psr\Http\Message\ResponseInterface|null
      */
     public function volumePrune(array $queryParameters = [], string $fetch = self::FETCH_OBJECT)
     {
-        return $this->executeEndpoint(new \Docker\API\Endpoint\VolumePrune($queryParameters), $fetch);
+        return $this->executeEndpoint(new Endpoint\VolumePrune($queryParameters), $fetch);
     }
 
     /**
@@ -1594,13 +1594,13 @@ class Client extends \Docker\API\Runtime\Client\Client
      *
      * @param string $fetch Fetch mode to use (can be OBJECT or RESPONSE)
      *
-     * @throws \Docker\API\Exception\NetworkListInternalServerErrorException
+     * @throws Exception\NetworkListInternalServerErrorException
      *
      * @return \Docker\API\Model\Network[]|\Psr\Http\Message\ResponseInterface|null
      */
     public function networkList(array $queryParameters = [], string $fetch = self::FETCH_OBJECT)
     {
-        return $this->executeEndpoint(new \Docker\API\Endpoint\NetworkList($queryParameters), $fetch);
+        return $this->executeEndpoint(new Endpoint\NetworkList($queryParameters), $fetch);
     }
 
     /**
@@ -1608,15 +1608,15 @@ class Client extends \Docker\API\Runtime\Client\Client
      * @param string $fetch  Fetch mode to use (can be OBJECT or RESPONSE)
      * @param array  $accept Accept content header application/json|text/plain
      *
-     * @throws \Docker\API\Exception\NetworkDeleteForbiddenException
-     * @throws \Docker\API\Exception\NetworkDeleteNotFoundException
-     * @throws \Docker\API\Exception\NetworkDeleteInternalServerErrorException
+     * @throws Exception\NetworkDeleteForbiddenException
+     * @throws Exception\NetworkDeleteNotFoundException
+     * @throws Exception\NetworkDeleteInternalServerErrorException
      *
      * @return \Psr\Http\Message\ResponseInterface|null
      */
     public function networkDelete(string $id, string $fetch = self::FETCH_OBJECT, array $accept = [])
     {
-        return $this->executeEndpoint(new \Docker\API\Endpoint\NetworkDelete($id, $accept), $fetch);
+        return $this->executeEndpoint(new Endpoint\NetworkDelete($id, $accept), $fetch);
     }
 
     /**
@@ -1629,28 +1629,28 @@ class Client extends \Docker\API\Runtime\Client\Client
      *
      * @param string $fetch Fetch mode to use (can be OBJECT or RESPONSE)
      *
-     * @throws \Docker\API\Exception\NetworkInspectNotFoundException
-     * @throws \Docker\API\Exception\NetworkInspectInternalServerErrorException
+     * @throws Exception\NetworkInspectNotFoundException
+     * @throws Exception\NetworkInspectInternalServerErrorException
      *
-     * @return \Docker\API\Model\Network|\Psr\Http\Message\ResponseInterface|null
+     * @return Model\Network|\Psr\Http\Message\ResponseInterface|null
      */
     public function networkInspect(string $id, array $queryParameters = [], string $fetch = self::FETCH_OBJECT)
     {
-        return $this->executeEndpoint(new \Docker\API\Endpoint\NetworkInspect($id, $queryParameters), $fetch);
+        return $this->executeEndpoint(new Endpoint\NetworkInspect($id, $queryParameters), $fetch);
     }
 
     /**
      * @param string $fetch Fetch mode to use (can be OBJECT or RESPONSE)
      *
-     * @throws \Docker\API\Exception\NetworkCreateForbiddenException
-     * @throws \Docker\API\Exception\NetworkCreateNotFoundException
-     * @throws \Docker\API\Exception\NetworkCreateInternalServerErrorException
+     * @throws Exception\NetworkCreateForbiddenException
+     * @throws Exception\NetworkCreateNotFoundException
+     * @throws Exception\NetworkCreateInternalServerErrorException
      *
-     * @return \Docker\API\Model\NetworksCreatePostResponse201|\Psr\Http\Message\ResponseInterface|null
+     * @return Model\NetworksCreatePostResponse201|\Psr\Http\Message\ResponseInterface|null
      */
-    public function networkCreate(Model\NetworksCreatePostBody $requestBody = null, string $fetch = self::FETCH_OBJECT)
+    public function networkCreate(?Model\NetworksCreatePostBody $requestBody = null, string $fetch = self::FETCH_OBJECT)
     {
-        return $this->executeEndpoint(new \Docker\API\Endpoint\NetworkCreate($requestBody), $fetch);
+        return $this->executeEndpoint(new Endpoint\NetworkCreate($requestBody), $fetch);
     }
 
     /**
@@ -1658,15 +1658,15 @@ class Client extends \Docker\API\Runtime\Client\Client
      * @param string $fetch  Fetch mode to use (can be OBJECT or RESPONSE)
      * @param array  $accept Accept content header application/json|text/plain
      *
-     * @throws \Docker\API\Exception\NetworkConnectForbiddenException
-     * @throws \Docker\API\Exception\NetworkConnectNotFoundException
-     * @throws \Docker\API\Exception\NetworkConnectInternalServerErrorException
+     * @throws Exception\NetworkConnectForbiddenException
+     * @throws Exception\NetworkConnectNotFoundException
+     * @throws Exception\NetworkConnectInternalServerErrorException
      *
      * @return \Psr\Http\Message\ResponseInterface|null
      */
-    public function networkConnect(string $id, Model\NetworksIdConnectPostBody $requestBody = null, string $fetch = self::FETCH_OBJECT, array $accept = [])
+    public function networkConnect(string $id, ?Model\NetworksIdConnectPostBody $requestBody = null, string $fetch = self::FETCH_OBJECT, array $accept = [])
     {
-        return $this->executeEndpoint(new \Docker\API\Endpoint\NetworkConnect($id, $requestBody, $accept), $fetch);
+        return $this->executeEndpoint(new Endpoint\NetworkConnect($id, $requestBody, $accept), $fetch);
     }
 
     /**
@@ -1674,15 +1674,15 @@ class Client extends \Docker\API\Runtime\Client\Client
      * @param string $fetch  Fetch mode to use (can be OBJECT or RESPONSE)
      * @param array  $accept Accept content header application/json|text/plain
      *
-     * @throws \Docker\API\Exception\NetworkDisconnectForbiddenException
-     * @throws \Docker\API\Exception\NetworkDisconnectNotFoundException
-     * @throws \Docker\API\Exception\NetworkDisconnectInternalServerErrorException
+     * @throws Exception\NetworkDisconnectForbiddenException
+     * @throws Exception\NetworkDisconnectNotFoundException
+     * @throws Exception\NetworkDisconnectInternalServerErrorException
      *
      * @return \Psr\Http\Message\ResponseInterface|null
      */
-    public function networkDisconnect(string $id, Model\NetworksIdDisconnectPostBody $requestBody = null, string $fetch = self::FETCH_OBJECT, array $accept = [])
+    public function networkDisconnect(string $id, ?Model\NetworksIdDisconnectPostBody $requestBody = null, string $fetch = self::FETCH_OBJECT, array $accept = [])
     {
-        return $this->executeEndpoint(new \Docker\API\Endpoint\NetworkDisconnect($id, $requestBody, $accept), $fetch);
+        return $this->executeEndpoint(new Endpoint\NetworkDisconnect($id, $requestBody, $accept), $fetch);
     }
 
     /**
@@ -1698,13 +1698,13 @@ class Client extends \Docker\API\Runtime\Client\Client
      *
      * @param string $fetch Fetch mode to use (can be OBJECT or RESPONSE)
      *
-     * @throws \Docker\API\Exception\NetworkPruneInternalServerErrorException
+     * @throws Exception\NetworkPruneInternalServerErrorException
      *
-     * @return \Docker\API\Model\NetworksPrunePostResponse200|\Psr\Http\Message\ResponseInterface|null
+     * @return Model\NetworksPrunePostResponse200|\Psr\Http\Message\ResponseInterface|null
      */
     public function networkPrune(array $queryParameters = [], string $fetch = self::FETCH_OBJECT)
     {
-        return $this->executeEndpoint(new \Docker\API\Endpoint\NetworkPrune($queryParameters), $fetch);
+        return $this->executeEndpoint(new Endpoint\NetworkPrune($queryParameters), $fetch);
     }
 
     /**
@@ -1724,13 +1724,13 @@ class Client extends \Docker\API\Runtime\Client\Client
      *
      * @param string $fetch Fetch mode to use (can be OBJECT or RESPONSE)
      *
-     * @throws \Docker\API\Exception\PluginListInternalServerErrorException
+     * @throws Exception\PluginListInternalServerErrorException
      *
      * @return \Docker\API\Model\Plugin[]|\Psr\Http\Message\ResponseInterface|null
      */
     public function pluginList(array $queryParameters = [], string $fetch = self::FETCH_OBJECT)
     {
-        return $this->executeEndpoint(new \Docker\API\Endpoint\PluginList($queryParameters), $fetch);
+        return $this->executeEndpoint(new Endpoint\PluginList($queryParameters), $fetch);
     }
 
     /**
@@ -1744,13 +1744,13 @@ class Client extends \Docker\API\Runtime\Client\Client
      * @param string $fetch  Fetch mode to use (can be OBJECT or RESPONSE)
      * @param array  $accept Accept content header application/json|text/plain
      *
-     * @throws \Docker\API\Exception\GetPluginPrivilegesInternalServerErrorException
+     * @throws Exception\GetPluginPrivilegesInternalServerErrorException
      *
      * @return \Docker\API\Model\PluginPrivilege[]|\Psr\Http\Message\ResponseInterface|null
      */
     public function getPluginPrivileges(array $queryParameters = [], string $fetch = self::FETCH_OBJECT, array $accept = [])
     {
-        return $this->executeEndpoint(new \Docker\API\Endpoint\GetPluginPrivileges($queryParameters, $accept), $fetch);
+        return $this->executeEndpoint(new Endpoint\GetPluginPrivileges($queryParameters, $accept), $fetch);
     }
 
     /**
@@ -1781,13 +1781,13 @@ class Client extends \Docker\API\Runtime\Client\Client
      *
      * @param string $fetch Fetch mode to use (can be OBJECT or RESPONSE)
      *
-     * @throws \Docker\API\Exception\PluginPullInternalServerErrorException
+     * @throws Exception\PluginPullInternalServerErrorException
      *
      * @return \Psr\Http\Message\ResponseInterface|null
      */
-    public function pluginPull(array $requestBody = null, array $queryParameters = [], array $headerParameters = [], string $fetch = self::FETCH_OBJECT)
+    public function pluginPull(?array $requestBody = null, array $queryParameters = [], array $headerParameters = [], string $fetch = self::FETCH_OBJECT)
     {
-        return $this->executeEndpoint(new \Docker\API\Endpoint\PluginPull($requestBody, $queryParameters, $headerParameters), $fetch);
+        return $this->executeEndpoint(new Endpoint\PluginPull($requestBody, $queryParameters, $headerParameters), $fetch);
     }
 
     /**
@@ -1796,14 +1796,14 @@ class Client extends \Docker\API\Runtime\Client\Client
      * @param string $fetch  Fetch mode to use (can be OBJECT or RESPONSE)
      * @param array  $accept Accept content header application/json|text/plain
      *
-     * @throws \Docker\API\Exception\PluginInspectNotFoundException
-     * @throws \Docker\API\Exception\PluginInspectInternalServerErrorException
+     * @throws Exception\PluginInspectNotFoundException
+     * @throws Exception\PluginInspectInternalServerErrorException
      *
-     * @return \Docker\API\Model\Plugin|\Psr\Http\Message\ResponseInterface|null
+     * @return Model\Plugin|\Psr\Http\Message\ResponseInterface|null
      */
     public function pluginInspect(string $name, string $fetch = self::FETCH_OBJECT, array $accept = [])
     {
-        return $this->executeEndpoint(new \Docker\API\Endpoint\PluginInspect($name, $accept), $fetch);
+        return $this->executeEndpoint(new Endpoint\PluginInspect($name, $accept), $fetch);
     }
 
     /**
@@ -1819,14 +1819,14 @@ class Client extends \Docker\API\Runtime\Client\Client
      * @param string $fetch  Fetch mode to use (can be OBJECT or RESPONSE)
      * @param array  $accept Accept content header application/json|text/plain
      *
-     * @throws \Docker\API\Exception\PluginDeleteNotFoundException
-     * @throws \Docker\API\Exception\PluginDeleteInternalServerErrorException
+     * @throws Exception\PluginDeleteNotFoundException
+     * @throws Exception\PluginDeleteInternalServerErrorException
      *
-     * @return \Docker\API\Model\Plugin|\Psr\Http\Message\ResponseInterface|null
+     * @return Model\Plugin|\Psr\Http\Message\ResponseInterface|null
      */
     public function pluginDelete(string $name, array $queryParameters = [], string $fetch = self::FETCH_OBJECT, array $accept = [])
     {
-        return $this->executeEndpoint(new \Docker\API\Endpoint\PluginDelete($name, $queryParameters, $accept), $fetch);
+        return $this->executeEndpoint(new Endpoint\PluginDelete($name, $queryParameters, $accept), $fetch);
     }
 
     /**
@@ -1840,14 +1840,14 @@ class Client extends \Docker\API\Runtime\Client\Client
      * @param string $fetch  Fetch mode to use (can be OBJECT or RESPONSE)
      * @param array  $accept Accept content header application/json|text/plain
      *
-     * @throws \Docker\API\Exception\PluginEnableNotFoundException
-     * @throws \Docker\API\Exception\PluginEnableInternalServerErrorException
+     * @throws Exception\PluginEnableNotFoundException
+     * @throws Exception\PluginEnableInternalServerErrorException
      *
      * @return \Psr\Http\Message\ResponseInterface|null
      */
     public function pluginEnable(string $name, array $queryParameters = [], string $fetch = self::FETCH_OBJECT, array $accept = [])
     {
-        return $this->executeEndpoint(new \Docker\API\Endpoint\PluginEnable($name, $queryParameters, $accept), $fetch);
+        return $this->executeEndpoint(new Endpoint\PluginEnable($name, $queryParameters, $accept), $fetch);
     }
 
     /**
@@ -1862,14 +1862,14 @@ class Client extends \Docker\API\Runtime\Client\Client
      * @param string $fetch  Fetch mode to use (can be OBJECT or RESPONSE)
      * @param array  $accept Accept content header application/json|text/plain
      *
-     * @throws \Docker\API\Exception\PluginDisableNotFoundException
-     * @throws \Docker\API\Exception\PluginDisableInternalServerErrorException
+     * @throws Exception\PluginDisableNotFoundException
+     * @throws Exception\PluginDisableInternalServerErrorException
      *
      * @return \Psr\Http\Message\ResponseInterface|null
      */
     public function pluginDisable(string $name, array $queryParameters = [], string $fetch = self::FETCH_OBJECT, array $accept = [])
     {
-        return $this->executeEndpoint(new \Docker\API\Endpoint\PluginDisable($name, $queryParameters, $accept), $fetch);
+        return $this->executeEndpoint(new Endpoint\PluginDisable($name, $queryParameters, $accept), $fetch);
     }
 
     /**
@@ -1897,14 +1897,14 @@ class Client extends \Docker\API\Runtime\Client\Client
      * @param string $fetch  Fetch mode to use (can be OBJECT or RESPONSE)
      * @param array  $accept Accept content header application/json|text/plain
      *
-     * @throws \Docker\API\Exception\PluginUpgradeNotFoundException
-     * @throws \Docker\API\Exception\PluginUpgradeInternalServerErrorException
+     * @throws Exception\PluginUpgradeNotFoundException
+     * @throws Exception\PluginUpgradeInternalServerErrorException
      *
      * @return \Psr\Http\Message\ResponseInterface|null
      */
-    public function pluginUpgrade(string $name, array $requestBody = null, array $queryParameters = [], array $headerParameters = [], string $fetch = self::FETCH_OBJECT, array $accept = [])
+    public function pluginUpgrade(string $name, ?array $requestBody = null, array $queryParameters = [], array $headerParameters = [], string $fetch = self::FETCH_OBJECT, array $accept = [])
     {
-        return $this->executeEndpoint(new \Docker\API\Endpoint\PluginUpgrade($name, $requestBody, $queryParameters, $headerParameters, $accept), $fetch);
+        return $this->executeEndpoint(new Endpoint\PluginUpgrade($name, $requestBody, $queryParameters, $headerParameters, $accept), $fetch);
     }
 
     /**
@@ -1919,13 +1919,13 @@ class Client extends \Docker\API\Runtime\Client\Client
      * @param string $fetch  Fetch mode to use (can be OBJECT or RESPONSE)
      * @param array  $accept Accept content header application/json|text/plain
      *
-     * @throws \Docker\API\Exception\PluginCreateInternalServerErrorException
+     * @throws Exception\PluginCreateInternalServerErrorException
      *
      * @return \Psr\Http\Message\ResponseInterface|null
      */
     public function pluginCreate($requestBody = null, array $queryParameters = [], string $fetch = self::FETCH_OBJECT, array $accept = [])
     {
-        return $this->executeEndpoint(new \Docker\API\Endpoint\PluginCreate($requestBody, $queryParameters, $accept), $fetch);
+        return $this->executeEndpoint(new Endpoint\PluginCreate($requestBody, $queryParameters, $accept), $fetch);
     }
 
     /**
@@ -1936,14 +1936,14 @@ class Client extends \Docker\API\Runtime\Client\Client
      * @param string $fetch  Fetch mode to use (can be OBJECT or RESPONSE)
      * @param array  $accept Accept content header application/json|text/plain
      *
-     * @throws \Docker\API\Exception\PluginPushNotFoundException
-     * @throws \Docker\API\Exception\PluginPushInternalServerErrorException
+     * @throws Exception\PluginPushNotFoundException
+     * @throws Exception\PluginPushInternalServerErrorException
      *
      * @return \Psr\Http\Message\ResponseInterface|null
      */
     public function pluginPush(string $name, string $fetch = self::FETCH_OBJECT, array $accept = [])
     {
-        return $this->executeEndpoint(new \Docker\API\Endpoint\PluginPush($name, $accept), $fetch);
+        return $this->executeEndpoint(new Endpoint\PluginPush($name, $accept), $fetch);
     }
 
     /**
@@ -1953,14 +1953,14 @@ class Client extends \Docker\API\Runtime\Client\Client
      * @param string       $fetch       Fetch mode to use (can be OBJECT or RESPONSE)
      * @param array        $accept      Accept content header application/json|text/plain
      *
-     * @throws \Docker\API\Exception\PluginSetNotFoundException
-     * @throws \Docker\API\Exception\PluginSetInternalServerErrorException
+     * @throws Exception\PluginSetNotFoundException
+     * @throws Exception\PluginSetInternalServerErrorException
      *
      * @return \Psr\Http\Message\ResponseInterface|null
      */
-    public function pluginSet(string $name, array $requestBody = null, string $fetch = self::FETCH_OBJECT, array $accept = [])
+    public function pluginSet(string $name, ?array $requestBody = null, string $fetch = self::FETCH_OBJECT, array $accept = [])
     {
-        return $this->executeEndpoint(new \Docker\API\Endpoint\PluginSet($name, $requestBody, $accept), $fetch);
+        return $this->executeEndpoint(new Endpoint\PluginSet($name, $requestBody, $accept), $fetch);
     }
 
     /**
@@ -1981,14 +1981,14 @@ class Client extends \Docker\API\Runtime\Client\Client
      * @param string $fetch  Fetch mode to use (can be OBJECT or RESPONSE)
      * @param array  $accept Accept content header application/json|text/plain
      *
-     * @throws \Docker\API\Exception\NodeListInternalServerErrorException
-     * @throws \Docker\API\Exception\NodeListServiceUnavailableException
+     * @throws Exception\NodeListInternalServerErrorException
+     * @throws Exception\NodeListServiceUnavailableException
      *
      * @return \Docker\API\Model\Node[]|\Psr\Http\Message\ResponseInterface|null
      */
     public function nodeList(array $queryParameters = [], string $fetch = self::FETCH_OBJECT, array $accept = [])
     {
-        return $this->executeEndpoint(new \Docker\API\Endpoint\NodeList($queryParameters, $accept), $fetch);
+        return $this->executeEndpoint(new Endpoint\NodeList($queryParameters, $accept), $fetch);
     }
 
     /**
@@ -2001,15 +2001,15 @@ class Client extends \Docker\API\Runtime\Client\Client
      * @param string $fetch  Fetch mode to use (can be OBJECT or RESPONSE)
      * @param array  $accept Accept content header application/json|text/plain
      *
-     * @throws \Docker\API\Exception\NodeDeleteNotFoundException
-     * @throws \Docker\API\Exception\NodeDeleteInternalServerErrorException
-     * @throws \Docker\API\Exception\NodeDeleteServiceUnavailableException
+     * @throws Exception\NodeDeleteNotFoundException
+     * @throws Exception\NodeDeleteInternalServerErrorException
+     * @throws Exception\NodeDeleteServiceUnavailableException
      *
      * @return \Psr\Http\Message\ResponseInterface|null
      */
     public function nodeDelete(string $id, array $queryParameters = [], string $fetch = self::FETCH_OBJECT, array $accept = [])
     {
-        return $this->executeEndpoint(new \Docker\API\Endpoint\NodeDelete($id, $queryParameters, $accept), $fetch);
+        return $this->executeEndpoint(new Endpoint\NodeDelete($id, $queryParameters, $accept), $fetch);
     }
 
     /**
@@ -2017,15 +2017,15 @@ class Client extends \Docker\API\Runtime\Client\Client
      * @param string $fetch  Fetch mode to use (can be OBJECT or RESPONSE)
      * @param array  $accept Accept content header application/json|text/plain
      *
-     * @throws \Docker\API\Exception\NodeInspectNotFoundException
-     * @throws \Docker\API\Exception\NodeInspectInternalServerErrorException
-     * @throws \Docker\API\Exception\NodeInspectServiceUnavailableException
+     * @throws Exception\NodeInspectNotFoundException
+     * @throws Exception\NodeInspectInternalServerErrorException
+     * @throws Exception\NodeInspectServiceUnavailableException
      *
-     * @return \Docker\API\Model\Node|\Psr\Http\Message\ResponseInterface|null
+     * @return Model\Node|\Psr\Http\Message\ResponseInterface|null
      */
     public function nodeInspect(string $id, string $fetch = self::FETCH_OBJECT, array $accept = [])
     {
-        return $this->executeEndpoint(new \Docker\API\Endpoint\NodeInspect($id, $accept), $fetch);
+        return $this->executeEndpoint(new Endpoint\NodeInspect($id, $accept), $fetch);
     }
 
     /**
@@ -2040,61 +2040,61 @@ class Client extends \Docker\API\Runtime\Client\Client
      * @param string $fetch  Fetch mode to use (can be OBJECT or RESPONSE)
      * @param array  $accept Accept content header application/json|text/plain
      *
-     * @throws \Docker\API\Exception\NodeUpdateBadRequestException
-     * @throws \Docker\API\Exception\NodeUpdateNotFoundException
-     * @throws \Docker\API\Exception\NodeUpdateInternalServerErrorException
-     * @throws \Docker\API\Exception\NodeUpdateServiceUnavailableException
+     * @throws Exception\NodeUpdateBadRequestException
+     * @throws Exception\NodeUpdateNotFoundException
+     * @throws Exception\NodeUpdateInternalServerErrorException
+     * @throws Exception\NodeUpdateServiceUnavailableException
      *
      * @return \Psr\Http\Message\ResponseInterface|null
      */
-    public function nodeUpdate(string $id, Model\NodeSpec $requestBody = null, array $queryParameters = [], string $fetch = self::FETCH_OBJECT, array $accept = [])
+    public function nodeUpdate(string $id, ?Model\NodeSpec $requestBody = null, array $queryParameters = [], string $fetch = self::FETCH_OBJECT, array $accept = [])
     {
-        return $this->executeEndpoint(new \Docker\API\Endpoint\NodeUpdate($id, $requestBody, $queryParameters, $accept), $fetch);
+        return $this->executeEndpoint(new Endpoint\NodeUpdate($id, $requestBody, $queryParameters, $accept), $fetch);
     }
 
     /**
      * @param string $fetch  Fetch mode to use (can be OBJECT or RESPONSE)
      * @param array  $accept Accept content header application/json|text/plain
      *
-     * @throws \Docker\API\Exception\SwarmInspectNotFoundException
-     * @throws \Docker\API\Exception\SwarmInspectInternalServerErrorException
-     * @throws \Docker\API\Exception\SwarmInspectServiceUnavailableException
+     * @throws Exception\SwarmInspectNotFoundException
+     * @throws Exception\SwarmInspectInternalServerErrorException
+     * @throws Exception\SwarmInspectServiceUnavailableException
      *
-     * @return \Docker\API\Model\Swarm|\Psr\Http\Message\ResponseInterface|null
+     * @return Model\Swarm|\Psr\Http\Message\ResponseInterface|null
      */
     public function swarmInspect(string $fetch = self::FETCH_OBJECT, array $accept = [])
     {
-        return $this->executeEndpoint(new \Docker\API\Endpoint\SwarmInspect($accept), $fetch);
+        return $this->executeEndpoint(new Endpoint\SwarmInspect($accept), $fetch);
     }
 
     /**
      * @param string $fetch  Fetch mode to use (can be OBJECT or RESPONSE)
      * @param array  $accept Accept content header application/json|text/plain
      *
-     * @throws \Docker\API\Exception\SwarmInitBadRequestException
-     * @throws \Docker\API\Exception\SwarmInitInternalServerErrorException
-     * @throws \Docker\API\Exception\SwarmInitServiceUnavailableException
+     * @throws Exception\SwarmInitBadRequestException
+     * @throws Exception\SwarmInitInternalServerErrorException
+     * @throws Exception\SwarmInitServiceUnavailableException
      *
      * @return \Psr\Http\Message\ResponseInterface|null
      */
-    public function swarmInit(Model\SwarmInitPostBody $requestBody = null, string $fetch = self::FETCH_OBJECT, array $accept = [])
+    public function swarmInit(?Model\SwarmInitPostBody $requestBody = null, string $fetch = self::FETCH_OBJECT, array $accept = [])
     {
-        return $this->executeEndpoint(new \Docker\API\Endpoint\SwarmInit($requestBody, $accept), $fetch);
+        return $this->executeEndpoint(new Endpoint\SwarmInit($requestBody, $accept), $fetch);
     }
 
     /**
      * @param string $fetch  Fetch mode to use (can be OBJECT or RESPONSE)
      * @param array  $accept Accept content header application/json|text/plain
      *
-     * @throws \Docker\API\Exception\SwarmJoinBadRequestException
-     * @throws \Docker\API\Exception\SwarmJoinInternalServerErrorException
-     * @throws \Docker\API\Exception\SwarmJoinServiceUnavailableException
+     * @throws Exception\SwarmJoinBadRequestException
+     * @throws Exception\SwarmJoinInternalServerErrorException
+     * @throws Exception\SwarmJoinServiceUnavailableException
      *
      * @return \Psr\Http\Message\ResponseInterface|null
      */
-    public function swarmJoin(Model\SwarmJoinPostBody $requestBody = null, string $fetch = self::FETCH_OBJECT, array $accept = [])
+    public function swarmJoin(?Model\SwarmJoinPostBody $requestBody = null, string $fetch = self::FETCH_OBJECT, array $accept = [])
     {
-        return $this->executeEndpoint(new \Docker\API\Endpoint\SwarmJoin($requestBody, $accept), $fetch);
+        return $this->executeEndpoint(new Endpoint\SwarmJoin($requestBody, $accept), $fetch);
     }
 
     /**
@@ -2108,14 +2108,14 @@ class Client extends \Docker\API\Runtime\Client\Client
      * @param string $fetch  Fetch mode to use (can be OBJECT or RESPONSE)
      * @param array  $accept Accept content header application/json|text/plain
      *
-     * @throws \Docker\API\Exception\SwarmLeaveInternalServerErrorException
-     * @throws \Docker\API\Exception\SwarmLeaveServiceUnavailableException
+     * @throws Exception\SwarmLeaveInternalServerErrorException
+     * @throws Exception\SwarmLeaveServiceUnavailableException
      *
      * @return \Psr\Http\Message\ResponseInterface|null
      */
     public function swarmLeave(array $queryParameters = [], string $fetch = self::FETCH_OBJECT, array $accept = [])
     {
-        return $this->executeEndpoint(new \Docker\API\Endpoint\SwarmLeave($queryParameters, $accept), $fetch);
+        return $this->executeEndpoint(new Endpoint\SwarmLeave($queryParameters, $accept), $fetch);
     }
 
     /**
@@ -2131,42 +2131,42 @@ class Client extends \Docker\API\Runtime\Client\Client
      * @param string $fetch  Fetch mode to use (can be OBJECT or RESPONSE)
      * @param array  $accept Accept content header application/json|text/plain
      *
-     * @throws \Docker\API\Exception\SwarmUpdateBadRequestException
-     * @throws \Docker\API\Exception\SwarmUpdateInternalServerErrorException
-     * @throws \Docker\API\Exception\SwarmUpdateServiceUnavailableException
+     * @throws Exception\SwarmUpdateBadRequestException
+     * @throws Exception\SwarmUpdateInternalServerErrorException
+     * @throws Exception\SwarmUpdateServiceUnavailableException
      *
      * @return \Psr\Http\Message\ResponseInterface|null
      */
-    public function swarmUpdate(Model\SwarmSpec $requestBody = null, array $queryParameters = [], string $fetch = self::FETCH_OBJECT, array $accept = [])
+    public function swarmUpdate(?Model\SwarmSpec $requestBody = null, array $queryParameters = [], string $fetch = self::FETCH_OBJECT, array $accept = [])
     {
-        return $this->executeEndpoint(new \Docker\API\Endpoint\SwarmUpdate($requestBody, $queryParameters, $accept), $fetch);
+        return $this->executeEndpoint(new Endpoint\SwarmUpdate($requestBody, $queryParameters, $accept), $fetch);
     }
 
     /**
      * @param string $fetch  Fetch mode to use (can be OBJECT or RESPONSE)
      * @param array  $accept Accept content header application/json|text/plain
      *
-     * @throws \Docker\API\Exception\SwarmUnlockkeyInternalServerErrorException
-     * @throws \Docker\API\Exception\SwarmUnlockkeyServiceUnavailableException
+     * @throws Exception\SwarmUnlockkeyInternalServerErrorException
+     * @throws Exception\SwarmUnlockkeyServiceUnavailableException
      *
-     * @return \Docker\API\Model\SwarmUnlockkeyGetJsonResponse200|\Psr\Http\Message\ResponseInterface|null
+     * @return Model\SwarmUnlockkeyGetJsonResponse200|\Psr\Http\Message\ResponseInterface|null
      */
     public function swarmUnlockkey(string $fetch = self::FETCH_OBJECT, array $accept = [])
     {
-        return $this->executeEndpoint(new \Docker\API\Endpoint\SwarmUnlockkey($accept), $fetch);
+        return $this->executeEndpoint(new Endpoint\SwarmUnlockkey($accept), $fetch);
     }
 
     /**
      * @param string $fetch Fetch mode to use (can be OBJECT or RESPONSE)
      *
-     * @throws \Docker\API\Exception\SwarmUnlockInternalServerErrorException
-     * @throws \Docker\API\Exception\SwarmUnlockServiceUnavailableException
+     * @throws Exception\SwarmUnlockInternalServerErrorException
+     * @throws Exception\SwarmUnlockServiceUnavailableException
      *
      * @return \Psr\Http\Message\ResponseInterface|null
      */
-    public function swarmUnlock(Model\SwarmUnlockPostBody $requestBody = null, string $fetch = self::FETCH_OBJECT)
+    public function swarmUnlock(?Model\SwarmUnlockPostBody $requestBody = null, string $fetch = self::FETCH_OBJECT)
     {
-        return $this->executeEndpoint(new \Docker\API\Endpoint\SwarmUnlock($requestBody), $fetch);
+        return $this->executeEndpoint(new Endpoint\SwarmUnlock($requestBody), $fetch);
     }
 
     /**
@@ -2188,14 +2188,14 @@ class Client extends \Docker\API\Runtime\Client\Client
      * @param string $fetch  Fetch mode to use (can be OBJECT or RESPONSE)
      * @param array  $accept Accept content header application/json|text/plain
      *
-     * @throws \Docker\API\Exception\ServiceListInternalServerErrorException
-     * @throws \Docker\API\Exception\ServiceListServiceUnavailableException
+     * @throws Exception\ServiceListInternalServerErrorException
+     * @throws Exception\ServiceListServiceUnavailableException
      *
      * @return \Docker\API\Model\Service[]|\Psr\Http\Message\ResponseInterface|null
      */
     public function serviceList(array $queryParameters = [], string $fetch = self::FETCH_OBJECT, array $accept = [])
     {
-        return $this->executeEndpoint(new \Docker\API\Endpoint\ServiceList($queryParameters, $accept), $fetch);
+        return $this->executeEndpoint(new Endpoint\ServiceList($queryParameters, $accept), $fetch);
     }
 
     /**
@@ -2211,17 +2211,17 @@ class Client extends \Docker\API\Runtime\Client\Client
      *
      * @param string $fetch Fetch mode to use (can be OBJECT or RESPONSE)
      *
-     * @throws \Docker\API\Exception\ServiceCreateBadRequestException
-     * @throws \Docker\API\Exception\ServiceCreateForbiddenException
-     * @throws \Docker\API\Exception\ServiceCreateConflictException
-     * @throws \Docker\API\Exception\ServiceCreateInternalServerErrorException
-     * @throws \Docker\API\Exception\ServiceCreateServiceUnavailableException
+     * @throws Exception\ServiceCreateBadRequestException
+     * @throws Exception\ServiceCreateForbiddenException
+     * @throws Exception\ServiceCreateConflictException
+     * @throws Exception\ServiceCreateInternalServerErrorException
+     * @throws Exception\ServiceCreateServiceUnavailableException
      *
-     * @return \Docker\API\Model\ServicesCreatePostResponse201|\Psr\Http\Message\ResponseInterface|null
+     * @return Model\ServicesCreatePostResponse201|\Psr\Http\Message\ResponseInterface|null
      */
-    public function serviceCreate(Model\ServicesCreatePostBody $requestBody = null, array $headerParameters = [], string $fetch = self::FETCH_OBJECT)
+    public function serviceCreate(?Model\ServicesCreatePostBody $requestBody = null, array $headerParameters = [], string $fetch = self::FETCH_OBJECT)
     {
-        return $this->executeEndpoint(new \Docker\API\Endpoint\ServiceCreate($requestBody, $headerParameters), $fetch);
+        return $this->executeEndpoint(new Endpoint\ServiceCreate($requestBody, $headerParameters), $fetch);
     }
 
     /**
@@ -2229,15 +2229,15 @@ class Client extends \Docker\API\Runtime\Client\Client
      * @param string $fetch  Fetch mode to use (can be OBJECT or RESPONSE)
      * @param array  $accept Accept content header application/json|text/plain
      *
-     * @throws \Docker\API\Exception\ServiceDeleteNotFoundException
-     * @throws \Docker\API\Exception\ServiceDeleteInternalServerErrorException
-     * @throws \Docker\API\Exception\ServiceDeleteServiceUnavailableException
+     * @throws Exception\ServiceDeleteNotFoundException
+     * @throws Exception\ServiceDeleteInternalServerErrorException
+     * @throws Exception\ServiceDeleteServiceUnavailableException
      *
      * @return \Psr\Http\Message\ResponseInterface|null
      */
     public function serviceDelete(string $id, string $fetch = self::FETCH_OBJECT, array $accept = [])
     {
-        return $this->executeEndpoint(new \Docker\API\Endpoint\ServiceDelete($id, $accept), $fetch);
+        return $this->executeEndpoint(new Endpoint\ServiceDelete($id, $accept), $fetch);
     }
 
     /**
@@ -2250,15 +2250,15 @@ class Client extends \Docker\API\Runtime\Client\Client
      * @param string $fetch  Fetch mode to use (can be OBJECT or RESPONSE)
      * @param array  $accept Accept content header application/json|text/plain
      *
-     * @throws \Docker\API\Exception\ServiceInspectNotFoundException
-     * @throws \Docker\API\Exception\ServiceInspectInternalServerErrorException
-     * @throws \Docker\API\Exception\ServiceInspectServiceUnavailableException
+     * @throws Exception\ServiceInspectNotFoundException
+     * @throws Exception\ServiceInspectInternalServerErrorException
+     * @throws Exception\ServiceInspectServiceUnavailableException
      *
-     * @return \Docker\API\Model\Service|\Psr\Http\Message\ResponseInterface|null
+     * @return Model\Service|\Psr\Http\Message\ResponseInterface|null
      */
     public function serviceInspect(string $id, array $queryParameters = [], string $fetch = self::FETCH_OBJECT, array $accept = [])
     {
-        return $this->executeEndpoint(new \Docker\API\Endpoint\ServiceInspect($id, $queryParameters, $accept), $fetch);
+        return $this->executeEndpoint(new Endpoint\ServiceInspect($id, $queryParameters, $accept), $fetch);
     }
 
     /**
@@ -2290,16 +2290,16 @@ class Client extends \Docker\API\Runtime\Client\Client
      *
      * @param string $fetch Fetch mode to use (can be OBJECT or RESPONSE)
      *
-     * @throws \Docker\API\Exception\ServiceUpdateBadRequestException
-     * @throws \Docker\API\Exception\ServiceUpdateNotFoundException
-     * @throws \Docker\API\Exception\ServiceUpdateInternalServerErrorException
-     * @throws \Docker\API\Exception\ServiceUpdateServiceUnavailableException
+     * @throws Exception\ServiceUpdateBadRequestException
+     * @throws Exception\ServiceUpdateNotFoundException
+     * @throws Exception\ServiceUpdateInternalServerErrorException
+     * @throws Exception\ServiceUpdateServiceUnavailableException
      *
-     * @return \Docker\API\Model\ServiceUpdateResponse|\Psr\Http\Message\ResponseInterface|null
+     * @return Model\ServiceUpdateResponse|\Psr\Http\Message\ResponseInterface|null
      */
-    public function serviceUpdate(string $id, Model\ServicesIdUpdatePostBody $requestBody = null, array $queryParameters = [], array $headerParameters = [], string $fetch = self::FETCH_OBJECT)
+    public function serviceUpdate(string $id, ?Model\ServicesIdUpdatePostBody $requestBody = null, array $queryParameters = [], array $headerParameters = [], string $fetch = self::FETCH_OBJECT)
     {
-        return $this->executeEndpoint(new \Docker\API\Endpoint\ServiceUpdate($id, $requestBody, $queryParameters, $headerParameters), $fetch);
+        return $this->executeEndpoint(new Endpoint\ServiceUpdate($id, $requestBody, $queryParameters, $headerParameters), $fetch);
     }
 
     /**
@@ -2326,13 +2326,13 @@ class Client extends \Docker\API\Runtime\Client\Client
      * @param string $fetch  Fetch mode to use (can be OBJECT or RESPONSE)
      * @param array  $accept Accept content header application/vnd.docker.raw-stream|application/vnd.docker.multiplexed-stream|application/json
      *
-     * @throws \Docker\API\Exception\ServiceLogsNotFoundException
+     * @throws Exception\ServiceLogsNotFoundException
      *
      * @return \Psr\Http\Message\ResponseInterface|null
      */
     public function serviceLogs(string $id, array $queryParameters = [], string $fetch = self::FETCH_OBJECT, array $accept = [])
     {
-        return $this->executeEndpoint(new \Docker\API\Endpoint\ServiceLogs($id, $queryParameters, $accept), $fetch);
+        return $this->executeEndpoint(new Endpoint\ServiceLogs($id, $queryParameters, $accept), $fetch);
     }
 
     /**
@@ -2354,29 +2354,29 @@ class Client extends \Docker\API\Runtime\Client\Client
      *
      * @param string $fetch Fetch mode to use (can be OBJECT or RESPONSE)
      *
-     * @throws \Docker\API\Exception\TaskListInternalServerErrorException
-     * @throws \Docker\API\Exception\TaskListServiceUnavailableException
+     * @throws Exception\TaskListInternalServerErrorException
+     * @throws Exception\TaskListServiceUnavailableException
      *
      * @return \Docker\API\Model\Task[]|\Psr\Http\Message\ResponseInterface|null
      */
     public function taskList(array $queryParameters = [], string $fetch = self::FETCH_OBJECT)
     {
-        return $this->executeEndpoint(new \Docker\API\Endpoint\TaskList($queryParameters), $fetch);
+        return $this->executeEndpoint(new Endpoint\TaskList($queryParameters), $fetch);
     }
 
     /**
      * @param string $id    ID of the task
      * @param string $fetch Fetch mode to use (can be OBJECT or RESPONSE)
      *
-     * @throws \Docker\API\Exception\TaskInspectNotFoundException
-     * @throws \Docker\API\Exception\TaskInspectInternalServerErrorException
-     * @throws \Docker\API\Exception\TaskInspectServiceUnavailableException
+     * @throws Exception\TaskInspectNotFoundException
+     * @throws Exception\TaskInspectInternalServerErrorException
+     * @throws Exception\TaskInspectServiceUnavailableException
      *
-     * @return \Docker\API\Model\Task|\Psr\Http\Message\ResponseInterface|null
+     * @return Model\Task|\Psr\Http\Message\ResponseInterface|null
      */
     public function taskInspect(string $id, string $fetch = self::FETCH_OBJECT)
     {
-        return $this->executeEndpoint(new \Docker\API\Endpoint\TaskInspect($id), $fetch);
+        return $this->executeEndpoint(new Endpoint\TaskInspect($id), $fetch);
     }
 
     /**
@@ -2403,13 +2403,13 @@ class Client extends \Docker\API\Runtime\Client\Client
      * @param string $fetch  Fetch mode to use (can be OBJECT or RESPONSE)
      * @param array  $accept Accept content header application/vnd.docker.raw-stream|application/vnd.docker.multiplexed-stream|application/json
      *
-     * @throws \Docker\API\Exception\TaskLogsNotFoundException
+     * @throws Exception\TaskLogsNotFoundException
      *
      * @return \Psr\Http\Message\ResponseInterface|null
      */
     public function taskLogs(string $id, array $queryParameters = [], string $fetch = self::FETCH_OBJECT, array $accept = [])
     {
-        return $this->executeEndpoint(new \Docker\API\Endpoint\TaskLogs($id, $queryParameters, $accept), $fetch);
+        return $this->executeEndpoint(new Endpoint\TaskLogs($id, $queryParameters, $accept), $fetch);
     }
 
     /**
@@ -2429,58 +2429,58 @@ class Client extends \Docker\API\Runtime\Client\Client
      *
      * @param string $fetch Fetch mode to use (can be OBJECT or RESPONSE)
      *
-     * @throws \Docker\API\Exception\SecretListInternalServerErrorException
-     * @throws \Docker\API\Exception\SecretListServiceUnavailableException
+     * @throws Exception\SecretListInternalServerErrorException
+     * @throws Exception\SecretListServiceUnavailableException
      *
      * @return \Docker\API\Model\Secret[]|\Psr\Http\Message\ResponseInterface|null
      */
     public function secretList(array $queryParameters = [], string $fetch = self::FETCH_OBJECT)
     {
-        return $this->executeEndpoint(new \Docker\API\Endpoint\SecretList($queryParameters), $fetch);
+        return $this->executeEndpoint(new Endpoint\SecretList($queryParameters), $fetch);
     }
 
     /**
      * @param string $fetch Fetch mode to use (can be OBJECT or RESPONSE)
      *
-     * @throws \Docker\API\Exception\SecretCreateConflictException
-     * @throws \Docker\API\Exception\SecretCreateInternalServerErrorException
-     * @throws \Docker\API\Exception\SecretCreateServiceUnavailableException
+     * @throws Exception\SecretCreateConflictException
+     * @throws Exception\SecretCreateInternalServerErrorException
+     * @throws Exception\SecretCreateServiceUnavailableException
      *
-     * @return \Docker\API\Model\IdResponse|\Psr\Http\Message\ResponseInterface|null
+     * @return Model\IdResponse|\Psr\Http\Message\ResponseInterface|null
      */
-    public function secretCreate(Model\SecretsCreatePostBody $requestBody = null, string $fetch = self::FETCH_OBJECT)
+    public function secretCreate(?Model\SecretsCreatePostBody $requestBody = null, string $fetch = self::FETCH_OBJECT)
     {
-        return $this->executeEndpoint(new \Docker\API\Endpoint\SecretCreate($requestBody), $fetch);
+        return $this->executeEndpoint(new Endpoint\SecretCreate($requestBody), $fetch);
     }
 
     /**
      * @param string $id    ID of the secret
      * @param string $fetch Fetch mode to use (can be OBJECT or RESPONSE)
      *
-     * @throws \Docker\API\Exception\SecretDeleteNotFoundException
-     * @throws \Docker\API\Exception\SecretDeleteInternalServerErrorException
-     * @throws \Docker\API\Exception\SecretDeleteServiceUnavailableException
+     * @throws Exception\SecretDeleteNotFoundException
+     * @throws Exception\SecretDeleteInternalServerErrorException
+     * @throws Exception\SecretDeleteServiceUnavailableException
      *
      * @return \Psr\Http\Message\ResponseInterface|null
      */
     public function secretDelete(string $id, string $fetch = self::FETCH_OBJECT)
     {
-        return $this->executeEndpoint(new \Docker\API\Endpoint\SecretDelete($id), $fetch);
+        return $this->executeEndpoint(new Endpoint\SecretDelete($id), $fetch);
     }
 
     /**
      * @param string $id    ID of the secret
      * @param string $fetch Fetch mode to use (can be OBJECT or RESPONSE)
      *
-     * @throws \Docker\API\Exception\SecretInspectNotFoundException
-     * @throws \Docker\API\Exception\SecretInspectInternalServerErrorException
-     * @throws \Docker\API\Exception\SecretInspectServiceUnavailableException
+     * @throws Exception\SecretInspectNotFoundException
+     * @throws Exception\SecretInspectInternalServerErrorException
+     * @throws Exception\SecretInspectServiceUnavailableException
      *
-     * @return \Docker\API\Model\Secret|\Psr\Http\Message\ResponseInterface|null
+     * @return Model\Secret|\Psr\Http\Message\ResponseInterface|null
      */
     public function secretInspect(string $id, string $fetch = self::FETCH_OBJECT)
     {
-        return $this->executeEndpoint(new \Docker\API\Endpoint\SecretInspect($id), $fetch);
+        return $this->executeEndpoint(new Endpoint\SecretInspect($id), $fetch);
     }
 
     /**
@@ -2495,16 +2495,16 @@ class Client extends \Docker\API\Runtime\Client\Client
      * @param string $fetch  Fetch mode to use (can be OBJECT or RESPONSE)
      * @param array  $accept Accept content header application/json|text/plain
      *
-     * @throws \Docker\API\Exception\SecretUpdateBadRequestException
-     * @throws \Docker\API\Exception\SecretUpdateNotFoundException
-     * @throws \Docker\API\Exception\SecretUpdateInternalServerErrorException
-     * @throws \Docker\API\Exception\SecretUpdateServiceUnavailableException
+     * @throws Exception\SecretUpdateBadRequestException
+     * @throws Exception\SecretUpdateNotFoundException
+     * @throws Exception\SecretUpdateInternalServerErrorException
+     * @throws Exception\SecretUpdateServiceUnavailableException
      *
      * @return \Psr\Http\Message\ResponseInterface|null
      */
-    public function secretUpdate(string $id, Model\SecretSpec $requestBody = null, array $queryParameters = [], string $fetch = self::FETCH_OBJECT, array $accept = [])
+    public function secretUpdate(string $id, ?Model\SecretSpec $requestBody = null, array $queryParameters = [], string $fetch = self::FETCH_OBJECT, array $accept = [])
     {
-        return $this->executeEndpoint(new \Docker\API\Endpoint\SecretUpdate($id, $requestBody, $queryParameters, $accept), $fetch);
+        return $this->executeEndpoint(new Endpoint\SecretUpdate($id, $requestBody, $queryParameters, $accept), $fetch);
     }
 
     /**
@@ -2524,58 +2524,58 @@ class Client extends \Docker\API\Runtime\Client\Client
      *
      * @param string $fetch Fetch mode to use (can be OBJECT or RESPONSE)
      *
-     * @throws \Docker\API\Exception\ConfigListInternalServerErrorException
-     * @throws \Docker\API\Exception\ConfigListServiceUnavailableException
+     * @throws Exception\ConfigListInternalServerErrorException
+     * @throws Exception\ConfigListServiceUnavailableException
      *
      * @return \Docker\API\Model\Config[]|\Psr\Http\Message\ResponseInterface|null
      */
     public function configList(array $queryParameters = [], string $fetch = self::FETCH_OBJECT)
     {
-        return $this->executeEndpoint(new \Docker\API\Endpoint\ConfigList($queryParameters), $fetch);
+        return $this->executeEndpoint(new Endpoint\ConfigList($queryParameters), $fetch);
     }
 
     /**
      * @param string $fetch Fetch mode to use (can be OBJECT or RESPONSE)
      *
-     * @throws \Docker\API\Exception\ConfigCreateConflictException
-     * @throws \Docker\API\Exception\ConfigCreateInternalServerErrorException
-     * @throws \Docker\API\Exception\ConfigCreateServiceUnavailableException
+     * @throws Exception\ConfigCreateConflictException
+     * @throws Exception\ConfigCreateInternalServerErrorException
+     * @throws Exception\ConfigCreateServiceUnavailableException
      *
-     * @return \Docker\API\Model\IdResponse|\Psr\Http\Message\ResponseInterface|null
+     * @return Model\IdResponse|\Psr\Http\Message\ResponseInterface|null
      */
-    public function configCreate(Model\ConfigsCreatePostBody $requestBody = null, string $fetch = self::FETCH_OBJECT)
+    public function configCreate(?Model\ConfigsCreatePostBody $requestBody = null, string $fetch = self::FETCH_OBJECT)
     {
-        return $this->executeEndpoint(new \Docker\API\Endpoint\ConfigCreate($requestBody), $fetch);
+        return $this->executeEndpoint(new Endpoint\ConfigCreate($requestBody), $fetch);
     }
 
     /**
      * @param string $id    ID of the config
      * @param string $fetch Fetch mode to use (can be OBJECT or RESPONSE)
      *
-     * @throws \Docker\API\Exception\ConfigDeleteNotFoundException
-     * @throws \Docker\API\Exception\ConfigDeleteInternalServerErrorException
-     * @throws \Docker\API\Exception\ConfigDeleteServiceUnavailableException
+     * @throws Exception\ConfigDeleteNotFoundException
+     * @throws Exception\ConfigDeleteInternalServerErrorException
+     * @throws Exception\ConfigDeleteServiceUnavailableException
      *
      * @return \Psr\Http\Message\ResponseInterface|null
      */
     public function configDelete(string $id, string $fetch = self::FETCH_OBJECT)
     {
-        return $this->executeEndpoint(new \Docker\API\Endpoint\ConfigDelete($id), $fetch);
+        return $this->executeEndpoint(new Endpoint\ConfigDelete($id), $fetch);
     }
 
     /**
      * @param string $id    ID of the config
      * @param string $fetch Fetch mode to use (can be OBJECT or RESPONSE)
      *
-     * @throws \Docker\API\Exception\ConfigInspectNotFoundException
-     * @throws \Docker\API\Exception\ConfigInspectInternalServerErrorException
-     * @throws \Docker\API\Exception\ConfigInspectServiceUnavailableException
+     * @throws Exception\ConfigInspectNotFoundException
+     * @throws Exception\ConfigInspectInternalServerErrorException
+     * @throws Exception\ConfigInspectServiceUnavailableException
      *
-     * @return \Docker\API\Model\Config|\Psr\Http\Message\ResponseInterface|null
+     * @return Model\Config|\Psr\Http\Message\ResponseInterface|null
      */
     public function configInspect(string $id, string $fetch = self::FETCH_OBJECT)
     {
-        return $this->executeEndpoint(new \Docker\API\Endpoint\ConfigInspect($id), $fetch);
+        return $this->executeEndpoint(new Endpoint\ConfigInspect($id), $fetch);
     }
 
     /**
@@ -2590,16 +2590,16 @@ class Client extends \Docker\API\Runtime\Client\Client
      * @param string $fetch  Fetch mode to use (can be OBJECT or RESPONSE)
      * @param array  $accept Accept content header application/json|text/plain
      *
-     * @throws \Docker\API\Exception\ConfigUpdateBadRequestException
-     * @throws \Docker\API\Exception\ConfigUpdateNotFoundException
-     * @throws \Docker\API\Exception\ConfigUpdateInternalServerErrorException
-     * @throws \Docker\API\Exception\ConfigUpdateServiceUnavailableException
+     * @throws Exception\ConfigUpdateBadRequestException
+     * @throws Exception\ConfigUpdateNotFoundException
+     * @throws Exception\ConfigUpdateInternalServerErrorException
+     * @throws Exception\ConfigUpdateServiceUnavailableException
      *
      * @return \Psr\Http\Message\ResponseInterface|null
      */
-    public function configUpdate(string $id, Model\ConfigSpec $requestBody = null, array $queryParameters = [], string $fetch = self::FETCH_OBJECT, array $accept = [])
+    public function configUpdate(string $id, ?Model\ConfigSpec $requestBody = null, array $queryParameters = [], string $fetch = self::FETCH_OBJECT, array $accept = [])
     {
-        return $this->executeEndpoint(new \Docker\API\Endpoint\ConfigUpdate($id, $requestBody, $queryParameters, $accept), $fetch);
+        return $this->executeEndpoint(new Endpoint\ConfigUpdate($id, $requestBody, $queryParameters, $accept), $fetch);
     }
 
     /**
@@ -2608,14 +2608,14 @@ class Client extends \Docker\API\Runtime\Client\Client
      * @param string $name  Image name or id
      * @param string $fetch Fetch mode to use (can be OBJECT or RESPONSE)
      *
-     * @throws \Docker\API\Exception\DistributionInspectUnauthorizedException
-     * @throws \Docker\API\Exception\DistributionInspectInternalServerErrorException
+     * @throws Exception\DistributionInspectUnauthorizedException
+     * @throws Exception\DistributionInspectInternalServerErrorException
      *
-     * @return \Docker\API\Model\DistributionInspect|\Psr\Http\Message\ResponseInterface|null
+     * @return Model\DistributionInspect|\Psr\Http\Message\ResponseInterface|null
      */
     public function distributionInspect(string $name, string $fetch = self::FETCH_OBJECT)
     {
-        return $this->executeEndpoint(new \Docker\API\Endpoint\DistributionInspect($name), $fetch);
+        return $this->executeEndpoint(new Endpoint\DistributionInspect($name), $fetch);
     }
 
     /**
@@ -2625,7 +2625,7 @@ class Client extends \Docker\API\Runtime\Client\Client
      */
     public function session(string $fetch = self::FETCH_OBJECT)
     {
-        return $this->executeEndpoint(new \Docker\API\Endpoint\Session(), $fetch);
+        return $this->executeEndpoint(new Endpoint\Session(), $fetch);
     }
 
     public static function create($httpClient = null, array $additionalPlugins = [], array $additionalNormalizers = [])
@@ -2642,7 +2642,7 @@ class Client extends \Docker\API\Runtime\Client\Client
         }
         $requestFactory = \Http\Discovery\Psr17FactoryDiscovery::findRequestFactory();
         $streamFactory = \Http\Discovery\Psr17FactoryDiscovery::findStreamFactory();
-        $normalizers = [new \Symfony\Component\Serializer\Normalizer\ArrayDenormalizer(), new \Docker\API\Normalizer\JaneObjectNormalizer()];
+        $normalizers = [new \Symfony\Component\Serializer\Normalizer\ArrayDenormalizer(), new Normalizer\JaneObjectNormalizer()];
         if (\count($additionalNormalizers) > 0) {
             $normalizers = array_merge($normalizers, $additionalNormalizers);
         }

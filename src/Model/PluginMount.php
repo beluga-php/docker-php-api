@@ -24,7 +24,7 @@ class PluginMount extends \ArrayObject
      */
     protected $description;
     /**
-     * @var string[]|null
+     * @var list<string>|null
      */
     protected $settable;
     /**
@@ -40,7 +40,7 @@ class PluginMount extends \ArrayObject
      */
     protected $type;
     /**
-     * @var string[]|null
+     * @var list<string>|null
      */
     protected $options;
 
@@ -71,7 +71,7 @@ class PluginMount extends \ArrayObject
     }
 
     /**
-     * @return string[]|null
+     * @return list<string>|null
      */
     public function getSettable(): ?array
     {
@@ -79,7 +79,7 @@ class PluginMount extends \ArrayObject
     }
 
     /**
-     * @param string[]|null $settable
+     * @param list<string>|null $settable
      */
     public function setSettable(?array $settable): self
     {
@@ -129,7 +129,7 @@ class PluginMount extends \ArrayObject
     }
 
     /**
-     * @return string[]|null
+     * @return list<string>|null
      */
     public function getOptions(): ?array
     {
@@ -137,7 +137,7 @@ class PluginMount extends \ArrayObject
     }
 
     /**
-     * @param string[]|null $options
+     * @param list<string>|null $options
      */
     public function setOptions(?array $options): self
     {

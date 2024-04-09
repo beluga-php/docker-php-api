@@ -44,53 +44,53 @@ class ContainersIdUpdatePostBody extends \ArrayObject
      */
     protected $blkioWeight;
     /**
-     * Block IO weight (relative device weight) in the form:.
+     * Block IO weight (relative device weight) in the form:
      *
      * ```
      * [{"Path": "device_path", "Weight": weight}]
      * ```
      *
-     * @var ResourcesBlkioWeightDeviceItem[]|null
+     * @var list<ResourcesBlkioWeightDeviceItem>|null
      */
     protected $blkioWeightDevice;
     /**
-     * Limit read rate (bytes per second) from a device, in the form:.
+     * Limit read rate (bytes per second) from a device, in the form:
      *
      * ```
      * [{"Path": "device_path", "Rate": rate}]
      * ```
      *
-     * @var ThrottleDevice[]|null
+     * @var list<ThrottleDevice>|null
      */
     protected $blkioDeviceReadBps;
     /**
-     * Limit write rate (bytes per second) to a device, in the form:.
+     * Limit write rate (bytes per second) to a device, in the form:
      *
      * ```
      * [{"Path": "device_path", "Rate": rate}]
      * ```
      *
-     * @var ThrottleDevice[]|null
+     * @var list<ThrottleDevice>|null
      */
     protected $blkioDeviceWriteBps;
     /**
-     * Limit read rate (IO per second) from a device, in the form:.
+     * Limit read rate (IO per second) from a device, in the form:
      *
      * ```
      * [{"Path": "device_path", "Rate": rate}]
      * ```
      *
-     * @var ThrottleDevice[]|null
+     * @var list<ThrottleDevice>|null
      */
     protected $blkioDeviceReadIOps;
     /**
-     * Limit write rate (IO per second) to a device, in the form:.
+     * Limit write rate (IO per second) to a device, in the form:
      *
      * ```
      * [{"Path": "device_path", "Rate": rate}]
      * ```
      *
-     * @var ThrottleDevice[]|null
+     * @var list<ThrottleDevice>|null
      */
     protected $blkioDeviceWriteIOps;
     /**
@@ -135,19 +135,19 @@ class ContainersIdUpdatePostBody extends \ArrayObject
     /**
      * A list of devices to add to the container.
      *
-     * @var DeviceMapping[]|null
+     * @var list<DeviceMapping>|null
      */
     protected $devices;
     /**
      * a list of cgroup rules to apply to the container.
      *
-     * @var string[]|null
+     * @var list<string>|null
      */
     protected $deviceCgroupRules;
     /**
      * A list of requests for devices to be sent to device drivers.
      *
-     * @var DeviceRequest[]|null
+     * @var list<DeviceRequest>|null
      */
     protected $deviceRequests;
     /**
@@ -208,13 +208,13 @@ class ContainersIdUpdatePostBody extends \ArrayObject
      */
     protected $pidsLimit;
     /**
-     * A list of resource limits to set in the container. For example:.
+     * A list of resource limits to set in the container. For example:
      *
      * ```
      * {"Name": "nofile", "Soft": 1024, "Hard": 2048}
      * ```
      *
-     * @var ResourcesUlimitsItem[]|null
+     * @var list<ResourcesUlimitsItem>|null
      */
     protected $ulimits;
     /**
@@ -346,13 +346,13 @@ class ContainersIdUpdatePostBody extends \ArrayObject
     }
 
     /**
-     * Block IO weight (relative device weight) in the form:.
+     * Block IO weight (relative device weight) in the form:
      *
      * ```
      * [{"Path": "device_path", "Weight": weight}]
      * ```
      *
-     * @return ResourcesBlkioWeightDeviceItem[]|null
+     * @return list<ResourcesBlkioWeightDeviceItem>|null
      */
     public function getBlkioWeightDevice(): ?array
     {
@@ -360,13 +360,13 @@ class ContainersIdUpdatePostBody extends \ArrayObject
     }
 
     /**
-     * Block IO weight (relative device weight) in the form:.
+     * Block IO weight (relative device weight) in the form:
      *
      * ```
      * [{"Path": "device_path", "Weight": weight}]
      * ```
      *
-     * @param ResourcesBlkioWeightDeviceItem[]|null $blkioWeightDevice
+     * @param list<ResourcesBlkioWeightDeviceItem>|null $blkioWeightDevice
      */
     public function setBlkioWeightDevice(?array $blkioWeightDevice): self
     {
@@ -377,13 +377,13 @@ class ContainersIdUpdatePostBody extends \ArrayObject
     }
 
     /**
-     * Limit read rate (bytes per second) from a device, in the form:.
+     * Limit read rate (bytes per second) from a device, in the form:
      *
      * ```
      * [{"Path": "device_path", "Rate": rate}]
      * ```
      *
-     * @return ThrottleDevice[]|null
+     * @return list<ThrottleDevice>|null
      */
     public function getBlkioDeviceReadBps(): ?array
     {
@@ -391,13 +391,13 @@ class ContainersIdUpdatePostBody extends \ArrayObject
     }
 
     /**
-     * Limit read rate (bytes per second) from a device, in the form:.
+     * Limit read rate (bytes per second) from a device, in the form:
      *
      * ```
      * [{"Path": "device_path", "Rate": rate}]
      * ```
      *
-     * @param ThrottleDevice[]|null $blkioDeviceReadBps
+     * @param list<ThrottleDevice>|null $blkioDeviceReadBps
      */
     public function setBlkioDeviceReadBps(?array $blkioDeviceReadBps): self
     {
@@ -408,13 +408,13 @@ class ContainersIdUpdatePostBody extends \ArrayObject
     }
 
     /**
-     * Limit write rate (bytes per second) to a device, in the form:.
+     * Limit write rate (bytes per second) to a device, in the form:
      *
      * ```
      * [{"Path": "device_path", "Rate": rate}]
      * ```
      *
-     * @return ThrottleDevice[]|null
+     * @return list<ThrottleDevice>|null
      */
     public function getBlkioDeviceWriteBps(): ?array
     {
@@ -422,13 +422,13 @@ class ContainersIdUpdatePostBody extends \ArrayObject
     }
 
     /**
-     * Limit write rate (bytes per second) to a device, in the form:.
+     * Limit write rate (bytes per second) to a device, in the form:
      *
      * ```
      * [{"Path": "device_path", "Rate": rate}]
      * ```
      *
-     * @param ThrottleDevice[]|null $blkioDeviceWriteBps
+     * @param list<ThrottleDevice>|null $blkioDeviceWriteBps
      */
     public function setBlkioDeviceWriteBps(?array $blkioDeviceWriteBps): self
     {
@@ -439,13 +439,13 @@ class ContainersIdUpdatePostBody extends \ArrayObject
     }
 
     /**
-     * Limit read rate (IO per second) from a device, in the form:.
+     * Limit read rate (IO per second) from a device, in the form:
      *
      * ```
      * [{"Path": "device_path", "Rate": rate}]
      * ```
      *
-     * @return ThrottleDevice[]|null
+     * @return list<ThrottleDevice>|null
      */
     public function getBlkioDeviceReadIOps(): ?array
     {
@@ -453,13 +453,13 @@ class ContainersIdUpdatePostBody extends \ArrayObject
     }
 
     /**
-     * Limit read rate (IO per second) from a device, in the form:.
+     * Limit read rate (IO per second) from a device, in the form:
      *
      * ```
      * [{"Path": "device_path", "Rate": rate}]
      * ```
      *
-     * @param ThrottleDevice[]|null $blkioDeviceReadIOps
+     * @param list<ThrottleDevice>|null $blkioDeviceReadIOps
      */
     public function setBlkioDeviceReadIOps(?array $blkioDeviceReadIOps): self
     {
@@ -470,13 +470,13 @@ class ContainersIdUpdatePostBody extends \ArrayObject
     }
 
     /**
-     * Limit write rate (IO per second) to a device, in the form:.
+     * Limit write rate (IO per second) to a device, in the form:
      *
      * ```
      * [{"Path": "device_path", "Rate": rate}]
      * ```
      *
-     * @return ThrottleDevice[]|null
+     * @return list<ThrottleDevice>|null
      */
     public function getBlkioDeviceWriteIOps(): ?array
     {
@@ -484,13 +484,13 @@ class ContainersIdUpdatePostBody extends \ArrayObject
     }
 
     /**
-     * Limit write rate (IO per second) to a device, in the form:.
+     * Limit write rate (IO per second) to a device, in the form:
      *
      * ```
      * [{"Path": "device_path", "Rate": rate}]
      * ```
      *
-     * @param ThrottleDevice[]|null $blkioDeviceWriteIOps
+     * @param list<ThrottleDevice>|null $blkioDeviceWriteIOps
      */
     public function setBlkioDeviceWriteIOps(?array $blkioDeviceWriteIOps): self
     {
@@ -623,7 +623,7 @@ class ContainersIdUpdatePostBody extends \ArrayObject
     /**
      * A list of devices to add to the container.
      *
-     * @return DeviceMapping[]|null
+     * @return list<DeviceMapping>|null
      */
     public function getDevices(): ?array
     {
@@ -633,7 +633,7 @@ class ContainersIdUpdatePostBody extends \ArrayObject
     /**
      * A list of devices to add to the container.
      *
-     * @param DeviceMapping[]|null $devices
+     * @param list<DeviceMapping>|null $devices
      */
     public function setDevices(?array $devices): self
     {
@@ -646,7 +646,7 @@ class ContainersIdUpdatePostBody extends \ArrayObject
     /**
      * a list of cgroup rules to apply to the container.
      *
-     * @return string[]|null
+     * @return list<string>|null
      */
     public function getDeviceCgroupRules(): ?array
     {
@@ -656,7 +656,7 @@ class ContainersIdUpdatePostBody extends \ArrayObject
     /**
      * a list of cgroup rules to apply to the container.
      *
-     * @param string[]|null $deviceCgroupRules
+     * @param list<string>|null $deviceCgroupRules
      */
     public function setDeviceCgroupRules(?array $deviceCgroupRules): self
     {
@@ -669,7 +669,7 @@ class ContainersIdUpdatePostBody extends \ArrayObject
     /**
      * A list of requests for devices to be sent to device drivers.
      *
-     * @return DeviceRequest[]|null
+     * @return list<DeviceRequest>|null
      */
     public function getDeviceRequests(): ?array
     {
@@ -679,7 +679,7 @@ class ContainersIdUpdatePostBody extends \ArrayObject
     /**
      * A list of requests for devices to be sent to device drivers.
      *
-     * @param DeviceRequest[]|null $deviceRequests
+     * @param list<DeviceRequest>|null $deviceRequests
      */
     public function setDeviceRequests(?array $deviceRequests): self
     {
@@ -860,13 +860,13 @@ class ContainersIdUpdatePostBody extends \ArrayObject
     }
 
     /**
-     * A list of resource limits to set in the container. For example:.
+     * A list of resource limits to set in the container. For example:
      *
      * ```
      * {"Name": "nofile", "Soft": 1024, "Hard": 2048}
      * ```
      *
-     * @return ResourcesUlimitsItem[]|null
+     * @return list<ResourcesUlimitsItem>|null
      */
     public function getUlimits(): ?array
     {
@@ -874,13 +874,13 @@ class ContainersIdUpdatePostBody extends \ArrayObject
     }
 
     /**
-     * A list of resource limits to set in the container. For example:.
+     * A list of resource limits to set in the container. For example:
      *
      * ```
      * {"Name": "nofile", "Soft": 1024, "Hard": 2048}
      * ```
      *
-     * @param ResourcesUlimitsItem[]|null $ulimits
+     * @param list<ResourcesUlimitsItem>|null $ulimits
      */
     public function setUlimits(?array $ulimits): self
     {

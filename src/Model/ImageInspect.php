@@ -36,7 +36,7 @@ class ImageInspect extends \ArrayObject
      * empty if no tags reference the image, in which case the image is
      * "untagged", in which case it can still be referenced by its ID.
      *
-     * @var string[]|null
+     * @var list<string>|null
      */
     protected $repoTags;
     /**
@@ -48,7 +48,7 @@ class ImageInspect extends \ArrayObject
      * from a registry, or if the image was pushed to a registry, which is when
      * the manifest is generated and its digest calculated.
      *
-     * @var string[]|null
+     * @var list<string>|null
      */
     protected $repoDigests;
     /**
@@ -230,7 +230,7 @@ class ImageInspect extends \ArrayObject
      * empty if no tags reference the image, in which case the image is
      * "untagged", in which case it can still be referenced by its ID.
      *
-     * @return string[]|null
+     * @return list<string>|null
      */
     public function getRepoTags(): ?array
     {
@@ -245,7 +245,7 @@ class ImageInspect extends \ArrayObject
      * empty if no tags reference the image, in which case the image is
      * "untagged", in which case it can still be referenced by its ID.
      *
-     * @param string[]|null $repoTags
+     * @param list<string>|null $repoTags
      */
     public function setRepoTags(?array $repoTags): self
     {
@@ -264,7 +264,7 @@ class ImageInspect extends \ArrayObject
      * from a registry, or if the image was pushed to a registry, which is when
      * the manifest is generated and its digest calculated.
      *
-     * @return string[]|null
+     * @return list<string>|null
      */
     public function getRepoDigests(): ?array
     {
@@ -280,7 +280,7 @@ class ImageInspect extends \ArrayObject
      * from a registry, or if the image was pushed to a registry, which is when
      * the manifest is generated and its digest calculated.
      *
-     * @param string[]|null $repoDigests
+     * @param list<string>|null $repoDigests
      */
     public function setRepoDigests(?array $repoDigests): self
     {

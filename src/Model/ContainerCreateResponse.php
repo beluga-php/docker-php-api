@@ -24,7 +24,7 @@ class ContainerCreateResponse extends \ArrayObject
     /**
      * Warnings encountered when creating the container.
      *
-     * @var string[]|null
+     * @var list<string>|null
      */
     protected $warnings;
 
@@ -50,7 +50,7 @@ class ContainerCreateResponse extends \ArrayObject
     /**
      * Warnings encountered when creating the container.
      *
-     * @return string[]|null
+     * @return list<string>|null
      */
     public function getWarnings(): ?array
     {
@@ -60,7 +60,7 @@ class ContainerCreateResponse extends \ArrayObject
     /**
      * Warnings encountered when creating the container.
      *
-     * @param string[]|null $warnings
+     * @param list<string>|null $warnings
      */
     public function setWarnings(?array $warnings): self
     {

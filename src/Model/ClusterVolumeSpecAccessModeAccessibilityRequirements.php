@@ -19,14 +19,14 @@ class ClusterVolumeSpecAccessModeAccessibilityRequirements extends \ArrayObject
      * A list of required topologies, at least one of which the
      * volume must be accessible from.
      *
-     * @var array<string, string>[]|null
+     * @var list<array<string, string>>|null
      */
     protected $requisite;
     /**
      * A list of topologies that the volume should attempt to be
      * provisioned in.
      *
-     * @var array<string, string>[]|null
+     * @var list<array<string, string>>|null
      */
     protected $preferred;
 
@@ -34,7 +34,7 @@ class ClusterVolumeSpecAccessModeAccessibilityRequirements extends \ArrayObject
      * A list of required topologies, at least one of which the
      * volume must be accessible from.
      *
-     * @return array<string, string>[]|null
+     * @return list<array<string, string>>|null
      */
     public function getRequisite(): ?array
     {
@@ -45,7 +45,7 @@ class ClusterVolumeSpecAccessModeAccessibilityRequirements extends \ArrayObject
      * A list of required topologies, at least one of which the
      * volume must be accessible from.
      *
-     * @param array<string, string>[]|null $requisite
+     * @param list<array<string, string>>|null $requisite
      */
     public function setRequisite(?array $requisite): self
     {
@@ -59,7 +59,7 @@ class ClusterVolumeSpecAccessModeAccessibilityRequirements extends \ArrayObject
      * A list of topologies that the volume should attempt to be
      * provisioned in.
      *
-     * @return array<string, string>[]|null
+     * @return list<array<string, string>>|null
      */
     public function getPreferred(): ?array
     {
@@ -70,7 +70,7 @@ class ClusterVolumeSpecAccessModeAccessibilityRequirements extends \ArrayObject
      * A list of topologies that the volume should attempt to be
      * provisioned in.
      *
-     * @param array<string, string>[]|null $preferred
+     * @param list<array<string, string>>|null $preferred
      */
     public function setPreferred(?array $preferred): self
     {

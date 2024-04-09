@@ -19,7 +19,7 @@ class VolumeUpdate extends \Docker\API\Runtime\Client\BaseEndpoint implements \D
      *
      * }
      */
-    public function __construct(string $name, \Docker\API\Model\VolumesNamePutBody $requestBody = null, array $queryParameters = [])
+    public function __construct(string $name, ?\Docker\API\Model\VolumesNamePutBody $requestBody = null, array $queryParameters = [])
     {
         $this->name = $name;
         $this->body = $requestBody;
@@ -69,7 +69,7 @@ class VolumeUpdate extends \Docker\API\Runtime\Client\BaseEndpoint implements \D
      *
      * @return null
      */
-    protected function transformResponseBody(\Psr\Http\Message\ResponseInterface $response, \Symfony\Component\Serializer\SerializerInterface $serializer, string $contentType = null)
+    protected function transformResponseBody(\Psr\Http\Message\ResponseInterface $response, \Symfony\Component\Serializer\SerializerInterface $serializer, ?string $contentType = null)
     {
         $status = $response->getStatusCode();
         $body = (string) $response->getBody();

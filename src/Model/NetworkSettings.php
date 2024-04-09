@@ -53,7 +53,7 @@ class NetworkSettings extends \ArrayObject
      * If a container's port is mapped for multiple protocols, separate entries
      * are added to the mapping table.
      *
-     * @var array<string, PortBinding[]>|null
+     * @var array<string, list<PortBinding>>|null
      */
     protected $ports;
     /**
@@ -63,11 +63,11 @@ class NetworkSettings extends \ArrayObject
      */
     protected $sandboxKey;
     /**
-     * @var Address[]|null
+     * @var list<Address>|null
      */
     protected $secondaryIPAddresses;
     /**
-     * @var Address[]|null
+     * @var list<Address>|null
      */
     protected $secondaryIPv6Addresses;
     /**
@@ -292,7 +292,7 @@ class NetworkSettings extends \ArrayObject
      * If a container's port is mapped for multiple protocols, separate entries
      * are added to the mapping table.
      *
-     * @return array<string, PortBinding[]>|null
+     * @return array<string, list<PortBinding>>|null
      */
     public function getPorts(): ?iterable
     {
@@ -307,7 +307,7 @@ class NetworkSettings extends \ArrayObject
      * If a container's port is mapped for multiple protocols, separate entries
      * are added to the mapping table.
      *
-     * @param array<string, PortBinding[]>|null $ports
+     * @param array<string, list<PortBinding>>|null $ports
      */
     public function setPorts(?iterable $ports): self
     {
@@ -337,7 +337,7 @@ class NetworkSettings extends \ArrayObject
     }
 
     /**
-     * @return Address[]|null
+     * @return list<Address>|null
      */
     public function getSecondaryIPAddresses(): ?array
     {
@@ -345,7 +345,7 @@ class NetworkSettings extends \ArrayObject
     }
 
     /**
-     * @param Address[]|null $secondaryIPAddresses
+     * @param list<Address>|null $secondaryIPAddresses
      */
     public function setSecondaryIPAddresses(?array $secondaryIPAddresses): self
     {
@@ -356,7 +356,7 @@ class NetworkSettings extends \ArrayObject
     }
 
     /**
-     * @return Address[]|null
+     * @return list<Address>|null
      */
     public function getSecondaryIPv6Addresses(): ?array
     {
@@ -364,7 +364,7 @@ class NetworkSettings extends \ArrayObject
     }
 
     /**
-     * @param Address[]|null $secondaryIPv6Addresses
+     * @param list<Address>|null $secondaryIPv6Addresses
      */
     public function setSecondaryIPv6Addresses(?array $secondaryIPv6Addresses): self
     {

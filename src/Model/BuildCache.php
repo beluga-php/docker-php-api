@@ -32,7 +32,7 @@ class BuildCache extends \ArrayObject
     /**
      * List of parent build cache record IDs.
      *
-     * @var string[]|null
+     * @var list<string>|null
      */
     protected $parents;
     /**
@@ -129,7 +129,7 @@ class BuildCache extends \ArrayObject
     /**
      * List of parent build cache record IDs.
      *
-     * @return string[]|null
+     * @return list<string>|null
      */
     public function getParents(): ?array
     {
@@ -139,7 +139,7 @@ class BuildCache extends \ArrayObject
     /**
      * List of parent build cache record IDs.
      *
-     * @param string[]|null $parents
+     * @param list<string>|null $parents
      */
     public function setParents(?array $parents): self
     {

@@ -32,7 +32,7 @@ class ProcessConfig extends \ArrayObject
      */
     protected $entrypoint;
     /**
-     * @var string[]|null
+     * @var list<string>|null
      */
     protected $arguments;
 
@@ -89,7 +89,7 @@ class ProcessConfig extends \ArrayObject
     }
 
     /**
-     * @return string[]|null
+     * @return list<string>|null
      */
     public function getArguments(): ?array
     {
@@ -97,7 +97,7 @@ class ProcessConfig extends \ArrayObject
     }
 
     /**
-     * @param string[]|null $arguments
+     * @param list<string>|null $arguments
      */
     public function setArguments(?array $arguments): self
     {

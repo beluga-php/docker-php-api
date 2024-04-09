@@ -24,7 +24,7 @@ class EndpointIPAMConfig extends \ArrayObject
      */
     protected $iPv6Address;
     /**
-     * @var string[]|null
+     * @var list<string>|null
      */
     protected $linkLocalIPs;
 
@@ -55,7 +55,7 @@ class EndpointIPAMConfig extends \ArrayObject
     }
 
     /**
-     * @return string[]|null
+     * @return list<string>|null
      */
     public function getLinkLocalIPs(): ?array
     {
@@ -63,7 +63,7 @@ class EndpointIPAMConfig extends \ArrayObject
     }
 
     /**
-     * @param string[]|null $linkLocalIPs
+     * @param list<string>|null $linkLocalIPs
      */
     public function setLinkLocalIPs(?array $linkLocalIPs): self
     {

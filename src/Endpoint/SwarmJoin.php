@@ -12,7 +12,7 @@ class SwarmJoin extends \Docker\API\Runtime\Client\BaseEndpoint implements \Dock
     /**
      * @param array $accept Accept content header application/json|text/plain
      */
-    public function __construct(\Docker\API\Model\SwarmJoinPostBody $requestBody = null, array $accept = [])
+    public function __construct(?\Docker\API\Model\SwarmJoinPostBody $requestBody = null, array $accept = [])
     {
         $this->body = $requestBody;
         $this->accept = $accept;
@@ -56,7 +56,7 @@ class SwarmJoin extends \Docker\API\Runtime\Client\BaseEndpoint implements \Dock
      *
      * @return null
      */
-    protected function transformResponseBody(\Psr\Http\Message\ResponseInterface $response, \Symfony\Component\Serializer\SerializerInterface $serializer, string $contentType = null)
+    protected function transformResponseBody(\Psr\Http\Message\ResponseInterface $response, \Symfony\Component\Serializer\SerializerInterface $serializer, ?string $contentType = null)
     {
         $status = $response->getStatusCode();
         $body = (string) $response->getBody();

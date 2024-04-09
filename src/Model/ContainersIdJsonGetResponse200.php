@@ -36,7 +36,7 @@ class ContainersIdJsonGetResponse200 extends \ArrayObject
     /**
      * The arguments to the command being run.
      *
-     * @var string[]|null
+     * @var list<string>|null
      */
     protected $args;
     /**
@@ -99,7 +99,7 @@ class ContainersIdJsonGetResponse200 extends \ArrayObject
     /**
      * IDs of exec instances that are running in the container.
      *
-     * @var string[]|null
+     * @var list<string>|null
      */
     protected $execIDs;
     /**
@@ -129,7 +129,7 @@ class ContainersIdJsonGetResponse200 extends \ArrayObject
      */
     protected $sizeRootFs;
     /**
-     * @var MountPoint[]|null
+     * @var list<MountPoint>|null
      */
     protected $mounts;
     /**
@@ -212,7 +212,7 @@ class ContainersIdJsonGetResponse200 extends \ArrayObject
     /**
      * The arguments to the command being run.
      *
-     * @return string[]|null
+     * @return list<string>|null
      */
     public function getArgs(): ?array
     {
@@ -222,7 +222,7 @@ class ContainersIdJsonGetResponse200 extends \ArrayObject
     /**
      * The arguments to the command being run.
      *
-     * @param string[]|null $args
+     * @param list<string>|null $args
      */
     public function setArgs(?array $args): self
     {
@@ -418,7 +418,7 @@ class ContainersIdJsonGetResponse200 extends \ArrayObject
     /**
      * IDs of exec instances that are running in the container.
      *
-     * @return string[]|null
+     * @return list<string>|null
      */
     public function getExecIDs(): ?array
     {
@@ -428,7 +428,7 @@ class ContainersIdJsonGetResponse200 extends \ArrayObject
     /**
      * IDs of exec instances that are running in the container.
      *
-     * @param string[]|null $execIDs
+     * @param list<string>|null $execIDs
      */
     public function setExecIDs(?array $execIDs): self
     {
@@ -519,7 +519,7 @@ class ContainersIdJsonGetResponse200 extends \ArrayObject
     }
 
     /**
-     * @return MountPoint[]|null
+     * @return list<MountPoint>|null
      */
     public function getMounts(): ?array
     {
@@ -527,7 +527,7 @@ class ContainersIdJsonGetResponse200 extends \ArrayObject
     }
 
     /**
-     * @param MountPoint[]|null $mounts
+     * @param list<MountPoint>|null $mounts
      */
     public function setMounts(?array $mounts): self
     {

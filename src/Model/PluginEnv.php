@@ -24,7 +24,7 @@ class PluginEnv extends \ArrayObject
      */
     protected $description;
     /**
-     * @var string[]|null
+     * @var list<string>|null
      */
     protected $settable;
     /**
@@ -59,7 +59,7 @@ class PluginEnv extends \ArrayObject
     }
 
     /**
-     * @return string[]|null
+     * @return list<string>|null
      */
     public function getSettable(): ?array
     {
@@ -67,7 +67,7 @@ class PluginEnv extends \ArrayObject
     }
 
     /**
-     * @param string[]|null $settable
+     * @param list<string>|null $settable
      */
     public function setSettable(?array $settable): self
     {

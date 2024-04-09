@@ -16,12 +16,12 @@ class ContainersIdUpdatePostResponse200 extends \ArrayObject
         return \array_key_exists($property, $this->initialized);
     }
     /**
-     * @var string[]|null
+     * @var list<string>|null
      */
     protected $warnings;
 
     /**
-     * @return string[]|null
+     * @return list<string>|null
      */
     public function getWarnings(): ?array
     {
@@ -29,7 +29,7 @@ class ContainersIdUpdatePostResponse200 extends \ArrayObject
     }
 
     /**
-     * @param string[]|null $warnings
+     * @param list<string>|null $warnings
      */
     public function setWarnings(?array $warnings): self
     {

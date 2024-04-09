@@ -36,7 +36,7 @@ class PluginConfig extends \ArrayObject
      */
     protected $interface;
     /**
-     * @var string[]|null
+     * @var list<string>|null
      */
     protected $entrypoint;
     /**
@@ -68,11 +68,11 @@ class PluginConfig extends \ArrayObject
      */
     protected $pidHost;
     /**
-     * @var PluginMount[]|null
+     * @var list<PluginMount>|null
      */
     protected $mounts;
     /**
-     * @var PluginEnv[]|null
+     * @var list<PluginEnv>|null
      */
     protected $env;
     /**
@@ -149,7 +149,7 @@ class PluginConfig extends \ArrayObject
     }
 
     /**
-     * @return string[]|null
+     * @return list<string>|null
      */
     public function getEntrypoint(): ?array
     {
@@ -157,7 +157,7 @@ class PluginConfig extends \ArrayObject
     }
 
     /**
-     * @param string[]|null $entrypoint
+     * @param list<string>|null $entrypoint
      */
     public function setEntrypoint(?array $entrypoint): self
     {
@@ -259,7 +259,7 @@ class PluginConfig extends \ArrayObject
     }
 
     /**
-     * @return PluginMount[]|null
+     * @return list<PluginMount>|null
      */
     public function getMounts(): ?array
     {
@@ -267,7 +267,7 @@ class PluginConfig extends \ArrayObject
     }
 
     /**
-     * @param PluginMount[]|null $mounts
+     * @param list<PluginMount>|null $mounts
      */
     public function setMounts(?array $mounts): self
     {
@@ -278,7 +278,7 @@ class PluginConfig extends \ArrayObject
     }
 
     /**
-     * @return PluginEnv[]|null
+     * @return list<PluginEnv>|null
      */
     public function getEnv(): ?array
     {
@@ -286,7 +286,7 @@ class PluginConfig extends \ArrayObject
     }
 
     /**
-     * @param PluginEnv[]|null $env
+     * @param list<PluginEnv>|null $env
      */
     public function setEnv(?array $env): self
     {

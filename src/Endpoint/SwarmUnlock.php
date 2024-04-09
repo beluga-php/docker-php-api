@@ -8,7 +8,7 @@ class SwarmUnlock extends \Docker\API\Runtime\Client\BaseEndpoint implements \Do
 {
     use \Docker\API\Runtime\Client\EndpointTrait;
 
-    public function __construct(\Docker\API\Model\SwarmUnlockPostBody $requestBody = null)
+    public function __construct(?\Docker\API\Model\SwarmUnlockPostBody $requestBody = null)
     {
         $this->body = $requestBody;
     }
@@ -43,7 +43,7 @@ class SwarmUnlock extends \Docker\API\Runtime\Client\BaseEndpoint implements \Do
      *
      * @return null
      */
-    protected function transformResponseBody(\Psr\Http\Message\ResponseInterface $response, \Symfony\Component\Serializer\SerializerInterface $serializer, string $contentType = null)
+    protected function transformResponseBody(\Psr\Http\Message\ResponseInterface $response, \Symfony\Component\Serializer\SerializerInterface $serializer, ?string $contentType = null)
     {
         $status = $response->getStatusCode();
         $body = (string) $response->getBody();

@@ -52,7 +52,7 @@ class ContainersCreatePostBody extends \ArrayObject
      */
     protected $attachStderr = true;
     /**
-     * An object mapping ports to an empty object in the form:.
+     * An object mapping ports to an empty object in the form:
      *
      * `{"<port>/<tcp|udp|sctp>": {}}`
      *
@@ -82,13 +82,13 @@ class ContainersCreatePostBody extends \ArrayObject
      * form `["VAR=value", ...]`. A variable without `=` is removed from the
      * environment, rather than to have an empty value.
      *
-     * @var string[]|null
+     * @var list<string>|null
      */
     protected $env;
     /**
      * Command to run specified as a string or an array of strings.
      *
-     * @var string[]|null
+     * @var list<string>|null
      */
     protected $cmd;
     /**
@@ -130,7 +130,7 @@ class ContainersCreatePostBody extends \ArrayObject
      * entry point is reset to system default (i.e., the entry point used by
      * docker when there is no `ENTRYPOINT` instruction in the `Dockerfile`).
      *
-     * @var string[]|null
+     * @var list<string>|null
      */
     protected $entrypoint;
     /**
@@ -148,7 +148,7 @@ class ContainersCreatePostBody extends \ArrayObject
     /**
      * `ONBUILD` metadata that were defined in the image's `Dockerfile`.
      *
-     * @var string[]|null
+     * @var list<string>|null
      */
     protected $onBuild;
     /**
@@ -172,7 +172,7 @@ class ContainersCreatePostBody extends \ArrayObject
     /**
      * Shell for when `RUN`, `CMD`, and `ENTRYPOINT` uses a shell.
      *
-     * @var string[]|null
+     * @var list<string>|null
      */
     protected $shell;
     /**
@@ -306,7 +306,7 @@ class ContainersCreatePostBody extends \ArrayObject
     }
 
     /**
-     * An object mapping ports to an empty object in the form:.
+     * An object mapping ports to an empty object in the form:
      *
      * `{"<port>/<tcp|udp|sctp>": {}}`
      *
@@ -318,7 +318,7 @@ class ContainersCreatePostBody extends \ArrayObject
     }
 
     /**
-     * An object mapping ports to an empty object in the form:.
+     * An object mapping ports to an empty object in the form:
      *
      * `{"<port>/<tcp|udp|sctp>": {}}`
      *
@@ -394,7 +394,7 @@ class ContainersCreatePostBody extends \ArrayObject
      * form `["VAR=value", ...]`. A variable without `=` is removed from the
      * environment, rather than to have an empty value.
      *
-     * @return string[]|null
+     * @return list<string>|null
      */
     public function getEnv(): ?array
     {
@@ -406,7 +406,7 @@ class ContainersCreatePostBody extends \ArrayObject
      * form `["VAR=value", ...]`. A variable without `=` is removed from the
      * environment, rather than to have an empty value.
      *
-     * @param string[]|null $env
+     * @param list<string>|null $env
      */
     public function setEnv(?array $env): self
     {
@@ -419,7 +419,7 @@ class ContainersCreatePostBody extends \ArrayObject
     /**
      * Command to run specified as a string or an array of strings.
      *
-     * @return string[]|null
+     * @return list<string>|null
      */
     public function getCmd(): ?array
     {
@@ -429,7 +429,7 @@ class ContainersCreatePostBody extends \ArrayObject
     /**
      * Command to run specified as a string or an array of strings.
      *
-     * @param string[]|null $cmd
+     * @param list<string>|null $cmd
      */
     public function setCmd(?array $cmd): self
     {
@@ -549,7 +549,7 @@ class ContainersCreatePostBody extends \ArrayObject
      * entry point is reset to system default (i.e., the entry point used by
      * docker when there is no `ENTRYPOINT` instruction in the `Dockerfile`).
      *
-     * @return string[]|null
+     * @return list<string>|null
      */
     public function getEntrypoint(): ?array
     {
@@ -563,7 +563,7 @@ class ContainersCreatePostBody extends \ArrayObject
      * entry point is reset to system default (i.e., the entry point used by
      * docker when there is no `ENTRYPOINT` instruction in the `Dockerfile`).
      *
-     * @param string[]|null $entrypoint
+     * @param list<string>|null $entrypoint
      */
     public function setEntrypoint(?array $entrypoint): self
     {
@@ -614,7 +614,7 @@ class ContainersCreatePostBody extends \ArrayObject
     /**
      * `ONBUILD` metadata that were defined in the image's `Dockerfile`.
      *
-     * @return string[]|null
+     * @return list<string>|null
      */
     public function getOnBuild(): ?array
     {
@@ -624,7 +624,7 @@ class ContainersCreatePostBody extends \ArrayObject
     /**
      * `ONBUILD` metadata that were defined in the image's `Dockerfile`.
      *
-     * @param string[]|null $onBuild
+     * @param list<string>|null $onBuild
      */
     public function setOnBuild(?array $onBuild): self
     {
@@ -698,7 +698,7 @@ class ContainersCreatePostBody extends \ArrayObject
     /**
      * Shell for when `RUN`, `CMD`, and `ENTRYPOINT` uses a shell.
      *
-     * @return string[]|null
+     * @return list<string>|null
      */
     public function getShell(): ?array
     {
@@ -708,7 +708,7 @@ class ContainersCreatePostBody extends \ArrayObject
     /**
      * Shell for when `RUN`, `CMD`, and `ENTRYPOINT` uses a shell.
      *
-     * @param string[]|null $shell
+     * @param list<string>|null $shell
      */
     public function setShell(?array $shell): self
     {

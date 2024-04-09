@@ -20,7 +20,7 @@ class ImageCommit extends \Docker\API\Runtime\Client\BaseEndpoint implements \Do
      * @var string $changes `Dockerfile` instructions to apply while committing
      *             }
      */
-    public function __construct(\Docker\API\Model\ContainerConfig $requestBody = null, array $queryParameters = [])
+    public function __construct(?\Docker\API\Model\ContainerConfig $requestBody = null, array $queryParameters = [])
     {
         $this->body = $requestBody;
         $this->queryParameters = $queryParameters;
@@ -73,7 +73,7 @@ class ImageCommit extends \Docker\API\Runtime\Client\BaseEndpoint implements \Do
      *
      * @return \Docker\API\Model\IdResponse|null
      */
-    protected function transformResponseBody(\Psr\Http\Message\ResponseInterface $response, \Symfony\Component\Serializer\SerializerInterface $serializer, string $contentType = null)
+    protected function transformResponseBody(\Psr\Http\Message\ResponseInterface $response, \Symfony\Component\Serializer\SerializerInterface $serializer, ?string $contentType = null)
     {
         $status = $response->getStatusCode();
         $body = (string) $response->getBody();

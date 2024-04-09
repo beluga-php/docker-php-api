@@ -30,7 +30,7 @@ class ExecIdStartPostBody extends \ArrayObject
     /**
      * Initial console size, as an `[height, width]` array.
      *
-     * @var int[]|null
+     * @var list<int>|null
      */
     protected $consoleSize;
 
@@ -75,7 +75,7 @@ class ExecIdStartPostBody extends \ArrayObject
     /**
      * Initial console size, as an `[height, width]` array.
      *
-     * @return int[]|null
+     * @return list<int>|null
      */
     public function getConsoleSize(): ?array
     {
@@ -85,7 +85,7 @@ class ExecIdStartPostBody extends \ArrayObject
     /**
      * Initial console size, as an `[height, width]` array.
      *
-     * @param int[]|null $consoleSize
+     * @param list<int>|null $consoleSize
      */
     public function setConsoleSize(?array $consoleSize): self
     {

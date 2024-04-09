@@ -25,7 +25,7 @@ class DistributionInspect extends \ArrayObject
     /**
      * An array containing all platforms supported by the image.
      *
-     * @var OCIPlatform[]|null
+     * @var list<OCIPlatform>|null
      */
     protected $platforms;
 
@@ -53,7 +53,7 @@ class DistributionInspect extends \ArrayObject
     /**
      * An array containing all platforms supported by the image.
      *
-     * @return OCIPlatform[]|null
+     * @return list<OCIPlatform>|null
      */
     public function getPlatforms(): ?array
     {
@@ -63,7 +63,7 @@ class DistributionInspect extends \ArrayObject
     /**
      * An array containing all platforms supported by the image.
      *
-     * @param OCIPlatform[]|null $platforms
+     * @param list<OCIPlatform>|null $platforms
      */
     public function setPlatforms(?array $platforms): self
     {

@@ -18,14 +18,14 @@ class NetworksPrunePostResponse200 extends \ArrayObject
     /**
      * Networks that were deleted.
      *
-     * @var string[]|null
+     * @var list<string>|null
      */
     protected $networksDeleted;
 
     /**
      * Networks that were deleted.
      *
-     * @return string[]|null
+     * @return list<string>|null
      */
     public function getNetworksDeleted(): ?array
     {
@@ -35,7 +35,7 @@ class NetworksPrunePostResponse200 extends \ArrayObject
     /**
      * Networks that were deleted.
      *
-     * @param string[]|null $networksDeleted
+     * @param list<string>|null $networksDeleted
      */
     public function setNetworksDeleted(?array $networksDeleted): self
     {

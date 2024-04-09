@@ -25,7 +25,7 @@ class EndpointSpec extends \ArrayObject
      * List of exposed ports that this service is accessible on from the
      * outside. Ports can only be provided if `vip` resolution mode is used.
      *
-     * @var EndpointPortConfig[]|null
+     * @var list<EndpointPortConfig>|null
      */
     protected $ports;
 
@@ -52,7 +52,7 @@ class EndpointSpec extends \ArrayObject
      * List of exposed ports that this service is accessible on from the
      * outside. Ports can only be provided if `vip` resolution mode is used.
      *
-     * @return EndpointPortConfig[]|null
+     * @return list<EndpointPortConfig>|null
      */
     public function getPorts(): ?array
     {
@@ -63,7 +63,7 @@ class EndpointSpec extends \ArrayObject
      * List of exposed ports that this service is accessible on from the
      * outside. Ports can only be provided if `vip` resolution mode is used.
      *
-     * @param EndpointPortConfig[]|null $ports
+     * @param list<EndpointPortConfig>|null $ports
      */
     public function setPorts(?array $ports): self
     {

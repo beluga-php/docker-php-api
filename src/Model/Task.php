@@ -82,7 +82,7 @@ class Task extends \ArrayObject
      * User-defined resources can be either Integer resources (e.g, `SSD=3`) or
      * String resources (e.g, `GPU=UUID1`).
      *
-     * @var GenericResourcesItem[]|null
+     * @var list<GenericResourcesItem>|null
      */
     protected $assignedGenericResources;
     /**
@@ -307,7 +307,7 @@ class Task extends \ArrayObject
      * User-defined resources can be either Integer resources (e.g, `SSD=3`) or
      * String resources (e.g, `GPU=UUID1`).
      *
-     * @return GenericResourcesItem[]|null
+     * @return list<GenericResourcesItem>|null
      */
     public function getAssignedGenericResources(): ?array
     {
@@ -318,7 +318,7 @@ class Task extends \ArrayObject
      * User-defined resources can be either Integer resources (e.g, `SSD=3`) or
      * String resources (e.g, `GPU=UUID1`).
      *
-     * @param GenericResourcesItem[]|null $assignedGenericResources
+     * @param list<GenericResourcesItem>|null $assignedGenericResources
      */
     public function setAssignedGenericResources(?array $assignedGenericResources): self
     {

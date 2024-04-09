@@ -30,13 +30,13 @@ class TaskSpecContainerSpec extends \ArrayObject
     /**
      * The command to be run in the image.
      *
-     * @var string[]|null
+     * @var list<string>|null
      */
     protected $command;
     /**
      * Arguments to the command.
      *
-     * @var string[]|null
+     * @var list<string>|null
      */
     protected $args;
     /**
@@ -49,7 +49,7 @@ class TaskSpecContainerSpec extends \ArrayObject
     /**
      * A list of environment variables in the form `VAR=value`.
      *
-     * @var string[]|null
+     * @var list<string>|null
      */
     protected $env;
     /**
@@ -67,7 +67,7 @@ class TaskSpecContainerSpec extends \ArrayObject
     /**
      * A list of additional groups that the container process will run as.
      *
-     * @var string[]|null
+     * @var list<string>|null
      */
     protected $groups;
     /**
@@ -98,7 +98,7 @@ class TaskSpecContainerSpec extends \ArrayObject
      * Specification for mounts to be added to containers created as part
      * of the service.
      *
-     * @var Mount[]|null
+     * @var list<Mount>|null
      */
     protected $mounts;
     /**
@@ -124,11 +124,11 @@ class TaskSpecContainerSpec extends \ArrayObject
      * A list of hostname/IP mappings to add to the container's `hosts`
      * file. The format of extra hosts is specified in the
      * [hosts(5)](http://man7.org/linux/man-pages/man5/hosts.5.html)
-     * man page:.
+     * man page:
      *
      * IP_address canonical_hostname [aliases...]
      *
-     * @var string[]|null
+     * @var list<string>|null
      */
     protected $hosts;
     /**
@@ -142,14 +142,14 @@ class TaskSpecContainerSpec extends \ArrayObject
      * Secrets contains references to zero or more secrets that will be
      * exposed to the service.
      *
-     * @var TaskSpecContainerSpecSecretsItem[]|null
+     * @var list<TaskSpecContainerSpecSecretsItem>|null
      */
     protected $secrets;
     /**
      * Configs contains references to zero or more configs that will be
      * exposed to the service.
      *
-     * @var TaskSpecContainerSpecConfigsItem[]|null
+     * @var list<TaskSpecContainerSpecConfigsItem>|null
      */
     protected $configs;
     /**
@@ -183,20 +183,20 @@ class TaskSpecContainerSpec extends \ArrayObject
      * A list of kernel capabilities to add to the default set
      * for the container.
      *
-     * @var string[]|null
+     * @var list<string>|null
      */
     protected $capabilityAdd;
     /**
      * A list of kernel capabilities to drop from the default set
      * for the container.
      *
-     * @var string[]|null
+     * @var list<string>|null
      */
     protected $capabilityDrop;
     /**
      * A list of resource limits to set in the container. For example: `{"Name": "nofile", "Soft": 1024, "Hard": 2048}`".
      *
-     * @var TaskSpecContainerSpecUlimitsItem[]|null
+     * @var list<TaskSpecContainerSpecUlimitsItem>|null
      */
     protected $ulimits;
 
@@ -245,7 +245,7 @@ class TaskSpecContainerSpec extends \ArrayObject
     /**
      * The command to be run in the image.
      *
-     * @return string[]|null
+     * @return list<string>|null
      */
     public function getCommand(): ?array
     {
@@ -255,7 +255,7 @@ class TaskSpecContainerSpec extends \ArrayObject
     /**
      * The command to be run in the image.
      *
-     * @param string[]|null $command
+     * @param list<string>|null $command
      */
     public function setCommand(?array $command): self
     {
@@ -268,7 +268,7 @@ class TaskSpecContainerSpec extends \ArrayObject
     /**
      * Arguments to the command.
      *
-     * @return string[]|null
+     * @return list<string>|null
      */
     public function getArgs(): ?array
     {
@@ -278,7 +278,7 @@ class TaskSpecContainerSpec extends \ArrayObject
     /**
      * Arguments to the command.
      *
-     * @param string[]|null $args
+     * @param list<string>|null $args
      */
     public function setArgs(?array $args): self
     {
@@ -312,7 +312,7 @@ class TaskSpecContainerSpec extends \ArrayObject
     /**
      * A list of environment variables in the form `VAR=value`.
      *
-     * @return string[]|null
+     * @return list<string>|null
      */
     public function getEnv(): ?array
     {
@@ -322,7 +322,7 @@ class TaskSpecContainerSpec extends \ArrayObject
     /**
      * A list of environment variables in the form `VAR=value`.
      *
-     * @param string[]|null $env
+     * @param list<string>|null $env
      */
     public function setEnv(?array $env): self
     {
@@ -373,7 +373,7 @@ class TaskSpecContainerSpec extends \ArrayObject
     /**
      * A list of additional groups that the container process will run as.
      *
-     * @return string[]|null
+     * @return list<string>|null
      */
     public function getGroups(): ?array
     {
@@ -383,7 +383,7 @@ class TaskSpecContainerSpec extends \ArrayObject
     /**
      * A list of additional groups that the container process will run as.
      *
-     * @param string[]|null $groups
+     * @param list<string>|null $groups
      */
     public function setGroups(?array $groups): self
     {
@@ -473,7 +473,7 @@ class TaskSpecContainerSpec extends \ArrayObject
      * Specification for mounts to be added to containers created as part
      * of the service.
      *
-     * @return Mount[]|null
+     * @return list<Mount>|null
      */
     public function getMounts(): ?array
     {
@@ -484,7 +484,7 @@ class TaskSpecContainerSpec extends \ArrayObject
      * Specification for mounts to be added to containers created as part
      * of the service.
      *
-     * @param Mount[]|null $mounts
+     * @param list<Mount>|null $mounts
      */
     public function setMounts(?array $mounts): self
     {
@@ -557,11 +557,11 @@ class TaskSpecContainerSpec extends \ArrayObject
      * A list of hostname/IP mappings to add to the container's `hosts`
      * file. The format of extra hosts is specified in the
      * [hosts(5)](http://man7.org/linux/man-pages/man5/hosts.5.html)
-     * man page:.
+     * man page:
      *
      * IP_address canonical_hostname [aliases...]
      *
-     * @return string[]|null
+     * @return list<string>|null
      */
     public function getHosts(): ?array
     {
@@ -572,11 +572,11 @@ class TaskSpecContainerSpec extends \ArrayObject
      * A list of hostname/IP mappings to add to the container's `hosts`
      * file. The format of extra hosts is specified in the
      * [hosts(5)](http://man7.org/linux/man-pages/man5/hosts.5.html)
-     * man page:.
+     * man page:
      *
      * IP_address canonical_hostname [aliases...]
      *
-     * @param string[]|null $hosts
+     * @param list<string>|null $hosts
      */
     public function setHosts(?array $hosts): self
     {
@@ -611,7 +611,7 @@ class TaskSpecContainerSpec extends \ArrayObject
      * Secrets contains references to zero or more secrets that will be
      * exposed to the service.
      *
-     * @return TaskSpecContainerSpecSecretsItem[]|null
+     * @return list<TaskSpecContainerSpecSecretsItem>|null
      */
     public function getSecrets(): ?array
     {
@@ -622,7 +622,7 @@ class TaskSpecContainerSpec extends \ArrayObject
      * Secrets contains references to zero or more secrets that will be
      * exposed to the service.
      *
-     * @param TaskSpecContainerSpecSecretsItem[]|null $secrets
+     * @param list<TaskSpecContainerSpecSecretsItem>|null $secrets
      */
     public function setSecrets(?array $secrets): self
     {
@@ -636,7 +636,7 @@ class TaskSpecContainerSpec extends \ArrayObject
      * Configs contains references to zero or more configs that will be
      * exposed to the service.
      *
-     * @return TaskSpecContainerSpecConfigsItem[]|null
+     * @return list<TaskSpecContainerSpecConfigsItem>|null
      */
     public function getConfigs(): ?array
     {
@@ -647,7 +647,7 @@ class TaskSpecContainerSpec extends \ArrayObject
      * Configs contains references to zero or more configs that will be
      * exposed to the service.
      *
-     * @param TaskSpecContainerSpecConfigsItem[]|null $configs
+     * @param list<TaskSpecContainerSpecConfigsItem>|null $configs
      */
     public function setConfigs(?array $configs): self
     {
@@ -740,7 +740,7 @@ class TaskSpecContainerSpec extends \ArrayObject
      * A list of kernel capabilities to add to the default set
      * for the container.
      *
-     * @return string[]|null
+     * @return list<string>|null
      */
     public function getCapabilityAdd(): ?array
     {
@@ -751,7 +751,7 @@ class TaskSpecContainerSpec extends \ArrayObject
      * A list of kernel capabilities to add to the default set
      * for the container.
      *
-     * @param string[]|null $capabilityAdd
+     * @param list<string>|null $capabilityAdd
      */
     public function setCapabilityAdd(?array $capabilityAdd): self
     {
@@ -765,7 +765,7 @@ class TaskSpecContainerSpec extends \ArrayObject
      * A list of kernel capabilities to drop from the default set
      * for the container.
      *
-     * @return string[]|null
+     * @return list<string>|null
      */
     public function getCapabilityDrop(): ?array
     {
@@ -776,7 +776,7 @@ class TaskSpecContainerSpec extends \ArrayObject
      * A list of kernel capabilities to drop from the default set
      * for the container.
      *
-     * @param string[]|null $capabilityDrop
+     * @param list<string>|null $capabilityDrop
      */
     public function setCapabilityDrop(?array $capabilityDrop): self
     {
@@ -789,7 +789,7 @@ class TaskSpecContainerSpec extends \ArrayObject
     /**
      * A list of resource limits to set in the container. For example: `{"Name": "nofile", "Soft": 1024, "Hard": 2048}`".
      *
-     * @return TaskSpecContainerSpecUlimitsItem[]|null
+     * @return list<TaskSpecContainerSpecUlimitsItem>|null
      */
     public function getUlimits(): ?array
     {
@@ -799,7 +799,7 @@ class TaskSpecContainerSpec extends \ArrayObject
     /**
      * A list of resource limits to set in the container. For example: `{"Name": "nofile", "Soft": 1024, "Hard": 2048}`".
      *
-     * @param TaskSpecContainerSpecUlimitsItem[]|null $ulimits
+     * @param list<TaskSpecContainerSpecUlimitsItem>|null $ulimits
      */
     public function setUlimits(?array $ulimits): self
     {

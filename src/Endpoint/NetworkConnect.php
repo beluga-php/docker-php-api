@@ -14,7 +14,7 @@ class NetworkConnect extends \Docker\API\Runtime\Client\BaseEndpoint implements 
      * @param string $id     Network ID or name
      * @param array  $accept Accept content header application/json|text/plain
      */
-    public function __construct(string $id, \Docker\API\Model\NetworksIdConnectPostBody $requestBody = null, array $accept = [])
+    public function __construct(string $id, ?\Docker\API\Model\NetworksIdConnectPostBody $requestBody = null, array $accept = [])
     {
         $this->id = $id;
         $this->body = $requestBody;
@@ -56,7 +56,7 @@ class NetworkConnect extends \Docker\API\Runtime\Client\BaseEndpoint implements 
      *
      * @return null
      */
-    protected function transformResponseBody(\Psr\Http\Message\ResponseInterface $response, \Symfony\Component\Serializer\SerializerInterface $serializer, string $contentType = null)
+    protected function transformResponseBody(\Psr\Http\Message\ResponseInterface $response, \Symfony\Component\Serializer\SerializerInterface $serializer, ?string $contentType = null)
     {
         $status = $response->getStatusCode();
         $body = (string) $response->getBody();

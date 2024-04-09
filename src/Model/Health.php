@@ -35,7 +35,7 @@ class Health extends \ArrayObject
     /**
      * Log contains the last few results (oldest first).
      *
-     * @var HealthcheckResult[]|null
+     * @var list<HealthcheckResult>|null
      */
     protected $log;
 
@@ -90,7 +90,7 @@ class Health extends \ArrayObject
     /**
      * Log contains the last few results (oldest first).
      *
-     * @return HealthcheckResult[]|null
+     * @return list<HealthcheckResult>|null
      */
     public function getLog(): ?array
     {
@@ -100,7 +100,7 @@ class Health extends \ArrayObject
     /**
      * Log contains the last few results (oldest first).
      *
-     * @param HealthcheckResult[]|null $log
+     * @param list<HealthcheckResult>|null $log
      */
     public function setLog(?array $log): self
     {

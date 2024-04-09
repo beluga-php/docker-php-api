@@ -42,7 +42,7 @@ class ClusterVolumeInfo extends \ArrayObject
     /**
      * The topology this volume is actually accessible from.
      *
-     * @var array<string, string>[]|null
+     * @var list<array<string, string>>|null
      */
     protected $accessibleTopology;
 
@@ -122,7 +122,7 @@ class ClusterVolumeInfo extends \ArrayObject
     /**
      * The topology this volume is actually accessible from.
      *
-     * @return array<string, string>[]|null
+     * @return list<array<string, string>>|null
      */
     public function getAccessibleTopology(): ?array
     {
@@ -132,7 +132,7 @@ class ClusterVolumeInfo extends \ArrayObject
     /**
      * The topology this volume is actually accessible from.
      *
-     * @param array<string, string>[]|null $accessibleTopology
+     * @param list<array<string, string>>|null $accessibleTopology
      */
     public function setAccessibleTopology(?array $accessibleTopology): self
     {

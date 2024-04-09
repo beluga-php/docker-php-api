@@ -28,7 +28,7 @@ class ImagesNameHistoryGetResponse200Item extends \ArrayObject
      */
     protected $createdBy;
     /**
-     * @var string[]|null
+     * @var list<string>|null
      */
     protected $tags;
     /**
@@ -80,7 +80,7 @@ class ImagesNameHistoryGetResponse200Item extends \ArrayObject
     }
 
     /**
-     * @return string[]|null
+     * @return list<string>|null
      */
     public function getTags(): ?array
     {
@@ -88,7 +88,7 @@ class ImagesNameHistoryGetResponse200Item extends \ArrayObject
     }
 
     /**
-     * @param string[]|null $tags
+     * @param list<string>|null $tags
      */
     public function setTags(?array $tags): self
     {

@@ -64,7 +64,7 @@ class ClusterVolumeSpecAccessMode extends \ArrayObject
      * Swarm Secrets that are passed to the CSI storage plugin when
      * operating on this volume.
      *
-     * @var ClusterVolumeSpecAccessModeSecretsItem[]|null
+     * @var list<ClusterVolumeSpecAccessModeSecretsItem>|null
      */
     protected $secrets;
     /**
@@ -207,7 +207,7 @@ class ClusterVolumeSpecAccessMode extends \ArrayObject
      * Swarm Secrets that are passed to the CSI storage plugin when
      * operating on this volume.
      *
-     * @return ClusterVolumeSpecAccessModeSecretsItem[]|null
+     * @return list<ClusterVolumeSpecAccessModeSecretsItem>|null
      */
     public function getSecrets(): ?array
     {
@@ -218,7 +218,7 @@ class ClusterVolumeSpecAccessMode extends \ArrayObject
      * Swarm Secrets that are passed to the CSI storage plugin when
      * operating on this volume.
      *
-     * @param ClusterVolumeSpecAccessModeSecretsItem[]|null $secrets
+     * @param list<ClusterVolumeSpecAccessModeSecretsItem>|null $secrets
      */
     public function setSecrets(?array $secrets): self
     {

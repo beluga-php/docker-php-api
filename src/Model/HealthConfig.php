@@ -16,14 +16,14 @@ class HealthConfig extends \ArrayObject
         return \array_key_exists($property, $this->initialized);
     }
     /**
-     * The test to perform. Possible values are:.
+     * The test to perform. Possible values are:
      *
      * - `[]` inherit healthcheck from image or parent image
      * - `["NONE"]` disable healthcheck
      * - `["CMD", args...]` exec arguments directly
      * - `["CMD-SHELL", command]` run command with system's default shell
      *
-     * @var string[]|null
+     * @var list<string>|null
      */
     protected $test;
     /**
@@ -57,14 +57,14 @@ class HealthConfig extends \ArrayObject
     protected $startPeriod;
 
     /**
-     * The test to perform. Possible values are:.
+     * The test to perform. Possible values are:
      *
      * - `[]` inherit healthcheck from image or parent image
      * - `["NONE"]` disable healthcheck
      * - `["CMD", args...]` exec arguments directly
      * - `["CMD-SHELL", command]` run command with system's default shell
      *
-     * @return string[]|null
+     * @return list<string>|null
      */
     public function getTest(): ?array
     {
@@ -72,14 +72,14 @@ class HealthConfig extends \ArrayObject
     }
 
     /**
-     * The test to perform. Possible values are:.
+     * The test to perform. Possible values are:
      *
      * - `[]` inherit healthcheck from image or parent image
      * - `["NONE"]` disable healthcheck
      * - `["CMD", args...]` exec arguments directly
      * - `["CMD-SHELL", command]` run command with system's default shell
      *
-     * @param string[]|null $test
+     * @param list<string>|null $test
      */
     public function setTest(?array $test): self
     {

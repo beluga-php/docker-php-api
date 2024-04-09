@@ -18,32 +18,32 @@ class PluginsInfo extends \ArrayObject
     /**
      * Names of available volume-drivers, and network-driver plugins.
      *
-     * @var string[]|null
+     * @var list<string>|null
      */
     protected $volume;
     /**
      * Names of available network-drivers, and network-driver plugins.
      *
-     * @var string[]|null
+     * @var list<string>|null
      */
     protected $network;
     /**
      * Names of available authorization plugins.
      *
-     * @var string[]|null
+     * @var list<string>|null
      */
     protected $authorization;
     /**
      * Names of available logging-drivers, and logging-driver plugins.
      *
-     * @var string[]|null
+     * @var list<string>|null
      */
     protected $log;
 
     /**
      * Names of available volume-drivers, and network-driver plugins.
      *
-     * @return string[]|null
+     * @return list<string>|null
      */
     public function getVolume(): ?array
     {
@@ -53,7 +53,7 @@ class PluginsInfo extends \ArrayObject
     /**
      * Names of available volume-drivers, and network-driver plugins.
      *
-     * @param string[]|null $volume
+     * @param list<string>|null $volume
      */
     public function setVolume(?array $volume): self
     {
@@ -66,7 +66,7 @@ class PluginsInfo extends \ArrayObject
     /**
      * Names of available network-drivers, and network-driver plugins.
      *
-     * @return string[]|null
+     * @return list<string>|null
      */
     public function getNetwork(): ?array
     {
@@ -76,7 +76,7 @@ class PluginsInfo extends \ArrayObject
     /**
      * Names of available network-drivers, and network-driver plugins.
      *
-     * @param string[]|null $network
+     * @param list<string>|null $network
      */
     public function setNetwork(?array $network): self
     {
@@ -89,7 +89,7 @@ class PluginsInfo extends \ArrayObject
     /**
      * Names of available authorization plugins.
      *
-     * @return string[]|null
+     * @return list<string>|null
      */
     public function getAuthorization(): ?array
     {
@@ -99,7 +99,7 @@ class PluginsInfo extends \ArrayObject
     /**
      * Names of available authorization plugins.
      *
-     * @param string[]|null $authorization
+     * @param list<string>|null $authorization
      */
     public function setAuthorization(?array $authorization): self
     {
@@ -112,7 +112,7 @@ class PluginsInfo extends \ArrayObject
     /**
      * Names of available logging-drivers, and logging-driver plugins.
      *
-     * @return string[]|null
+     * @return list<string>|null
      */
     public function getLog(): ?array
     {
@@ -122,7 +122,7 @@ class PluginsInfo extends \ArrayObject
     /**
      * Names of available logging-drivers, and logging-driver plugins.
      *
-     * @param string[]|null $log
+     * @param list<string>|null $log
      */
     public function setLog(?array $log): self
     {

@@ -62,7 +62,7 @@ class ClusterVolume extends \ArrayObject
      * The status of the volume as it pertains to its publishing and use on
      * specific nodes.
      *
-     * @var ClusterVolumePublishStatusItem[]|null
+     * @var list<ClusterVolumePublishStatusItem>|null
      */
     protected $publishStatus;
 
@@ -194,7 +194,7 @@ class ClusterVolume extends \ArrayObject
      * The status of the volume as it pertains to its publishing and use on
      * specific nodes.
      *
-     * @return ClusterVolumePublishStatusItem[]|null
+     * @return list<ClusterVolumePublishStatusItem>|null
      */
     public function getPublishStatus(): ?array
     {
@@ -205,7 +205,7 @@ class ClusterVolume extends \ArrayObject
      * The status of the volume as it pertains to its publishing and use on
      * specific nodes.
      *
-     * @param ClusterVolumePublishStatusItem[]|null $publishStatus
+     * @param list<ClusterVolumePublishStatusItem>|null $publishStatus
      */
     public function setPublishStatus(?array $publishStatus): self
     {

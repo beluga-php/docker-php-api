@@ -36,7 +36,7 @@ class ContainersIdExecPostBody extends \ArrayObject
     /**
      * Initial console size, as an `[height, width]` array.
      *
-     * @var int[]|null
+     * @var list<int>|null
      */
     protected $consoleSize;
     /**
@@ -56,13 +56,13 @@ class ContainersIdExecPostBody extends \ArrayObject
     /**
      * A list of environment variables in the form `["VAR=value", ...]`.
      *
-     * @var string[]|null
+     * @var list<string>|null
      */
     protected $env;
     /**
      * Command to run, as a string or array of strings.
      *
-     * @var string[]|null
+     * @var list<string>|null
      */
     protected $cmd;
     /**
@@ -146,7 +146,7 @@ class ContainersIdExecPostBody extends \ArrayObject
     /**
      * Initial console size, as an `[height, width]` array.
      *
-     * @return int[]|null
+     * @return list<int>|null
      */
     public function getConsoleSize(): ?array
     {
@@ -156,7 +156,7 @@ class ContainersIdExecPostBody extends \ArrayObject
     /**
      * Initial console size, as an `[height, width]` array.
      *
-     * @param int[]|null $consoleSize
+     * @param list<int>|null $consoleSize
      */
     public function setConsoleSize(?array $consoleSize): self
     {
@@ -211,7 +211,7 @@ class ContainersIdExecPostBody extends \ArrayObject
     /**
      * A list of environment variables in the form `["VAR=value", ...]`.
      *
-     * @return string[]|null
+     * @return list<string>|null
      */
     public function getEnv(): ?array
     {
@@ -221,7 +221,7 @@ class ContainersIdExecPostBody extends \ArrayObject
     /**
      * A list of environment variables in the form `["VAR=value", ...]`.
      *
-     * @param string[]|null $env
+     * @param list<string>|null $env
      */
     public function setEnv(?array $env): self
     {
@@ -234,7 +234,7 @@ class ContainersIdExecPostBody extends \ArrayObject
     /**
      * Command to run, as a string or array of strings.
      *
-     * @return string[]|null
+     * @return list<string>|null
      */
     public function getCmd(): ?array
     {
@@ -244,7 +244,7 @@ class ContainersIdExecPostBody extends \ArrayObject
     /**
      * Command to run, as a string or array of strings.
      *
-     * @param string[]|null $cmd
+     * @param list<string>|null $cmd
      */
     public function setCmd(?array $cmd): self
     {

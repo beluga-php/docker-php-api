@@ -16,7 +16,7 @@ class BuildPrunePostResponse200 extends \ArrayObject
         return \array_key_exists($property, $this->initialized);
     }
     /**
-     * @var string[]|null
+     * @var list<string>|null
      */
     protected $cachesDeleted;
     /**
@@ -27,7 +27,7 @@ class BuildPrunePostResponse200 extends \ArrayObject
     protected $spaceReclaimed;
 
     /**
-     * @return string[]|null
+     * @return list<string>|null
      */
     public function getCachesDeleted(): ?array
     {
@@ -35,7 +35,7 @@ class BuildPrunePostResponse200 extends \ArrayObject
     }
 
     /**
-     * @param string[]|null $cachesDeleted
+     * @param list<string>|null $cachesDeleted
      */
     public function setCachesDeleted(?array $cachesDeleted): self
     {

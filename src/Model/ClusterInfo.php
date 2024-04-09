@@ -81,7 +81,7 @@ class ClusterInfo extends \ArrayObject
      * Default Address Pool specifies default subnet pools for global scope
      * networks.
      *
-     * @var string[]|null
+     * @var list<string>|null
      */
     protected $defaultAddrPool;
     /**
@@ -276,7 +276,7 @@ class ClusterInfo extends \ArrayObject
      * Default Address Pool specifies default subnet pools for global scope
      * networks.
      *
-     * @return string[]|null
+     * @return list<string>|null
      */
     public function getDefaultAddrPool(): ?array
     {
@@ -287,7 +287,7 @@ class ClusterInfo extends \ArrayObject
      * Default Address Pool specifies default subnet pools for global scope
      * networks.
      *
-     * @param string[]|null $defaultAddrPool
+     * @param list<string>|null $defaultAddrPool
      */
     public function setDefaultAddrPool(?array $defaultAddrPool): self
     {

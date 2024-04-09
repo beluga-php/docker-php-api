@@ -89,7 +89,7 @@ class TaskSpec extends \ArrayObject
     /**
      * Specifies which networks the service should attach to.
      *
-     * @var NetworkAttachmentConfig[]|null
+     * @var list<NetworkAttachmentConfig>|null
      */
     protected $networks;
     /**
@@ -300,7 +300,7 @@ class TaskSpec extends \ArrayObject
     /**
      * Specifies which networks the service should attach to.
      *
-     * @return NetworkAttachmentConfig[]|null
+     * @return list<NetworkAttachmentConfig>|null
      */
     public function getNetworks(): ?array
     {
@@ -310,7 +310,7 @@ class TaskSpec extends \ArrayObject
     /**
      * Specifies which networks the service should attach to.
      *
-     * @param NetworkAttachmentConfig[]|null $networks
+     * @param list<NetworkAttachmentConfig>|null $networks
      */
     public function setNetworks(?array $networks): self
     {

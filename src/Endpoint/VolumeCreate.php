@@ -8,7 +8,7 @@ class VolumeCreate extends \Docker\API\Runtime\Client\BaseEndpoint implements \D
 {
     use \Docker\API\Runtime\Client\EndpointTrait;
 
-    public function __construct(\Docker\API\Model\VolumeCreateOptions $requestBody = null)
+    public function __construct(?\Docker\API\Model\VolumeCreateOptions $requestBody = null)
     {
         $this->body = $requestBody;
     }
@@ -42,7 +42,7 @@ class VolumeCreate extends \Docker\API\Runtime\Client\BaseEndpoint implements \D
      *
      * @return \Docker\API\Model\Volume|null
      */
-    protected function transformResponseBody(\Psr\Http\Message\ResponseInterface $response, \Symfony\Component\Serializer\SerializerInterface $serializer, string $contentType = null)
+    protected function transformResponseBody(\Psr\Http\Message\ResponseInterface $response, \Symfony\Component\Serializer\SerializerInterface $serializer, ?string $contentType = null)
     {
         $status = $response->getStatusCode();
         $body = (string) $response->getBody();

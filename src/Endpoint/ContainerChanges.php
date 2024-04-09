@@ -11,7 +11,7 @@ class ContainerChanges extends \Docker\API\Runtime\Client\BaseEndpoint implement
 
     /**
      * Returns which files in a container's filesystem have been added, deleted,
-     * or modified. The `Kind` of modification can be one of:.
+     * or modified. The `Kind` of modification can be one of:
      *
      * - `0`: Modified ("C")
      * - `1`: Added ("A")
@@ -50,7 +50,7 @@ class ContainerChanges extends \Docker\API\Runtime\Client\BaseEndpoint implement
      *
      * @return \Docker\API\Model\FilesystemChange[]|null
      */
-    protected function transformResponseBody(\Psr\Http\Message\ResponseInterface $response, \Symfony\Component\Serializer\SerializerInterface $serializer, string $contentType = null)
+    protected function transformResponseBody(\Psr\Http\Message\ResponseInterface $response, \Symfony\Component\Serializer\SerializerInterface $serializer, ?string $contentType = null)
     {
         $status = $response->getStatusCode();
         $body = (string) $response->getBody();

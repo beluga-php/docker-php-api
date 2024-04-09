@@ -34,7 +34,7 @@ class PluginUpgrade extends \Docker\API\Runtime\Client\BaseEndpoint implements \
      *
      * @param array $accept Accept content header application/json|text/plain
      */
-    public function __construct(string $name, array $requestBody = null, array $queryParameters = [], array $headerParameters = [], array $accept = [])
+    public function __construct(string $name, ?array $requestBody = null, array $queryParameters = [], array $headerParameters = [], array $accept = [])
     {
         $this->name = $name;
         $this->body = $requestBody;
@@ -102,7 +102,7 @@ class PluginUpgrade extends \Docker\API\Runtime\Client\BaseEndpoint implements \
      *
      * @return null
      */
-    protected function transformResponseBody(\Psr\Http\Message\ResponseInterface $response, \Symfony\Component\Serializer\SerializerInterface $serializer, string $contentType = null)
+    protected function transformResponseBody(\Psr\Http\Message\ResponseInterface $response, \Symfony\Component\Serializer\SerializerInterface $serializer, ?string $contentType = null)
     {
         $status = $response->getStatusCode();
         $body = (string) $response->getBody();

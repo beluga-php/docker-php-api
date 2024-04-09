@@ -16,7 +16,7 @@ class MountPoint extends \ArrayObject
         return \array_key_exists($property, $this->initialized);
     }
     /**
-     * The mount type:.
+     * The mount type:
      *
      * - `bind` a mount of a file or directory from the host into the container.
      * - `volume` a docker volume with the given `Name`.
@@ -83,7 +83,7 @@ class MountPoint extends \ArrayObject
     protected $propagation;
 
     /**
-     * The mount type:.
+     * The mount type:
      *
      * - `bind` a mount of a file or directory from the host into the container.
      * - `volume` a docker volume with the given `Name`.
@@ -97,7 +97,7 @@ class MountPoint extends \ArrayObject
     }
 
     /**
-     * The mount type:.
+     * The mount type:
      *
      * - `bind` a mount of a file or directory from the host into the container.
      * - `volume` a docker volume with the given `Name`.

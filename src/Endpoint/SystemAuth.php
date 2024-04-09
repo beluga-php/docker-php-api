@@ -12,7 +12,7 @@ class SystemAuth extends \Docker\API\Runtime\Client\BaseEndpoint implements \Doc
      * Validate credentials for a registry and, if available, get an identity
      * token for accessing the registry without password.
      */
-    public function __construct(\Docker\API\Model\AuthConfig $requestBody = null)
+    public function __construct(?\Docker\API\Model\AuthConfig $requestBody = null)
     {
         $this->body = $requestBody;
     }
@@ -47,7 +47,7 @@ class SystemAuth extends \Docker\API\Runtime\Client\BaseEndpoint implements \Doc
      *
      * @return \Docker\API\Model\AuthPostResponse200|null
      */
-    protected function transformResponseBody(\Psr\Http\Message\ResponseInterface $response, \Symfony\Component\Serializer\SerializerInterface $serializer, string $contentType = null)
+    protected function transformResponseBody(\Psr\Http\Message\ResponseInterface $response, \Symfony\Component\Serializer\SerializerInterface $serializer, ?string $contentType = null)
     {
         $status = $response->getStatusCode();
         $body = (string) $response->getBody();

@@ -24,7 +24,7 @@ class ContainerSummary extends \ArrayObject
     /**
      * The names that this container has been given.
      *
-     * @var string[]|null
+     * @var list<string>|null
      */
     protected $names;
     /**
@@ -54,7 +54,7 @@ class ContainerSummary extends \ArrayObject
     /**
      * The ports exposed by this container.
      *
-     * @var Port[]|null
+     * @var list<Port>|null
      */
     protected $ports;
     /**
@@ -98,7 +98,7 @@ class ContainerSummary extends \ArrayObject
      */
     protected $networkSettings;
     /**
-     * @var MountPoint[]|null
+     * @var list<MountPoint>|null
      */
     protected $mounts;
 
@@ -124,7 +124,7 @@ class ContainerSummary extends \ArrayObject
     /**
      * The names that this container has been given.
      *
-     * @return string[]|null
+     * @return list<string>|null
      */
     public function getNames(): ?array
     {
@@ -134,7 +134,7 @@ class ContainerSummary extends \ArrayObject
     /**
      * The names that this container has been given.
      *
-     * @param string[]|null $names
+     * @param list<string>|null $names
      */
     public function setNames(?array $names): self
     {
@@ -223,7 +223,7 @@ class ContainerSummary extends \ArrayObject
     /**
      * The ports exposed by this container.
      *
-     * @return Port[]|null
+     * @return list<Port>|null
      */
     public function getPorts(): ?array
     {
@@ -233,7 +233,7 @@ class ContainerSummary extends \ArrayObject
     /**
      * The ports exposed by this container.
      *
-     * @param Port[]|null $ports
+     * @param list<Port>|null $ports
      */
     public function setPorts(?array $ports): self
     {
@@ -375,7 +375,7 @@ class ContainerSummary extends \ArrayObject
     }
 
     /**
-     * @return MountPoint[]|null
+     * @return list<MountPoint>|null
      */
     public function getMounts(): ?array
     {
@@ -383,7 +383,7 @@ class ContainerSummary extends \ArrayObject
     }
 
     /**
-     * @param MountPoint[]|null $mounts
+     * @param list<MountPoint>|null $mounts
      */
     public function setMounts(?array $mounts): self
     {

@@ -18,21 +18,21 @@ class ContainersIdTopGetJsonResponse200 extends \ArrayObject
     /**
      * The ps column titles.
      *
-     * @var string[]|null
+     * @var list<string>|null
      */
     protected $titles;
     /**
      * Each process running in the container, where each is process
      * is an array of values corresponding to the titles.
      *
-     * @var string[][]|null
+     * @var list<list<string>>|null
      */
     protected $processes;
 
     /**
      * The ps column titles.
      *
-     * @return string[]|null
+     * @return list<string>|null
      */
     public function getTitles(): ?array
     {
@@ -42,7 +42,7 @@ class ContainersIdTopGetJsonResponse200 extends \ArrayObject
     /**
      * The ps column titles.
      *
-     * @param string[]|null $titles
+     * @param list<string>|null $titles
      */
     public function setTitles(?array $titles): self
     {
@@ -56,7 +56,7 @@ class ContainersIdTopGetJsonResponse200 extends \ArrayObject
      * Each process running in the container, where each is process
      * is an array of values corresponding to the titles.
      *
-     * @return string[][]|null
+     * @return list<list<string>>|null
      */
     public function getProcesses(): ?array
     {
@@ -67,7 +67,7 @@ class ContainersIdTopGetJsonResponse200 extends \ArrayObject
      * Each process running in the container, where each is process
      * is an array of values corresponding to the titles.
      *
-     * @param string[][]|null $processes
+     * @param list<list<string>>|null $processes
      */
     public function setProcesses(?array $processes): self
     {

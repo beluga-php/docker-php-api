@@ -24,7 +24,7 @@ class IndexInfo extends \ArrayObject
     /**
      * List of mirrors, expressed as URIs.
      *
-     * @var string[]|null
+     * @var list<string>|null
      */
     protected $mirrors;
     /**
@@ -73,7 +73,7 @@ class IndexInfo extends \ArrayObject
     /**
      * List of mirrors, expressed as URIs.
      *
-     * @return string[]|null
+     * @return list<string>|null
      */
     public function getMirrors(): ?array
     {
@@ -83,7 +83,7 @@ class IndexInfo extends \ArrayObject
     /**
      * List of mirrors, expressed as URIs.
      *
-     * @param string[]|null $mirrors
+     * @param list<string>|null $mirrors
      */
     public function setMirrors(?array $mirrors): self
     {

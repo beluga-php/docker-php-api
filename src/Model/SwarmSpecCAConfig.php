@@ -25,7 +25,7 @@ class SwarmSpecCAConfig extends \ArrayObject
      * Configuration for forwarding signing requests to an external
      * certificate authority.
      *
-     * @var SwarmSpecCAConfigExternalCAsItem[]|null
+     * @var list<SwarmSpecCAConfigExternalCAsItem>|null
      */
     protected $externalCAs;
     /**
@@ -74,7 +74,7 @@ class SwarmSpecCAConfig extends \ArrayObject
      * Configuration for forwarding signing requests to an external
      * certificate authority.
      *
-     * @return SwarmSpecCAConfigExternalCAsItem[]|null
+     * @return list<SwarmSpecCAConfigExternalCAsItem>|null
      */
     public function getExternalCAs(): ?array
     {
@@ -85,7 +85,7 @@ class SwarmSpecCAConfig extends \ArrayObject
      * Configuration for forwarding signing requests to an external
      * certificate authority.
      *
-     * @param SwarmSpecCAConfigExternalCAsItem[]|null $externalCAs
+     * @param list<SwarmSpecCAConfigExternalCAsItem>|null $externalCAs
      */
     public function setExternalCAs(?array $externalCAs): self
     {

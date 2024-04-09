@@ -48,7 +48,7 @@ class TaskSpecContainerSpecPrivilegesCredentialSpec extends \ArrayObject
     protected $file;
     /**
      * Load credential spec from this value in the Windows
-     * registry. The specified registry value must be located in:.
+     * registry. The specified registry value must be located in:
      *
      * `HKLM\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Virtualization\Containers\CredentialSpecs`
      *
@@ -140,7 +140,7 @@ class TaskSpecContainerSpecPrivilegesCredentialSpec extends \ArrayObject
 
     /**
      * Load credential spec from this value in the Windows
-     * registry. The specified registry value must be located in:.
+     * registry. The specified registry value must be located in:
      *
      * `HKLM\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Virtualization\Containers\CredentialSpecs`
      *
@@ -157,7 +157,7 @@ class TaskSpecContainerSpecPrivilegesCredentialSpec extends \ArrayObject
 
     /**
      * Load credential spec from this value in the Windows
-     * registry. The specified registry value must be located in:.
+     * registry. The specified registry value must be located in:
      *
      * `HKLM\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Virtualization\Containers\CredentialSpecs`
      *

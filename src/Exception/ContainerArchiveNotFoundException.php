@@ -11,7 +11,7 @@ class ContainerArchiveNotFoundException extends NotFoundException
      */
     private $response;
 
-    public function __construct(\Psr\Http\Message\ResponseInterface $response = null)
+    public function __construct(?\Psr\Http\Message\ResponseInterface $response = null)
     {
         parent::__construct('Container or path does not exist');
         $this->response = $response;

@@ -18,7 +18,7 @@ class ImagesPrunePostResponse200 extends \ArrayObject
     /**
      * Images that were deleted.
      *
-     * @var ImageDeleteResponseItem[]|null
+     * @var list<ImageDeleteResponseItem>|null
      */
     protected $imagesDeleted;
     /**
@@ -31,7 +31,7 @@ class ImagesPrunePostResponse200 extends \ArrayObject
     /**
      * Images that were deleted.
      *
-     * @return ImageDeleteResponseItem[]|null
+     * @return list<ImageDeleteResponseItem>|null
      */
     public function getImagesDeleted(): ?array
     {
@@ -41,7 +41,7 @@ class ImagesPrunePostResponse200 extends \ArrayObject
     /**
      * Images that were deleted.
      *
-     * @param ImageDeleteResponseItem[]|null $imagesDeleted
+     * @param list<ImageDeleteResponseItem>|null $imagesDeleted
      */
     public function setImagesDeleted(?array $imagesDeleted): self
     {

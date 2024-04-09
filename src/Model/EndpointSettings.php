@@ -22,11 +22,11 @@ class EndpointSettings extends \ArrayObject
      */
     protected $iPAMConfig;
     /**
-     * @var string[]|null
+     * @var list<string>|null
      */
     protected $links;
     /**
-     * @var string[]|null
+     * @var list<string>|null
      */
     protected $aliases;
     /**
@@ -111,7 +111,7 @@ class EndpointSettings extends \ArrayObject
     }
 
     /**
-     * @return string[]|null
+     * @return list<string>|null
      */
     public function getLinks(): ?array
     {
@@ -119,7 +119,7 @@ class EndpointSettings extends \ArrayObject
     }
 
     /**
-     * @param string[]|null $links
+     * @param list<string>|null $links
      */
     public function setLinks(?array $links): self
     {
@@ -130,7 +130,7 @@ class EndpointSettings extends \ArrayObject
     }
 
     /**
-     * @return string[]|null
+     * @return list<string>|null
      */
     public function getAliases(): ?array
     {
@@ -138,7 +138,7 @@ class EndpointSettings extends \ArrayObject
     }
 
     /**
-     * @param string[]|null $aliases
+     * @param list<string>|null $aliases
      */
     public function setAliases(?array $aliases): self
     {

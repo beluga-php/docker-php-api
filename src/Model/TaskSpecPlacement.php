@@ -20,7 +20,7 @@ class TaskSpecPlacement extends \ArrayObject
      * a task can be scheduled. Constraint expressions can either use a
      * _match_ (`==`) or _exclude_ (`!=`) rule. Multiple constraints find
      * nodes that satisfy every expression (AND match). Constraints can
-     * match node or Docker Engine labels as follows:.
+     * match node or Docker Engine labels as follows:
      *
      * node attribute       | matches                        | example
      * ---------------------|--------------------------------|-----------------------------------------------
@@ -36,7 +36,7 @@ class TaskSpecPlacement extends \ArrayObject
      * drivers, etc. Swarm administrators add `node.labels` for operational
      * purposes by using the [`node update endpoint`](#operation/NodeUpdate).
      *
-     * @var string[]|null
+     * @var list<string>|null
      */
     protected $constraints;
     /**
@@ -44,7 +44,7 @@ class TaskSpecPlacement extends \ArrayObject
      * such as topology. They are provided in order from highest to
      * lowest precedence.
      *
-     * @var TaskSpecPlacementPreferencesItem[]|null
+     * @var list<TaskSpecPlacementPreferencesItem>|null
      */
     protected $preferences;
     /**
@@ -60,7 +60,7 @@ class TaskSpecPlacement extends \ArrayObject
      * If empty, then the platform filter is off, meaning there are no
      * scheduling restrictions.
      *
-     * @var Platform[]|null
+     * @var list<Platform>|null
      */
     protected $platforms;
 
@@ -69,7 +69,7 @@ class TaskSpecPlacement extends \ArrayObject
      * a task can be scheduled. Constraint expressions can either use a
      * _match_ (`==`) or _exclude_ (`!=`) rule. Multiple constraints find
      * nodes that satisfy every expression (AND match). Constraints can
-     * match node or Docker Engine labels as follows:.
+     * match node or Docker Engine labels as follows:
      *
      * node attribute       | matches                        | example
      * ---------------------|--------------------------------|-----------------------------------------------
@@ -85,7 +85,7 @@ class TaskSpecPlacement extends \ArrayObject
      * drivers, etc. Swarm administrators add `node.labels` for operational
      * purposes by using the [`node update endpoint`](#operation/NodeUpdate).
      *
-     * @return string[]|null
+     * @return list<string>|null
      */
     public function getConstraints(): ?array
     {
@@ -97,7 +97,7 @@ class TaskSpecPlacement extends \ArrayObject
      * a task can be scheduled. Constraint expressions can either use a
      * _match_ (`==`) or _exclude_ (`!=`) rule. Multiple constraints find
      * nodes that satisfy every expression (AND match). Constraints can
-     * match node or Docker Engine labels as follows:.
+     * match node or Docker Engine labels as follows:
      *
      * node attribute       | matches                        | example
      * ---------------------|--------------------------------|-----------------------------------------------
@@ -113,7 +113,7 @@ class TaskSpecPlacement extends \ArrayObject
      * drivers, etc. Swarm administrators add `node.labels` for operational
      * purposes by using the [`node update endpoint`](#operation/NodeUpdate).
      *
-     * @param string[]|null $constraints
+     * @param list<string>|null $constraints
      */
     public function setConstraints(?array $constraints): self
     {
@@ -128,7 +128,7 @@ class TaskSpecPlacement extends \ArrayObject
      * such as topology. They are provided in order from highest to
      * lowest precedence.
      *
-     * @return TaskSpecPlacementPreferencesItem[]|null
+     * @return list<TaskSpecPlacementPreferencesItem>|null
      */
     public function getPreferences(): ?array
     {
@@ -140,7 +140,7 @@ class TaskSpecPlacement extends \ArrayObject
      * such as topology. They are provided in order from highest to
      * lowest precedence.
      *
-     * @param TaskSpecPlacementPreferencesItem[]|null $preferences
+     * @param list<TaskSpecPlacementPreferencesItem>|null $preferences
      */
     public function setPreferences(?array $preferences): self
     {
@@ -177,7 +177,7 @@ class TaskSpecPlacement extends \ArrayObject
      * If empty, then the platform filter is off, meaning there are no
      * scheduling restrictions.
      *
-     * @return Platform[]|null
+     * @return list<Platform>|null
      */
     public function getPlatforms(): ?array
     {
@@ -190,7 +190,7 @@ class TaskSpecPlacement extends \ArrayObject
      * If empty, then the platform filter is off, meaning there are no
      * scheduling restrictions.
      *
-     * @param Platform[]|null $platforms
+     * @param list<Platform>|null $platforms
      */
     public function setPlatforms(?array $platforms): self
     {

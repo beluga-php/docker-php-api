@@ -18,14 +18,14 @@ class ServiceUpdateResponse extends \ArrayObject
     /**
      * Optional warning messages.
      *
-     * @var string[]|null
+     * @var list<string>|null
      */
     protected $warnings;
 
     /**
      * Optional warning messages.
      *
-     * @return string[]|null
+     * @return list<string>|null
      */
     public function getWarnings(): ?array
     {
@@ -35,7 +35,7 @@ class ServiceUpdateResponse extends \ArrayObject
     /**
      * Optional warning messages.
      *
-     * @param string[]|null $warnings
+     * @param list<string>|null $warnings
      */
     public function setWarnings(?array $warnings): self
     {

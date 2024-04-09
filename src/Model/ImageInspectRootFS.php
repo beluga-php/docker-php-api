@@ -20,7 +20,7 @@ class ImageInspectRootFS extends \ArrayObject
      */
     protected $type;
     /**
-     * @var string[]|null
+     * @var list<string>|null
      */
     protected $layers;
 
@@ -38,7 +38,7 @@ class ImageInspectRootFS extends \ArrayObject
     }
 
     /**
-     * @return string[]|null
+     * @return list<string>|null
      */
     public function getLayers(): ?array
     {
@@ -46,7 +46,7 @@ class ImageInspectRootFS extends \ArrayObject
     }
 
     /**
-     * @param string[]|null $layers
+     * @param list<string>|null $layers
      */
     public function setLayers(?array $layers): self
     {

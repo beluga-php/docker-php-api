@@ -24,11 +24,11 @@ class PluginConfigArgs extends \ArrayObject
      */
     protected $description;
     /**
-     * @var string[]|null
+     * @var list<string>|null
      */
     protected $settable;
     /**
-     * @var string[]|null
+     * @var list<string>|null
      */
     protected $value;
 
@@ -59,7 +59,7 @@ class PluginConfigArgs extends \ArrayObject
     }
 
     /**
-     * @return string[]|null
+     * @return list<string>|null
      */
     public function getSettable(): ?array
     {
@@ -67,7 +67,7 @@ class PluginConfigArgs extends \ArrayObject
     }
 
     /**
-     * @param string[]|null $settable
+     * @param list<string>|null $settable
      */
     public function setSettable(?array $settable): self
     {
@@ -78,7 +78,7 @@ class PluginConfigArgs extends \ArrayObject
     }
 
     /**
-     * @return string[]|null
+     * @return list<string>|null
      */
     public function getValue(): ?array
     {
@@ -86,7 +86,7 @@ class PluginConfigArgs extends \ArrayObject
     }
 
     /**
-     * @param string[]|null $value
+     * @param list<string>|null $value
      */
     public function setValue(?array $value): self
     {

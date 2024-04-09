@@ -24,7 +24,7 @@ class PluginPrivilege extends \ArrayObject
      */
     protected $description;
     /**
-     * @var string[]|null
+     * @var list<string>|null
      */
     protected $value;
 
@@ -55,7 +55,7 @@ class PluginPrivilege extends \ArrayObject
     }
 
     /**
-     * @return string[]|null
+     * @return list<string>|null
      */
     public function getValue(): ?array
     {
@@ -63,7 +63,7 @@ class PluginPrivilege extends \ArrayObject
     }
 
     /**
-     * @param string[]|null $value
+     * @param list<string>|null $value
      */
     public function setValue(?array $value): self
     {

@@ -27,7 +27,7 @@ class ResourceObject extends \ArrayObject
      * User-defined resources can be either Integer resources (e.g, `SSD=3`) or
      * String resources (e.g, `GPU=UUID1`).
      *
-     * @var GenericResourcesItem[]|null
+     * @var list<GenericResourcesItem>|null
      */
     protected $genericResources;
 
@@ -61,7 +61,7 @@ class ResourceObject extends \ArrayObject
      * User-defined resources can be either Integer resources (e.g, `SSD=3`) or
      * String resources (e.g, `GPU=UUID1`).
      *
-     * @return GenericResourcesItem[]|null
+     * @return list<GenericResourcesItem>|null
      */
     public function getGenericResources(): ?array
     {
@@ -72,7 +72,7 @@ class ResourceObject extends \ArrayObject
      * User-defined resources can be either Integer resources (e.g, `SSD=3`) or
      * String resources (e.g, `GPU=UUID1`).
      *
-     * @param GenericResourcesItem[]|null $genericResources
+     * @param list<GenericResourcesItem>|null $genericResources
      */
     public function setGenericResources(?array $genericResources): self
     {

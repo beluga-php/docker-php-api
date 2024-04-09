@@ -20,7 +20,7 @@ class PluginConfigRootfs extends \ArrayObject
      */
     protected $type;
     /**
-     * @var string[]|null
+     * @var list<string>|null
      */
     protected $diffIds;
 
@@ -38,7 +38,7 @@ class PluginConfigRootfs extends \ArrayObject
     }
 
     /**
-     * @return string[]|null
+     * @return list<string>|null
      */
     public function getDiffIds(): ?array
     {
@@ -46,7 +46,7 @@ class PluginConfigRootfs extends \ArrayObject
     }
 
     /**
-     * @param string[]|null $diffIds
+     * @param list<string>|null $diffIds
      */
     public function setDiffIds(?array $diffIds): self
     {

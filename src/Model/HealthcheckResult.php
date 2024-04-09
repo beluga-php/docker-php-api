@@ -30,7 +30,7 @@ class HealthcheckResult extends \ArrayObject
      */
     protected $end;
     /**
-     * ExitCode meanings:.
+     * ExitCode meanings:
      *
      * - `0` healthy
      * - `1` unhealthy
@@ -90,7 +90,7 @@ class HealthcheckResult extends \ArrayObject
     }
 
     /**
-     * ExitCode meanings:.
+     * ExitCode meanings:
      *
      * - `0` healthy
      * - `1` unhealthy
@@ -103,7 +103,7 @@ class HealthcheckResult extends \ArrayObject
     }
 
     /**
-     * ExitCode meanings:.
+     * ExitCode meanings:
      *
      * - `0` healthy
      * - `1` unhealthy

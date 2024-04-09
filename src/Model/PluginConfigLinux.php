@@ -16,7 +16,7 @@ class PluginConfigLinux extends \ArrayObject
         return \array_key_exists($property, $this->initialized);
     }
     /**
-     * @var string[]|null
+     * @var list<string>|null
      */
     protected $capabilities;
     /**
@@ -24,12 +24,12 @@ class PluginConfigLinux extends \ArrayObject
      */
     protected $allowAllDevices;
     /**
-     * @var PluginDevice[]|null
+     * @var list<PluginDevice>|null
      */
     protected $devices;
 
     /**
-     * @return string[]|null
+     * @return list<string>|null
      */
     public function getCapabilities(): ?array
     {
@@ -37,7 +37,7 @@ class PluginConfigLinux extends \ArrayObject
     }
 
     /**
-     * @param string[]|null $capabilities
+     * @param list<string>|null $capabilities
      */
     public function setCapabilities(?array $capabilities): self
     {
@@ -61,7 +61,7 @@ class PluginConfigLinux extends \ArrayObject
     }
 
     /**
-     * @return PluginDevice[]|null
+     * @return list<PluginDevice>|null
      */
     public function getDevices(): ?array
     {
@@ -69,7 +69,7 @@ class PluginConfigLinux extends \ArrayObject
     }
 
     /**
-     * @param PluginDevice[]|null $devices
+     * @param list<PluginDevice>|null $devices
      */
     public function setDevices(?array $devices): self
     {

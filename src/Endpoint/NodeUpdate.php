@@ -21,7 +21,7 @@ class NodeUpdate extends \Docker\API\Runtime\Client\BaseEndpoint implements \Doc
      *
      * @param array $accept Accept content header application/json|text/plain
      */
-    public function __construct(string $id, \Docker\API\Model\NodeSpec $requestBody = null, array $queryParameters = [], array $accept = [])
+    public function __construct(string $id, ?\Docker\API\Model\NodeSpec $requestBody = null, array $queryParameters = [], array $accept = [])
     {
         $this->id = $id;
         $this->body = $requestBody;
@@ -79,7 +79,7 @@ class NodeUpdate extends \Docker\API\Runtime\Client\BaseEndpoint implements \Doc
      *
      * @return null
      */
-    protected function transformResponseBody(\Psr\Http\Message\ResponseInterface $response, \Symfony\Component\Serializer\SerializerInterface $serializer, string $contentType = null)
+    protected function transformResponseBody(\Psr\Http\Message\ResponseInterface $response, \Symfony\Component\Serializer\SerializerInterface $serializer, ?string $contentType = null)
     {
         $status = $response->getStatusCode();
         $body = (string) $response->getBody();

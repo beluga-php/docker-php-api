@@ -18,27 +18,27 @@ class TaskSpecContainerSpecDNSConfig extends \ArrayObject
     /**
      * The IP addresses of the name servers.
      *
-     * @var string[]|null
+     * @var list<string>|null
      */
     protected $nameservers;
     /**
      * A search list for host-name lookup.
      *
-     * @var string[]|null
+     * @var list<string>|null
      */
     protected $search;
     /**
      * A list of internal resolver variables to be modified (e.g.,
      * `debug`, `ndots:3`, etc.).
      *
-     * @var string[]|null
+     * @var list<string>|null
      */
     protected $options;
 
     /**
      * The IP addresses of the name servers.
      *
-     * @return string[]|null
+     * @return list<string>|null
      */
     public function getNameservers(): ?array
     {
@@ -48,7 +48,7 @@ class TaskSpecContainerSpecDNSConfig extends \ArrayObject
     /**
      * The IP addresses of the name servers.
      *
-     * @param string[]|null $nameservers
+     * @param list<string>|null $nameservers
      */
     public function setNameservers(?array $nameservers): self
     {
@@ -61,7 +61,7 @@ class TaskSpecContainerSpecDNSConfig extends \ArrayObject
     /**
      * A search list for host-name lookup.
      *
-     * @return string[]|null
+     * @return list<string>|null
      */
     public function getSearch(): ?array
     {
@@ -71,7 +71,7 @@ class TaskSpecContainerSpecDNSConfig extends \ArrayObject
     /**
      * A search list for host-name lookup.
      *
-     * @param string[]|null $search
+     * @param list<string>|null $search
      */
     public function setSearch(?array $search): self
     {
@@ -85,7 +85,7 @@ class TaskSpecContainerSpecDNSConfig extends \ArrayObject
      * A list of internal resolver variables to be modified (e.g.,
      * `debug`, `ndots:3`, etc.).
      *
-     * @return string[]|null
+     * @return list<string>|null
      */
     public function getOptions(): ?array
     {
@@ -96,7 +96,7 @@ class TaskSpecContainerSpecDNSConfig extends \ArrayObject
      * A list of internal resolver variables to be modified (e.g.,
      * `debug`, `ndots:3`, etc.).
      *
-     * @param string[]|null $options
+     * @param list<string>|null $options
      */
     public function setOptions(?array $options): self
     {

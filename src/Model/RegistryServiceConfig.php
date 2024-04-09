@@ -38,7 +38,7 @@ class RegistryServiceConfig extends \ArrayObject
      * > are in compliance with any terms that cover redistributing
      * > nondistributable artifacts.
      *
-     * @var string[]|null
+     * @var list<string>|null
      */
     protected $allowNondistributableArtifactsCIDRs;
     /**
@@ -63,7 +63,7 @@ class RegistryServiceConfig extends \ArrayObject
      * > are in compliance with any terms that cover redistributing
      * > nondistributable artifacts.
      *
-     * @var string[]|null
+     * @var list<string>|null
      */
     protected $allowNondistributableArtifactsHostnames;
     /**
@@ -91,7 +91,7 @@ class RegistryServiceConfig extends \ArrayObject
      * > security, users should add their CA to their system's list of trusted
      * > CAs instead of enabling this option.
      *
-     * @var string[]|null
+     * @var list<string>|null
      */
     protected $insecureRegistryCIDRs;
     /**
@@ -102,7 +102,7 @@ class RegistryServiceConfig extends \ArrayObject
      * List of registry URLs that act as a mirror for the official
      * (`docker.io`) registry.
      *
-     * @var string[]|null
+     * @var list<string>|null
      */
     protected $mirrors;
 
@@ -129,7 +129,7 @@ class RegistryServiceConfig extends \ArrayObject
      * > are in compliance with any terms that cover redistributing
      * > nondistributable artifacts.
      *
-     * @return string[]|null
+     * @return list<string>|null
      */
     public function getAllowNondistributableArtifactsCIDRs(): ?array
     {
@@ -159,7 +159,7 @@ class RegistryServiceConfig extends \ArrayObject
      * > are in compliance with any terms that cover redistributing
      * > nondistributable artifacts.
      *
-     * @param string[]|null $allowNondistributableArtifactsCIDRs
+     * @param list<string>|null $allowNondistributableArtifactsCIDRs
      */
     public function setAllowNondistributableArtifactsCIDRs(?array $allowNondistributableArtifactsCIDRs): self
     {
@@ -191,7 +191,7 @@ class RegistryServiceConfig extends \ArrayObject
      * > are in compliance with any terms that cover redistributing
      * > nondistributable artifacts.
      *
-     * @return string[]|null
+     * @return list<string>|null
      */
     public function getAllowNondistributableArtifactsHostnames(): ?array
     {
@@ -220,7 +220,7 @@ class RegistryServiceConfig extends \ArrayObject
      * > are in compliance with any terms that cover redistributing
      * > nondistributable artifacts.
      *
-     * @param string[]|null $allowNondistributableArtifactsHostnames
+     * @param list<string>|null $allowNondistributableArtifactsHostnames
      */
     public function setAllowNondistributableArtifactsHostnames(?array $allowNondistributableArtifactsHostnames): self
     {
@@ -255,7 +255,7 @@ class RegistryServiceConfig extends \ArrayObject
      * > security, users should add their CA to their system's list of trusted
      * > CAs instead of enabling this option.
      *
-     * @return string[]|null
+     * @return list<string>|null
      */
     public function getInsecureRegistryCIDRs(): ?array
     {
@@ -287,7 +287,7 @@ class RegistryServiceConfig extends \ArrayObject
      * > security, users should add their CA to their system's list of trusted
      * > CAs instead of enabling this option.
      *
-     * @param string[]|null $insecureRegistryCIDRs
+     * @param list<string>|null $insecureRegistryCIDRs
      */
     public function setInsecureRegistryCIDRs(?array $insecureRegistryCIDRs): self
     {
@@ -320,7 +320,7 @@ class RegistryServiceConfig extends \ArrayObject
      * List of registry URLs that act as a mirror for the official
      * (`docker.io`) registry.
      *
-     * @return string[]|null
+     * @return list<string>|null
      */
     public function getMirrors(): ?array
     {
@@ -331,7 +331,7 @@ class RegistryServiceConfig extends \ArrayObject
      * List of registry URLs that act as a mirror for the official
      * (`docker.io`) registry.
      *
-     * @param string[]|null $mirrors
+     * @param list<string>|null $mirrors
      */
     public function setMirrors(?array $mirrors): self
     {

@@ -38,7 +38,7 @@ class OCIPlatform extends \ArrayObject
      * Optional field specifying an array of strings, each listing a required
      * OS feature (for example on Windows `win32k`).
      *
-     * @var string[]|null
+     * @var list<string>|null
      */
     protected $osFeatures;
     /**
@@ -112,7 +112,7 @@ class OCIPlatform extends \ArrayObject
      * Optional field specifying an array of strings, each listing a required
      * OS feature (for example on Windows `win32k`).
      *
-     * @return string[]|null
+     * @return list<string>|null
      */
     public function getOsFeatures(): ?array
     {
@@ -123,7 +123,7 @@ class OCIPlatform extends \ArrayObject
      * Optional field specifying an array of strings, each listing a required
      * OS feature (for example on Windows `win32k`).
      *
-     * @param string[]|null $osFeatures
+     * @param list<string>|null $osFeatures
      */
     public function setOsFeatures(?array $osFeatures): self
     {

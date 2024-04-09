@@ -20,19 +20,19 @@ class SystemDfGetTextplainResponse200 extends \ArrayObject
      */
     protected $layersSize;
     /**
-     * @var ImageSummary[]|null
+     * @var list<ImageSummary>|null
      */
     protected $images;
     /**
-     * @var ContainerSummary[]|null
+     * @var list<ContainerSummary>|null
      */
     protected $containers;
     /**
-     * @var Volume[]|null
+     * @var list<Volume>|null
      */
     protected $volumes;
     /**
-     * @var BuildCache[]|null
+     * @var list<BuildCache>|null
      */
     protected $buildCache;
 
@@ -50,7 +50,7 @@ class SystemDfGetTextplainResponse200 extends \ArrayObject
     }
 
     /**
-     * @return ImageSummary[]|null
+     * @return list<ImageSummary>|null
      */
     public function getImages(): ?array
     {
@@ -58,7 +58,7 @@ class SystemDfGetTextplainResponse200 extends \ArrayObject
     }
 
     /**
-     * @param ImageSummary[]|null $images
+     * @param list<ImageSummary>|null $images
      */
     public function setImages(?array $images): self
     {
@@ -69,7 +69,7 @@ class SystemDfGetTextplainResponse200 extends \ArrayObject
     }
 
     /**
-     * @return ContainerSummary[]|null
+     * @return list<ContainerSummary>|null
      */
     public function getContainers(): ?array
     {
@@ -77,7 +77,7 @@ class SystemDfGetTextplainResponse200 extends \ArrayObject
     }
 
     /**
-     * @param ContainerSummary[]|null $containers
+     * @param list<ContainerSummary>|null $containers
      */
     public function setContainers(?array $containers): self
     {
@@ -88,7 +88,7 @@ class SystemDfGetTextplainResponse200 extends \ArrayObject
     }
 
     /**
-     * @return Volume[]|null
+     * @return list<Volume>|null
      */
     public function getVolumes(): ?array
     {
@@ -96,7 +96,7 @@ class SystemDfGetTextplainResponse200 extends \ArrayObject
     }
 
     /**
-     * @param Volume[]|null $volumes
+     * @param list<Volume>|null $volumes
      */
     public function setVolumes(?array $volumes): self
     {
@@ -107,7 +107,7 @@ class SystemDfGetTextplainResponse200 extends \ArrayObject
     }
 
     /**
-     * @return BuildCache[]|null
+     * @return list<BuildCache>|null
      */
     public function getBuildCache(): ?array
     {
@@ -115,7 +115,7 @@ class SystemDfGetTextplainResponse200 extends \ArrayObject
     }
 
     /**
-     * @param BuildCache[]|null $buildCache
+     * @param list<BuildCache>|null $buildCache
      */
     public function setBuildCache(?array $buildCache): self
     {
