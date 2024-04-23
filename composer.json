@@ -1,23 +1,8 @@
 {
     "name": "beluga-php/docker-php-api",
+    "description": "Docker API generated files from OpenAPI Specification",
     "license": "MIT",
     "type": "library",
-    "description": "Docker API generated files from OpenAPI Specification",
-    "config": {
-        "optimize-autoloader": true,
-        "sort-packages": true,
-        "preferred-install": "dist",
-        "allow-plugins": {
-            "php-http/discovery": false
-        }
-    },
-    "minimum-stability": "dev",
-    "prefer-stable": true,
-    "autoload": {
-        "psr-4": {
-            "Docker\\API\\": "src/"
-        }
-    },
     "funding": [
         {
             "type": "github",
@@ -33,10 +18,10 @@
         "php-http/discovery": "^1.19",
         "php-http/multipart-stream-builder": "^1.3",
         "psr/http-client": "^1.0",
-        "psr/http-factory": "^1.0",
-        "psr/http-message": "^2.0",
         "psr/http-client-implementation": "*",
+        "psr/http-factory": "^1.0",
         "psr/http-factory-implementation": "*",
+        "psr/http-message": "^2.0",
         "psr/http-message-implementation": "*",
         "symfony/deprecation-contracts": "^3.3",
         "symfony/options-resolver": "^6.3 || ^7.0",
@@ -44,12 +29,38 @@
         "symfony/validator": "^6.3 || ^7.0"
     },
     "require-dev": {
+        "ergebnis/composer-normalize": "^2.42",
         "friendsofphp/php-cs-fixer": "^3.8",
         "jane-php/open-api-3": "^7.4",
         "roave/security-advisories": "dev-latest"
     },
     "conflict": {
         "docker-php/docker-php-api": "*"
+    },
+    "minimum-stability": "dev",
+    "prefer-stable": true,
+    "autoload": {
+        "psr-4": {
+            "Docker\\API\\": "src/"
+        }
+    },
+    "config": {
+        "allow-plugins": {
+            "ergebnis/composer-normalize": true,
+            "php-http/discovery": false
+        },
+        "optimize-autoloader": true,
+        "preferred-install": "dist",
+        "sort-packages": true
+    },
+    "extra": {
+        "branch-alias": {
+            "6.1.36": "6.1.36.x-dev",
+            "6.1.41": "6.1.41.x-dev",
+            "7.1.41": "7.1.41.x-dev",
+            "7.1.42": "7.1.42.x-dev",
+            "dev-main": "7.1.43.x-dev"
+        }
     },
     "scripts": {
         "generate": [
@@ -58,14 +69,5 @@
         ],
         "lint": "vendor/bin/php-cs-fixer fix --dry-run --verbose --diff",
         "lint-fix": "vendor/bin/php-cs-fixer fix --verbose"
-    },
-    "extra": {
-        "branch-alias": {
-            "dev-main": "7.1.43.x-dev",
-            "7.1.42": "7.1.42.x-dev",
-            "7.1.41": "7.1.41.x-dev",
-            "6.1.41": "6.1.41.x-dev",
-            "6.1.36": "6.1.36.x-dev"
-        }
     }
 }
