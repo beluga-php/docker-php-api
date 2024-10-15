@@ -78,6 +78,10 @@ if (!class_exists(Kernel::class) || (Kernel::MAJOR_VERSION >= 7 || Kernel::MAJOR
             if (\array_key_exists('Ports', $data) && null !== $data['Ports']) {
                 $values = new \ArrayObject([], \ArrayObject::ARRAY_AS_PROPS);
                 foreach ($data['Ports'] as $key => $value) {
+                    if ($value === null) {
+                        $values[$key] = null;
+                        continue;
+                    }
                     $values_1 = [];
                     foreach ($value as $value_1) {
                         $values_1[] = $this->denormalizer->denormalize($value_1, 'Docker\\API\\Model\\PortBinding', 'json', $context);
@@ -203,6 +207,10 @@ if (!class_exists(Kernel::class) || (Kernel::MAJOR_VERSION >= 7 || Kernel::MAJOR
             if ($object->isInitialized('ports') && null !== $object->getPorts()) {
                 $values = [];
                 foreach ($object->getPorts() as $key => $value) {
+                    if ($value === null) {
+                        $values[$key] = null;
+                        continue;
+                    }
                     $values_1 = [];
                     foreach ($value as $value_1) {
                         $values_1[] = $this->normalizer->normalize($value_1, 'json', $context);
