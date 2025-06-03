@@ -270,9 +270,9 @@ if (!class_exists(Kernel::class) || (Kernel::MAJOR_VERSION >= 7 || Kernel::MAJOR
                 $data['AttachStderr'] = $object->getAttachStderr();
             }
             if ($object->isInitialized('exposedPorts') && null !== $object->getExposedPorts()) {
-                $values = [];
+                $values = new \ArrayObject([], \ArrayObject::ARRAY_AS_PROPS);
                 foreach ($object->getExposedPorts() as $key => $value) {
-                    $values[$key] = $this->normalizer->normalize($value, 'json', $context);
+                    $values[$key] = new \ArrayObject($this->normalizer->normalize($value, 'json', $context), \ArrayObject::ARRAY_AS_PROPS);
                 }
                 $data['ExposedPorts'] = $values;
             }
@@ -636,9 +636,9 @@ if (!class_exists(Kernel::class) || (Kernel::MAJOR_VERSION >= 7 || Kernel::MAJOR
                 $data['AttachStderr'] = $object->getAttachStderr();
             }
             if ($object->isInitialized('exposedPorts') && null !== $object->getExposedPorts()) {
-                $values = [];
+                $values = new \ArrayObject([], \ArrayObject::ARRAY_AS_PROPS);
                 foreach ($object->getExposedPorts() as $key => $value) {
-                    $values[$key] = $this->normalizer->normalize($value, 'json', $context);
+                    $values[$key] = new \ArrayObject($this->normalizer->normalize($value, 'json', $context), \ArrayObject::ARRAY_AS_PROPS);
                 }
                 $data['ExposedPorts'] = $values;
             }
