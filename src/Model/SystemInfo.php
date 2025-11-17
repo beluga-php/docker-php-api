@@ -270,7 +270,7 @@ class SystemInfo extends \ArrayObject
      * Go runtime (`GOOS`).
      *
      * Currently returned values are "linux" and "windows". A full list of
-     * possible values can be found in the [Go documentation](https://golang.org/doc/install/source#environment).
+     * possible values can be found in the [Go documentation](https://go.dev/doc/install/source#environment).
      *
      * @var string|null
      */
@@ -279,7 +279,7 @@ class SystemInfo extends \ArrayObject
      * Hardware architecture of the host, as returned by the Go runtime
      * (`GOARCH`).
      *
-     * A full list of possible values can be found in the [Go documentation](https://golang.org/doc/install/source#environment).
+     * A full list of possible values can be found in the [Go documentation](https://go.dev/doc/install/source#environment).
      *
      * @var string|null
      */
@@ -507,6 +507,22 @@ class SystemInfo extends \ArrayObject
      * @var list<string>|null
      */
     protected $warnings;
+    /**
+     * List of directories where (Container Device Interface) CDI
+     * specifications are located.
+     *
+     * These specifications define vendor-specific modifications to an OCI
+     * runtime specification for a container being created.
+     *
+     * An empty list indicates that CDI device injection is disabled.
+     *
+     * Note that since using CDI device injection requires the daemon to have
+     * experimental enabled. For non-experimental daemons an empty list will
+     * always be returned.
+     *
+     * @var list<string>|null
+     */
+    protected $cDISpecDirs;
 
     /**
      * Unique identifier of the daemon.
@@ -1248,7 +1264,7 @@ class SystemInfo extends \ArrayObject
      * Go runtime (`GOOS`).
      *
      * Currently returned values are "linux" and "windows". A full list of
-     * possible values can be found in the [Go documentation](https://golang.org/doc/install/source#environment).
+     * possible values can be found in the [Go documentation](https://go.dev/doc/install/source#environment).
      */
     public function getOSType(): ?string
     {
@@ -1260,7 +1276,7 @@ class SystemInfo extends \ArrayObject
      * Go runtime (`GOOS`).
      *
      * Currently returned values are "linux" and "windows". A full list of
-     * possible values can be found in the [Go documentation](https://golang.org/doc/install/source#environment).
+     * possible values can be found in the [Go documentation](https://go.dev/doc/install/source#environment).
      */
     public function setOSType(?string $oSType): self
     {
@@ -1274,7 +1290,7 @@ class SystemInfo extends \ArrayObject
      * Hardware architecture of the host, as returned by the Go runtime
      * (`GOARCH`).
      *
-     * A full list of possible values can be found in the [Go documentation](https://golang.org/doc/install/source#environment).
+     * A full list of possible values can be found in the [Go documentation](https://go.dev/doc/install/source#environment).
      */
     public function getArchitecture(): ?string
     {
@@ -1285,7 +1301,7 @@ class SystemInfo extends \ArrayObject
      * Hardware architecture of the host, as returned by the Go runtime
      * (`GOARCH`).
      *
-     * A full list of possible values can be found in the [Go documentation](https://golang.org/doc/install/source#environment).
+     * A full list of possible values can be found in the [Go documentation](https://go.dev/doc/install/source#environment).
      */
     public function setArchitecture(?string $architecture): self
     {
@@ -1936,6 +1952,49 @@ class SystemInfo extends \ArrayObject
     {
         $this->initialized['warnings'] = true;
         $this->warnings = $warnings;
+
+        return $this;
+    }
+
+    /**
+     * List of directories where (Container Device Interface) CDI
+     * specifications are located.
+     *
+     * These specifications define vendor-specific modifications to an OCI
+     * runtime specification for a container being created.
+     *
+     * An empty list indicates that CDI device injection is disabled.
+     *
+     * Note that since using CDI device injection requires the daemon to have
+     * experimental enabled. For non-experimental daemons an empty list will
+     * always be returned.
+     *
+     * @return list<string>|null
+     */
+    public function getCDISpecDirs(): ?array
+    {
+        return $this->cDISpecDirs;
+    }
+
+    /**
+     * List of directories where (Container Device Interface) CDI
+     * specifications are located.
+     *
+     * These specifications define vendor-specific modifications to an OCI
+     * runtime specification for a container being created.
+     *
+     * An empty list indicates that CDI device injection is disabled.
+     *
+     * Note that since using CDI device injection requires the daemon to have
+     * experimental enabled. For non-experimental daemons an empty list will
+     * always be returned.
+     *
+     * @param list<string>|null $cDISpecDirs
+     */
+    public function setCDISpecDirs(?array $cDISpecDirs): self
+    {
+        $this->initialized['cDISpecDirs'] = true;
+        $this->cDISpecDirs = $cDISpecDirs;
 
         return $this;
     }

@@ -86,6 +86,8 @@ class Task extends \ArrayObject
      */
     protected $assignedGenericResources;
     /**
+     * represents the status of a task.
+     *
      * @var TaskStatus|null
      */
     protected $status;
@@ -328,11 +330,17 @@ class Task extends \ArrayObject
         return $this;
     }
 
+    /**
+     * represents the status of a task.
+     */
     public function getStatus(): ?TaskStatus
     {
         return $this->status;
     }
 
+    /**
+     * represents the status of a task.
+     */
     public function setStatus(?TaskStatus $status): self
     {
         $this->initialized['status'] = true;

@@ -54,6 +54,8 @@ class ServicesCreatePostBody extends \ArrayObject
     /**
      * Specifies which networks the service should attach to.
      *
+     * Deprecated: This field is deprecated since v1.44. The Networks field in TaskSpec should be used instead.
+     *
      * @var list<NetworkAttachmentConfig>|null
      */
     protected $networks;
@@ -185,6 +187,8 @@ class ServicesCreatePostBody extends \ArrayObject
     /**
      * Specifies which networks the service should attach to.
      *
+     * Deprecated: This field is deprecated since v1.44. The Networks field in TaskSpec should be used instead.
+     *
      * @return list<NetworkAttachmentConfig>|null
      */
     public function getNetworks(): ?array
@@ -194,6 +198,8 @@ class ServicesCreatePostBody extends \ArrayObject
 
     /**
      * Specifies which networks the service should attach to.
+     *
+     * Deprecated: This field is deprecated since v1.44. The Networks field in TaskSpec should be used instead.
      *
      * @param list<NetworkAttachmentConfig>|null $networks
      */

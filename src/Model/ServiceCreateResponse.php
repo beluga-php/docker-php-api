@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Docker\API\Model;
 
-class ServicesCreatePostResponse201 extends \ArrayObject
+class ServiceCreateResponse extends \ArrayObject
 {
     /**
      * @var array
@@ -24,9 +24,11 @@ class ServicesCreatePostResponse201 extends \ArrayObject
     /**
      * Optional warning message.
      *
-     * @var string|null
+     * FIXME(thaJeztah): this should have "omitempty" in the generated type.
+     *
+     * @var list<string>|null
      */
-    protected $warning;
+    protected $warnings;
 
     /**
      * The ID of the created service.
@@ -49,19 +51,27 @@ class ServicesCreatePostResponse201 extends \ArrayObject
 
     /**
      * Optional warning message.
+     *
+     * FIXME(thaJeztah): this should have "omitempty" in the generated type.
+     *
+     * @return list<string>|null
      */
-    public function getWarning(): ?string
+    public function getWarnings(): ?array
     {
-        return $this->warning;
+        return $this->warnings;
     }
 
     /**
      * Optional warning message.
+     *
+     * FIXME(thaJeztah): this should have "omitempty" in the generated type.
+     *
+     * @param list<string>|null $warnings
      */
-    public function setWarning(?string $warning): self
+    public function setWarnings(?array $warnings): self
     {
-        $this->initialized['warning'] = true;
-        $this->warning = $warning;
+        $this->initialized['warnings'] = true;
+        $this->warnings = $warnings;
 
         return $this;
     }

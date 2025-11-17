@@ -7,7 +7,6 @@ namespace Docker\API\Normalizer;
 use Docker\API\Runtime\Normalizer\CheckArray;
 use Docker\API\Runtime\Normalizer\ValidatorTrait;
 use Jane\Component\JsonSchemaRuntime\Reference;
-use Symfony\Component\HttpKernel\Kernel;
 use Symfony\Component\Serializer\Normalizer\DenormalizerAwareInterface;
 use Symfony\Component\Serializer\Normalizer\DenormalizerAwareTrait;
 use Symfony\Component\Serializer\Normalizer\DenormalizerInterface;
@@ -15,171 +14,101 @@ use Symfony\Component\Serializer\Normalizer\NormalizerAwareInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerAwareTrait;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
-if (!class_exists(Kernel::class) || (Kernel::MAJOR_VERSION >= 7 || Kernel::MAJOR_VERSION === 6 && Kernel::MINOR_VERSION === 4)) {
-    class RuntimeNormalizer implements DenormalizerInterface, NormalizerInterface, DenormalizerAwareInterface, NormalizerAwareInterface
+class RuntimeNormalizer implements DenormalizerInterface, NormalizerInterface, DenormalizerAwareInterface, NormalizerAwareInterface
+{
+    use CheckArray;
+    use DenormalizerAwareTrait;
+    use NormalizerAwareTrait;
+    use ValidatorTrait;
+
+    public function supportsDenormalization(mixed $data, string $type, ?string $format = null, array $context = []): bool
     {
-        use CheckArray;
-        use DenormalizerAwareTrait;
-        use NormalizerAwareTrait;
-        use ValidatorTrait;
-
-        public function supportsDenormalization(mixed $data, string $type, ?string $format = null, array $context = []): bool
-        {
-            return 'Docker\\API\\Model\\Runtime' === $type;
-        }
-
-        public function supportsNormalization(mixed $data, ?string $format = null, array $context = []): bool
-        {
-            return \is_object($data) && 'Docker\\API\\Model\\Runtime' === $data::class;
-        }
-
-        public function denormalize(mixed $data, string $type, ?string $format = null, array $context = []): mixed
-        {
-            if (isset($data['$ref'])) {
-                return new Reference($data['$ref'], $context['document-origin']);
-            }
-            if (isset($data['$recursiveRef'])) {
-                return new Reference($data['$recursiveRef'], $context['document-origin']);
-            }
-            $object = new \Docker\API\Model\Runtime();
-            if (null === $data || false === \is_array($data)) {
-                return $object;
-            }
-            if (\array_key_exists('path', $data) && null !== $data['path']) {
-                $object->setPath($data['path']);
-                unset($data['path']);
-            } elseif (\array_key_exists('path', $data) && null === $data['path']) {
-                $object->setPath(null);
-            }
-            if (\array_key_exists('runtimeArgs', $data) && null !== $data['runtimeArgs']) {
-                $values = [];
-                foreach ($data['runtimeArgs'] as $value) {
-                    $values[] = $value;
-                }
-                $object->setRuntimeArgs($values);
-                unset($data['runtimeArgs']);
-            } elseif (\array_key_exists('runtimeArgs', $data) && null === $data['runtimeArgs']) {
-                $object->setRuntimeArgs(null);
-            }
-            foreach ($data as $key => $value_1) {
-                if (preg_match('/.*/', (string) $key)) {
-                    $object[$key] = $value_1;
-                }
-            }
-
-            return $object;
-        }
-
-        public function normalize(mixed $object, ?string $format = null, array $context = []): array|string|int|float|bool|\ArrayObject|null
-        {
-            $data = [];
-            if ($object->isInitialized('path') && null !== $object->getPath()) {
-                $data['path'] = $object->getPath();
-            }
-            if ($object->isInitialized('runtimeArgs') && null !== $object->getRuntimeArgs()) {
-                $values = [];
-                foreach ($object->getRuntimeArgs() as $value) {
-                    $values[] = $value;
-                }
-                $data['runtimeArgs'] = $values;
-            }
-            foreach ($object as $key => $value_1) {
-                if (preg_match('/.*/', (string) $key)) {
-                    $data[$key] = $value_1;
-                }
-            }
-
-            return $data;
-        }
-
-        public function getSupportedTypes(?string $format = null): array
-        {
-            return ['Docker\\API\\Model\\Runtime' => false];
-        }
+        return \Docker\API\Model\Runtime::class === $type;
     }
-} else {
-    class RuntimeNormalizer implements DenormalizerInterface, NormalizerInterface, DenormalizerAwareInterface, NormalizerAwareInterface
+
+    public function supportsNormalization(mixed $data, ?string $format = null, array $context = []): bool
     {
-        use CheckArray;
-        use DenormalizerAwareTrait;
-        use NormalizerAwareTrait;
-        use ValidatorTrait;
+        return \is_object($data) && \Docker\API\Model\Runtime::class === $data::class;
+    }
 
-        public function supportsDenormalization($data, $type, ?string $format = null, array $context = []): bool
-        {
-            return 'Docker\\API\\Model\\Runtime' === $type;
+    public function denormalize(mixed $data, string $type, ?string $format = null, array $context = []): mixed
+    {
+        if (isset($data['$ref'])) {
+            return new Reference($data['$ref'], $context['document-origin']);
         }
-
-        public function supportsNormalization(mixed $data, ?string $format = null, array $context = []): bool
-        {
-            return \is_object($data) && 'Docker\\API\\Model\\Runtime' === $data::class;
+        if (isset($data['$recursiveRef'])) {
+            return new Reference($data['$recursiveRef'], $context['document-origin']);
         }
-
-        public function denormalize($data, $type, $format = null, array $context = [])
-        {
-            if (isset($data['$ref'])) {
-                return new Reference($data['$ref'], $context['document-origin']);
-            }
-            if (isset($data['$recursiveRef'])) {
-                return new Reference($data['$recursiveRef'], $context['document-origin']);
-            }
-            $object = new \Docker\API\Model\Runtime();
-            if (null === $data || false === \is_array($data)) {
-                return $object;
-            }
-            if (\array_key_exists('path', $data) && null !== $data['path']) {
-                $object->setPath($data['path']);
-                unset($data['path']);
-            } elseif (\array_key_exists('path', $data) && null === $data['path']) {
-                $object->setPath(null);
-            }
-            if (\array_key_exists('runtimeArgs', $data) && null !== $data['runtimeArgs']) {
-                $values = [];
-                foreach ($data['runtimeArgs'] as $value) {
-                    $values[] = $value;
-                }
-                $object->setRuntimeArgs($values);
-                unset($data['runtimeArgs']);
-            } elseif (\array_key_exists('runtimeArgs', $data) && null === $data['runtimeArgs']) {
-                $object->setRuntimeArgs(null);
-            }
-            foreach ($data as $key => $value_1) {
-                if (preg_match('/.*/', (string) $key)) {
-                    $object[$key] = $value_1;
-                }
-            }
-
+        $object = new \Docker\API\Model\Runtime();
+        if (null === $data || false === \is_array($data)) {
             return $object;
         }
-
-        /**
-         * @return array|string|int|float|bool|\ArrayObject|null
-         */
-        public function normalize($object, $format = null, array $context = [])
-        {
-            $data = [];
-            if ($object->isInitialized('path') && null !== $object->getPath()) {
-                $data['path'] = $object->getPath();
+        if (\array_key_exists('path', $data) && null !== $data['path']) {
+            $object->setPath($data['path']);
+            unset($data['path']);
+        } elseif (\array_key_exists('path', $data) && null === $data['path']) {
+            $object->setPath(null);
+        }
+        if (\array_key_exists('runtimeArgs', $data) && null !== $data['runtimeArgs']) {
+            $values = [];
+            foreach ($data['runtimeArgs'] as $value) {
+                $values[] = $value;
             }
-            if ($object->isInitialized('runtimeArgs') && null !== $object->getRuntimeArgs()) {
-                $values = [];
-                foreach ($object->getRuntimeArgs() as $value) {
-                    $values[] = $value;
-                }
-                $data['runtimeArgs'] = $values;
+            $object->setRuntimeArgs($values);
+            unset($data['runtimeArgs']);
+        } elseif (\array_key_exists('runtimeArgs', $data) && null === $data['runtimeArgs']) {
+            $object->setRuntimeArgs(null);
+        }
+        if (\array_key_exists('status', $data) && null !== $data['status']) {
+            $values_1 = new \ArrayObject([], \ArrayObject::ARRAY_AS_PROPS);
+            foreach ($data['status'] as $key => $value_1) {
+                $values_1[$key] = $value_1;
             }
-            foreach ($object as $key => $value_1) {
-                if (preg_match('/.*/', (string) $key)) {
-                    $data[$key] = $value_1;
-                }
+            $object->setStatus($values_1);
+            unset($data['status']);
+        } elseif (\array_key_exists('status', $data) && null === $data['status']) {
+            $object->setStatus(null);
+        }
+        foreach ($data as $key_1 => $value_2) {
+            if (preg_match('/.*/', (string) $key_1)) {
+                $object[$key_1] = $value_2;
             }
-
-            return $data;
         }
 
-        public function getSupportedTypes(?string $format = null): array
-        {
-            return ['Docker\\API\\Model\\Runtime' => false];
+        return $object;
+    }
+
+    public function normalize(mixed $data, ?string $format = null, array $context = []): array|string|int|float|bool|\ArrayObject|null
+    {
+        $dataArray = [];
+        if ($data->isInitialized('path') && null !== $data->getPath()) {
+            $dataArray['path'] = $data->getPath();
         }
+        if ($data->isInitialized('runtimeArgs') && null !== $data->getRuntimeArgs()) {
+            $values = [];
+            foreach ($data->getRuntimeArgs() as $value) {
+                $values[] = $value;
+            }
+            $dataArray['runtimeArgs'] = $values;
+        }
+        if ($data->isInitialized('status') && null !== $data->getStatus()) {
+            $values_1 = [];
+            foreach ($data->getStatus() as $key => $value_1) {
+                $values_1[$key] = $value_1;
+            }
+            $dataArray['status'] = $values_1;
+        }
+        foreach ($data as $key_1 => $value_2) {
+            if (preg_match('/.*/', (string) $key_1)) {
+                $dataArray[$key_1] = $value_2;
+            }
+        }
+
+        return $dataArray;
+    }
+
+    public function getSupportedTypes(?string $format = null): array
+    {
+        return [\Docker\API\Model\Runtime::class => false];
     }
 }

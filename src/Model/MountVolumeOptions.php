@@ -33,6 +33,12 @@ class MountVolumeOptions extends \ArrayObject
      * @var MountVolumeOptionsDriverConfig|null
      */
     protected $driverConfig;
+    /**
+     * Source path inside the volume. Must be relative without any back traversals.
+     *
+     * @var string|null
+     */
+    protected $subpath;
 
     /**
      * Populate volume with data from the target.
@@ -91,6 +97,25 @@ class MountVolumeOptions extends \ArrayObject
     {
         $this->initialized['driverConfig'] = true;
         $this->driverConfig = $driverConfig;
+
+        return $this;
+    }
+
+    /**
+     * Source path inside the volume. Must be relative without any back traversals.
+     */
+    public function getSubpath(): ?string
+    {
+        return $this->subpath;
+    }
+
+    /**
+     * Source path inside the volume. Must be relative without any back traversals.
+     */
+    public function setSubpath(?string $subpath): self
+    {
+        $this->initialized['subpath'] = true;
+        $this->subpath = $subpath;
 
         return $this;
     }
