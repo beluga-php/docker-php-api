@@ -24,6 +24,12 @@ class ImagesSearchGetResponse200Item extends \ArrayObject
      */
     protected $isOfficial;
     /**
+     * Whether this repository has automated builds enabled.
+     *
+     * <p><br /></p>
+     *
+     * > **Deprecated**: This field is deprecated and will always be "false".
+     *
      * @var bool|null
      */
     protected $isAutomated;
@@ -62,11 +68,25 @@ class ImagesSearchGetResponse200Item extends \ArrayObject
         return $this;
     }
 
+    /**
+     * Whether this repository has automated builds enabled.
+     *
+     * <p><br /></p>
+     *
+     * > **Deprecated**: This field is deprecated and will always be "false".
+     */
     public function getIsAutomated(): ?bool
     {
         return $this->isAutomated;
     }
 
+    /**
+     * Whether this repository has automated builds enabled.
+     *
+     * <p><br /></p>
+     *
+     * > **Deprecated**: This field is deprecated and will always be "false".
+     */
     public function setIsAutomated(?bool $isAutomated): self
     {
         $this->initialized['isAutomated'] = true;

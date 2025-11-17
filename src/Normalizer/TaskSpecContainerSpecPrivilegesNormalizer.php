@@ -7,7 +7,6 @@ namespace Docker\API\Normalizer;
 use Docker\API\Runtime\Normalizer\CheckArray;
 use Docker\API\Runtime\Normalizer\ValidatorTrait;
 use Jane\Component\JsonSchemaRuntime\Reference;
-use Symfony\Component\HttpKernel\Kernel;
 use Symfony\Component\Serializer\Normalizer\DenormalizerAwareInterface;
 use Symfony\Component\Serializer\Normalizer\DenormalizerAwareTrait;
 use Symfony\Component\Serializer\Normalizer\DenormalizerInterface;
@@ -15,155 +14,106 @@ use Symfony\Component\Serializer\Normalizer\NormalizerAwareInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerAwareTrait;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
-if (!class_exists(Kernel::class) || (Kernel::MAJOR_VERSION >= 7 || Kernel::MAJOR_VERSION === 6 && Kernel::MINOR_VERSION === 4)) {
-    class TaskSpecContainerSpecPrivilegesNormalizer implements DenormalizerInterface, NormalizerInterface, DenormalizerAwareInterface, NormalizerAwareInterface
+class TaskSpecContainerSpecPrivilegesNormalizer implements DenormalizerInterface, NormalizerInterface, DenormalizerAwareInterface, NormalizerAwareInterface
+{
+    use CheckArray;
+    use DenormalizerAwareTrait;
+    use NormalizerAwareTrait;
+    use ValidatorTrait;
+
+    public function supportsDenormalization(mixed $data, string $type, ?string $format = null, array $context = []): bool
     {
-        use CheckArray;
-        use DenormalizerAwareTrait;
-        use NormalizerAwareTrait;
-        use ValidatorTrait;
-
-        public function supportsDenormalization(mixed $data, string $type, ?string $format = null, array $context = []): bool
-        {
-            return 'Docker\\API\\Model\\TaskSpecContainerSpecPrivileges' === $type;
-        }
-
-        public function supportsNormalization(mixed $data, ?string $format = null, array $context = []): bool
-        {
-            return \is_object($data) && 'Docker\\API\\Model\\TaskSpecContainerSpecPrivileges' === $data::class;
-        }
-
-        public function denormalize(mixed $data, string $type, ?string $format = null, array $context = []): mixed
-        {
-            if (isset($data['$ref'])) {
-                return new Reference($data['$ref'], $context['document-origin']);
-            }
-            if (isset($data['$recursiveRef'])) {
-                return new Reference($data['$recursiveRef'], $context['document-origin']);
-            }
-            $object = new \Docker\API\Model\TaskSpecContainerSpecPrivileges();
-            if (null === $data || false === \is_array($data)) {
-                return $object;
-            }
-            if (\array_key_exists('CredentialSpec', $data) && null !== $data['CredentialSpec']) {
-                $object->setCredentialSpec($this->denormalizer->denormalize($data['CredentialSpec'], 'Docker\\API\\Model\\TaskSpecContainerSpecPrivilegesCredentialSpec', 'json', $context));
-                unset($data['CredentialSpec']);
-            } elseif (\array_key_exists('CredentialSpec', $data) && null === $data['CredentialSpec']) {
-                $object->setCredentialSpec(null);
-            }
-            if (\array_key_exists('SELinuxContext', $data) && null !== $data['SELinuxContext']) {
-                $object->setSELinuxContext($this->denormalizer->denormalize($data['SELinuxContext'], 'Docker\\API\\Model\\TaskSpecContainerSpecPrivilegesSELinuxContext', 'json', $context));
-                unset($data['SELinuxContext']);
-            } elseif (\array_key_exists('SELinuxContext', $data) && null === $data['SELinuxContext']) {
-                $object->setSELinuxContext(null);
-            }
-            foreach ($data as $key => $value) {
-                if (preg_match('/.*/', (string) $key)) {
-                    $object[$key] = $value;
-                }
-            }
-
-            return $object;
-        }
-
-        public function normalize(mixed $object, ?string $format = null, array $context = []): array|string|int|float|bool|\ArrayObject|null
-        {
-            $data = [];
-            if ($object->isInitialized('credentialSpec') && null !== $object->getCredentialSpec()) {
-                $data['CredentialSpec'] = $this->normalizer->normalize($object->getCredentialSpec(), 'json', $context);
-            }
-            if ($object->isInitialized('sELinuxContext') && null !== $object->getSELinuxContext()) {
-                $data['SELinuxContext'] = $this->normalizer->normalize($object->getSELinuxContext(), 'json', $context);
-            }
-            foreach ($object as $key => $value) {
-                if (preg_match('/.*/', (string) $key)) {
-                    $data[$key] = $value;
-                }
-            }
-
-            return $data;
-        }
-
-        public function getSupportedTypes(?string $format = null): array
-        {
-            return ['Docker\\API\\Model\\TaskSpecContainerSpecPrivileges' => false];
-        }
+        return \Docker\API\Model\TaskSpecContainerSpecPrivileges::class === $type;
     }
-} else {
-    class TaskSpecContainerSpecPrivilegesNormalizer implements DenormalizerInterface, NormalizerInterface, DenormalizerAwareInterface, NormalizerAwareInterface
+
+    public function supportsNormalization(mixed $data, ?string $format = null, array $context = []): bool
     {
-        use CheckArray;
-        use DenormalizerAwareTrait;
-        use NormalizerAwareTrait;
-        use ValidatorTrait;
+        return \is_object($data) && \Docker\API\Model\TaskSpecContainerSpecPrivileges::class === $data::class;
+    }
 
-        public function supportsDenormalization($data, $type, ?string $format = null, array $context = []): bool
-        {
-            return 'Docker\\API\\Model\\TaskSpecContainerSpecPrivileges' === $type;
+    public function denormalize(mixed $data, string $type, ?string $format = null, array $context = []): mixed
+    {
+        if (isset($data['$ref'])) {
+            return new Reference($data['$ref'], $context['document-origin']);
         }
-
-        public function supportsNormalization(mixed $data, ?string $format = null, array $context = []): bool
-        {
-            return \is_object($data) && 'Docker\\API\\Model\\TaskSpecContainerSpecPrivileges' === $data::class;
+        if (isset($data['$recursiveRef'])) {
+            return new Reference($data['$recursiveRef'], $context['document-origin']);
         }
-
-        public function denormalize($data, $type, $format = null, array $context = [])
-        {
-            if (isset($data['$ref'])) {
-                return new Reference($data['$ref'], $context['document-origin']);
-            }
-            if (isset($data['$recursiveRef'])) {
-                return new Reference($data['$recursiveRef'], $context['document-origin']);
-            }
-            $object = new \Docker\API\Model\TaskSpecContainerSpecPrivileges();
-            if (null === $data || false === \is_array($data)) {
-                return $object;
-            }
-            if (\array_key_exists('CredentialSpec', $data) && null !== $data['CredentialSpec']) {
-                $object->setCredentialSpec($this->denormalizer->denormalize($data['CredentialSpec'], 'Docker\\API\\Model\\TaskSpecContainerSpecPrivilegesCredentialSpec', 'json', $context));
-                unset($data['CredentialSpec']);
-            } elseif (\array_key_exists('CredentialSpec', $data) && null === $data['CredentialSpec']) {
-                $object->setCredentialSpec(null);
-            }
-            if (\array_key_exists('SELinuxContext', $data) && null !== $data['SELinuxContext']) {
-                $object->setSELinuxContext($this->denormalizer->denormalize($data['SELinuxContext'], 'Docker\\API\\Model\\TaskSpecContainerSpecPrivilegesSELinuxContext', 'json', $context));
-                unset($data['SELinuxContext']);
-            } elseif (\array_key_exists('SELinuxContext', $data) && null === $data['SELinuxContext']) {
-                $object->setSELinuxContext(null);
-            }
-            foreach ($data as $key => $value) {
-                if (preg_match('/.*/', (string) $key)) {
-                    $object[$key] = $value;
-                }
-            }
-
+        $object = new \Docker\API\Model\TaskSpecContainerSpecPrivileges();
+        if (\array_key_exists('NoNewPrivileges', $data) && \is_int($data['NoNewPrivileges'])) {
+            $data['NoNewPrivileges'] = (bool) $data['NoNewPrivileges'];
+        }
+        if (null === $data || false === \is_array($data)) {
             return $object;
         }
-
-        /**
-         * @return array|string|int|float|bool|\ArrayObject|null
-         */
-        public function normalize($object, $format = null, array $context = [])
-        {
-            $data = [];
-            if ($object->isInitialized('credentialSpec') && null !== $object->getCredentialSpec()) {
-                $data['CredentialSpec'] = $this->normalizer->normalize($object->getCredentialSpec(), 'json', $context);
+        if (\array_key_exists('CredentialSpec', $data) && null !== $data['CredentialSpec']) {
+            $object->setCredentialSpec($this->denormalizer->denormalize($data['CredentialSpec'], \Docker\API\Model\TaskSpecContainerSpecPrivilegesCredentialSpec::class, 'json', $context));
+            unset($data['CredentialSpec']);
+        } elseif (\array_key_exists('CredentialSpec', $data) && null === $data['CredentialSpec']) {
+            $object->setCredentialSpec(null);
+        }
+        if (\array_key_exists('SELinuxContext', $data) && null !== $data['SELinuxContext']) {
+            $object->setSELinuxContext($this->denormalizer->denormalize($data['SELinuxContext'], \Docker\API\Model\TaskSpecContainerSpecPrivilegesSELinuxContext::class, 'json', $context));
+            unset($data['SELinuxContext']);
+        } elseif (\array_key_exists('SELinuxContext', $data) && null === $data['SELinuxContext']) {
+            $object->setSELinuxContext(null);
+        }
+        if (\array_key_exists('Seccomp', $data) && null !== $data['Seccomp']) {
+            $object->setSeccomp($this->denormalizer->denormalize($data['Seccomp'], \Docker\API\Model\TaskSpecContainerSpecPrivilegesSeccomp::class, 'json', $context));
+            unset($data['Seccomp']);
+        } elseif (\array_key_exists('Seccomp', $data) && null === $data['Seccomp']) {
+            $object->setSeccomp(null);
+        }
+        if (\array_key_exists('AppArmor', $data) && null !== $data['AppArmor']) {
+            $object->setAppArmor($this->denormalizer->denormalize($data['AppArmor'], \Docker\API\Model\TaskSpecContainerSpecPrivilegesAppArmor::class, 'json', $context));
+            unset($data['AppArmor']);
+        } elseif (\array_key_exists('AppArmor', $data) && null === $data['AppArmor']) {
+            $object->setAppArmor(null);
+        }
+        if (\array_key_exists('NoNewPrivileges', $data) && null !== $data['NoNewPrivileges']) {
+            $object->setNoNewPrivileges($data['NoNewPrivileges']);
+            unset($data['NoNewPrivileges']);
+        } elseif (\array_key_exists('NoNewPrivileges', $data) && null === $data['NoNewPrivileges']) {
+            $object->setNoNewPrivileges(null);
+        }
+        foreach ($data as $key => $value) {
+            if (preg_match('/.*/', (string) $key)) {
+                $object[$key] = $value;
             }
-            if ($object->isInitialized('sELinuxContext') && null !== $object->getSELinuxContext()) {
-                $data['SELinuxContext'] = $this->normalizer->normalize($object->getSELinuxContext(), 'json', $context);
-            }
-            foreach ($object as $key => $value) {
-                if (preg_match('/.*/', (string) $key)) {
-                    $data[$key] = $value;
-                }
-            }
-
-            return $data;
         }
 
-        public function getSupportedTypes(?string $format = null): array
-        {
-            return ['Docker\\API\\Model\\TaskSpecContainerSpecPrivileges' => false];
+        return $object;
+    }
+
+    public function normalize(mixed $data, ?string $format = null, array $context = []): array|string|int|float|bool|\ArrayObject|null
+    {
+        $dataArray = [];
+        if ($data->isInitialized('credentialSpec') && null !== $data->getCredentialSpec()) {
+            $dataArray['CredentialSpec'] = $this->normalizer->normalize($data->getCredentialSpec(), 'json', $context);
         }
+        if ($data->isInitialized('sELinuxContext') && null !== $data->getSELinuxContext()) {
+            $dataArray['SELinuxContext'] = $this->normalizer->normalize($data->getSELinuxContext(), 'json', $context);
+        }
+        if ($data->isInitialized('seccomp') && null !== $data->getSeccomp()) {
+            $dataArray['Seccomp'] = $this->normalizer->normalize($data->getSeccomp(), 'json', $context);
+        }
+        if ($data->isInitialized('appArmor') && null !== $data->getAppArmor()) {
+            $dataArray['AppArmor'] = $this->normalizer->normalize($data->getAppArmor(), 'json', $context);
+        }
+        if ($data->isInitialized('noNewPrivileges') && null !== $data->getNoNewPrivileges()) {
+            $dataArray['NoNewPrivileges'] = $data->getNoNewPrivileges();
+        }
+        foreach ($data as $key => $value) {
+            if (preg_match('/.*/', (string) $key)) {
+                $dataArray[$key] = $value;
+            }
+        }
+
+        return $dataArray;
+    }
+
+    public function getSupportedTypes(?string $format = null): array
+    {
+        return [\Docker\API\Model\TaskSpecContainerSpecPrivileges::class => false];
     }
 }

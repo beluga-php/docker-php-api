@@ -7,7 +7,6 @@ namespace Docker\API\Normalizer;
 use Docker\API\Runtime\Normalizer\CheckArray;
 use Docker\API\Runtime\Normalizer\ValidatorTrait;
 use Jane\Component\JsonSchemaRuntime\Reference;
-use Symfony\Component\HttpKernel\Kernel;
 use Symfony\Component\Serializer\Normalizer\DenormalizerAwareInterface;
 use Symfony\Component\Serializer\Normalizer\DenormalizerAwareTrait;
 use Symfony\Component\Serializer\Normalizer\DenormalizerInterface;
@@ -15,209 +14,112 @@ use Symfony\Component\Serializer\Normalizer\NormalizerAwareInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerAwareTrait;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
-if (!class_exists(Kernel::class) || (Kernel::MAJOR_VERSION >= 7 || Kernel::MAJOR_VERSION === 6 && Kernel::MINOR_VERSION === 4)) {
-    class TaskStatusNormalizer implements DenormalizerInterface, NormalizerInterface, DenormalizerAwareInterface, NormalizerAwareInterface
+class TaskStatusNormalizer implements DenormalizerInterface, NormalizerInterface, DenormalizerAwareInterface, NormalizerAwareInterface
+{
+    use CheckArray;
+    use DenormalizerAwareTrait;
+    use NormalizerAwareTrait;
+    use ValidatorTrait;
+
+    public function supportsDenormalization(mixed $data, string $type, ?string $format = null, array $context = []): bool
     {
-        use CheckArray;
-        use DenormalizerAwareTrait;
-        use NormalizerAwareTrait;
-        use ValidatorTrait;
-
-        public function supportsDenormalization(mixed $data, string $type, ?string $format = null, array $context = []): bool
-        {
-            return 'Docker\\API\\Model\\TaskStatus' === $type;
-        }
-
-        public function supportsNormalization(mixed $data, ?string $format = null, array $context = []): bool
-        {
-            return \is_object($data) && 'Docker\\API\\Model\\TaskStatus' === $data::class;
-        }
-
-        public function denormalize(mixed $data, string $type, ?string $format = null, array $context = []): mixed
-        {
-            if (isset($data['$ref'])) {
-                return new Reference($data['$ref'], $context['document-origin']);
-            }
-            if (isset($data['$recursiveRef'])) {
-                return new Reference($data['$recursiveRef'], $context['document-origin']);
-            }
-            $object = new \Docker\API\Model\TaskStatus();
-            if (null === $data || false === \is_array($data)) {
-                return $object;
-            }
-            if (\array_key_exists('Timestamp', $data) && null !== $data['Timestamp']) {
-                $object->setTimestamp($data['Timestamp']);
-                unset($data['Timestamp']);
-            } elseif (\array_key_exists('Timestamp', $data) && null === $data['Timestamp']) {
-                $object->setTimestamp(null);
-            }
-            if (\array_key_exists('State', $data) && null !== $data['State']) {
-                $object->setState($data['State']);
-                unset($data['State']);
-            } elseif (\array_key_exists('State', $data) && null === $data['State']) {
-                $object->setState(null);
-            }
-            if (\array_key_exists('Message', $data) && null !== $data['Message']) {
-                $object->setMessage($data['Message']);
-                unset($data['Message']);
-            } elseif (\array_key_exists('Message', $data) && null === $data['Message']) {
-                $object->setMessage(null);
-            }
-            if (\array_key_exists('Err', $data) && null !== $data['Err']) {
-                $object->setErr($data['Err']);
-                unset($data['Err']);
-            } elseif (\array_key_exists('Err', $data) && null === $data['Err']) {
-                $object->setErr(null);
-            }
-            if (\array_key_exists('ContainerStatus', $data) && null !== $data['ContainerStatus']) {
-                $object->setContainerStatus($this->denormalizer->denormalize($data['ContainerStatus'], 'Docker\\API\\Model\\TaskStatusContainerStatus', 'json', $context));
-                unset($data['ContainerStatus']);
-            } elseif (\array_key_exists('ContainerStatus', $data) && null === $data['ContainerStatus']) {
-                $object->setContainerStatus(null);
-            }
-            foreach ($data as $key => $value) {
-                if (preg_match('/.*/', (string) $key)) {
-                    $object[$key] = $value;
-                }
-            }
-
-            return $object;
-        }
-
-        public function normalize(mixed $object, ?string $format = null, array $context = []): array|string|int|float|bool|\ArrayObject|null
-        {
-            $data = [];
-            if ($object->isInitialized('timestamp') && null !== $object->getTimestamp()) {
-                $data['Timestamp'] = $object->getTimestamp();
-            }
-            if ($object->isInitialized('state') && null !== $object->getState()) {
-                $data['State'] = $object->getState();
-            }
-            if ($object->isInitialized('message') && null !== $object->getMessage()) {
-                $data['Message'] = $object->getMessage();
-            }
-            if ($object->isInitialized('err') && null !== $object->getErr()) {
-                $data['Err'] = $object->getErr();
-            }
-            if ($object->isInitialized('containerStatus') && null !== $object->getContainerStatus()) {
-                $data['ContainerStatus'] = $this->normalizer->normalize($object->getContainerStatus(), 'json', $context);
-            }
-            foreach ($object as $key => $value) {
-                if (preg_match('/.*/', (string) $key)) {
-                    $data[$key] = $value;
-                }
-            }
-
-            return $data;
-        }
-
-        public function getSupportedTypes(?string $format = null): array
-        {
-            return ['Docker\\API\\Model\\TaskStatus' => false];
-        }
+        return \Docker\API\Model\TaskStatus::class === $type;
     }
-} else {
-    class TaskStatusNormalizer implements DenormalizerInterface, NormalizerInterface, DenormalizerAwareInterface, NormalizerAwareInterface
+
+    public function supportsNormalization(mixed $data, ?string $format = null, array $context = []): bool
     {
-        use CheckArray;
-        use DenormalizerAwareTrait;
-        use NormalizerAwareTrait;
-        use ValidatorTrait;
+        return \is_object($data) && \Docker\API\Model\TaskStatus::class === $data::class;
+    }
 
-        public function supportsDenormalization($data, $type, ?string $format = null, array $context = []): bool
-        {
-            return 'Docker\\API\\Model\\TaskStatus' === $type;
+    public function denormalize(mixed $data, string $type, ?string $format = null, array $context = []): mixed
+    {
+        if (isset($data['$ref'])) {
+            return new Reference($data['$ref'], $context['document-origin']);
         }
-
-        public function supportsNormalization(mixed $data, ?string $format = null, array $context = []): bool
-        {
-            return \is_object($data) && 'Docker\\API\\Model\\TaskStatus' === $data::class;
+        if (isset($data['$recursiveRef'])) {
+            return new Reference($data['$recursiveRef'], $context['document-origin']);
         }
-
-        public function denormalize($data, $type, $format = null, array $context = [])
-        {
-            if (isset($data['$ref'])) {
-                return new Reference($data['$ref'], $context['document-origin']);
-            }
-            if (isset($data['$recursiveRef'])) {
-                return new Reference($data['$recursiveRef'], $context['document-origin']);
-            }
-            $object = new \Docker\API\Model\TaskStatus();
-            if (null === $data || false === \is_array($data)) {
-                return $object;
-            }
-            if (\array_key_exists('Timestamp', $data) && null !== $data['Timestamp']) {
-                $object->setTimestamp($data['Timestamp']);
-                unset($data['Timestamp']);
-            } elseif (\array_key_exists('Timestamp', $data) && null === $data['Timestamp']) {
-                $object->setTimestamp(null);
-            }
-            if (\array_key_exists('State', $data) && null !== $data['State']) {
-                $object->setState($data['State']);
-                unset($data['State']);
-            } elseif (\array_key_exists('State', $data) && null === $data['State']) {
-                $object->setState(null);
-            }
-            if (\array_key_exists('Message', $data) && null !== $data['Message']) {
-                $object->setMessage($data['Message']);
-                unset($data['Message']);
-            } elseif (\array_key_exists('Message', $data) && null === $data['Message']) {
-                $object->setMessage(null);
-            }
-            if (\array_key_exists('Err', $data) && null !== $data['Err']) {
-                $object->setErr($data['Err']);
-                unset($data['Err']);
-            } elseif (\array_key_exists('Err', $data) && null === $data['Err']) {
-                $object->setErr(null);
-            }
-            if (\array_key_exists('ContainerStatus', $data) && null !== $data['ContainerStatus']) {
-                $object->setContainerStatus($this->denormalizer->denormalize($data['ContainerStatus'], 'Docker\\API\\Model\\TaskStatusContainerStatus', 'json', $context));
-                unset($data['ContainerStatus']);
-            } elseif (\array_key_exists('ContainerStatus', $data) && null === $data['ContainerStatus']) {
-                $object->setContainerStatus(null);
-            }
-            foreach ($data as $key => $value) {
-                if (preg_match('/.*/', (string) $key)) {
-                    $object[$key] = $value;
-                }
-            }
-
+        $object = new \Docker\API\Model\TaskStatus();
+        if (null === $data || false === \is_array($data)) {
             return $object;
         }
-
-        /**
-         * @return array|string|int|float|bool|\ArrayObject|null
-         */
-        public function normalize($object, $format = null, array $context = [])
-        {
-            $data = [];
-            if ($object->isInitialized('timestamp') && null !== $object->getTimestamp()) {
-                $data['Timestamp'] = $object->getTimestamp();
+        if (\array_key_exists('Timestamp', $data) && null !== $data['Timestamp']) {
+            $object->setTimestamp($data['Timestamp']);
+            unset($data['Timestamp']);
+        } elseif (\array_key_exists('Timestamp', $data) && null === $data['Timestamp']) {
+            $object->setTimestamp(null);
+        }
+        if (\array_key_exists('State', $data) && null !== $data['State']) {
+            $object->setState($data['State']);
+            unset($data['State']);
+        } elseif (\array_key_exists('State', $data) && null === $data['State']) {
+            $object->setState(null);
+        }
+        if (\array_key_exists('Message', $data) && null !== $data['Message']) {
+            $object->setMessage($data['Message']);
+            unset($data['Message']);
+        } elseif (\array_key_exists('Message', $data) && null === $data['Message']) {
+            $object->setMessage(null);
+        }
+        if (\array_key_exists('Err', $data) && null !== $data['Err']) {
+            $object->setErr($data['Err']);
+            unset($data['Err']);
+        } elseif (\array_key_exists('Err', $data) && null === $data['Err']) {
+            $object->setErr(null);
+        }
+        if (\array_key_exists('ContainerStatus', $data) && null !== $data['ContainerStatus']) {
+            $object->setContainerStatus($this->denormalizer->denormalize($data['ContainerStatus'], \Docker\API\Model\ContainerStatus::class, 'json', $context));
+            unset($data['ContainerStatus']);
+        } elseif (\array_key_exists('ContainerStatus', $data) && null === $data['ContainerStatus']) {
+            $object->setContainerStatus(null);
+        }
+        if (\array_key_exists('PortStatus', $data) && null !== $data['PortStatus']) {
+            $object->setPortStatus($this->denormalizer->denormalize($data['PortStatus'], \Docker\API\Model\PortStatus::class, 'json', $context));
+            unset($data['PortStatus']);
+        } elseif (\array_key_exists('PortStatus', $data) && null === $data['PortStatus']) {
+            $object->setPortStatus(null);
+        }
+        foreach ($data as $key => $value) {
+            if (preg_match('/.*/', (string) $key)) {
+                $object[$key] = $value;
             }
-            if ($object->isInitialized('state') && null !== $object->getState()) {
-                $data['State'] = $object->getState();
-            }
-            if ($object->isInitialized('message') && null !== $object->getMessage()) {
-                $data['Message'] = $object->getMessage();
-            }
-            if ($object->isInitialized('err') && null !== $object->getErr()) {
-                $data['Err'] = $object->getErr();
-            }
-            if ($object->isInitialized('containerStatus') && null !== $object->getContainerStatus()) {
-                $data['ContainerStatus'] = $this->normalizer->normalize($object->getContainerStatus(), 'json', $context);
-            }
-            foreach ($object as $key => $value) {
-                if (preg_match('/.*/', (string) $key)) {
-                    $data[$key] = $value;
-                }
-            }
-
-            return $data;
         }
 
-        public function getSupportedTypes(?string $format = null): array
-        {
-            return ['Docker\\API\\Model\\TaskStatus' => false];
+        return $object;
+    }
+
+    public function normalize(mixed $data, ?string $format = null, array $context = []): array|string|int|float|bool|\ArrayObject|null
+    {
+        $dataArray = [];
+        if ($data->isInitialized('timestamp') && null !== $data->getTimestamp()) {
+            $dataArray['Timestamp'] = $data->getTimestamp();
         }
+        if ($data->isInitialized('state') && null !== $data->getState()) {
+            $dataArray['State'] = $data->getState();
+        }
+        if ($data->isInitialized('message') && null !== $data->getMessage()) {
+            $dataArray['Message'] = $data->getMessage();
+        }
+        if ($data->isInitialized('err') && null !== $data->getErr()) {
+            $dataArray['Err'] = $data->getErr();
+        }
+        if ($data->isInitialized('containerStatus') && null !== $data->getContainerStatus()) {
+            $dataArray['ContainerStatus'] = $this->normalizer->normalize($data->getContainerStatus(), 'json', $context);
+        }
+        if ($data->isInitialized('portStatus') && null !== $data->getPortStatus()) {
+            $dataArray['PortStatus'] = $this->normalizer->normalize($data->getPortStatus(), 'json', $context);
+        }
+        foreach ($data as $key => $value) {
+            if (preg_match('/.*/', (string) $key)) {
+                $dataArray[$key] = $value;
+            }
+        }
+
+        return $dataArray;
+    }
+
+    public function getSupportedTypes(?string $format = null): array
+    {
+        return [\Docker\API\Model\TaskStatus::class => false];
     }
 }

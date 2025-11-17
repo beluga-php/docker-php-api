@@ -16,7 +16,7 @@ class NetworkSettings extends \ArrayObject
         return \array_key_exists($property, $this->initialized);
     }
     /**
-     * Name of the network's bridge (for example, `docker0`).
+     * Name of the default bridge interface when dockerd's --bridge flag is set.
      *
      * @var string|null
      */
@@ -30,17 +30,23 @@ class NetworkSettings extends \ArrayObject
     /**
      * Indicates if hairpin NAT should be enabled on the virtual interface.
      *
+     * Deprecated: This field is never set and will be removed in a future release.
+     *
      * @var bool|null
      */
     protected $hairpinMode;
     /**
      * IPv6 unicast address using the link-local prefix.
      *
+     * Deprecated: This field is never set and will be removed in a future release.
+     *
      * @var string|null
      */
     protected $linkLocalIPv6Address;
     /**
      * Prefix length of the IPv6 unicast address.
+     *
+     * Deprecated: This field is never set and will be removed in a future release.
      *
      * @var int|null
      */
@@ -57,16 +63,20 @@ class NetworkSettings extends \ArrayObject
      */
     protected $ports;
     /**
-     * SandboxKey identifies the sandbox.
+     * SandboxKey is the full path of the netns handle.
      *
      * @var string|null
      */
     protected $sandboxKey;
     /**
+     * Deprecated: This field is never set and will be removed in a future release.
+     *
      * @var list<Address>|null
      */
     protected $secondaryIPAddresses;
     /**
+     * Deprecated: This field is never set and will be removed in a future release.
+     *
      * @var list<Address>|null
      */
     protected $secondaryIPv6Addresses;
@@ -190,7 +200,7 @@ class NetworkSettings extends \ArrayObject
     protected $networks;
 
     /**
-     * Name of the network's bridge (for example, `docker0`).
+     * Name of the default bridge interface when dockerd's --bridge flag is set.
      */
     public function getBridge(): ?string
     {
@@ -198,7 +208,7 @@ class NetworkSettings extends \ArrayObject
     }
 
     /**
-     * Name of the network's bridge (for example, `docker0`).
+     * Name of the default bridge interface when dockerd's --bridge flag is set.
      */
     public function setBridge(?string $bridge): self
     {
@@ -229,6 +239,8 @@ class NetworkSettings extends \ArrayObject
 
     /**
      * Indicates if hairpin NAT should be enabled on the virtual interface.
+     *
+     * Deprecated: This field is never set and will be removed in a future release.
      */
     public function getHairpinMode(): ?bool
     {
@@ -237,6 +249,8 @@ class NetworkSettings extends \ArrayObject
 
     /**
      * Indicates if hairpin NAT should be enabled on the virtual interface.
+     *
+     * Deprecated: This field is never set and will be removed in a future release.
      */
     public function setHairpinMode(?bool $hairpinMode): self
     {
@@ -248,6 +262,8 @@ class NetworkSettings extends \ArrayObject
 
     /**
      * IPv6 unicast address using the link-local prefix.
+     *
+     * Deprecated: This field is never set and will be removed in a future release.
      */
     public function getLinkLocalIPv6Address(): ?string
     {
@@ -256,6 +272,8 @@ class NetworkSettings extends \ArrayObject
 
     /**
      * IPv6 unicast address using the link-local prefix.
+     *
+     * Deprecated: This field is never set and will be removed in a future release.
      */
     public function setLinkLocalIPv6Address(?string $linkLocalIPv6Address): self
     {
@@ -267,6 +285,8 @@ class NetworkSettings extends \ArrayObject
 
     /**
      * Prefix length of the IPv6 unicast address.
+     *
+     * Deprecated: This field is never set and will be removed in a future release.
      */
     public function getLinkLocalIPv6PrefixLen(): ?int
     {
@@ -275,6 +295,8 @@ class NetworkSettings extends \ArrayObject
 
     /**
      * Prefix length of the IPv6 unicast address.
+     *
+     * Deprecated: This field is never set and will be removed in a future release.
      */
     public function setLinkLocalIPv6PrefixLen(?int $linkLocalIPv6PrefixLen): self
     {
@@ -318,7 +340,7 @@ class NetworkSettings extends \ArrayObject
     }
 
     /**
-     * SandboxKey identifies the sandbox.
+     * SandboxKey is the full path of the netns handle.
      */
     public function getSandboxKey(): ?string
     {
@@ -326,7 +348,7 @@ class NetworkSettings extends \ArrayObject
     }
 
     /**
-     * SandboxKey identifies the sandbox.
+     * SandboxKey is the full path of the netns handle.
      */
     public function setSandboxKey(?string $sandboxKey): self
     {
@@ -337,6 +359,8 @@ class NetworkSettings extends \ArrayObject
     }
 
     /**
+     * Deprecated: This field is never set and will be removed in a future release.
+     *
      * @return list<Address>|null
      */
     public function getSecondaryIPAddresses(): ?array
@@ -345,6 +369,8 @@ class NetworkSettings extends \ArrayObject
     }
 
     /**
+     * Deprecated: This field is never set and will be removed in a future release.
+     *
      * @param list<Address>|null $secondaryIPAddresses
      */
     public function setSecondaryIPAddresses(?array $secondaryIPAddresses): self
@@ -356,6 +382,8 @@ class NetworkSettings extends \ArrayObject
     }
 
     /**
+     * Deprecated: This field is never set and will be removed in a future release.
+     *
      * @return list<Address>|null
      */
     public function getSecondaryIPv6Addresses(): ?array
@@ -364,6 +392,8 @@ class NetworkSettings extends \ArrayObject
     }
 
     /**
+     * Deprecated: This field is never set and will be removed in a future release.
+     *
      * @param list<Address>|null $secondaryIPv6Addresses
      */
     public function setSecondaryIPv6Addresses(?array $secondaryIPv6Addresses): self

@@ -87,12 +87,7 @@ class ImageSummary extends \ArrayObject
     /**
      * Total size of the image including all layers it is composed of.
      *
-     * In versions of Docker before v1.10, this field was calculated from
-     * the image itself and all of its parent images. Images are now stored
-     * self-contained, and no longer use a parent-chain, making this field
-     * an equivalent of the Size field.
-     *
-     * Deprecated: this field is kept for backward compatibility, and will be removed in API v1.44.
+     * Deprecated: this field is omitted in API v1.44, but kept for backward compatibility. Use Size instead.
      *
      * @var int|null
      */
@@ -312,12 +307,7 @@ class ImageSummary extends \ArrayObject
     /**
      * Total size of the image including all layers it is composed of.
      *
-     * In versions of Docker before v1.10, this field was calculated from
-     * the image itself and all of its parent images. Images are now stored
-     * self-contained, and no longer use a parent-chain, making this field
-     * an equivalent of the Size field.
-     *
-     * Deprecated: this field is kept for backward compatibility, and will be removed in API v1.44.
+     * Deprecated: this field is omitted in API v1.44, but kept for backward compatibility. Use Size instead.
      */
     public function getVirtualSize(): ?int
     {
@@ -327,12 +317,7 @@ class ImageSummary extends \ArrayObject
     /**
      * Total size of the image including all layers it is composed of.
      *
-     * In versions of Docker before v1.10, this field was calculated from
-     * the image itself and all of its parent images. Images are now stored
-     * self-contained, and no longer use a parent-chain, making this field
-     * an equivalent of the Size field.
-     *
-     * Deprecated: this field is kept for backward compatibility, and will be removed in API v1.44.
+     * Deprecated: this field is omitted in API v1.44, but kept for backward compatibility. Use Size instead.
      */
     public function setVirtualSize(?int $virtualSize): self
     {

@@ -55,13 +55,13 @@ class ContainerChanges extends \Docker\API\Runtime\Client\BaseEndpoint implement
         $status = $response->getStatusCode();
         $body = (string) $response->getBody();
         if ((null === $contentType) === false && (200 === $status && false !== mb_strpos($contentType, 'application/json'))) {
-            return $serializer->deserialize($body, 'Docker\\API\\Model\\FilesystemChange[]', 'json');
+            return $serializer->deserialize($body, 'Docker\API\Model\FilesystemChange[]', 'json');
         }
         if ((null === $contentType) === false && (404 === $status && false !== mb_strpos($contentType, 'application/json'))) {
-            throw new \Docker\API\Exception\ContainerChangesNotFoundException($serializer->deserialize($body, 'Docker\\API\\Model\\ErrorResponse', 'json'), $response);
+            throw new \Docker\API\Exception\ContainerChangesNotFoundException($serializer->deserialize($body, 'Docker\API\Model\ErrorResponse', 'json'), $response);
         }
         if ((null === $contentType) === false && (500 === $status && false !== mb_strpos($contentType, 'application/json'))) {
-            throw new \Docker\API\Exception\ContainerChangesInternalServerErrorException($serializer->deserialize($body, 'Docker\\API\\Model\\ErrorResponse', 'json'), $response);
+            throw new \Docker\API\Exception\ContainerChangesInternalServerErrorException($serializer->deserialize($body, 'Docker\API\Model\ErrorResponse', 'json'), $response);
         }
     }
 

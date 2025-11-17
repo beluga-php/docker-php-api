@@ -51,7 +51,12 @@ class ImageBuild extends \Docker\API\Runtime\Client\BaseEndpoint implements \Doc
      * @var string $platform Platform in the format os[/arch[/variant]]
      * @var string $target Target build stage
      * @var string $outputs BuildKit output configuration
-     *             }
+     * @var string $version Version of the builder backend to use.
+     *
+     * - `1` is the first generation classic (deprecated) builder in the Docker daemon (default)
+     * - `2` is [BuildKit](https://github.com/moby/buildkit)
+     *
+     * }
      *
      * @param array $headerParameters {
      *
@@ -111,9 +116,9 @@ class ImageBuild extends \Docker\API\Runtime\Client\BaseEndpoint implements \Doc
     protected function getQueryOptionsResolver(): \Symfony\Component\OptionsResolver\OptionsResolver
     {
         $optionsResolver = parent::getQueryOptionsResolver();
-        $optionsResolver->setDefined(['dockerfile', 't', 'extrahosts', 'remote', 'q', 'nocache', 'cachefrom', 'pull', 'rm', 'forcerm', 'memory', 'memswap', 'cpushares', 'cpusetcpus', 'cpuperiod', 'cpuquota', 'buildargs', 'shmsize', 'squash', 'labels', 'networkmode', 'platform', 'target', 'outputs']);
+        $optionsResolver->setDefined(['dockerfile', 't', 'extrahosts', 'remote', 'q', 'nocache', 'cachefrom', 'pull', 'rm', 'forcerm', 'memory', 'memswap', 'cpushares', 'cpusetcpus', 'cpuperiod', 'cpuquota', 'buildargs', 'shmsize', 'squash', 'labels', 'networkmode', 'platform', 'target', 'outputs', 'version']);
         $optionsResolver->setRequired([]);
-        $optionsResolver->setDefaults(['dockerfile' => 'Dockerfile', 'q' => false, 'nocache' => false, 'rm' => true, 'forcerm' => false]);
+        $optionsResolver->setDefaults(['dockerfile' => 'Dockerfile', 'q' => false, 'nocache' => false, 'rm' => true, 'forcerm' => false, 'version' => '1']);
         $optionsResolver->addAllowedTypes('dockerfile', ['string']);
         $optionsResolver->addAllowedTypes('t', ['string']);
         $optionsResolver->addAllowedTypes('extrahosts', ['string']);
@@ -138,6 +143,7 @@ class ImageBuild extends \Docker\API\Runtime\Client\BaseEndpoint implements \Doc
         $optionsResolver->addAllowedTypes('platform', ['string']);
         $optionsResolver->addAllowedTypes('target', ['string']);
         $optionsResolver->addAllowedTypes('outputs', ['string']);
+        $optionsResolver->addAllowedTypes('version', ['string']);
 
         return $optionsResolver;
     }
@@ -167,10 +173,10 @@ class ImageBuild extends \Docker\API\Runtime\Client\BaseEndpoint implements \Doc
         if (200 === $status) {
         }
         if ((null === $contentType) === false && (400 === $status && false !== mb_strpos($contentType, 'application/json'))) {
-            throw new \Docker\API\Exception\ImageBuildBadRequestException($serializer->deserialize($body, 'Docker\\API\\Model\\ErrorResponse', 'json'), $response);
+            throw new \Docker\API\Exception\ImageBuildBadRequestException($serializer->deserialize($body, 'Docker\API\Model\ErrorResponse', 'json'), $response);
         }
         if ((null === $contentType) === false && (500 === $status && false !== mb_strpos($contentType, 'application/json'))) {
-            throw new \Docker\API\Exception\ImageBuildInternalServerErrorException($serializer->deserialize($body, 'Docker\\API\\Model\\ErrorResponse', 'json'), $response);
+            throw new \Docker\API\Exception\ImageBuildInternalServerErrorException($serializer->deserialize($body, 'Docker\API\Model\ErrorResponse', 'json'), $response);
         }
     }
 

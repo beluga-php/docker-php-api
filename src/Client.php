@@ -49,7 +49,7 @@ class Client extends Runtime\Client\Client
      * @throws Exception\ContainerListBadRequestException
      * @throws Exception\ContainerListInternalServerErrorException
      *
-     * @return \Docker\API\Model\ContainerSummary[]|\Psr\Http\Message\ResponseInterface|null
+     * @return Model\ContainerSummary[]|\Psr\Http\Message\ResponseInterface|null
      */
     public function containerList(array $queryParameters = [], string $fetch = self::FETCH_OBJECT)
     {
@@ -184,7 +184,7 @@ class Client extends Runtime\Client\Client
      * @throws Exception\ContainerChangesNotFoundException
      * @throws Exception\ContainerChangesInternalServerErrorException
      *
-     * @return \Docker\API\Model\FilesystemChange[]|\Psr\Http\Message\ResponseInterface|null
+     * @return Model\FilesystemChange[]|\Psr\Http\Message\ResponseInterface|null
      */
     public function containerChanges(string $id, string $fetch = self::FETCH_OBJECT)
     {
@@ -768,6 +768,7 @@ class Client extends Runtime\Client\Client
      * - `label=key` or `label="key=value"` of an image label
      * - `reference`=(`<image-name>[:<tag>]`)
      * - `since`=(`<image-name>[:<tag>]`,  `<image id>` or `<image@digest>`)
+     * - `until=<timestamp>`
      * @var bool $shared-size Compute and show shared size as a `SharedSize` field on each image
      * @var bool $digests Show digest information as a `RepoDigests` field on each image.
      *           }
@@ -776,7 +777,7 @@ class Client extends Runtime\Client\Client
      *
      * @throws Exception\ImageListInternalServerErrorException
      *
-     * @return \Docker\API\Model\ImageSummary[]|\Psr\Http\Message\ResponseInterface|null
+     * @return Model\ImageSummary[]|\Psr\Http\Message\ResponseInterface|null
      */
     public function imageList(array $queryParameters = [], string $fetch = self::FETCH_OBJECT)
     {
@@ -826,7 +827,12 @@ class Client extends Runtime\Client\Client
      * @var string $platform Platform in the format os[/arch[/variant]]
      * @var string $target Target build stage
      * @var string $outputs BuildKit output configuration
-     *             }
+     * @var string $version Version of the builder backend to use.
+     *
+     * - `1` is the first generation classic (deprecated) builder in the Docker daemon (default)
+     * - `2` is [BuildKit](https://github.com/moby/buildkit)
+     *
+     * }
      *
      * @param array $headerParameters {
      *
@@ -897,7 +903,7 @@ class Client extends Runtime\Client\Client
     }
 
     /**
-     * Create an image by either pulling it from a registry or importing it.
+     * Pull or import an image.
      *
      * @param array $queryParameters {
      *
@@ -976,7 +982,7 @@ class Client extends Runtime\Client\Client
      * @throws Exception\ImageHistoryNotFoundException
      * @throws Exception\ImageHistoryInternalServerErrorException
      *
-     * @return \Docker\API\Model\ImagesNameHistoryGetResponse200Item[]|\Psr\Http\Message\ResponseInterface|null
+     * @return Model\ImagesNameHistoryGetResponse200Item[]|\Psr\Http\Message\ResponseInterface|null
      */
     public function imageHistory(string $name, string $fetch = self::FETCH_OBJECT)
     {
@@ -1065,7 +1071,7 @@ class Client extends Runtime\Client\Client
      * @throws Exception\ImageDeleteConflictException
      * @throws Exception\ImageDeleteInternalServerErrorException
      *
-     * @return \Docker\API\Model\ImageDeleteResponseItem[]|\Psr\Http\Message\ResponseInterface|null
+     * @return Model\ImageDeleteResponseItem[]|\Psr\Http\Message\ResponseInterface|null
      */
     public function imageDelete(string $name, array $queryParameters = [], string $fetch = self::FETCH_OBJECT)
     {
@@ -1081,7 +1087,6 @@ class Client extends Runtime\Client\Client
      * @var int    $limit Maximum number of results to return
      * @var string $filters A JSON encoded value of the filters (a `map[string][]string`) to process on the images list. Available filters:
      *
-     * - `is-automated=(true|false)`
      * - `is-official=(true|false)`
      * - `stars=<number>` Matches images that has at least 'number' stars.
      *
@@ -1091,7 +1096,7 @@ class Client extends Runtime\Client\Client
      *
      * @throws Exception\ImageSearchInternalServerErrorException
      *
-     * @return \Docker\API\Model\ImagesSearchGetResponse200Item[]|\Psr\Http\Message\ResponseInterface|null
+     * @return Model\ImagesSearchGetResponse200Item[]|\Psr\Http\Message\ResponseInterface|null
      */
     public function imageSearch(array $queryParameters = [], string $fetch = self::FETCH_OBJECT)
     {
@@ -1596,7 +1601,7 @@ class Client extends Runtime\Client\Client
      *
      * @throws Exception\NetworkListInternalServerErrorException
      *
-     * @return \Docker\API\Model\Network[]|\Psr\Http\Message\ResponseInterface|null
+     * @return Model\Network[]|\Psr\Http\Message\ResponseInterface|null
      */
     public function networkList(array $queryParameters = [], string $fetch = self::FETCH_OBJECT)
     {
@@ -1642,6 +1647,7 @@ class Client extends Runtime\Client\Client
     /**
      * @param string $fetch Fetch mode to use (can be OBJECT or RESPONSE)
      *
+     * @throws Exception\NetworkCreateBadRequestException
      * @throws Exception\NetworkCreateForbiddenException
      * @throws Exception\NetworkCreateNotFoundException
      * @throws Exception\NetworkCreateInternalServerErrorException
@@ -1654,10 +1660,13 @@ class Client extends Runtime\Client\Client
     }
 
     /**
+     * The network must be either a local-scoped network or a swarm-scoped network with the `attachable` option set. A network cannot be re-attached to a running container.
+     *
      * @param string $id     Network ID or name
      * @param string $fetch  Fetch mode to use (can be OBJECT or RESPONSE)
      * @param array  $accept Accept content header application/json|text/plain
      *
+     * @throws Exception\NetworkConnectBadRequestException
      * @throws Exception\NetworkConnectForbiddenException
      * @throws Exception\NetworkConnectNotFoundException
      * @throws Exception\NetworkConnectInternalServerErrorException
@@ -1726,7 +1735,7 @@ class Client extends Runtime\Client\Client
      *
      * @throws Exception\PluginListInternalServerErrorException
      *
-     * @return \Docker\API\Model\Plugin[]|\Psr\Http\Message\ResponseInterface|null
+     * @return Model\Plugin[]|\Psr\Http\Message\ResponseInterface|null
      */
     public function pluginList(array $queryParameters = [], string $fetch = self::FETCH_OBJECT)
     {
@@ -1746,7 +1755,7 @@ class Client extends Runtime\Client\Client
      *
      * @throws Exception\GetPluginPrivilegesInternalServerErrorException
      *
-     * @return \Docker\API\Model\PluginPrivilege[]|\Psr\Http\Message\ResponseInterface|null
+     * @return Model\PluginPrivilege[]|\Psr\Http\Message\ResponseInterface|null
      */
     public function getPluginPrivileges(array $queryParameters = [], string $fetch = self::FETCH_OBJECT, array $accept = [])
     {
@@ -1757,8 +1766,8 @@ class Client extends Runtime\Client\Client
      * Pulls and installs a plugin. After the plugin is installed, it can be
      * enabled using the [`POST /plugins/{name}/enable` endpoint](#operation/PostPluginsEnable).
      *
-     * @param \Docker\API\Model\PluginPrivilege[]|null $requestBody
-     * @param array                                    $queryParameters {
+     * @param Model\PluginPrivilege[]|null $requestBody
+     * @param array                        $queryParameters {
      *
      * @var string $remote Remote reference for plugin to install.
      *
@@ -1873,10 +1882,10 @@ class Client extends Runtime\Client\Client
     }
 
     /**
-     * @param string                                   $name            The name of the plugin. The `:latest` tag is optional, and is the
-     *                                                                  default if omitted.
-     * @param \Docker\API\Model\PluginPrivilege[]|null $requestBody
-     * @param array                                    $queryParameters {
+     * @param string                       $name            The name of the plugin. The `:latest` tag is optional, and is the
+     *                                                      default if omitted.
+     * @param Model\PluginPrivilege[]|null $requestBody
+     * @param array                        $queryParameters {
      *
      * @var string $remote Remote reference to upgrade to.
      *
@@ -1984,7 +1993,7 @@ class Client extends Runtime\Client\Client
      * @throws Exception\NodeListInternalServerErrorException
      * @throws Exception\NodeListServiceUnavailableException
      *
-     * @return \Docker\API\Model\Node[]|\Psr\Http\Message\ResponseInterface|null
+     * @return Model\Node[]|\Psr\Http\Message\ResponseInterface|null
      */
     public function nodeList(array $queryParameters = [], string $fetch = self::FETCH_OBJECT, array $accept = [])
     {
@@ -2191,7 +2200,7 @@ class Client extends Runtime\Client\Client
      * @throws Exception\ServiceListInternalServerErrorException
      * @throws Exception\ServiceListServiceUnavailableException
      *
-     * @return \Docker\API\Model\Service[]|\Psr\Http\Message\ResponseInterface|null
+     * @return Model\Service[]|\Psr\Http\Message\ResponseInterface|null
      */
     public function serviceList(array $queryParameters = [], string $fetch = self::FETCH_OBJECT, array $accept = [])
     {
@@ -2217,7 +2226,7 @@ class Client extends Runtime\Client\Client
      * @throws Exception\ServiceCreateInternalServerErrorException
      * @throws Exception\ServiceCreateServiceUnavailableException
      *
-     * @return Model\ServicesCreatePostResponse201|\Psr\Http\Message\ResponseInterface|null
+     * @return Model\ServiceCreateResponse|\Psr\Http\Message\ResponseInterface|null
      */
     public function serviceCreate(?Model\ServicesCreatePostBody $requestBody = null, array $headerParameters = [], string $fetch = self::FETCH_OBJECT)
     {
@@ -2357,7 +2366,7 @@ class Client extends Runtime\Client\Client
      * @throws Exception\TaskListInternalServerErrorException
      * @throws Exception\TaskListServiceUnavailableException
      *
-     * @return \Docker\API\Model\Task[]|\Psr\Http\Message\ResponseInterface|null
+     * @return Model\Task[]|\Psr\Http\Message\ResponseInterface|null
      */
     public function taskList(array $queryParameters = [], string $fetch = self::FETCH_OBJECT)
     {
@@ -2432,7 +2441,7 @@ class Client extends Runtime\Client\Client
      * @throws Exception\SecretListInternalServerErrorException
      * @throws Exception\SecretListServiceUnavailableException
      *
-     * @return \Docker\API\Model\Secret[]|\Psr\Http\Message\ResponseInterface|null
+     * @return Model\Secret[]|\Psr\Http\Message\ResponseInterface|null
      */
     public function secretList(array $queryParameters = [], string $fetch = self::FETCH_OBJECT)
     {
@@ -2527,7 +2536,7 @@ class Client extends Runtime\Client\Client
      * @throws Exception\ConfigListInternalServerErrorException
      * @throws Exception\ConfigListServiceUnavailableException
      *
-     * @return \Docker\API\Model\Config[]|\Psr\Http\Message\ResponseInterface|null
+     * @return Model\Config[]|\Psr\Http\Message\ResponseInterface|null
      */
     public function configList(array $queryParameters = [], string $fetch = self::FETCH_OBJECT)
     {
@@ -2633,7 +2642,7 @@ class Client extends Runtime\Client\Client
         if (null === $httpClient) {
             $httpClient = \Http\Discovery\Psr18ClientDiscovery::find();
             $plugins = [];
-            $uri = \Http\Discovery\Psr17FactoryDiscovery::findUriFactory()->createUri('/v1.43');
+            $uri = \Http\Discovery\Psr17FactoryDiscovery::findUriFactory()->createUri('/v1.45');
             $plugins[] = new \Http\Client\Common\Plugin\AddPathPlugin($uri);
             if (\count($additionalPlugins) > 0) {
                 $plugins = array_merge($plugins, $additionalPlugins);

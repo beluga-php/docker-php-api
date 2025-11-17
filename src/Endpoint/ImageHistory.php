@@ -50,13 +50,13 @@ class ImageHistory extends \Docker\API\Runtime\Client\BaseEndpoint implements \D
         $status = $response->getStatusCode();
         $body = (string) $response->getBody();
         if ((null === $contentType) === false && (200 === $status && false !== mb_strpos($contentType, 'application/json'))) {
-            return $serializer->deserialize($body, 'Docker\\API\\Model\\ImagesNameHistoryGetResponse200Item[]', 'json');
+            return $serializer->deserialize($body, 'Docker\API\Model\ImagesNameHistoryGetResponse200Item[]', 'json');
         }
         if ((null === $contentType) === false && (404 === $status && false !== mb_strpos($contentType, 'application/json'))) {
-            throw new \Docker\API\Exception\ImageHistoryNotFoundException($serializer->deserialize($body, 'Docker\\API\\Model\\ErrorResponse', 'json'), $response);
+            throw new \Docker\API\Exception\ImageHistoryNotFoundException($serializer->deserialize($body, 'Docker\API\Model\ErrorResponse', 'json'), $response);
         }
         if ((null === $contentType) === false && (500 === $status && false !== mb_strpos($contentType, 'application/json'))) {
-            throw new \Docker\API\Exception\ImageHistoryInternalServerErrorException($serializer->deserialize($body, 'Docker\\API\\Model\\ErrorResponse', 'json'), $response);
+            throw new \Docker\API\Exception\ImageHistoryInternalServerErrorException($serializer->deserialize($body, 'Docker\API\Model\ErrorResponse', 'json'), $response);
         }
     }
 

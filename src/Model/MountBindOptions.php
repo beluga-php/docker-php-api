@@ -33,6 +33,23 @@ class MountBindOptions extends \ArrayObject
      * @var bool|null
      */
     protected $createMountpoint = false;
+    /**
+     * Make the mount non-recursively read-only, but still leave the mount recursive
+     * (unless NonRecursive is set to `true` in conjunction).
+     *
+     * Addded in v1.44, before that version all read-only mounts were
+     * non-recursive by default. To match the previous behaviour this
+     * will default to `true` for clients on versions prior to v1.44.
+     *
+     * @var bool|null
+     */
+    protected $readOnlyNonRecursive = false;
+    /**
+     * Raise an error if the mount cannot be made recursively read-only.
+     *
+     * @var bool|null
+     */
+    protected $readOnlyForceRecursive = false;
 
     /**
      * A propagation mode with the value `[r]private`, `[r]shared`, or `[r]slave`.
@@ -87,6 +104,54 @@ class MountBindOptions extends \ArrayObject
     {
         $this->initialized['createMountpoint'] = true;
         $this->createMountpoint = $createMountpoint;
+
+        return $this;
+    }
+
+    /**
+     * Make the mount non-recursively read-only, but still leave the mount recursive
+     * (unless NonRecursive is set to `true` in conjunction).
+     *
+     * Addded in v1.44, before that version all read-only mounts were
+     * non-recursive by default. To match the previous behaviour this
+     * will default to `true` for clients on versions prior to v1.44.
+     */
+    public function getReadOnlyNonRecursive(): ?bool
+    {
+        return $this->readOnlyNonRecursive;
+    }
+
+    /**
+     * Make the mount non-recursively read-only, but still leave the mount recursive
+     * (unless NonRecursive is set to `true` in conjunction).
+     *
+     * Addded in v1.44, before that version all read-only mounts were
+     * non-recursive by default. To match the previous behaviour this
+     * will default to `true` for clients on versions prior to v1.44.
+     */
+    public function setReadOnlyNonRecursive(?bool $readOnlyNonRecursive): self
+    {
+        $this->initialized['readOnlyNonRecursive'] = true;
+        $this->readOnlyNonRecursive = $readOnlyNonRecursive;
+
+        return $this;
+    }
+
+    /**
+     * Raise an error if the mount cannot be made recursively read-only.
+     */
+    public function getReadOnlyForceRecursive(): ?bool
+    {
+        return $this->readOnlyForceRecursive;
+    }
+
+    /**
+     * Raise an error if the mount cannot be made recursively read-only.
+     */
+    public function setReadOnlyForceRecursive(?bool $readOnlyForceRecursive): self
+    {
+        $this->initialized['readOnlyForceRecursive'] = true;
+        $this->readOnlyForceRecursive = $readOnlyForceRecursive;
 
         return $this;
     }

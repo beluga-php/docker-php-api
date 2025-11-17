@@ -7,7 +7,6 @@ namespace Docker\API\Normalizer;
 use Docker\API\Runtime\Normalizer\CheckArray;
 use Docker\API\Runtime\Normalizer\ValidatorTrait;
 use Jane\Component\JsonSchemaRuntime\Reference;
-use Symfony\Component\HttpKernel\Kernel;
 use Symfony\Component\Serializer\Normalizer\DenormalizerAwareInterface;
 use Symfony\Component\Serializer\Normalizer\DenormalizerAwareTrait;
 use Symfony\Component\Serializer\Normalizer\DenormalizerInterface;
@@ -15,209 +14,103 @@ use Symfony\Component\Serializer\Normalizer\NormalizerAwareInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerAwareTrait;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
-if (!class_exists(Kernel::class) || (Kernel::MAJOR_VERSION >= 7 || Kernel::MAJOR_VERSION === 6 && Kernel::MINOR_VERSION === 4)) {
-    class ConfigNormalizer implements DenormalizerInterface, NormalizerInterface, DenormalizerAwareInterface, NormalizerAwareInterface
+class ConfigNormalizer implements DenormalizerInterface, NormalizerInterface, DenormalizerAwareInterface, NormalizerAwareInterface
+{
+    use CheckArray;
+    use DenormalizerAwareTrait;
+    use NormalizerAwareTrait;
+    use ValidatorTrait;
+
+    public function supportsDenormalization(mixed $data, string $type, ?string $format = null, array $context = []): bool
     {
-        use CheckArray;
-        use DenormalizerAwareTrait;
-        use NormalizerAwareTrait;
-        use ValidatorTrait;
-
-        public function supportsDenormalization(mixed $data, string $type, ?string $format = null, array $context = []): bool
-        {
-            return 'Docker\\API\\Model\\Config' === $type;
-        }
-
-        public function supportsNormalization(mixed $data, ?string $format = null, array $context = []): bool
-        {
-            return \is_object($data) && 'Docker\\API\\Model\\Config' === $data::class;
-        }
-
-        public function denormalize(mixed $data, string $type, ?string $format = null, array $context = []): mixed
-        {
-            if (isset($data['$ref'])) {
-                return new Reference($data['$ref'], $context['document-origin']);
-            }
-            if (isset($data['$recursiveRef'])) {
-                return new Reference($data['$recursiveRef'], $context['document-origin']);
-            }
-            $object = new \Docker\API\Model\Config();
-            if (null === $data || false === \is_array($data)) {
-                return $object;
-            }
-            if (\array_key_exists('ID', $data) && null !== $data['ID']) {
-                $object->setID($data['ID']);
-                unset($data['ID']);
-            } elseif (\array_key_exists('ID', $data) && null === $data['ID']) {
-                $object->setID(null);
-            }
-            if (\array_key_exists('Version', $data) && null !== $data['Version']) {
-                $object->setVersion($this->denormalizer->denormalize($data['Version'], 'Docker\\API\\Model\\ObjectVersion', 'json', $context));
-                unset($data['Version']);
-            } elseif (\array_key_exists('Version', $data) && null === $data['Version']) {
-                $object->setVersion(null);
-            }
-            if (\array_key_exists('CreatedAt', $data) && null !== $data['CreatedAt']) {
-                $object->setCreatedAt($data['CreatedAt']);
-                unset($data['CreatedAt']);
-            } elseif (\array_key_exists('CreatedAt', $data) && null === $data['CreatedAt']) {
-                $object->setCreatedAt(null);
-            }
-            if (\array_key_exists('UpdatedAt', $data) && null !== $data['UpdatedAt']) {
-                $object->setUpdatedAt($data['UpdatedAt']);
-                unset($data['UpdatedAt']);
-            } elseif (\array_key_exists('UpdatedAt', $data) && null === $data['UpdatedAt']) {
-                $object->setUpdatedAt(null);
-            }
-            if (\array_key_exists('Spec', $data) && null !== $data['Spec']) {
-                $object->setSpec($this->denormalizer->denormalize($data['Spec'], 'Docker\\API\\Model\\ConfigSpec', 'json', $context));
-                unset($data['Spec']);
-            } elseif (\array_key_exists('Spec', $data) && null === $data['Spec']) {
-                $object->setSpec(null);
-            }
-            foreach ($data as $key => $value) {
-                if (preg_match('/.*/', (string) $key)) {
-                    $object[$key] = $value;
-                }
-            }
-
-            return $object;
-        }
-
-        public function normalize(mixed $object, ?string $format = null, array $context = []): array|string|int|float|bool|\ArrayObject|null
-        {
-            $data = [];
-            if ($object->isInitialized('iD') && null !== $object->getID()) {
-                $data['ID'] = $object->getID();
-            }
-            if ($object->isInitialized('version') && null !== $object->getVersion()) {
-                $data['Version'] = $this->normalizer->normalize($object->getVersion(), 'json', $context);
-            }
-            if ($object->isInitialized('createdAt') && null !== $object->getCreatedAt()) {
-                $data['CreatedAt'] = $object->getCreatedAt();
-            }
-            if ($object->isInitialized('updatedAt') && null !== $object->getUpdatedAt()) {
-                $data['UpdatedAt'] = $object->getUpdatedAt();
-            }
-            if ($object->isInitialized('spec') && null !== $object->getSpec()) {
-                $data['Spec'] = $this->normalizer->normalize($object->getSpec(), 'json', $context);
-            }
-            foreach ($object as $key => $value) {
-                if (preg_match('/.*/', (string) $key)) {
-                    $data[$key] = $value;
-                }
-            }
-
-            return $data;
-        }
-
-        public function getSupportedTypes(?string $format = null): array
-        {
-            return ['Docker\\API\\Model\\Config' => false];
-        }
+        return \Docker\API\Model\Config::class === $type;
     }
-} else {
-    class ConfigNormalizer implements DenormalizerInterface, NormalizerInterface, DenormalizerAwareInterface, NormalizerAwareInterface
+
+    public function supportsNormalization(mixed $data, ?string $format = null, array $context = []): bool
     {
-        use CheckArray;
-        use DenormalizerAwareTrait;
-        use NormalizerAwareTrait;
-        use ValidatorTrait;
+        return \is_object($data) && \Docker\API\Model\Config::class === $data::class;
+    }
 
-        public function supportsDenormalization($data, $type, ?string $format = null, array $context = []): bool
-        {
-            return 'Docker\\API\\Model\\Config' === $type;
+    public function denormalize(mixed $data, string $type, ?string $format = null, array $context = []): mixed
+    {
+        if (isset($data['$ref'])) {
+            return new Reference($data['$ref'], $context['document-origin']);
         }
-
-        public function supportsNormalization(mixed $data, ?string $format = null, array $context = []): bool
-        {
-            return \is_object($data) && 'Docker\\API\\Model\\Config' === $data::class;
+        if (isset($data['$recursiveRef'])) {
+            return new Reference($data['$recursiveRef'], $context['document-origin']);
         }
-
-        public function denormalize($data, $type, $format = null, array $context = [])
-        {
-            if (isset($data['$ref'])) {
-                return new Reference($data['$ref'], $context['document-origin']);
-            }
-            if (isset($data['$recursiveRef'])) {
-                return new Reference($data['$recursiveRef'], $context['document-origin']);
-            }
-            $object = new \Docker\API\Model\Config();
-            if (null === $data || false === \is_array($data)) {
-                return $object;
-            }
-            if (\array_key_exists('ID', $data) && null !== $data['ID']) {
-                $object->setID($data['ID']);
-                unset($data['ID']);
-            } elseif (\array_key_exists('ID', $data) && null === $data['ID']) {
-                $object->setID(null);
-            }
-            if (\array_key_exists('Version', $data) && null !== $data['Version']) {
-                $object->setVersion($this->denormalizer->denormalize($data['Version'], 'Docker\\API\\Model\\ObjectVersion', 'json', $context));
-                unset($data['Version']);
-            } elseif (\array_key_exists('Version', $data) && null === $data['Version']) {
-                $object->setVersion(null);
-            }
-            if (\array_key_exists('CreatedAt', $data) && null !== $data['CreatedAt']) {
-                $object->setCreatedAt($data['CreatedAt']);
-                unset($data['CreatedAt']);
-            } elseif (\array_key_exists('CreatedAt', $data) && null === $data['CreatedAt']) {
-                $object->setCreatedAt(null);
-            }
-            if (\array_key_exists('UpdatedAt', $data) && null !== $data['UpdatedAt']) {
-                $object->setUpdatedAt($data['UpdatedAt']);
-                unset($data['UpdatedAt']);
-            } elseif (\array_key_exists('UpdatedAt', $data) && null === $data['UpdatedAt']) {
-                $object->setUpdatedAt(null);
-            }
-            if (\array_key_exists('Spec', $data) && null !== $data['Spec']) {
-                $object->setSpec($this->denormalizer->denormalize($data['Spec'], 'Docker\\API\\Model\\ConfigSpec', 'json', $context));
-                unset($data['Spec']);
-            } elseif (\array_key_exists('Spec', $data) && null === $data['Spec']) {
-                $object->setSpec(null);
-            }
-            foreach ($data as $key => $value) {
-                if (preg_match('/.*/', (string) $key)) {
-                    $object[$key] = $value;
-                }
-            }
-
+        $object = new \Docker\API\Model\Config();
+        if (null === $data || false === \is_array($data)) {
             return $object;
         }
-
-        /**
-         * @return array|string|int|float|bool|\ArrayObject|null
-         */
-        public function normalize($object, $format = null, array $context = [])
-        {
-            $data = [];
-            if ($object->isInitialized('iD') && null !== $object->getID()) {
-                $data['ID'] = $object->getID();
+        if (\array_key_exists('ID', $data) && null !== $data['ID']) {
+            $object->setID($data['ID']);
+            unset($data['ID']);
+        } elseif (\array_key_exists('ID', $data) && null === $data['ID']) {
+            $object->setID(null);
+        }
+        if (\array_key_exists('Version', $data) && null !== $data['Version']) {
+            $object->setVersion($this->denormalizer->denormalize($data['Version'], \Docker\API\Model\ObjectVersion::class, 'json', $context));
+            unset($data['Version']);
+        } elseif (\array_key_exists('Version', $data) && null === $data['Version']) {
+            $object->setVersion(null);
+        }
+        if (\array_key_exists('CreatedAt', $data) && null !== $data['CreatedAt']) {
+            $object->setCreatedAt($data['CreatedAt']);
+            unset($data['CreatedAt']);
+        } elseif (\array_key_exists('CreatedAt', $data) && null === $data['CreatedAt']) {
+            $object->setCreatedAt(null);
+        }
+        if (\array_key_exists('UpdatedAt', $data) && null !== $data['UpdatedAt']) {
+            $object->setUpdatedAt($data['UpdatedAt']);
+            unset($data['UpdatedAt']);
+        } elseif (\array_key_exists('UpdatedAt', $data) && null === $data['UpdatedAt']) {
+            $object->setUpdatedAt(null);
+        }
+        if (\array_key_exists('Spec', $data) && null !== $data['Spec']) {
+            $object->setSpec($this->denormalizer->denormalize($data['Spec'], \Docker\API\Model\ConfigSpec::class, 'json', $context));
+            unset($data['Spec']);
+        } elseif (\array_key_exists('Spec', $data) && null === $data['Spec']) {
+            $object->setSpec(null);
+        }
+        foreach ($data as $key => $value) {
+            if (preg_match('/.*/', (string) $key)) {
+                $object[$key] = $value;
             }
-            if ($object->isInitialized('version') && null !== $object->getVersion()) {
-                $data['Version'] = $this->normalizer->normalize($object->getVersion(), 'json', $context);
-            }
-            if ($object->isInitialized('createdAt') && null !== $object->getCreatedAt()) {
-                $data['CreatedAt'] = $object->getCreatedAt();
-            }
-            if ($object->isInitialized('updatedAt') && null !== $object->getUpdatedAt()) {
-                $data['UpdatedAt'] = $object->getUpdatedAt();
-            }
-            if ($object->isInitialized('spec') && null !== $object->getSpec()) {
-                $data['Spec'] = $this->normalizer->normalize($object->getSpec(), 'json', $context);
-            }
-            foreach ($object as $key => $value) {
-                if (preg_match('/.*/', (string) $key)) {
-                    $data[$key] = $value;
-                }
-            }
-
-            return $data;
         }
 
-        public function getSupportedTypes(?string $format = null): array
-        {
-            return ['Docker\\API\\Model\\Config' => false];
+        return $object;
+    }
+
+    public function normalize(mixed $data, ?string $format = null, array $context = []): array|string|int|float|bool|\ArrayObject|null
+    {
+        $dataArray = [];
+        if ($data->isInitialized('iD') && null !== $data->getID()) {
+            $dataArray['ID'] = $data->getID();
         }
+        if ($data->isInitialized('version') && null !== $data->getVersion()) {
+            $dataArray['Version'] = $this->normalizer->normalize($data->getVersion(), 'json', $context);
+        }
+        if ($data->isInitialized('createdAt') && null !== $data->getCreatedAt()) {
+            $dataArray['CreatedAt'] = $data->getCreatedAt();
+        }
+        if ($data->isInitialized('updatedAt') && null !== $data->getUpdatedAt()) {
+            $dataArray['UpdatedAt'] = $data->getUpdatedAt();
+        }
+        if ($data->isInitialized('spec') && null !== $data->getSpec()) {
+            $dataArray['Spec'] = $this->normalizer->normalize($data->getSpec(), 'json', $context);
+        }
+        foreach ($data as $key => $value) {
+            if (preg_match('/.*/', (string) $key)) {
+                $dataArray[$key] = $value;
+            }
+        }
+
+        return $dataArray;
+    }
+
+    public function getSupportedTypes(?string $format = null): array
+    {
+        return [\Docker\API\Model\Config::class => false];
     }
 }

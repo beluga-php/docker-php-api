@@ -73,10 +73,10 @@ class SwarmLeave extends \Docker\API\Runtime\Client\BaseEndpoint implements \Doc
         if (200 === $status) {
         }
         if ((null === $contentType) === false && (500 === $status && false !== mb_strpos($contentType, 'application/json'))) {
-            throw new \Docker\API\Exception\SwarmLeaveInternalServerErrorException($serializer->deserialize($body, 'Docker\\API\\Model\\ErrorResponse', 'json'), $response);
+            throw new \Docker\API\Exception\SwarmLeaveInternalServerErrorException($serializer->deserialize($body, 'Docker\API\Model\ErrorResponse', 'json'), $response);
         }
         if ((null === $contentType) === false && (503 === $status && false !== mb_strpos($contentType, 'application/json'))) {
-            throw new \Docker\API\Exception\SwarmLeaveServiceUnavailableException($serializer->deserialize($body, 'Docker\\API\\Model\\ErrorResponse', 'json'), $response);
+            throw new \Docker\API\Exception\SwarmLeaveServiceUnavailableException($serializer->deserialize($body, 'Docker\API\Model\ErrorResponse', 'json'), $response);
         }
     }
 

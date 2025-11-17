@@ -11,6 +11,8 @@ class NetworkConnect extends \Docker\API\Runtime\Client\BaseEndpoint implements 
     protected $accept;
 
     /**
+     * The network must be either a local-scoped network or a swarm-scoped network with the `attachable` option set. A network cannot be re-attached to a running container.
+     *
      * @param string $id     Network ID or name
      * @param array  $accept Accept content header application/json|text/plain
      */
@@ -50,6 +52,7 @@ class NetworkConnect extends \Docker\API\Runtime\Client\BaseEndpoint implements 
     }
 
     /**
+     * @throws \Docker\API\Exception\NetworkConnectBadRequestException
      * @throws \Docker\API\Exception\NetworkConnectForbiddenException
      * @throws \Docker\API\Exception\NetworkConnectNotFoundException
      * @throws \Docker\API\Exception\NetworkConnectInternalServerErrorException
@@ -62,14 +65,17 @@ class NetworkConnect extends \Docker\API\Runtime\Client\BaseEndpoint implements 
         $body = (string) $response->getBody();
         if (200 === $status) {
         }
+        if ((null === $contentType) === false && (400 === $status && false !== mb_strpos($contentType, 'application/json'))) {
+            throw new \Docker\API\Exception\NetworkConnectBadRequestException($serializer->deserialize($body, 'Docker\API\Model\ErrorResponse', 'json'), $response);
+        }
         if ((null === $contentType) === false && (403 === $status && false !== mb_strpos($contentType, 'application/json'))) {
-            throw new \Docker\API\Exception\NetworkConnectForbiddenException($serializer->deserialize($body, 'Docker\\API\\Model\\ErrorResponse', 'json'), $response);
+            throw new \Docker\API\Exception\NetworkConnectForbiddenException($serializer->deserialize($body, 'Docker\API\Model\ErrorResponse', 'json'), $response);
         }
         if ((null === $contentType) === false && (404 === $status && false !== mb_strpos($contentType, 'application/json'))) {
-            throw new \Docker\API\Exception\NetworkConnectNotFoundException($serializer->deserialize($body, 'Docker\\API\\Model\\ErrorResponse', 'json'), $response);
+            throw new \Docker\API\Exception\NetworkConnectNotFoundException($serializer->deserialize($body, 'Docker\API\Model\ErrorResponse', 'json'), $response);
         }
         if ((null === $contentType) === false && (500 === $status && false !== mb_strpos($contentType, 'application/json'))) {
-            throw new \Docker\API\Exception\NetworkConnectInternalServerErrorException($serializer->deserialize($body, 'Docker\\API\\Model\\ErrorResponse', 'json'), $response);
+            throw new \Docker\API\Exception\NetworkConnectInternalServerErrorException($serializer->deserialize($body, 'Docker\API\Model\ErrorResponse', 'json'), $response);
         }
     }
 

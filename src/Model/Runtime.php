@@ -30,6 +30,25 @@ class Runtime extends \ArrayObject
      * @var list<string>|null
      */
     protected $runtimeArgs;
+    /**
+     * Information specific to the runtime.
+     *
+     * While this API specification does not define data provided by runtimes,
+     * the following well-known properties may be provided by runtimes:
+     *
+     * `org.opencontainers.runtime-spec.features`: features structure as defined
+     * in the [OCI Runtime Specification](https://github.com/opencontainers/runtime-spec/blob/main/features.md),
+     * in a JSON string representation.
+     *
+     * <p><br /></p>
+     *
+     * > **Note**: The information returned in this field, including the
+     * > formatting of values and labels, should not be considered stable,
+     * > and may change without notice.
+     *
+     * @var array<string, string>|null
+     */
+    protected $status;
 
     /**
      * Name and, optional, path, of the OCI executable binary.
@@ -75,6 +94,55 @@ class Runtime extends \ArrayObject
     {
         $this->initialized['runtimeArgs'] = true;
         $this->runtimeArgs = $runtimeArgs;
+
+        return $this;
+    }
+
+    /**
+     * Information specific to the runtime.
+     *
+     * While this API specification does not define data provided by runtimes,
+     * the following well-known properties may be provided by runtimes:
+     *
+     * `org.opencontainers.runtime-spec.features`: features structure as defined
+     * in the [OCI Runtime Specification](https://github.com/opencontainers/runtime-spec/blob/main/features.md),
+     * in a JSON string representation.
+     *
+     * <p><br /></p>
+     *
+     * > **Note**: The information returned in this field, including the
+     * > formatting of values and labels, should not be considered stable,
+     * > and may change without notice.
+     *
+     * @return array<string, string>|null
+     */
+    public function getStatus(): ?iterable
+    {
+        return $this->status;
+    }
+
+    /**
+     * Information specific to the runtime.
+     *
+     * While this API specification does not define data provided by runtimes,
+     * the following well-known properties may be provided by runtimes:
+     *
+     * `org.opencontainers.runtime-spec.features`: features structure as defined
+     * in the [OCI Runtime Specification](https://github.com/opencontainers/runtime-spec/blob/main/features.md),
+     * in a JSON string representation.
+     *
+     * <p><br /></p>
+     *
+     * > **Note**: The information returned in this field, including the
+     * > formatting of values and labels, should not be considered stable,
+     * > and may change without notice.
+     *
+     * @param array<string, string>|null $status
+     */
+    public function setStatus(?iterable $status): self
+    {
+        $this->initialized['status'] = true;
+        $this->status = $status;
 
         return $this;
     }
