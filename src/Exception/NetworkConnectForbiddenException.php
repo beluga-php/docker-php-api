@@ -17,7 +17,7 @@ class NetworkConnectForbiddenException extends ForbiddenException
 
     public function __construct(\Docker\API\Model\ErrorResponse $errorResponse, \Psr\Http\Message\ResponseInterface $response)
     {
-        parent::__construct('Operation not supported for swarm scoped networks');
+        parent::__construct('Operation forbidden');
         $this->errorResponse = $errorResponse;
         $this->response = $response;
     }

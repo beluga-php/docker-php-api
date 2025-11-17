@@ -71,6 +71,9 @@ class ImageInspect extends \ArrayObject
      * Date and time at which the image was created, formatted in
      * [RFC 3339](https://www.ietf.org/rfc/rfc3339.txt) format with nano-seconds.
      *
+     * This information is only available if present in the image,
+     * and omitted otherwise.
+     *
      * @var string|null
      */
     protected $created;
@@ -78,6 +81,9 @@ class ImageInspect extends \ArrayObject
      * The ID of the container that was used to create the image.
      *
      * Depending on how the image was created, this field may be empty.
+     *
+     **Deprecated**: this field is kept for backward compatibility, but
+     * will be removed in API v1.45.
      *
      * @var string|null
      */
@@ -157,13 +163,7 @@ class ImageInspect extends \ArrayObject
     /**
      * Total size of the image including all layers it is composed of.
      *
-     * In versions of Docker before v1.10, this field was calculated from
-     * the image itself and all of its parent images. Images are now stored
-     * self-contained, and no longer use a parent-chain, making this field
-     * an equivalent of the Size field.
-     *
-     * > **Deprecated**: this field is kept for backward compatibility, but
-     * > will be removed in API v1.44.
+     * Deprecated: this field is omitted in API v1.44, but kept for backward compatibility. Use Size instead.
      *
      * @var int|null
      */
@@ -339,6 +339,9 @@ class ImageInspect extends \ArrayObject
     /**
      * Date and time at which the image was created, formatted in
      * [RFC 3339](https://www.ietf.org/rfc/rfc3339.txt) format with nano-seconds.
+     *
+     * This information is only available if present in the image,
+     * and omitted otherwise.
      */
     public function getCreated(): ?string
     {
@@ -348,6 +351,9 @@ class ImageInspect extends \ArrayObject
     /**
      * Date and time at which the image was created, formatted in
      * [RFC 3339](https://www.ietf.org/rfc/rfc3339.txt) format with nano-seconds.
+     *
+     * This information is only available if present in the image,
+     * and omitted otherwise.
      */
     public function setCreated(?string $created): self
     {
@@ -361,6 +367,9 @@ class ImageInspect extends \ArrayObject
      * The ID of the container that was used to create the image.
      *
      * Depending on how the image was created, this field may be empty.
+     *
+     **Deprecated**: this field is kept for backward compatibility, but
+     * will be removed in API v1.45.
      */
     public function getContainer(): ?string
     {
@@ -371,6 +380,9 @@ class ImageInspect extends \ArrayObject
      * The ID of the container that was used to create the image.
      *
      * Depending on how the image was created, this field may be empty.
+     *
+     **Deprecated**: this field is kept for backward compatibility, but
+     * will be removed in API v1.45.
      */
     public function setContainer(?string $container): self
     {
@@ -590,13 +602,7 @@ class ImageInspect extends \ArrayObject
     /**
      * Total size of the image including all layers it is composed of.
      *
-     * In versions of Docker before v1.10, this field was calculated from
-     * the image itself and all of its parent images. Images are now stored
-     * self-contained, and no longer use a parent-chain, making this field
-     * an equivalent of the Size field.
-     *
-     * > **Deprecated**: this field is kept for backward compatibility, but
-     * > will be removed in API v1.44.
+     * Deprecated: this field is omitted in API v1.44, but kept for backward compatibility. Use Size instead.
      */
     public function getVirtualSize(): ?int
     {
@@ -606,13 +612,7 @@ class ImageInspect extends \ArrayObject
     /**
      * Total size of the image including all layers it is composed of.
      *
-     * In versions of Docker before v1.10, this field was calculated from
-     * the image itself and all of its parent images. Images are now stored
-     * self-contained, and no longer use a parent-chain, making this field
-     * an equivalent of the Size field.
-     *
-     * > **Deprecated**: this field is kept for backward compatibility, but
-     * > will be removed in API v1.44.
+     * Deprecated: this field is omitted in API v1.44, but kept for backward compatibility. Use Size instead.
      */
     public function setVirtualSize(?int $virtualSize): self
     {

@@ -32,9 +32,17 @@ class TaskStatus extends \ArrayObject
      */
     protected $err;
     /**
-     * @var TaskStatusContainerStatus|null
+     * represents the status of a container.
+     *
+     * @var ContainerStatus|null
      */
     protected $containerStatus;
+    /**
+     * represents the port status of a task's host ports whose service has published host ports.
+     *
+     * @var PortStatus|null
+     */
+    protected $portStatus;
 
     public function getTimestamp(): ?string
     {
@@ -88,15 +96,40 @@ class TaskStatus extends \ArrayObject
         return $this;
     }
 
-    public function getContainerStatus(): ?TaskStatusContainerStatus
+    /**
+     * represents the status of a container.
+     */
+    public function getContainerStatus(): ?ContainerStatus
     {
         return $this->containerStatus;
     }
 
-    public function setContainerStatus(?TaskStatusContainerStatus $containerStatus): self
+    /**
+     * represents the status of a container.
+     */
+    public function setContainerStatus(?ContainerStatus $containerStatus): self
     {
         $this->initialized['containerStatus'] = true;
         $this->containerStatus = $containerStatus;
+
+        return $this;
+    }
+
+    /**
+     * represents the port status of a task's host ports whose service has published host ports.
+     */
+    public function getPortStatus(): ?PortStatus
+    {
+        return $this->portStatus;
+    }
+
+    /**
+     * represents the port status of a task's host ports whose service has published host ports.
+     */
+    public function setPortStatus(?PortStatus $portStatus): self
+    {
+        $this->initialized['portStatus'] = true;
+        $this->portStatus = $portStatus;
 
         return $this;
     }

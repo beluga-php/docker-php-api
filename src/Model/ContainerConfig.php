@@ -142,6 +142,8 @@ class ContainerConfig extends \ArrayObject
     /**
      * MAC address of the container.
      *
+     * Deprecated: this field is deprecated in API v1.44 and up. Use EndpointSettings.MacAddress instead.
+     *
      * @var string|null
      */
     protected $macAddress;
@@ -579,6 +581,8 @@ class ContainerConfig extends \ArrayObject
 
     /**
      * MAC address of the container.
+     *
+     * Deprecated: this field is deprecated in API v1.44 and up. Use EndpointSettings.MacAddress instead.
      */
     public function getMacAddress(): ?string
     {
@@ -587,6 +591,8 @@ class ContainerConfig extends \ArrayObject
 
     /**
      * MAC address of the container.
+     *
+     * Deprecated: this field is deprecated in API v1.44 and up. Use EndpointSettings.MacAddress instead.
      */
     public function setMacAddress(?string $macAddress): self
     {

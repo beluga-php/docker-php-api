@@ -55,6 +55,13 @@ class HealthConfig extends \ArrayObject
      * @var int|null
      */
     protected $startPeriod;
+    /**
+     * The time to wait between checks in nanoseconds during the start period.
+     * It should be 0 or at least 1000000 (1 ms). 0 means inherit.
+     *
+     * @var int|null
+     */
+    protected $startInterval;
 
     /**
      * The test to perform. Possible values are:
@@ -171,6 +178,27 @@ class HealthConfig extends \ArrayObject
     {
         $this->initialized['startPeriod'] = true;
         $this->startPeriod = $startPeriod;
+
+        return $this;
+    }
+
+    /**
+     * The time to wait between checks in nanoseconds during the start period.
+     * It should be 0 or at least 1000000 (1 ms). 0 means inherit.
+     */
+    public function getStartInterval(): ?int
+    {
+        return $this->startInterval;
+    }
+
+    /**
+     * The time to wait between checks in nanoseconds during the start period.
+     * It should be 0 or at least 1000000 (1 ms). 0 means inherit.
+     */
+    public function setStartInterval(?int $startInterval): self
+    {
+        $this->initialized['startInterval'] = true;
+        $this->startInterval = $startInterval;
 
         return $this;
     }

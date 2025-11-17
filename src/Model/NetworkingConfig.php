@@ -17,6 +17,8 @@ class NetworkingConfig extends \ArrayObject
     }
     /**
      * A mapping of network name to endpoint configuration for that network.
+     * The endpoint configuration can be left empty to connect to that
+     * network with no particular endpoint configuration.
      *
      * @var array<string, EndpointSettings>|null
      */
@@ -24,6 +26,8 @@ class NetworkingConfig extends \ArrayObject
 
     /**
      * A mapping of network name to endpoint configuration for that network.
+     * The endpoint configuration can be left empty to connect to that
+     * network with no particular endpoint configuration.
      *
      * @return array<string, EndpointSettings>|null
      */
@@ -34,6 +38,8 @@ class NetworkingConfig extends \ArrayObject
 
     /**
      * A mapping of network name to endpoint configuration for that network.
+     * The endpoint configuration can be left empty to connect to that
+     * network with no particular endpoint configuration.
      *
      * @param array<string, EndpointSettings>|null $endpointsConfig
      */

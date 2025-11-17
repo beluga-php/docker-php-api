@@ -24,6 +24,7 @@ class ImageList extends \Docker\API\Runtime\Client\BaseEndpoint implements \Dock
      * - `label=key` or `label="key=value"` of an image label
      * - `reference`=(`<image-name>[:<tag>]`)
      * - `since`=(`<image-name>[:<tag>]`,  `<image id>` or `<image@digest>`)
+     * - `until=<timestamp>`
      * @var bool $shared-size Compute and show shared size as a `SharedSize` field on each image
      * @var bool $digests Show digest information as a `RepoDigests` field on each image.
      *           }
@@ -77,10 +78,10 @@ class ImageList extends \Docker\API\Runtime\Client\BaseEndpoint implements \Dock
         $status = $response->getStatusCode();
         $body = (string) $response->getBody();
         if ((null === $contentType) === false && (200 === $status && false !== mb_strpos($contentType, 'application/json'))) {
-            return $serializer->deserialize($body, 'Docker\\API\\Model\\ImageSummary[]', 'json');
+            return $serializer->deserialize($body, 'Docker\API\Model\ImageSummary[]', 'json');
         }
         if ((null === $contentType) === false && (500 === $status && false !== mb_strpos($contentType, 'application/json'))) {
-            throw new \Docker\API\Exception\ImageListInternalServerErrorException($serializer->deserialize($body, 'Docker\\API\\Model\\ErrorResponse', 'json'), $response);
+            throw new \Docker\API\Exception\ImageListInternalServerErrorException($serializer->deserialize($body, 'Docker\API\Model\ErrorResponse', 'json'), $response);
         }
     }
 

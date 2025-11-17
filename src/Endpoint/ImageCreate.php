@@ -9,7 +9,7 @@ class ImageCreate extends \Docker\API\Runtime\Client\BaseEndpoint implements \Do
     use \Docker\API\Runtime\Client\EndpointTrait;
 
     /**
-     * Create an image by either pulling it from a registry or importing it.
+     * Pull or import an image.
      *
      * @param array $queryParameters {
      *
@@ -126,10 +126,10 @@ class ImageCreate extends \Docker\API\Runtime\Client\BaseEndpoint implements \Do
         if (200 === $status) {
         }
         if ((null === $contentType) === false && (404 === $status && false !== mb_strpos($contentType, 'application/json'))) {
-            throw new \Docker\API\Exception\ImageCreateNotFoundException($serializer->deserialize($body, 'Docker\\API\\Model\\ErrorResponse', 'json'), $response);
+            throw new \Docker\API\Exception\ImageCreateNotFoundException($serializer->deserialize($body, 'Docker\API\Model\ErrorResponse', 'json'), $response);
         }
         if ((null === $contentType) === false && (500 === $status && false !== mb_strpos($contentType, 'application/json'))) {
-            throw new \Docker\API\Exception\ImageCreateInternalServerErrorException($serializer->deserialize($body, 'Docker\\API\\Model\\ErrorResponse', 'json'), $response);
+            throw new \Docker\API\Exception\ImageCreateInternalServerErrorException($serializer->deserialize($body, 'Docker\API\Model\ErrorResponse', 'json'), $response);
         }
     }
 

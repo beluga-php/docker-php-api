@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Docker\API\Model;
 
-class TaskStatusContainerStatus extends \ArrayObject
+class ContainerStatus extends \ArrayObject
 {
     /**
      * @var array

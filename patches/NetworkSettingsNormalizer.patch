@@ -1,26 +1,26 @@
 diff --git a/src/Normalizer/NetworkSettingsNormalizer.php b/src/Normalizer/NetworkSettingsNormalizer.php
-index 0c73d7f..a3c893a 100644
+index 22cfce8..392058c 100644
 --- a/src/Normalizer/NetworkSettingsNormalizer.php
 +++ b/src/Normalizer/NetworkSettingsNormalizer.php
-@@ -78,6 +78,10 @@ if (!class_exists(Kernel::class) || (Kernel::MAJOR_VERSION >= 7 || Kernel::MAJOR
-             if (\array_key_exists('Ports', $data) && null !== $data['Ports']) {
-                 $values = new \ArrayObject([], \ArrayObject::ARRAY_AS_PROPS);
-                 foreach ($data['Ports'] as $key => $value) {
-+                    if ($value === null) {
-+                        $values[$key] = null;
-+                        continue;
-+                    }
-                     $values_1 = [];
-                     foreach ($value as $value_1) {
-                         $values_1[] = $this->denormalizer->denormalize($value_1, 'Docker\\API\\Model\\PortBinding', 'json', $context);
-@@ -203,6 +207,10 @@ if (!class_exists(Kernel::class) || (Kernel::MAJOR_VERSION >= 7 || Kernel::MAJOR
-             if ($object->isInitialized('ports') && null !== $object->getPorts()) {
-                 $values = [];
-                 foreach ($object->getPorts() as $key => $value) {
-+                    if ($value === null) {
-+                        $values[$key] = null;
-+                        continue;
-+                    }
-                     $values_1 = [];
-                     foreach ($value as $value_1) {
-                         $values_1[] = $this->normalizer->normalize($value_1, 'json', $context);
+@@ -78,6 +78,10 @@ class NetworkSettingsNormalizer implements DenormalizerInterface, NormalizerInte
+         if (\array_key_exists('Ports', $data) && $data['Ports'] !== null) {
+             $values = new \ArrayObject([], \ArrayObject::ARRAY_AS_PROPS);
+             foreach ($data['Ports'] as $key => $value) {
++                if (null === $value) {
++                    $values[$key] = null;
++                    continue;
++                }
+                 $values_1 = [];
+                 foreach ($value as $value_1) {
+                     $values_1[] = $this->denormalizer->denormalize($value_1, \Docker\API\Model\PortBinding::class, 'json', $context);
+@@ -214,6 +218,10 @@ class NetworkSettingsNormalizer implements DenormalizerInterface, NormalizerInte
+         if ($data->isInitialized('ports') && null !== $data->getPorts()) {
+             $values = [];
+             foreach ($data->getPorts() as $key => $value) {
++                if (null === $value) {
++                    $values[$key] = null;
++                    continue;
++                }
+                 $values_1 = [];
+                 foreach ($value as $value_1) {
+                     $values_1[] = $this->normalizer->normalize($value_1, 'json', $context);
