@@ -32,6 +32,7 @@
         "ergebnis/composer-normalize": "^2.42",
         "friendsofphp/php-cs-fixer": "^3.8",
         "jane-php/open-api-3": "^7.4",
+        "phpunit/phpunit": "^11.0",
         "roave/security-advisories": "dev-latest"
     },
     "conflict": {
@@ -42,6 +43,11 @@
     "autoload": {
         "psr-4": {
             "Docker\\API\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Docker\\API\\Tests\\": "tests/"
         }
     },
     "config": {
@@ -63,6 +69,7 @@
         }
     },
     "scripts": {
+        "test": "vendor/bin/phpunit",
         "generate": [
             "vendor/bin/jane-openapi generate",
             "cat patches/*.patch | patch -s -p1"

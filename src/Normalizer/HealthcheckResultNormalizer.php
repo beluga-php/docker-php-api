@@ -33,18 +33,18 @@ class HealthcheckResultNormalizer implements DenormalizerInterface, NormalizerIn
 
     public function denormalize(mixed $data, string $type, ?string $format = null, array $context = []): mixed
     {
-        if (isset($data['$ref'])) {
+        $object = new \Docker\API\Model\HealthcheckResult();
+        if (null === $data || false === \is_array($data)) {
+            return $object;
+        }
+        if (isset($data['$ref']) && !isset($data['type']) && !isset($data['properties']) && !isset($data['allOf'])) {
             return new Reference($data['$ref'], $context['document-origin']);
         }
         if (isset($data['$recursiveRef'])) {
             return new Reference($data['$recursiveRef'], $context['document-origin']);
         }
-        $object = new \Docker\API\Model\HealthcheckResult();
-        if (null === $data || false === \is_array($data)) {
-            return $object;
-        }
         if (\array_key_exists('Start', $data) && null !== $data['Start']) {
-            $object->setStart(\DateTime::createFromFormat('Y-m-d\TH:i:s.uuP', $data['Start']));
+            $object->setStart('Z' === (new \DateTime($data['Start']))->getTimezone()->getName() ? (new \DateTime($data['Start']))->setTimezone(new \DateTimeZone('GMT')) : new \DateTime($data['Start']));
             unset($data['Start']);
         } elseif (\array_key_exists('Start', $data) && null === $data['Start']) {
             $object->setStart(null);
@@ -80,7 +80,7 @@ class HealthcheckResultNormalizer implements DenormalizerInterface, NormalizerIn
     {
         $dataArray = [];
         if ($data->isInitialized('start') && null !== $data->getStart()) {
-            $dataArray['Start'] = $data->getStart()?->format('Y-m-d\TH:i:sP');
+            $dataArray['Start'] = $data->getStart()->format('Y-m-d\TH:i:sP');
         }
         if ($data->isInitialized('end') && null !== $data->getEnd()) {
             $dataArray['End'] = $data->getEnd();
