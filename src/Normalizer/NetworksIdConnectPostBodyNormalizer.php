@@ -21,39 +21,41 @@ class NetworksIdConnectPostBodyNormalizer implements DenormalizerInterface, Norm
     use NormalizerAwareTrait;
     use ValidatorTrait;
 
-    public function supportsDenormalization($data, $type, $format = null, array $context = []): bool
+    public function supportsDenormalization(mixed $data, string $type, ?string $format = null, array $context = []): bool
     {
-        return 'Docker\\API\\Model\\NetworksIdConnectPostBody' === $type;
+        return \Docker\API\Model\NetworksIdConnectPostBody::class === $type;
     }
 
-    public function supportsNormalization($data, $format = null, array $context = []): bool
+    public function supportsNormalization(mixed $data, ?string $format = null, array $context = []): bool
     {
-        return \is_object($data) && 'Docker\\API\\Model\\NetworksIdConnectPostBody' === $data::class;
+        return \is_object($data) && \Docker\API\Model\NetworksIdConnectPostBody::class === $data::class;
     }
 
-    public function denormalize($data, $class, $format = null, array $context = [])
+    public function denormalize(mixed $data, string $type, ?string $format = null, array $context = []): mixed
     {
-        if (isset($data['$ref'])) {
+        $object = new \Docker\API\Model\NetworksIdConnectPostBody();
+        if (null === $data || false === \is_array($data)) {
+            return $object;
+        }
+        if (isset($data['$ref']) && !isset($data['type']) && !isset($data['properties']) && !isset($data['allOf'])) {
             return new Reference($data['$ref'], $context['document-origin']);
         }
         if (isset($data['$recursiveRef'])) {
             return new Reference($data['$recursiveRef'], $context['document-origin']);
-        }
-        $object = new \Docker\API\Model\NetworksIdConnectPostBody();
-        if (null === $data || false === \is_array($data)) {
-            return $object;
         }
         if (\array_key_exists('Container', $data) && null !== $data['Container']) {
             $object->setContainer($data['Container']);
             unset($data['Container']);
         } elseif (\array_key_exists('Container', $data) && null === $data['Container']) {
             $object->setContainer(null);
+            unset($data['Container']);
         }
         if (\array_key_exists('EndpointConfig', $data) && null !== $data['EndpointConfig']) {
-            $object->setEndpointConfig($this->denormalizer->denormalize($data['EndpointConfig'], 'Docker\\API\\Model\\EndpointSettings', 'json', $context));
+            $object->setEndpointConfig($this->denormalizer->denormalize($data['EndpointConfig'], \Docker\API\Model\EndpointSettings::class, 'json', $context));
             unset($data['EndpointConfig']);
         } elseif (\array_key_exists('EndpointConfig', $data) && null === $data['EndpointConfig']) {
             $object->setEndpointConfig(null);
+            unset($data['EndpointConfig']);
         }
         foreach ($data as $key => $value) {
             if (preg_match('/.*/', (string) $key)) {
@@ -64,29 +66,26 @@ class NetworksIdConnectPostBodyNormalizer implements DenormalizerInterface, Norm
         return $object;
     }
 
-    /**
-     * @return array|string|int|float|bool|\ArrayObject|null
-     */
-    public function normalize($object, $format = null, array $context = [])
+    public function normalize(mixed $data, ?string $format = null, array $context = []): array|string|int|float|bool|\ArrayObject|null
     {
-        $data = [];
-        if ($object->isInitialized('container') && null !== $object->getContainer()) {
-            $data['Container'] = $object->getContainer();
+        $dataArray = [];
+        if ($data->isInitialized('container') && null !== $data->getContainer()) {
+            $dataArray['Container'] = $data->getContainer();
         }
-        if ($object->isInitialized('endpointConfig') && null !== $object->getEndpointConfig()) {
-            $data['EndpointConfig'] = null === $object->getEndpointConfig() ? null : new \ArrayObject($this->normalizer->normalize($object->getEndpointConfig(), 'json', $context), \ArrayObject::ARRAY_AS_PROPS);
+        if ($data->isInitialized('endpointConfig') && null !== $data->getEndpointConfig()) {
+            $dataArray['EndpointConfig'] = null === $data->getEndpointConfig() ? null : new \Docker\API\Runtime\JsonObject($this->normalizer->normalize($data->getEndpointConfig(), 'json', $context));
         }
-        foreach ($object as $key => $value) {
+        foreach ($data->additionalPropertyEntries() as $key => $value) {
             if (preg_match('/.*/', (string) $key)) {
-                $data[$key] = $value;
+                $dataArray[$key] = $value;
             }
         }
 
-        return $data;
+        return $dataArray;
     }
 
-    public function getSupportedTypes(string $format = null): array
+    public function getSupportedTypes(?string $format = null): array
     {
-        return ['Docker\\API\\Model\\NetworksIdConnectPostBody' => false];
+        return [\Docker\API\Model\NetworksIdConnectPostBody::class => false];
     }
 }

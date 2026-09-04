@@ -21,39 +21,41 @@ class ServiceEndpointVirtualIPsItemNormalizer implements DenormalizerInterface, 
     use NormalizerAwareTrait;
     use ValidatorTrait;
 
-    public function supportsDenormalization($data, $type, $format = null, array $context = []): bool
+    public function supportsDenormalization(mixed $data, string $type, ?string $format = null, array $context = []): bool
     {
-        return 'Docker\\API\\Model\\ServiceEndpointVirtualIPsItem' === $type;
+        return \Docker\API\Model\ServiceEndpointVirtualIPsItem::class === $type;
     }
 
-    public function supportsNormalization($data, $format = null, array $context = []): bool
+    public function supportsNormalization(mixed $data, ?string $format = null, array $context = []): bool
     {
-        return \is_object($data) && 'Docker\\API\\Model\\ServiceEndpointVirtualIPsItem' === $data::class;
+        return \is_object($data) && \Docker\API\Model\ServiceEndpointVirtualIPsItem::class === $data::class;
     }
 
-    public function denormalize($data, $class, $format = null, array $context = [])
+    public function denormalize(mixed $data, string $type, ?string $format = null, array $context = []): mixed
     {
-        if (isset($data['$ref'])) {
+        $object = new \Docker\API\Model\ServiceEndpointVirtualIPsItem();
+        if (null === $data || false === \is_array($data)) {
+            return $object;
+        }
+        if (isset($data['$ref']) && !isset($data['type']) && !isset($data['properties']) && !isset($data['allOf'])) {
             return new Reference($data['$ref'], $context['document-origin']);
         }
         if (isset($data['$recursiveRef'])) {
             return new Reference($data['$recursiveRef'], $context['document-origin']);
-        }
-        $object = new \Docker\API\Model\ServiceEndpointVirtualIPsItem();
-        if (null === $data || false === \is_array($data)) {
-            return $object;
         }
         if (\array_key_exists('NetworkID', $data) && null !== $data['NetworkID']) {
             $object->setNetworkID($data['NetworkID']);
             unset($data['NetworkID']);
         } elseif (\array_key_exists('NetworkID', $data) && null === $data['NetworkID']) {
             $object->setNetworkID(null);
+            unset($data['NetworkID']);
         }
         if (\array_key_exists('Addr', $data) && null !== $data['Addr']) {
             $object->setAddr($data['Addr']);
             unset($data['Addr']);
         } elseif (\array_key_exists('Addr', $data) && null === $data['Addr']) {
             $object->setAddr(null);
+            unset($data['Addr']);
         }
         foreach ($data as $key => $value) {
             if (preg_match('/.*/', (string) $key)) {
@@ -64,29 +66,26 @@ class ServiceEndpointVirtualIPsItemNormalizer implements DenormalizerInterface, 
         return $object;
     }
 
-    /**
-     * @return array|string|int|float|bool|\ArrayObject|null
-     */
-    public function normalize($object, $format = null, array $context = [])
+    public function normalize(mixed $data, ?string $format = null, array $context = []): array|string|int|float|bool|\ArrayObject|null
     {
-        $data = [];
-        if ($object->isInitialized('networkID') && null !== $object->getNetworkID()) {
-            $data['NetworkID'] = $object->getNetworkID();
+        $dataArray = [];
+        if ($data->isInitialized('networkID') && null !== $data->getNetworkID()) {
+            $dataArray['NetworkID'] = $data->getNetworkID();
         }
-        if ($object->isInitialized('addr') && null !== $object->getAddr()) {
-            $data['Addr'] = $object->getAddr();
+        if ($data->isInitialized('addr') && null !== $data->getAddr()) {
+            $dataArray['Addr'] = $data->getAddr();
         }
-        foreach ($object as $key => $value) {
+        foreach ($data->additionalPropertyEntries() as $key => $value) {
             if (preg_match('/.*/', (string) $key)) {
-                $data[$key] = $value;
+                $dataArray[$key] = $value;
             }
         }
 
-        return $data;
+        return $dataArray;
     }
 
-    public function getSupportedTypes(string $format = null): array
+    public function getSupportedTypes(?string $format = null): array
     {
-        return ['Docker\\API\\Model\\ServiceEndpointVirtualIPsItem' => false];
+        return [\Docker\API\Model\ServiceEndpointVirtualIPsItem::class => false];
     }
 }

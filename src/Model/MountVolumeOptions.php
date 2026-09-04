@@ -4,8 +4,12 @@ declare(strict_types=1);
 
 namespace Docker\API\Model;
 
-class MountVolumeOptions extends \ArrayObject
+use Docker\API\Runtime\AdditionalAndPatternProperties;
+use Docker\API\Runtime\AdditionalPropertiesInterface;
+
+class MountVolumeOptions implements AdditionalPropertiesInterface
 {
+    use AdditionalAndPatternProperties;
     /**
      * @var array
      */
@@ -93,5 +97,10 @@ class MountVolumeOptions extends \ArrayObject
         $this->driverConfig = $driverConfig;
 
         return $this;
+    }
+
+    public function definedProperties(): array
+    {
+        return ['noCopy' => ['NoCopy', 'getNoCopy', 'setNoCopy'], 'labels' => ['Labels', 'getLabels', 'setLabels'], 'driverConfig' => ['DriverConfig', 'getDriverConfig', 'setDriverConfig']];
     }
 }

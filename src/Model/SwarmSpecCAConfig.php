@@ -4,8 +4,12 @@ declare(strict_types=1);
 
 namespace Docker\API\Model;
 
-class SwarmSpecCAConfig extends \ArrayObject
+use Docker\API\Runtime\AdditionalAndPatternProperties;
+use Docker\API\Runtime\AdditionalPropertiesInterface;
+
+class SwarmSpecCAConfig implements AdditionalPropertiesInterface
 {
+    use AdditionalAndPatternProperties;
     /**
      * @var array
      */
@@ -25,7 +29,7 @@ class SwarmSpecCAConfig extends \ArrayObject
      * Configuration for forwarding signing requests to an external
      * certificate authority.
      *
-     * @var SwarmSpecCAConfigExternalCAsItem[]|null
+     * @var list<SwarmSpecCAConfigExternalCAsItem>|null
      */
     protected $externalCAs;
     /**
@@ -74,7 +78,7 @@ class SwarmSpecCAConfig extends \ArrayObject
      * Configuration for forwarding signing requests to an external
      * certificate authority.
      *
-     * @return SwarmSpecCAConfigExternalCAsItem[]|null
+     * @return list<SwarmSpecCAConfigExternalCAsItem>|null
      */
     public function getExternalCAs(): ?array
     {
@@ -85,7 +89,7 @@ class SwarmSpecCAConfig extends \ArrayObject
      * Configuration for forwarding signing requests to an external
      * certificate authority.
      *
-     * @param SwarmSpecCAConfigExternalCAsItem[]|null $externalCAs
+     * @param list<SwarmSpecCAConfigExternalCAsItem>|null $externalCAs
      */
     public function setExternalCAs(?array $externalCAs): self
     {
@@ -158,5 +162,10 @@ class SwarmSpecCAConfig extends \ArrayObject
         $this->forceRotate = $forceRotate;
 
         return $this;
+    }
+
+    public function definedProperties(): array
+    {
+        return ['nodeCertExpiry' => ['NodeCertExpiry', 'getNodeCertExpiry', 'setNodeCertExpiry'], 'externalCAs' => ['ExternalCAs', 'getExternalCAs', 'setExternalCAs'], 'signingCACert' => ['SigningCACert', 'getSigningCACert', 'setSigningCACert'], 'signingCAKey' => ['SigningCAKey', 'getSigningCAKey', 'setSigningCAKey'], 'forceRotate' => ['ForceRotate', 'getForceRotate', 'setForceRotate']];
     }
 }

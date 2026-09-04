@@ -21,45 +21,48 @@ class DeviceMappingNormalizer implements DenormalizerInterface, NormalizerInterf
     use NormalizerAwareTrait;
     use ValidatorTrait;
 
-    public function supportsDenormalization($data, $type, $format = null, array $context = []): bool
+    public function supportsDenormalization(mixed $data, string $type, ?string $format = null, array $context = []): bool
     {
-        return 'Docker\\API\\Model\\DeviceMapping' === $type;
+        return \Docker\API\Model\DeviceMapping::class === $type;
     }
 
-    public function supportsNormalization($data, $format = null, array $context = []): bool
+    public function supportsNormalization(mixed $data, ?string $format = null, array $context = []): bool
     {
-        return \is_object($data) && 'Docker\\API\\Model\\DeviceMapping' === $data::class;
+        return \is_object($data) && \Docker\API\Model\DeviceMapping::class === $data::class;
     }
 
-    public function denormalize($data, $class, $format = null, array $context = [])
+    public function denormalize(mixed $data, string $type, ?string $format = null, array $context = []): mixed
     {
-        if (isset($data['$ref'])) {
+        $object = new \Docker\API\Model\DeviceMapping();
+        if (null === $data || false === \is_array($data)) {
+            return $object;
+        }
+        if (isset($data['$ref']) && !isset($data['type']) && !isset($data['properties']) && !isset($data['allOf'])) {
             return new Reference($data['$ref'], $context['document-origin']);
         }
         if (isset($data['$recursiveRef'])) {
             return new Reference($data['$recursiveRef'], $context['document-origin']);
-        }
-        $object = new \Docker\API\Model\DeviceMapping();
-        if (null === $data || false === \is_array($data)) {
-            return $object;
         }
         if (\array_key_exists('PathOnHost', $data) && null !== $data['PathOnHost']) {
             $object->setPathOnHost($data['PathOnHost']);
             unset($data['PathOnHost']);
         } elseif (\array_key_exists('PathOnHost', $data) && null === $data['PathOnHost']) {
             $object->setPathOnHost(null);
+            unset($data['PathOnHost']);
         }
         if (\array_key_exists('PathInContainer', $data) && null !== $data['PathInContainer']) {
             $object->setPathInContainer($data['PathInContainer']);
             unset($data['PathInContainer']);
         } elseif (\array_key_exists('PathInContainer', $data) && null === $data['PathInContainer']) {
             $object->setPathInContainer(null);
+            unset($data['PathInContainer']);
         }
         if (\array_key_exists('CgroupPermissions', $data) && null !== $data['CgroupPermissions']) {
             $object->setCgroupPermissions($data['CgroupPermissions']);
             unset($data['CgroupPermissions']);
         } elseif (\array_key_exists('CgroupPermissions', $data) && null === $data['CgroupPermissions']) {
             $object->setCgroupPermissions(null);
+            unset($data['CgroupPermissions']);
         }
         foreach ($data as $key => $value) {
             if (preg_match('/.*/', (string) $key)) {
@@ -70,32 +73,29 @@ class DeviceMappingNormalizer implements DenormalizerInterface, NormalizerInterf
         return $object;
     }
 
-    /**
-     * @return array|string|int|float|bool|\ArrayObject|null
-     */
-    public function normalize($object, $format = null, array $context = [])
+    public function normalize(mixed $data, ?string $format = null, array $context = []): array|string|int|float|bool|\ArrayObject|null
     {
-        $data = [];
-        if ($object->isInitialized('pathOnHost') && null !== $object->getPathOnHost()) {
-            $data['PathOnHost'] = $object->getPathOnHost();
+        $dataArray = [];
+        if ($data->isInitialized('pathOnHost') && null !== $data->getPathOnHost()) {
+            $dataArray['PathOnHost'] = $data->getPathOnHost();
         }
-        if ($object->isInitialized('pathInContainer') && null !== $object->getPathInContainer()) {
-            $data['PathInContainer'] = $object->getPathInContainer();
+        if ($data->isInitialized('pathInContainer') && null !== $data->getPathInContainer()) {
+            $dataArray['PathInContainer'] = $data->getPathInContainer();
         }
-        if ($object->isInitialized('cgroupPermissions') && null !== $object->getCgroupPermissions()) {
-            $data['CgroupPermissions'] = $object->getCgroupPermissions();
+        if ($data->isInitialized('cgroupPermissions') && null !== $data->getCgroupPermissions()) {
+            $dataArray['CgroupPermissions'] = $data->getCgroupPermissions();
         }
-        foreach ($object as $key => $value) {
+        foreach ($data->additionalPropertyEntries() as $key => $value) {
             if (preg_match('/.*/', (string) $key)) {
-                $data[$key] = $value;
+                $dataArray[$key] = $value;
             }
         }
 
-        return $data;
+        return $dataArray;
     }
 
-    public function getSupportedTypes(string $format = null): array
+    public function getSupportedTypes(?string $format = null): array
     {
-        return ['Docker\\API\\Model\\DeviceMapping' => false];
+        return [\Docker\API\Model\DeviceMapping::class => false];
     }
 }

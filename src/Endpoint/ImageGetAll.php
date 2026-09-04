@@ -20,10 +20,9 @@ class ImageGetAll extends \Docker\API\Runtime\Client\BaseEndpoint implements \Do
      *
      * For details on the format, see the [export image endpoint](#operation/ImageGet).
      *
-     * @param array $queryParameters {
-     *
-     * @var array $names Image names to filter by
-     *            }
+     * @param array{
+     *    "names"?: array, //Image names to filter by
+     * } $queryParameters
      */
     public function __construct(array $queryParameters = [])
     {
@@ -61,10 +60,15 @@ class ImageGetAll extends \Docker\API\Runtime\Client\BaseEndpoint implements \Do
         return $optionsResolver;
     }
 
+    protected function getQueryStyles(): array
+    {
+        return ['names' => ['style' => 'form', 'explode' => false]];
+    }
+
     /**
      * @return null
      */
-    protected function transformResponseBody(\Psr\Http\Message\ResponseInterface $response, \Symfony\Component\Serializer\SerializerInterface $serializer, string $contentType = null)
+    protected function transformResponseBody(\Psr\Http\Message\ResponseInterface $response, \Symfony\Component\Serializer\SerializerInterface $serializer, ?string $contentType = null)
     {
         $status = $response->getStatusCode();
         $body = (string) $response->getBody();

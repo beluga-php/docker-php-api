@@ -21,36 +21,37 @@ class ClusterVolumeInfoNormalizer implements DenormalizerInterface, NormalizerIn
     use NormalizerAwareTrait;
     use ValidatorTrait;
 
-    public function supportsDenormalization($data, $type, $format = null, array $context = []): bool
+    public function supportsDenormalization(mixed $data, string $type, ?string $format = null, array $context = []): bool
     {
-        return 'Docker\\API\\Model\\ClusterVolumeInfo' === $type;
+        return \Docker\API\Model\ClusterVolumeInfo::class === $type;
     }
 
-    public function supportsNormalization($data, $format = null, array $context = []): bool
+    public function supportsNormalization(mixed $data, ?string $format = null, array $context = []): bool
     {
-        return \is_object($data) && 'Docker\\API\\Model\\ClusterVolumeInfo' === $data::class;
+        return \is_object($data) && \Docker\API\Model\ClusterVolumeInfo::class === $data::class;
     }
 
-    public function denormalize($data, $class, $format = null, array $context = [])
+    public function denormalize(mixed $data, string $type, ?string $format = null, array $context = []): mixed
     {
-        if (isset($data['$ref'])) {
+        $object = new \Docker\API\Model\ClusterVolumeInfo();
+        if (null === $data || false === \is_array($data)) {
+            return $object;
+        }
+        if (isset($data['$ref']) && !isset($data['type']) && !isset($data['properties']) && !isset($data['allOf'])) {
             return new Reference($data['$ref'], $context['document-origin']);
         }
         if (isset($data['$recursiveRef'])) {
             return new Reference($data['$recursiveRef'], $context['document-origin']);
-        }
-        $object = new \Docker\API\Model\ClusterVolumeInfo();
-        if (null === $data || false === \is_array($data)) {
-            return $object;
         }
         if (\array_key_exists('CapacityBytes', $data) && null !== $data['CapacityBytes']) {
             $object->setCapacityBytes($data['CapacityBytes']);
             unset($data['CapacityBytes']);
         } elseif (\array_key_exists('CapacityBytes', $data) && null === $data['CapacityBytes']) {
             $object->setCapacityBytes(null);
+            unset($data['CapacityBytes']);
         }
         if (\array_key_exists('VolumeContext', $data) && null !== $data['VolumeContext']) {
-            $values = new \ArrayObject([], \ArrayObject::ARRAY_AS_PROPS);
+            $values = new \Docker\API\Runtime\JsonObject();
             foreach ($data['VolumeContext'] as $key => $value) {
                 $values[$key] = $value;
             }
@@ -58,17 +59,19 @@ class ClusterVolumeInfoNormalizer implements DenormalizerInterface, NormalizerIn
             unset($data['VolumeContext']);
         } elseif (\array_key_exists('VolumeContext', $data) && null === $data['VolumeContext']) {
             $object->setVolumeContext(null);
+            unset($data['VolumeContext']);
         }
         if (\array_key_exists('VolumeID', $data) && null !== $data['VolumeID']) {
             $object->setVolumeID($data['VolumeID']);
             unset($data['VolumeID']);
         } elseif (\array_key_exists('VolumeID', $data) && null === $data['VolumeID']) {
             $object->setVolumeID(null);
+            unset($data['VolumeID']);
         }
         if (\array_key_exists('AccessibleTopology', $data) && null !== $data['AccessibleTopology']) {
             $values_1 = [];
             foreach ($data['AccessibleTopology'] as $value_1) {
-                $values_2 = new \ArrayObject([], \ArrayObject::ARRAY_AS_PROPS);
+                $values_2 = new \Docker\API\Runtime\JsonObject();
                 foreach ($value_1 as $key_1 => $value_2) {
                     $values_2[$key_1] = $value_2;
                 }
@@ -78,6 +81,7 @@ class ClusterVolumeInfoNormalizer implements DenormalizerInterface, NormalizerIn
             unset($data['AccessibleTopology']);
         } elseif (\array_key_exists('AccessibleTopology', $data) && null === $data['AccessibleTopology']) {
             $object->setAccessibleTopology(null);
+            unset($data['AccessibleTopology']);
         }
         foreach ($data as $key_2 => $value_3) {
             if (preg_match('/.*/', (string) $key_2)) {
@@ -88,47 +92,44 @@ class ClusterVolumeInfoNormalizer implements DenormalizerInterface, NormalizerIn
         return $object;
     }
 
-    /**
-     * @return array|string|int|float|bool|\ArrayObject|null
-     */
-    public function normalize($object, $format = null, array $context = [])
+    public function normalize(mixed $data, ?string $format = null, array $context = []): array|string|int|float|bool|\ArrayObject|null
     {
-        $data = [];
-        if ($object->isInitialized('capacityBytes') && null !== $object->getCapacityBytes()) {
-            $data['CapacityBytes'] = $object->getCapacityBytes();
+        $dataArray = [];
+        if ($data->isInitialized('capacityBytes') && null !== $data->getCapacityBytes()) {
+            $dataArray['CapacityBytes'] = $data->getCapacityBytes();
         }
-        if ($object->isInitialized('volumeContext') && null !== $object->getVolumeContext()) {
-            $values = new \ArrayObject([], \ArrayObject::ARRAY_AS_PROPS);
-            foreach ($object->getVolumeContext() as $key => $value) {
+        if ($data->isInitialized('volumeContext') && null !== $data->getVolumeContext()) {
+            $values = new \Docker\API\Runtime\JsonObject();
+            foreach ($data->getVolumeContext() as $key => $value) {
                 $values[$key] = $value;
             }
-            $data['VolumeContext'] = $values;
+            $dataArray['VolumeContext'] = $values;
         }
-        if ($object->isInitialized('volumeID') && null !== $object->getVolumeID()) {
-            $data['VolumeID'] = $object->getVolumeID();
+        if ($data->isInitialized('volumeID') && null !== $data->getVolumeID()) {
+            $dataArray['VolumeID'] = $data->getVolumeID();
         }
-        if ($object->isInitialized('accessibleTopology') && null !== $object->getAccessibleTopology()) {
+        if ($data->isInitialized('accessibleTopology') && null !== $data->getAccessibleTopology()) {
             $values_1 = [];
-            foreach ($object->getAccessibleTopology() as $value_1) {
-                $values_2 = new \ArrayObject([], \ArrayObject::ARRAY_AS_PROPS);
+            foreach ($data->getAccessibleTopology() as $value_1) {
+                $values_2 = new \Docker\API\Runtime\JsonObject();
                 foreach ($value_1 as $key_1 => $value_2) {
                     $values_2[$key_1] = $value_2;
                 }
                 $values_1[] = $values_2;
             }
-            $data['AccessibleTopology'] = $values_1;
+            $dataArray['AccessibleTopology'] = $values_1;
         }
-        foreach ($object as $key_2 => $value_3) {
+        foreach ($data->additionalPropertyEntries() as $key_2 => $value_3) {
             if (preg_match('/.*/', (string) $key_2)) {
-                $data[$key_2] = $value_3;
+                $dataArray[$key_2] = $value_3;
             }
         }
 
-        return $data;
+        return $dataArray;
     }
 
-    public function getSupportedTypes(string $format = null): array
+    public function getSupportedTypes(?string $format = null): array
     {
-        return ['Docker\\API\\Model\\ClusterVolumeInfo' => false];
+        return [\Docker\API\Model\ClusterVolumeInfo::class => false];
     }
 }

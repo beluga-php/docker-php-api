@@ -21,57 +21,65 @@ class TaskSpecContainerSpecPrivilegesSELinuxContextNormalizer implements Denorma
     use NormalizerAwareTrait;
     use ValidatorTrait;
 
-    public function supportsDenormalization($data, $type, $format = null, array $context = []): bool
+    public function supportsDenormalization(mixed $data, string $type, ?string $format = null, array $context = []): bool
     {
-        return 'Docker\\API\\Model\\TaskSpecContainerSpecPrivilegesSELinuxContext' === $type;
+        return \Docker\API\Model\TaskSpecContainerSpecPrivilegesSELinuxContext::class === $type;
     }
 
-    public function supportsNormalization($data, $format = null, array $context = []): bool
+    public function supportsNormalization(mixed $data, ?string $format = null, array $context = []): bool
     {
-        return \is_object($data) && 'Docker\\API\\Model\\TaskSpecContainerSpecPrivilegesSELinuxContext' === $data::class;
+        return \is_object($data) && \Docker\API\Model\TaskSpecContainerSpecPrivilegesSELinuxContext::class === $data::class;
     }
 
-    public function denormalize($data, $class, $format = null, array $context = [])
+    public function denormalize(mixed $data, string $type, ?string $format = null, array $context = []): mixed
     {
-        if (isset($data['$ref'])) {
+        $object = new \Docker\API\Model\TaskSpecContainerSpecPrivilegesSELinuxContext();
+        if (null === $data || false === \is_array($data)) {
+            return $object;
+        }
+        if (isset($data['$ref']) && !isset($data['type']) && !isset($data['properties']) && !isset($data['allOf'])) {
             return new Reference($data['$ref'], $context['document-origin']);
         }
         if (isset($data['$recursiveRef'])) {
             return new Reference($data['$recursiveRef'], $context['document-origin']);
         }
-        $object = new \Docker\API\Model\TaskSpecContainerSpecPrivilegesSELinuxContext();
-        if (null === $data || false === \is_array($data)) {
-            return $object;
+        if (\array_key_exists('Disable', $data) && \is_int($data['Disable'])) {
+            $data['Disable'] = (bool) $data['Disable'];
         }
         if (\array_key_exists('Disable', $data) && null !== $data['Disable']) {
             $object->setDisable($data['Disable']);
             unset($data['Disable']);
         } elseif (\array_key_exists('Disable', $data) && null === $data['Disable']) {
             $object->setDisable(null);
+            unset($data['Disable']);
         }
         if (\array_key_exists('User', $data) && null !== $data['User']) {
             $object->setUser($data['User']);
             unset($data['User']);
         } elseif (\array_key_exists('User', $data) && null === $data['User']) {
             $object->setUser(null);
+            unset($data['User']);
         }
         if (\array_key_exists('Role', $data) && null !== $data['Role']) {
             $object->setRole($data['Role']);
             unset($data['Role']);
         } elseif (\array_key_exists('Role', $data) && null === $data['Role']) {
             $object->setRole(null);
+            unset($data['Role']);
         }
         if (\array_key_exists('Type', $data) && null !== $data['Type']) {
             $object->setType($data['Type']);
             unset($data['Type']);
         } elseif (\array_key_exists('Type', $data) && null === $data['Type']) {
             $object->setType(null);
+            unset($data['Type']);
         }
         if (\array_key_exists('Level', $data) && null !== $data['Level']) {
             $object->setLevel($data['Level']);
             unset($data['Level']);
         } elseif (\array_key_exists('Level', $data) && null === $data['Level']) {
             $object->setLevel(null);
+            unset($data['Level']);
         }
         foreach ($data as $key => $value) {
             if (preg_match('/.*/', (string) $key)) {
@@ -82,38 +90,35 @@ class TaskSpecContainerSpecPrivilegesSELinuxContextNormalizer implements Denorma
         return $object;
     }
 
-    /**
-     * @return array|string|int|float|bool|\ArrayObject|null
-     */
-    public function normalize($object, $format = null, array $context = [])
+    public function normalize(mixed $data, ?string $format = null, array $context = []): array|string|int|float|bool|\ArrayObject|null
     {
-        $data = [];
-        if ($object->isInitialized('disable') && null !== $object->getDisable()) {
-            $data['Disable'] = $object->getDisable();
+        $dataArray = [];
+        if ($data->isInitialized('disable') && null !== $data->getDisable()) {
+            $dataArray['Disable'] = $data->getDisable();
         }
-        if ($object->isInitialized('user') && null !== $object->getUser()) {
-            $data['User'] = $object->getUser();
+        if ($data->isInitialized('user') && null !== $data->getUser()) {
+            $dataArray['User'] = $data->getUser();
         }
-        if ($object->isInitialized('role') && null !== $object->getRole()) {
-            $data['Role'] = $object->getRole();
+        if ($data->isInitialized('role') && null !== $data->getRole()) {
+            $dataArray['Role'] = $data->getRole();
         }
-        if ($object->isInitialized('type') && null !== $object->getType()) {
-            $data['Type'] = $object->getType();
+        if ($data->isInitialized('type') && null !== $data->getType()) {
+            $dataArray['Type'] = $data->getType();
         }
-        if ($object->isInitialized('level') && null !== $object->getLevel()) {
-            $data['Level'] = $object->getLevel();
+        if ($data->isInitialized('level') && null !== $data->getLevel()) {
+            $dataArray['Level'] = $data->getLevel();
         }
-        foreach ($object as $key => $value) {
+        foreach ($data->additionalPropertyEntries() as $key => $value) {
             if (preg_match('/.*/', (string) $key)) {
-                $data[$key] = $value;
+                $dataArray[$key] = $value;
             }
         }
 
-        return $data;
+        return $dataArray;
     }
 
-    public function getSupportedTypes(string $format = null): array
+    public function getSupportedTypes(?string $format = null): array
     {
-        return ['Docker\\API\\Model\\TaskSpecContainerSpecPrivilegesSELinuxContext' => false];
+        return [\Docker\API\Model\TaskSpecContainerSpecPrivilegesSELinuxContext::class => false];
     }
 }

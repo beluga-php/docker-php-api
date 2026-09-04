@@ -21,27 +21,27 @@ class PluginsInfoNormalizer implements DenormalizerInterface, NormalizerInterfac
     use NormalizerAwareTrait;
     use ValidatorTrait;
 
-    public function supportsDenormalization($data, $type, $format = null, array $context = []): bool
+    public function supportsDenormalization(mixed $data, string $type, ?string $format = null, array $context = []): bool
     {
-        return 'Docker\\API\\Model\\PluginsInfo' === $type;
+        return \Docker\API\Model\PluginsInfo::class === $type;
     }
 
-    public function supportsNormalization($data, $format = null, array $context = []): bool
+    public function supportsNormalization(mixed $data, ?string $format = null, array $context = []): bool
     {
-        return \is_object($data) && 'Docker\\API\\Model\\PluginsInfo' === $data::class;
+        return \is_object($data) && \Docker\API\Model\PluginsInfo::class === $data::class;
     }
 
-    public function denormalize($data, $class, $format = null, array $context = [])
+    public function denormalize(mixed $data, string $type, ?string $format = null, array $context = []): mixed
     {
-        if (isset($data['$ref'])) {
+        $object = new \Docker\API\Model\PluginsInfo();
+        if (null === $data || false === \is_array($data)) {
+            return $object;
+        }
+        if (isset($data['$ref']) && !isset($data['type']) && !isset($data['properties']) && !isset($data['allOf'])) {
             return new Reference($data['$ref'], $context['document-origin']);
         }
         if (isset($data['$recursiveRef'])) {
             return new Reference($data['$recursiveRef'], $context['document-origin']);
-        }
-        $object = new \Docker\API\Model\PluginsInfo();
-        if (null === $data || false === \is_array($data)) {
-            return $object;
         }
         if (\array_key_exists('Volume', $data) && null !== $data['Volume']) {
             $values = [];
@@ -52,6 +52,7 @@ class PluginsInfoNormalizer implements DenormalizerInterface, NormalizerInterfac
             unset($data['Volume']);
         } elseif (\array_key_exists('Volume', $data) && null === $data['Volume']) {
             $object->setVolume(null);
+            unset($data['Volume']);
         }
         if (\array_key_exists('Network', $data) && null !== $data['Network']) {
             $values_1 = [];
@@ -62,6 +63,7 @@ class PluginsInfoNormalizer implements DenormalizerInterface, NormalizerInterfac
             unset($data['Network']);
         } elseif (\array_key_exists('Network', $data) && null === $data['Network']) {
             $object->setNetwork(null);
+            unset($data['Network']);
         }
         if (\array_key_exists('Authorization', $data) && null !== $data['Authorization']) {
             $values_2 = [];
@@ -72,6 +74,7 @@ class PluginsInfoNormalizer implements DenormalizerInterface, NormalizerInterfac
             unset($data['Authorization']);
         } elseif (\array_key_exists('Authorization', $data) && null === $data['Authorization']) {
             $object->setAuthorization(null);
+            unset($data['Authorization']);
         }
         if (\array_key_exists('Log', $data) && null !== $data['Log']) {
             $values_3 = [];
@@ -82,6 +85,7 @@ class PluginsInfoNormalizer implements DenormalizerInterface, NormalizerInterfac
             unset($data['Log']);
         } elseif (\array_key_exists('Log', $data) && null === $data['Log']) {
             $object->setLog(null);
+            unset($data['Log']);
         }
         foreach ($data as $key => $value_4) {
             if (preg_match('/.*/', (string) $key)) {
@@ -92,51 +96,48 @@ class PluginsInfoNormalizer implements DenormalizerInterface, NormalizerInterfac
         return $object;
     }
 
-    /**
-     * @return array|string|int|float|bool|\ArrayObject|null
-     */
-    public function normalize($object, $format = null, array $context = [])
+    public function normalize(mixed $data, ?string $format = null, array $context = []): array|string|int|float|bool|\ArrayObject|null
     {
-        $data = [];
-        if ($object->isInitialized('volume') && null !== $object->getVolume()) {
+        $dataArray = [];
+        if ($data->isInitialized('volume') && null !== $data->getVolume()) {
             $values = [];
-            foreach ($object->getVolume() as $value) {
+            foreach ($data->getVolume() as $value) {
                 $values[] = $value;
             }
-            $data['Volume'] = $values;
+            $dataArray['Volume'] = $values;
         }
-        if ($object->isInitialized('network') && null !== $object->getNetwork()) {
+        if ($data->isInitialized('network') && null !== $data->getNetwork()) {
             $values_1 = [];
-            foreach ($object->getNetwork() as $value_1) {
+            foreach ($data->getNetwork() as $value_1) {
                 $values_1[] = $value_1;
             }
-            $data['Network'] = $values_1;
+            $dataArray['Network'] = $values_1;
         }
-        if ($object->isInitialized('authorization') && null !== $object->getAuthorization()) {
+        if ($data->isInitialized('authorization') && null !== $data->getAuthorization()) {
             $values_2 = [];
-            foreach ($object->getAuthorization() as $value_2) {
+            foreach ($data->getAuthorization() as $value_2) {
                 $values_2[] = $value_2;
             }
-            $data['Authorization'] = $values_2;
+            $dataArray['Authorization'] = $values_2;
         }
-        if ($object->isInitialized('log') && null !== $object->getLog()) {
+        if ($data->isInitialized('log') && null !== $data->getLog()) {
             $values_3 = [];
-            foreach ($object->getLog() as $value_3) {
+            foreach ($data->getLog() as $value_3) {
                 $values_3[] = $value_3;
             }
-            $data['Log'] = $values_3;
+            $dataArray['Log'] = $values_3;
         }
-        foreach ($object as $key => $value_4) {
+        foreach ($data->additionalPropertyEntries() as $key => $value_4) {
             if (preg_match('/.*/', (string) $key)) {
-                $data[$key] = $value_4;
+                $dataArray[$key] = $value_4;
             }
         }
 
-        return $data;
+        return $dataArray;
     }
 
-    public function getSupportedTypes(string $format = null): array
+    public function getSupportedTypes(?string $format = null): array
     {
-        return ['Docker\\API\\Model\\PluginsInfo' => false];
+        return [\Docker\API\Model\PluginsInfo::class => false];
     }
 }

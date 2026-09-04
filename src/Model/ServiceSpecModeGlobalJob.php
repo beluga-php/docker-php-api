@@ -4,8 +4,12 @@ declare(strict_types=1);
 
 namespace Docker\API\Model;
 
-class ServiceSpecModeGlobalJob extends \ArrayObject
+use Docker\API\Runtime\AdditionalAndPatternProperties;
+use Docker\API\Runtime\AdditionalPropertiesInterface;
+
+class ServiceSpecModeGlobalJob implements AdditionalPropertiesInterface
 {
+    use AdditionalAndPatternProperties;
     /**
      * @var array
      */

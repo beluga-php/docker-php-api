@@ -4,8 +4,12 @@ declare(strict_types=1);
 
 namespace Docker\API\Model;
 
-class DistributionInspect extends \ArrayObject
+use Docker\API\Runtime\AdditionalAndPatternProperties;
+use Docker\API\Runtime\AdditionalPropertiesInterface;
+
+class DistributionInspect implements AdditionalPropertiesInterface
 {
+    use AdditionalAndPatternProperties;
     /**
      * @var array
      */
@@ -25,7 +29,7 @@ class DistributionInspect extends \ArrayObject
     /**
      * An array containing all platforms supported by the image.
      *
-     * @var OCIPlatform[]|null
+     * @var list<OCIPlatform>|null
      */
     protected $platforms;
 
@@ -53,7 +57,7 @@ class DistributionInspect extends \ArrayObject
     /**
      * An array containing all platforms supported by the image.
      *
-     * @return OCIPlatform[]|null
+     * @return list<OCIPlatform>|null
      */
     public function getPlatforms(): ?array
     {
@@ -63,7 +67,7 @@ class DistributionInspect extends \ArrayObject
     /**
      * An array containing all platforms supported by the image.
      *
-     * @param OCIPlatform[]|null $platforms
+     * @param list<OCIPlatform>|null $platforms
      */
     public function setPlatforms(?array $platforms): self
     {
@@ -71,5 +75,10 @@ class DistributionInspect extends \ArrayObject
         $this->platforms = $platforms;
 
         return $this;
+    }
+
+    public function definedProperties(): array
+    {
+        return ['descriptor' => ['Descriptor', 'getDescriptor', 'setDescriptor'], 'platforms' => ['Platforms', 'getPlatforms', 'setPlatforms']];
     }
 }

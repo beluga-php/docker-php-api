@@ -4,8 +4,12 @@ declare(strict_types=1);
 
 namespace Docker\API\Model;
 
-class SystemDfGetJsonResponse200 extends \ArrayObject
+use Docker\API\Runtime\AdditionalAndPatternProperties;
+use Docker\API\Runtime\AdditionalPropertiesInterface;
+
+class SystemDfGetJsonResponse200 implements AdditionalPropertiesInterface
 {
+    use AdditionalAndPatternProperties;
     /**
      * @var array
      */
@@ -20,19 +24,19 @@ class SystemDfGetJsonResponse200 extends \ArrayObject
      */
     protected $layersSize;
     /**
-     * @var ImageSummary[]|null
+     * @var list<ImageSummary>|null
      */
     protected $images;
     /**
-     * @var ContainerSummary[]|null
+     * @var list<ContainerSummary>|null
      */
     protected $containers;
     /**
-     * @var Volume[]|null
+     * @var list<Volume>|null
      */
     protected $volumes;
     /**
-     * @var BuildCache[]|null
+     * @var list<BuildCache>|null
      */
     protected $buildCache;
 
@@ -50,7 +54,7 @@ class SystemDfGetJsonResponse200 extends \ArrayObject
     }
 
     /**
-     * @return ImageSummary[]|null
+     * @return list<ImageSummary>|null
      */
     public function getImages(): ?array
     {
@@ -58,7 +62,7 @@ class SystemDfGetJsonResponse200 extends \ArrayObject
     }
 
     /**
-     * @param ImageSummary[]|null $images
+     * @param list<ImageSummary>|null $images
      */
     public function setImages(?array $images): self
     {
@@ -69,7 +73,7 @@ class SystemDfGetJsonResponse200 extends \ArrayObject
     }
 
     /**
-     * @return ContainerSummary[]|null
+     * @return list<ContainerSummary>|null
      */
     public function getContainers(): ?array
     {
@@ -77,7 +81,7 @@ class SystemDfGetJsonResponse200 extends \ArrayObject
     }
 
     /**
-     * @param ContainerSummary[]|null $containers
+     * @param list<ContainerSummary>|null $containers
      */
     public function setContainers(?array $containers): self
     {
@@ -88,7 +92,7 @@ class SystemDfGetJsonResponse200 extends \ArrayObject
     }
 
     /**
-     * @return Volume[]|null
+     * @return list<Volume>|null
      */
     public function getVolumes(): ?array
     {
@@ -96,7 +100,7 @@ class SystemDfGetJsonResponse200 extends \ArrayObject
     }
 
     /**
-     * @param Volume[]|null $volumes
+     * @param list<Volume>|null $volumes
      */
     public function setVolumes(?array $volumes): self
     {
@@ -107,7 +111,7 @@ class SystemDfGetJsonResponse200 extends \ArrayObject
     }
 
     /**
-     * @return BuildCache[]|null
+     * @return list<BuildCache>|null
      */
     public function getBuildCache(): ?array
     {
@@ -115,7 +119,7 @@ class SystemDfGetJsonResponse200 extends \ArrayObject
     }
 
     /**
-     * @param BuildCache[]|null $buildCache
+     * @param list<BuildCache>|null $buildCache
      */
     public function setBuildCache(?array $buildCache): self
     {
@@ -123,5 +127,10 @@ class SystemDfGetJsonResponse200 extends \ArrayObject
         $this->buildCache = $buildCache;
 
         return $this;
+    }
+
+    public function definedProperties(): array
+    {
+        return ['layersSize' => ['LayersSize', 'getLayersSize', 'setLayersSize'], 'images' => ['Images', 'getImages', 'setImages'], 'containers' => ['Containers', 'getContainers', 'setContainers'], 'volumes' => ['Volumes', 'getVolumes', 'setVolumes'], 'buildCache' => ['BuildCache', 'getBuildCache', 'setBuildCache']];
     }
 }

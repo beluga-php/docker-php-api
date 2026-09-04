@@ -21,39 +21,41 @@ class GenericResourcesItemNormalizer implements DenormalizerInterface, Normalize
     use NormalizerAwareTrait;
     use ValidatorTrait;
 
-    public function supportsDenormalization($data, $type, $format = null, array $context = []): bool
+    public function supportsDenormalization(mixed $data, string $type, ?string $format = null, array $context = []): bool
     {
-        return 'Docker\\API\\Model\\GenericResourcesItem' === $type;
+        return \Docker\API\Model\GenericResourcesItem::class === $type;
     }
 
-    public function supportsNormalization($data, $format = null, array $context = []): bool
+    public function supportsNormalization(mixed $data, ?string $format = null, array $context = []): bool
     {
-        return \is_object($data) && 'Docker\\API\\Model\\GenericResourcesItem' === $data::class;
+        return \is_object($data) && \Docker\API\Model\GenericResourcesItem::class === $data::class;
     }
 
-    public function denormalize($data, $class, $format = null, array $context = [])
+    public function denormalize(mixed $data, string $type, ?string $format = null, array $context = []): mixed
     {
-        if (isset($data['$ref'])) {
+        $object = new \Docker\API\Model\GenericResourcesItem();
+        if (null === $data || false === \is_array($data)) {
+            return $object;
+        }
+        if (isset($data['$ref']) && !isset($data['type']) && !isset($data['properties']) && !isset($data['allOf'])) {
             return new Reference($data['$ref'], $context['document-origin']);
         }
         if (isset($data['$recursiveRef'])) {
             return new Reference($data['$recursiveRef'], $context['document-origin']);
         }
-        $object = new \Docker\API\Model\GenericResourcesItem();
-        if (null === $data || false === \is_array($data)) {
-            return $object;
-        }
         if (\array_key_exists('NamedResourceSpec', $data) && null !== $data['NamedResourceSpec']) {
-            $object->setNamedResourceSpec($this->denormalizer->denormalize($data['NamedResourceSpec'], 'Docker\\API\\Model\\GenericResourcesItemNamedResourceSpec', 'json', $context));
+            $object->setNamedResourceSpec($this->denormalizer->denormalize($data['NamedResourceSpec'], \Docker\API\Model\GenericResourcesItemNamedResourceSpec::class, 'json', $context));
             unset($data['NamedResourceSpec']);
         } elseif (\array_key_exists('NamedResourceSpec', $data) && null === $data['NamedResourceSpec']) {
             $object->setNamedResourceSpec(null);
+            unset($data['NamedResourceSpec']);
         }
         if (\array_key_exists('DiscreteResourceSpec', $data) && null !== $data['DiscreteResourceSpec']) {
-            $object->setDiscreteResourceSpec($this->denormalizer->denormalize($data['DiscreteResourceSpec'], 'Docker\\API\\Model\\GenericResourcesItemDiscreteResourceSpec', 'json', $context));
+            $object->setDiscreteResourceSpec($this->denormalizer->denormalize($data['DiscreteResourceSpec'], \Docker\API\Model\GenericResourcesItemDiscreteResourceSpec::class, 'json', $context));
             unset($data['DiscreteResourceSpec']);
         } elseif (\array_key_exists('DiscreteResourceSpec', $data) && null === $data['DiscreteResourceSpec']) {
             $object->setDiscreteResourceSpec(null);
+            unset($data['DiscreteResourceSpec']);
         }
         foreach ($data as $key => $value) {
             if (preg_match('/.*/', (string) $key)) {
@@ -64,29 +66,26 @@ class GenericResourcesItemNormalizer implements DenormalizerInterface, Normalize
         return $object;
     }
 
-    /**
-     * @return array|string|int|float|bool|\ArrayObject|null
-     */
-    public function normalize($object, $format = null, array $context = [])
+    public function normalize(mixed $data, ?string $format = null, array $context = []): array|string|int|float|bool|\ArrayObject|null
     {
-        $data = [];
-        if ($object->isInitialized('namedResourceSpec') && null !== $object->getNamedResourceSpec()) {
-            $data['NamedResourceSpec'] = null === $object->getNamedResourceSpec() ? null : new \ArrayObject($this->normalizer->normalize($object->getNamedResourceSpec(), 'json', $context), \ArrayObject::ARRAY_AS_PROPS);
+        $dataArray = [];
+        if ($data->isInitialized('namedResourceSpec') && null !== $data->getNamedResourceSpec()) {
+            $dataArray['NamedResourceSpec'] = null === $data->getNamedResourceSpec() ? null : new \Docker\API\Runtime\JsonObject($this->normalizer->normalize($data->getNamedResourceSpec(), 'json', $context));
         }
-        if ($object->isInitialized('discreteResourceSpec') && null !== $object->getDiscreteResourceSpec()) {
-            $data['DiscreteResourceSpec'] = null === $object->getDiscreteResourceSpec() ? null : new \ArrayObject($this->normalizer->normalize($object->getDiscreteResourceSpec(), 'json', $context), \ArrayObject::ARRAY_AS_PROPS);
+        if ($data->isInitialized('discreteResourceSpec') && null !== $data->getDiscreteResourceSpec()) {
+            $dataArray['DiscreteResourceSpec'] = null === $data->getDiscreteResourceSpec() ? null : new \Docker\API\Runtime\JsonObject($this->normalizer->normalize($data->getDiscreteResourceSpec(), 'json', $context));
         }
-        foreach ($object as $key => $value) {
+        foreach ($data->additionalPropertyEntries() as $key => $value) {
             if (preg_match('/.*/', (string) $key)) {
-                $data[$key] = $value;
+                $dataArray[$key] = $value;
             }
         }
 
-        return $data;
+        return $dataArray;
     }
 
-    public function getSupportedTypes(string $format = null): array
+    public function getSupportedTypes(?string $format = null): array
     {
-        return ['Docker\\API\\Model\\GenericResourcesItem' => false];
+        return [\Docker\API\Model\GenericResourcesItem::class => false];
     }
 }

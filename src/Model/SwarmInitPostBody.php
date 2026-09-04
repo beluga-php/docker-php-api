@@ -4,8 +4,12 @@ declare(strict_types=1);
 
 namespace Docker\API\Model;
 
-class SwarmInitPostBody extends \ArrayObject
+use Docker\API\Runtime\AdditionalAndPatternProperties;
+use Docker\API\Runtime\AdditionalPropertiesInterface;
+
+class SwarmInitPostBody implements AdditionalPropertiesInterface
 {
+    use AdditionalAndPatternProperties;
     /**
      * @var array
      */
@@ -64,7 +68,7 @@ class SwarmInitPostBody extends \ArrayObject
      * Default Address Pool specifies default subnet pools for global
      * scope networks.
      *
-     * @var string[]|null
+     * @var list<string>|null
      */
     protected $defaultAddrPool;
     /**
@@ -209,7 +213,7 @@ class SwarmInitPostBody extends \ArrayObject
      * Default Address Pool specifies default subnet pools for global
      * scope networks.
      *
-     * @return string[]|null
+     * @return list<string>|null
      */
     public function getDefaultAddrPool(): ?array
     {
@@ -220,7 +224,7 @@ class SwarmInitPostBody extends \ArrayObject
      * Default Address Pool specifies default subnet pools for global
      * scope networks.
      *
-     * @param string[]|null $defaultAddrPool
+     * @param list<string>|null $defaultAddrPool
      */
     public function setDefaultAddrPool(?array $defaultAddrPool): self
     {
@@ -287,5 +291,10 @@ class SwarmInitPostBody extends \ArrayObject
         $this->spec = $spec;
 
         return $this;
+    }
+
+    public function definedProperties(): array
+    {
+        return ['listenAddr' => ['ListenAddr', 'getListenAddr', 'setListenAddr'], 'advertiseAddr' => ['AdvertiseAddr', 'getAdvertiseAddr', 'setAdvertiseAddr'], 'dataPathAddr' => ['DataPathAddr', 'getDataPathAddr', 'setDataPathAddr'], 'dataPathPort' => ['DataPathPort', 'getDataPathPort', 'setDataPathPort'], 'defaultAddrPool' => ['DefaultAddrPool', 'getDefaultAddrPool', 'setDefaultAddrPool'], 'forceNewCluster' => ['ForceNewCluster', 'getForceNewCluster', 'setForceNewCluster'], 'subnetSize' => ['SubnetSize', 'getSubnetSize', 'setSubnetSize'], 'spec' => ['Spec', 'getSpec', 'setSpec']];
     }
 }

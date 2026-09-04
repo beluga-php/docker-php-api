@@ -4,8 +4,12 @@ declare(strict_types=1);
 
 namespace Docker\API\Model;
 
-class TaskSpec extends \ArrayObject
+use Docker\API\Runtime\AdditionalAndPatternProperties;
+use Docker\API\Runtime\AdditionalPropertiesInterface;
+
+class TaskSpec implements AdditionalPropertiesInterface
 {
+    use AdditionalAndPatternProperties;
     /**
      * @var array
      */
@@ -89,7 +93,7 @@ class TaskSpec extends \ArrayObject
     /**
      * Specifies which networks the service should attach to.
      *
-     * @var NetworkAttachmentConfig[]|null
+     * @var list<NetworkAttachmentConfig>|null
      */
     protected $networks;
     /**
@@ -300,7 +304,7 @@ class TaskSpec extends \ArrayObject
     /**
      * Specifies which networks the service should attach to.
      *
-     * @return NetworkAttachmentConfig[]|null
+     * @return list<NetworkAttachmentConfig>|null
      */
     public function getNetworks(): ?array
     {
@@ -310,7 +314,7 @@ class TaskSpec extends \ArrayObject
     /**
      * Specifies which networks the service should attach to.
      *
-     * @param NetworkAttachmentConfig[]|null $networks
+     * @param list<NetworkAttachmentConfig>|null $networks
      */
     public function setNetworks(?array $networks): self
     {
@@ -341,5 +345,10 @@ class TaskSpec extends \ArrayObject
         $this->logDriver = $logDriver;
 
         return $this;
+    }
+
+    public function definedProperties(): array
+    {
+        return ['pluginSpec' => ['PluginSpec', 'getPluginSpec', 'setPluginSpec'], 'containerSpec' => ['ContainerSpec', 'getContainerSpec', 'setContainerSpec'], 'networkAttachmentSpec' => ['NetworkAttachmentSpec', 'getNetworkAttachmentSpec', 'setNetworkAttachmentSpec'], 'resources' => ['Resources', 'getResources', 'setResources'], 'restartPolicy' => ['RestartPolicy', 'getRestartPolicy', 'setRestartPolicy'], 'placement' => ['Placement', 'getPlacement', 'setPlacement'], 'forceUpdate' => ['ForceUpdate', 'getForceUpdate', 'setForceUpdate'], 'runtime' => ['Runtime', 'getRuntime', 'setRuntime'], 'networks' => ['Networks', 'getNetworks', 'setNetworks'], 'logDriver' => ['LogDriver', 'getLogDriver', 'setLogDriver']];
     }
 }

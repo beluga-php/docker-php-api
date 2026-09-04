@@ -4,8 +4,12 @@ declare(strict_types=1);
 
 namespace Docker\API\Model;
 
-class Network extends \ArrayObject
+use Docker\API\Runtime\AdditionalAndPatternProperties;
+use Docker\API\Runtime\AdditionalPropertiesInterface;
+
+class Network implements AdditionalPropertiesInterface
 {
+    use AdditionalAndPatternProperties;
     /**
      * @var array
      */
@@ -253,5 +257,10 @@ class Network extends \ArrayObject
         $this->labels = $labels;
 
         return $this;
+    }
+
+    public function definedProperties(): array
+    {
+        return ['name' => ['Name', 'getName', 'setName'], 'id' => ['Id', 'getId', 'setId'], 'created' => ['Created', 'getCreated', 'setCreated'], 'scope' => ['Scope', 'getScope', 'setScope'], 'driver' => ['Driver', 'getDriver', 'setDriver'], 'enableIPv6' => ['EnableIPv6', 'getEnableIPv6', 'setEnableIPv6'], 'iPAM' => ['IPAM', 'getIPAM', 'setIPAM'], 'internal' => ['Internal', 'getInternal', 'setInternal'], 'attachable' => ['Attachable', 'getAttachable', 'setAttachable'], 'ingress' => ['Ingress', 'getIngress', 'setIngress'], 'containers' => ['Containers', 'getContainers', 'setContainers'], 'options' => ['Options', 'getOptions', 'setOptions'], 'labels' => ['Labels', 'getLabels', 'setLabels']];
     }
 }

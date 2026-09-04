@@ -21,43 +21,45 @@ class DistributionInspectNormalizer implements DenormalizerInterface, Normalizer
     use NormalizerAwareTrait;
     use ValidatorTrait;
 
-    public function supportsDenormalization($data, $type, $format = null, array $context = []): bool
+    public function supportsDenormalization(mixed $data, string $type, ?string $format = null, array $context = []): bool
     {
-        return 'Docker\\API\\Model\\DistributionInspect' === $type;
+        return \Docker\API\Model\DistributionInspect::class === $type;
     }
 
-    public function supportsNormalization($data, $format = null, array $context = []): bool
+    public function supportsNormalization(mixed $data, ?string $format = null, array $context = []): bool
     {
-        return \is_object($data) && 'Docker\\API\\Model\\DistributionInspect' === $data::class;
+        return \is_object($data) && \Docker\API\Model\DistributionInspect::class === $data::class;
     }
 
-    public function denormalize($data, $class, $format = null, array $context = [])
+    public function denormalize(mixed $data, string $type, ?string $format = null, array $context = []): mixed
     {
-        if (isset($data['$ref'])) {
+        $object = new \Docker\API\Model\DistributionInspect();
+        if (null === $data || false === \is_array($data)) {
+            return $object;
+        }
+        if (isset($data['$ref']) && !isset($data['type']) && !isset($data['properties']) && !isset($data['allOf'])) {
             return new Reference($data['$ref'], $context['document-origin']);
         }
         if (isset($data['$recursiveRef'])) {
             return new Reference($data['$recursiveRef'], $context['document-origin']);
         }
-        $object = new \Docker\API\Model\DistributionInspect();
-        if (null === $data || false === \is_array($data)) {
-            return $object;
-        }
         if (\array_key_exists('Descriptor', $data) && null !== $data['Descriptor']) {
-            $object->setDescriptor($this->denormalizer->denormalize($data['Descriptor'], 'Docker\\API\\Model\\OCIDescriptor', 'json', $context));
+            $object->setDescriptor($this->denormalizer->denormalize($data['Descriptor'], \Docker\API\Model\OCIDescriptor::class, 'json', $context));
             unset($data['Descriptor']);
         } elseif (\array_key_exists('Descriptor', $data) && null === $data['Descriptor']) {
             $object->setDescriptor(null);
+            unset($data['Descriptor']);
         }
         if (\array_key_exists('Platforms', $data) && null !== $data['Platforms']) {
             $values = [];
             foreach ($data['Platforms'] as $value) {
-                $values[] = $this->denormalizer->denormalize($value, 'Docker\\API\\Model\\OCIPlatform', 'json', $context);
+                $values[] = $this->denormalizer->denormalize($value, \Docker\API\Model\OCIPlatform::class, 'json', $context);
             }
             $object->setPlatforms($values);
             unset($data['Platforms']);
         } elseif (\array_key_exists('Platforms', $data) && null === $data['Platforms']) {
             $object->setPlatforms(null);
+            unset($data['Platforms']);
         }
         foreach ($data as $key => $value_1) {
             if (preg_match('/.*/', (string) $key)) {
@@ -68,29 +70,26 @@ class DistributionInspectNormalizer implements DenormalizerInterface, Normalizer
         return $object;
     }
 
-    /**
-     * @return array|string|int|float|bool|\ArrayObject|null
-     */
-    public function normalize($object, $format = null, array $context = [])
+    public function normalize(mixed $data, ?string $format = null, array $context = []): array|string|int|float|bool|\ArrayObject|null
     {
-        $data = [];
-        $data['Descriptor'] = null === $object->getDescriptor() ? null : new \ArrayObject($this->normalizer->normalize($object->getDescriptor(), 'json', $context), \ArrayObject::ARRAY_AS_PROPS);
+        $dataArray = [];
+        $dataArray['Descriptor'] = null === $data->getDescriptor() ? null : new \Docker\API\Runtime\JsonObject($this->normalizer->normalize($data->getDescriptor(), 'json', $context));
         $values = [];
-        foreach ($object->getPlatforms() as $value) {
-            $values[] = null === $value ? null : new \ArrayObject($this->normalizer->normalize($value, 'json', $context), \ArrayObject::ARRAY_AS_PROPS);
+        foreach ($data->getPlatforms() as $value) {
+            $values[] = null === $value ? null : new \Docker\API\Runtime\JsonObject($this->normalizer->normalize($value, 'json', $context));
         }
-        $data['Platforms'] = $values;
-        foreach ($object as $key => $value_1) {
+        $dataArray['Platforms'] = $values;
+        foreach ($data->additionalPropertyEntries() as $key => $value_1) {
             if (preg_match('/.*/', (string) $key)) {
-                $data[$key] = $value_1;
+                $dataArray[$key] = $value_1;
             }
         }
 
-        return $data;
+        return $dataArray;
     }
 
-    public function getSupportedTypes(string $format = null): array
+    public function getSupportedTypes(?string $format = null): array
     {
-        return ['Docker\\API\\Model\\DistributionInspect' => false];
+        return [\Docker\API\Model\DistributionInspect::class => false];
     }
 }

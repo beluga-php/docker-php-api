@@ -4,8 +4,12 @@ declare(strict_types=1);
 
 namespace Docker\API\Model;
 
-class ServicesCreatePostBody extends \ArrayObject
+use Docker\API\Runtime\AdditionalAndPatternProperties;
+use Docker\API\Runtime\AdditionalPropertiesInterface;
+
+class ServicesCreatePostBody implements AdditionalPropertiesInterface
 {
+    use AdditionalAndPatternProperties;
     /**
      * @var array
      */
@@ -54,7 +58,7 @@ class ServicesCreatePostBody extends \ArrayObject
     /**
      * Specifies which networks the service should attach to.
      *
-     * @var NetworkAttachmentConfig[]|null
+     * @var list<NetworkAttachmentConfig>|null
      */
     protected $networks;
     /**
@@ -185,7 +189,7 @@ class ServicesCreatePostBody extends \ArrayObject
     /**
      * Specifies which networks the service should attach to.
      *
-     * @return NetworkAttachmentConfig[]|null
+     * @return list<NetworkAttachmentConfig>|null
      */
     public function getNetworks(): ?array
     {
@@ -195,7 +199,7 @@ class ServicesCreatePostBody extends \ArrayObject
     /**
      * Specifies which networks the service should attach to.
      *
-     * @param NetworkAttachmentConfig[]|null $networks
+     * @param list<NetworkAttachmentConfig>|null $networks
      */
     public function setNetworks(?array $networks): self
     {
@@ -222,5 +226,10 @@ class ServicesCreatePostBody extends \ArrayObject
         $this->endpointSpec = $endpointSpec;
 
         return $this;
+    }
+
+    public function definedProperties(): array
+    {
+        return ['name' => ['Name', 'getName', 'setName'], 'labels' => ['Labels', 'getLabels', 'setLabels'], 'taskTemplate' => ['TaskTemplate', 'getTaskTemplate', 'setTaskTemplate'], 'mode' => ['Mode', 'getMode', 'setMode'], 'updateConfig' => ['UpdateConfig', 'getUpdateConfig', 'setUpdateConfig'], 'rollbackConfig' => ['RollbackConfig', 'getRollbackConfig', 'setRollbackConfig'], 'networks' => ['Networks', 'getNetworks', 'setNetworks'], 'endpointSpec' => ['EndpointSpec', 'getEndpointSpec', 'setEndpointSpec']];
     }
 }

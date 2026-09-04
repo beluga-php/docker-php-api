@@ -4,8 +4,12 @@ declare(strict_types=1);
 
 namespace Docker\API\Model;
 
-class SwarmSpecRaft extends \ArrayObject
+use Docker\API\Runtime\AdditionalAndPatternProperties;
+use Docker\API\Runtime\AdditionalPropertiesInterface;
+
+class SwarmSpecRaft implements AdditionalPropertiesInterface
 {
+    use AdditionalAndPatternProperties;
     /**
      * @var array
      */
@@ -169,5 +173,10 @@ class SwarmSpecRaft extends \ArrayObject
         $this->heartbeatTick = $heartbeatTick;
 
         return $this;
+    }
+
+    public function definedProperties(): array
+    {
+        return ['snapshotInterval' => ['SnapshotInterval', 'getSnapshotInterval', 'setSnapshotInterval'], 'keepOldSnapshots' => ['KeepOldSnapshots', 'getKeepOldSnapshots', 'setKeepOldSnapshots'], 'logEntriesForSlowFollowers' => ['LogEntriesForSlowFollowers', 'getLogEntriesForSlowFollowers', 'setLogEntriesForSlowFollowers'], 'electionTick' => ['ElectionTick', 'getElectionTick', 'setElectionTick'], 'heartbeatTick' => ['HeartbeatTick', 'getHeartbeatTick', 'setHeartbeatTick']];
     }
 }

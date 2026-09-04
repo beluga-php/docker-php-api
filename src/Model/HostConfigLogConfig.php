@@ -4,8 +4,12 @@ declare(strict_types=1);
 
 namespace Docker\API\Model;
 
-class HostConfigLogConfig extends \ArrayObject
+use Docker\API\Runtime\AdditionalAndPatternProperties;
+use Docker\API\Runtime\AdditionalPropertiesInterface;
+
+class HostConfigLogConfig implements AdditionalPropertiesInterface
 {
+    use AdditionalAndPatternProperties;
     /**
      * @var array
      */
@@ -54,5 +58,10 @@ class HostConfigLogConfig extends \ArrayObject
         $this->config = $config;
 
         return $this;
+    }
+
+    public function definedProperties(): array
+    {
+        return ['type' => ['Type', 'getType', 'setType'], 'config' => ['Config', 'getConfig', 'setConfig']];
     }
 }

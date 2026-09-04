@@ -21,57 +21,62 @@ class SwarmSpecRaftNormalizer implements DenormalizerInterface, NormalizerInterf
     use NormalizerAwareTrait;
     use ValidatorTrait;
 
-    public function supportsDenormalization($data, $type, $format = null, array $context = []): bool
+    public function supportsDenormalization(mixed $data, string $type, ?string $format = null, array $context = []): bool
     {
-        return 'Docker\\API\\Model\\SwarmSpecRaft' === $type;
+        return \Docker\API\Model\SwarmSpecRaft::class === $type;
     }
 
-    public function supportsNormalization($data, $format = null, array $context = []): bool
+    public function supportsNormalization(mixed $data, ?string $format = null, array $context = []): bool
     {
-        return \is_object($data) && 'Docker\\API\\Model\\SwarmSpecRaft' === $data::class;
+        return \is_object($data) && \Docker\API\Model\SwarmSpecRaft::class === $data::class;
     }
 
-    public function denormalize($data, $class, $format = null, array $context = [])
+    public function denormalize(mixed $data, string $type, ?string $format = null, array $context = []): mixed
     {
-        if (isset($data['$ref'])) {
+        $object = new \Docker\API\Model\SwarmSpecRaft();
+        if (null === $data || false === \is_array($data)) {
+            return $object;
+        }
+        if (isset($data['$ref']) && !isset($data['type']) && !isset($data['properties']) && !isset($data['allOf'])) {
             return new Reference($data['$ref'], $context['document-origin']);
         }
         if (isset($data['$recursiveRef'])) {
             return new Reference($data['$recursiveRef'], $context['document-origin']);
-        }
-        $object = new \Docker\API\Model\SwarmSpecRaft();
-        if (null === $data || false === \is_array($data)) {
-            return $object;
         }
         if (\array_key_exists('SnapshotInterval', $data) && null !== $data['SnapshotInterval']) {
             $object->setSnapshotInterval($data['SnapshotInterval']);
             unset($data['SnapshotInterval']);
         } elseif (\array_key_exists('SnapshotInterval', $data) && null === $data['SnapshotInterval']) {
             $object->setSnapshotInterval(null);
+            unset($data['SnapshotInterval']);
         }
         if (\array_key_exists('KeepOldSnapshots', $data) && null !== $data['KeepOldSnapshots']) {
             $object->setKeepOldSnapshots($data['KeepOldSnapshots']);
             unset($data['KeepOldSnapshots']);
         } elseif (\array_key_exists('KeepOldSnapshots', $data) && null === $data['KeepOldSnapshots']) {
             $object->setKeepOldSnapshots(null);
+            unset($data['KeepOldSnapshots']);
         }
         if (\array_key_exists('LogEntriesForSlowFollowers', $data) && null !== $data['LogEntriesForSlowFollowers']) {
             $object->setLogEntriesForSlowFollowers($data['LogEntriesForSlowFollowers']);
             unset($data['LogEntriesForSlowFollowers']);
         } elseif (\array_key_exists('LogEntriesForSlowFollowers', $data) && null === $data['LogEntriesForSlowFollowers']) {
             $object->setLogEntriesForSlowFollowers(null);
+            unset($data['LogEntriesForSlowFollowers']);
         }
         if (\array_key_exists('ElectionTick', $data) && null !== $data['ElectionTick']) {
             $object->setElectionTick($data['ElectionTick']);
             unset($data['ElectionTick']);
         } elseif (\array_key_exists('ElectionTick', $data) && null === $data['ElectionTick']) {
             $object->setElectionTick(null);
+            unset($data['ElectionTick']);
         }
         if (\array_key_exists('HeartbeatTick', $data) && null !== $data['HeartbeatTick']) {
             $object->setHeartbeatTick($data['HeartbeatTick']);
             unset($data['HeartbeatTick']);
         } elseif (\array_key_exists('HeartbeatTick', $data) && null === $data['HeartbeatTick']) {
             $object->setHeartbeatTick(null);
+            unset($data['HeartbeatTick']);
         }
         foreach ($data as $key => $value) {
             if (preg_match('/.*/', (string) $key)) {
@@ -82,38 +87,35 @@ class SwarmSpecRaftNormalizer implements DenormalizerInterface, NormalizerInterf
         return $object;
     }
 
-    /**
-     * @return array|string|int|float|bool|\ArrayObject|null
-     */
-    public function normalize($object, $format = null, array $context = [])
+    public function normalize(mixed $data, ?string $format = null, array $context = []): array|string|int|float|bool|\ArrayObject|null
     {
-        $data = [];
-        if ($object->isInitialized('snapshotInterval') && null !== $object->getSnapshotInterval()) {
-            $data['SnapshotInterval'] = $object->getSnapshotInterval();
+        $dataArray = [];
+        if ($data->isInitialized('snapshotInterval') && null !== $data->getSnapshotInterval()) {
+            $dataArray['SnapshotInterval'] = $data->getSnapshotInterval();
         }
-        if ($object->isInitialized('keepOldSnapshots') && null !== $object->getKeepOldSnapshots()) {
-            $data['KeepOldSnapshots'] = $object->getKeepOldSnapshots();
+        if ($data->isInitialized('keepOldSnapshots') && null !== $data->getKeepOldSnapshots()) {
+            $dataArray['KeepOldSnapshots'] = $data->getKeepOldSnapshots();
         }
-        if ($object->isInitialized('logEntriesForSlowFollowers') && null !== $object->getLogEntriesForSlowFollowers()) {
-            $data['LogEntriesForSlowFollowers'] = $object->getLogEntriesForSlowFollowers();
+        if ($data->isInitialized('logEntriesForSlowFollowers') && null !== $data->getLogEntriesForSlowFollowers()) {
+            $dataArray['LogEntriesForSlowFollowers'] = $data->getLogEntriesForSlowFollowers();
         }
-        if ($object->isInitialized('electionTick') && null !== $object->getElectionTick()) {
-            $data['ElectionTick'] = $object->getElectionTick();
+        if ($data->isInitialized('electionTick') && null !== $data->getElectionTick()) {
+            $dataArray['ElectionTick'] = $data->getElectionTick();
         }
-        if ($object->isInitialized('heartbeatTick') && null !== $object->getHeartbeatTick()) {
-            $data['HeartbeatTick'] = $object->getHeartbeatTick();
+        if ($data->isInitialized('heartbeatTick') && null !== $data->getHeartbeatTick()) {
+            $dataArray['HeartbeatTick'] = $data->getHeartbeatTick();
         }
-        foreach ($object as $key => $value) {
+        foreach ($data->additionalPropertyEntries() as $key => $value) {
             if (preg_match('/.*/', (string) $key)) {
-                $data[$key] = $value;
+                $dataArray[$key] = $value;
             }
         }
 
-        return $data;
+        return $dataArray;
     }
 
-    public function getSupportedTypes(string $format = null): array
+    public function getSupportedTypes(?string $format = null): array
     {
-        return ['Docker\\API\\Model\\SwarmSpecRaft' => false];
+        return [\Docker\API\Model\SwarmSpecRaft::class => false];
     }
 }

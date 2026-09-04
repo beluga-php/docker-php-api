@@ -4,8 +4,12 @@ declare(strict_types=1);
 
 namespace Docker\API\Model;
 
-class TaskSpecContainerSpecConfigsItem extends \ArrayObject
+use Docker\API\Runtime\AdditionalAndPatternProperties;
+use Docker\API\Runtime\AdditionalPropertiesInterface;
+
+class TaskSpecContainerSpecConfigsItem implements AdditionalPropertiesInterface
 {
+    use AdditionalAndPatternProperties;
     /**
      * @var array
      */
@@ -153,5 +157,10 @@ class TaskSpecContainerSpecConfigsItem extends \ArrayObject
         $this->configName = $configName;
 
         return $this;
+    }
+
+    public function definedProperties(): array
+    {
+        return ['file' => ['File', 'getFile', 'setFile'], 'runtime' => ['Runtime', 'getRuntime', 'setRuntime'], 'configID' => ['ConfigID', 'getConfigID', 'setConfigID'], 'configName' => ['ConfigName', 'getConfigName', 'setConfigName']];
     }
 }

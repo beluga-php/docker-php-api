@@ -4,8 +4,12 @@ declare(strict_types=1);
 
 namespace Docker\API\Model;
 
-class PluginSettings extends \ArrayObject
+use Docker\API\Runtime\AdditionalAndPatternProperties;
+use Docker\API\Runtime\AdditionalPropertiesInterface;
+
+class PluginSettings implements AdditionalPropertiesInterface
 {
+    use AdditionalAndPatternProperties;
     /**
      * @var array
      */
@@ -16,24 +20,24 @@ class PluginSettings extends \ArrayObject
         return \array_key_exists($property, $this->initialized);
     }
     /**
-     * @var PluginMount[]|null
+     * @var list<PluginMount>|null
      */
     protected $mounts;
     /**
-     * @var string[]|null
+     * @var list<string>|null
      */
     protected $env;
     /**
-     * @var string[]|null
+     * @var list<string>|null
      */
     protected $args;
     /**
-     * @var PluginDevice[]|null
+     * @var list<PluginDevice>|null
      */
     protected $devices;
 
     /**
-     * @return PluginMount[]|null
+     * @return list<PluginMount>|null
      */
     public function getMounts(): ?array
     {
@@ -41,7 +45,7 @@ class PluginSettings extends \ArrayObject
     }
 
     /**
-     * @param PluginMount[]|null $mounts
+     * @param list<PluginMount>|null $mounts
      */
     public function setMounts(?array $mounts): self
     {
@@ -52,7 +56,7 @@ class PluginSettings extends \ArrayObject
     }
 
     /**
-     * @return string[]|null
+     * @return list<string>|null
      */
     public function getEnv(): ?array
     {
@@ -60,7 +64,7 @@ class PluginSettings extends \ArrayObject
     }
 
     /**
-     * @param string[]|null $env
+     * @param list<string>|null $env
      */
     public function setEnv(?array $env): self
     {
@@ -71,7 +75,7 @@ class PluginSettings extends \ArrayObject
     }
 
     /**
-     * @return string[]|null
+     * @return list<string>|null
      */
     public function getArgs(): ?array
     {
@@ -79,7 +83,7 @@ class PluginSettings extends \ArrayObject
     }
 
     /**
-     * @param string[]|null $args
+     * @param list<string>|null $args
      */
     public function setArgs(?array $args): self
     {
@@ -90,7 +94,7 @@ class PluginSettings extends \ArrayObject
     }
 
     /**
-     * @return PluginDevice[]|null
+     * @return list<PluginDevice>|null
      */
     public function getDevices(): ?array
     {
@@ -98,7 +102,7 @@ class PluginSettings extends \ArrayObject
     }
 
     /**
-     * @param PluginDevice[]|null $devices
+     * @param list<PluginDevice>|null $devices
      */
     public function setDevices(?array $devices): self
     {
@@ -106,5 +110,10 @@ class PluginSettings extends \ArrayObject
         $this->devices = $devices;
 
         return $this;
+    }
+
+    public function definedProperties(): array
+    {
+        return ['mounts' => ['Mounts', 'getMounts', 'setMounts'], 'env' => ['Env', 'getEnv', 'setEnv'], 'args' => ['Args', 'getArgs', 'setArgs'], 'devices' => ['Devices', 'getDevices', 'setDevices']];
     }
 }

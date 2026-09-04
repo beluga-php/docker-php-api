@@ -4,8 +4,12 @@ declare(strict_types=1);
 
 namespace Docker\API\Model;
 
-class ResourcesUlimitsItem extends \ArrayObject
+use Docker\API\Runtime\AdditionalAndPatternProperties;
+use Docker\API\Runtime\AdditionalPropertiesInterface;
+
+class ResourcesUlimitsItem implements AdditionalPropertiesInterface
 {
+    use AdditionalAndPatternProperties;
     /**
      * @var array
      */
@@ -89,5 +93,10 @@ class ResourcesUlimitsItem extends \ArrayObject
         $this->hard = $hard;
 
         return $this;
+    }
+
+    public function definedProperties(): array
+    {
+        return ['name' => ['Name', 'getName', 'setName'], 'soft' => ['Soft', 'getSoft', 'setSoft'], 'hard' => ['Hard', 'getHard', 'setHard']];
     }
 }

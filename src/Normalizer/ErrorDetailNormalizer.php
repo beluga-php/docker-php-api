@@ -21,39 +21,41 @@ class ErrorDetailNormalizer implements DenormalizerInterface, NormalizerInterfac
     use NormalizerAwareTrait;
     use ValidatorTrait;
 
-    public function supportsDenormalization($data, $type, $format = null, array $context = []): bool
+    public function supportsDenormalization(mixed $data, string $type, ?string $format = null, array $context = []): bool
     {
-        return 'Docker\\API\\Model\\ErrorDetail' === $type;
+        return \Docker\API\Model\ErrorDetail::class === $type;
     }
 
-    public function supportsNormalization($data, $format = null, array $context = []): bool
+    public function supportsNormalization(mixed $data, ?string $format = null, array $context = []): bool
     {
-        return \is_object($data) && 'Docker\\API\\Model\\ErrorDetail' === $data::class;
+        return \is_object($data) && \Docker\API\Model\ErrorDetail::class === $data::class;
     }
 
-    public function denormalize($data, $class, $format = null, array $context = [])
+    public function denormalize(mixed $data, string $type, ?string $format = null, array $context = []): mixed
     {
-        if (isset($data['$ref'])) {
+        $object = new \Docker\API\Model\ErrorDetail();
+        if (null === $data || false === \is_array($data)) {
+            return $object;
+        }
+        if (isset($data['$ref']) && !isset($data['type']) && !isset($data['properties']) && !isset($data['allOf'])) {
             return new Reference($data['$ref'], $context['document-origin']);
         }
         if (isset($data['$recursiveRef'])) {
             return new Reference($data['$recursiveRef'], $context['document-origin']);
-        }
-        $object = new \Docker\API\Model\ErrorDetail();
-        if (null === $data || false === \is_array($data)) {
-            return $object;
         }
         if (\array_key_exists('code', $data) && null !== $data['code']) {
             $object->setCode($data['code']);
             unset($data['code']);
         } elseif (\array_key_exists('code', $data) && null === $data['code']) {
             $object->setCode(null);
+            unset($data['code']);
         }
         if (\array_key_exists('message', $data) && null !== $data['message']) {
             $object->setMessage($data['message']);
             unset($data['message']);
         } elseif (\array_key_exists('message', $data) && null === $data['message']) {
             $object->setMessage(null);
+            unset($data['message']);
         }
         foreach ($data as $key => $value) {
             if (preg_match('/.*/', (string) $key)) {
@@ -64,29 +66,26 @@ class ErrorDetailNormalizer implements DenormalizerInterface, NormalizerInterfac
         return $object;
     }
 
-    /**
-     * @return array|string|int|float|bool|\ArrayObject|null
-     */
-    public function normalize($object, $format = null, array $context = [])
+    public function normalize(mixed $data, ?string $format = null, array $context = []): array|string|int|float|bool|\ArrayObject|null
     {
-        $data = [];
-        if ($object->isInitialized('code') && null !== $object->getCode()) {
-            $data['code'] = $object->getCode();
+        $dataArray = [];
+        if ($data->isInitialized('code') && null !== $data->getCode()) {
+            $dataArray['code'] = $data->getCode();
         }
-        if ($object->isInitialized('message') && null !== $object->getMessage()) {
-            $data['message'] = $object->getMessage();
+        if ($data->isInitialized('message') && null !== $data->getMessage()) {
+            $dataArray['message'] = $data->getMessage();
         }
-        foreach ($object as $key => $value) {
+        foreach ($data->additionalPropertyEntries() as $key => $value) {
             if (preg_match('/.*/', (string) $key)) {
-                $data[$key] = $value;
+                $dataArray[$key] = $value;
             }
         }
 
-        return $data;
+        return $dataArray;
     }
 
-    public function getSupportedTypes(string $format = null): array
+    public function getSupportedTypes(?string $format = null): array
     {
-        return ['Docker\\API\\Model\\ErrorDetail' => false];
+        return [\Docker\API\Model\ErrorDetail::class => false];
     }
 }

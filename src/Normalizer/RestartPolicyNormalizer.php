@@ -21,39 +21,41 @@ class RestartPolicyNormalizer implements DenormalizerInterface, NormalizerInterf
     use NormalizerAwareTrait;
     use ValidatorTrait;
 
-    public function supportsDenormalization($data, $type, $format = null, array $context = []): bool
+    public function supportsDenormalization(mixed $data, string $type, ?string $format = null, array $context = []): bool
     {
-        return 'Docker\\API\\Model\\RestartPolicy' === $type;
+        return \Docker\API\Model\RestartPolicy::class === $type;
     }
 
-    public function supportsNormalization($data, $format = null, array $context = []): bool
+    public function supportsNormalization(mixed $data, ?string $format = null, array $context = []): bool
     {
-        return \is_object($data) && 'Docker\\API\\Model\\RestartPolicy' === $data::class;
+        return \is_object($data) && \Docker\API\Model\RestartPolicy::class === $data::class;
     }
 
-    public function denormalize($data, $class, $format = null, array $context = [])
+    public function denormalize(mixed $data, string $type, ?string $format = null, array $context = []): mixed
     {
-        if (isset($data['$ref'])) {
+        $object = new \Docker\API\Model\RestartPolicy();
+        if (null === $data || false === \is_array($data)) {
+            return $object;
+        }
+        if (isset($data['$ref']) && !isset($data['type']) && !isset($data['properties']) && !isset($data['allOf'])) {
             return new Reference($data['$ref'], $context['document-origin']);
         }
         if (isset($data['$recursiveRef'])) {
             return new Reference($data['$recursiveRef'], $context['document-origin']);
-        }
-        $object = new \Docker\API\Model\RestartPolicy();
-        if (null === $data || false === \is_array($data)) {
-            return $object;
         }
         if (\array_key_exists('Name', $data) && null !== $data['Name']) {
             $object->setName($data['Name']);
             unset($data['Name']);
         } elseif (\array_key_exists('Name', $data) && null === $data['Name']) {
             $object->setName(null);
+            unset($data['Name']);
         }
         if (\array_key_exists('MaximumRetryCount', $data) && null !== $data['MaximumRetryCount']) {
             $object->setMaximumRetryCount($data['MaximumRetryCount']);
             unset($data['MaximumRetryCount']);
         } elseif (\array_key_exists('MaximumRetryCount', $data) && null === $data['MaximumRetryCount']) {
             $object->setMaximumRetryCount(null);
+            unset($data['MaximumRetryCount']);
         }
         foreach ($data as $key => $value) {
             if (preg_match('/.*/', (string) $key)) {
@@ -64,29 +66,26 @@ class RestartPolicyNormalizer implements DenormalizerInterface, NormalizerInterf
         return $object;
     }
 
-    /**
-     * @return array|string|int|float|bool|\ArrayObject|null
-     */
-    public function normalize($object, $format = null, array $context = [])
+    public function normalize(mixed $data, ?string $format = null, array $context = []): array|string|int|float|bool|\ArrayObject|null
     {
-        $data = [];
-        if ($object->isInitialized('name') && null !== $object->getName()) {
-            $data['Name'] = $object->getName();
+        $dataArray = [];
+        if ($data->isInitialized('name') && null !== $data->getName()) {
+            $dataArray['Name'] = $data->getName();
         }
-        if ($object->isInitialized('maximumRetryCount') && null !== $object->getMaximumRetryCount()) {
-            $data['MaximumRetryCount'] = $object->getMaximumRetryCount();
+        if ($data->isInitialized('maximumRetryCount') && null !== $data->getMaximumRetryCount()) {
+            $dataArray['MaximumRetryCount'] = $data->getMaximumRetryCount();
         }
-        foreach ($object as $key => $value) {
+        foreach ($data->additionalPropertyEntries() as $key => $value) {
             if (preg_match('/.*/', (string) $key)) {
-                $data[$key] = $value;
+                $dataArray[$key] = $value;
             }
         }
 
-        return $data;
+        return $dataArray;
     }
 
-    public function getSupportedTypes(string $format = null): array
+    public function getSupportedTypes(?string $format = null): array
     {
-        return ['Docker\\API\\Model\\RestartPolicy' => false];
+        return [\Docker\API\Model\RestartPolicy::class => false];
     }
 }

@@ -21,36 +21,37 @@ class EngineDescriptionNormalizer implements DenormalizerInterface, NormalizerIn
     use NormalizerAwareTrait;
     use ValidatorTrait;
 
-    public function supportsDenormalization($data, $type, $format = null, array $context = []): bool
+    public function supportsDenormalization(mixed $data, string $type, ?string $format = null, array $context = []): bool
     {
-        return 'Docker\\API\\Model\\EngineDescription' === $type;
+        return \Docker\API\Model\EngineDescription::class === $type;
     }
 
-    public function supportsNormalization($data, $format = null, array $context = []): bool
+    public function supportsNormalization(mixed $data, ?string $format = null, array $context = []): bool
     {
-        return \is_object($data) && 'Docker\\API\\Model\\EngineDescription' === $data::class;
+        return \is_object($data) && \Docker\API\Model\EngineDescription::class === $data::class;
     }
 
-    public function denormalize($data, $class, $format = null, array $context = [])
+    public function denormalize(mixed $data, string $type, ?string $format = null, array $context = []): mixed
     {
-        if (isset($data['$ref'])) {
+        $object = new \Docker\API\Model\EngineDescription();
+        if (null === $data || false === \is_array($data)) {
+            return $object;
+        }
+        if (isset($data['$ref']) && !isset($data['type']) && !isset($data['properties']) && !isset($data['allOf'])) {
             return new Reference($data['$ref'], $context['document-origin']);
         }
         if (isset($data['$recursiveRef'])) {
             return new Reference($data['$recursiveRef'], $context['document-origin']);
-        }
-        $object = new \Docker\API\Model\EngineDescription();
-        if (null === $data || false === \is_array($data)) {
-            return $object;
         }
         if (\array_key_exists('EngineVersion', $data) && null !== $data['EngineVersion']) {
             $object->setEngineVersion($data['EngineVersion']);
             unset($data['EngineVersion']);
         } elseif (\array_key_exists('EngineVersion', $data) && null === $data['EngineVersion']) {
             $object->setEngineVersion(null);
+            unset($data['EngineVersion']);
         }
         if (\array_key_exists('Labels', $data) && null !== $data['Labels']) {
-            $values = new \ArrayObject([], \ArrayObject::ARRAY_AS_PROPS);
+            $values = new \Docker\API\Runtime\JsonObject();
             foreach ($data['Labels'] as $key => $value) {
                 $values[$key] = $value;
             }
@@ -58,16 +59,18 @@ class EngineDescriptionNormalizer implements DenormalizerInterface, NormalizerIn
             unset($data['Labels']);
         } elseif (\array_key_exists('Labels', $data) && null === $data['Labels']) {
             $object->setLabels(null);
+            unset($data['Labels']);
         }
         if (\array_key_exists('Plugins', $data) && null !== $data['Plugins']) {
             $values_1 = [];
             foreach ($data['Plugins'] as $value_1) {
-                $values_1[] = $this->denormalizer->denormalize($value_1, 'Docker\\API\\Model\\EngineDescriptionPluginsItem', 'json', $context);
+                $values_1[] = $this->denormalizer->denormalize($value_1, \Docker\API\Model\EngineDescriptionPluginsItem::class, 'json', $context);
             }
             $object->setPlugins($values_1);
             unset($data['Plugins']);
         } elseif (\array_key_exists('Plugins', $data) && null === $data['Plugins']) {
             $object->setPlugins(null);
+            unset($data['Plugins']);
         }
         foreach ($data as $key_1 => $value_2) {
             if (preg_match('/.*/', (string) $key_1)) {
@@ -78,40 +81,37 @@ class EngineDescriptionNormalizer implements DenormalizerInterface, NormalizerIn
         return $object;
     }
 
-    /**
-     * @return array|string|int|float|bool|\ArrayObject|null
-     */
-    public function normalize($object, $format = null, array $context = [])
+    public function normalize(mixed $data, ?string $format = null, array $context = []): array|string|int|float|bool|\ArrayObject|null
     {
-        $data = [];
-        if ($object->isInitialized('engineVersion') && null !== $object->getEngineVersion()) {
-            $data['EngineVersion'] = $object->getEngineVersion();
+        $dataArray = [];
+        if ($data->isInitialized('engineVersion') && null !== $data->getEngineVersion()) {
+            $dataArray['EngineVersion'] = $data->getEngineVersion();
         }
-        if ($object->isInitialized('labels') && null !== $object->getLabels()) {
-            $values = new \ArrayObject([], \ArrayObject::ARRAY_AS_PROPS);
-            foreach ($object->getLabels() as $key => $value) {
+        if ($data->isInitialized('labels') && null !== $data->getLabels()) {
+            $values = new \Docker\API\Runtime\JsonObject();
+            foreach ($data->getLabels() as $key => $value) {
                 $values[$key] = $value;
             }
-            $data['Labels'] = $values;
+            $dataArray['Labels'] = $values;
         }
-        if ($object->isInitialized('plugins') && null !== $object->getPlugins()) {
+        if ($data->isInitialized('plugins') && null !== $data->getPlugins()) {
             $values_1 = [];
-            foreach ($object->getPlugins() as $value_1) {
-                $values_1[] = null === $value_1 ? null : new \ArrayObject($this->normalizer->normalize($value_1, 'json', $context), \ArrayObject::ARRAY_AS_PROPS);
+            foreach ($data->getPlugins() as $value_1) {
+                $values_1[] = null === $value_1 ? null : new \Docker\API\Runtime\JsonObject($this->normalizer->normalize($value_1, 'json', $context));
             }
-            $data['Plugins'] = $values_1;
+            $dataArray['Plugins'] = $values_1;
         }
-        foreach ($object as $key_1 => $value_2) {
+        foreach ($data->additionalPropertyEntries() as $key_1 => $value_2) {
             if (preg_match('/.*/', (string) $key_1)) {
-                $data[$key_1] = $value_2;
+                $dataArray[$key_1] = $value_2;
             }
         }
 
-        return $data;
+        return $dataArray;
     }
 
-    public function getSupportedTypes(string $format = null): array
+    public function getSupportedTypes(?string $format = null): array
     {
-        return ['Docker\\API\\Model\\EngineDescription' => false];
+        return [\Docker\API\Model\EngineDescription::class => false];
     }
 }

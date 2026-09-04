@@ -4,8 +4,12 @@ declare(strict_types=1);
 
 namespace Docker\API\Model;
 
-class NetworkAttachmentConfig extends \ArrayObject
+use Docker\API\Runtime\AdditionalAndPatternProperties;
+use Docker\API\Runtime\AdditionalPropertiesInterface;
+
+class NetworkAttachmentConfig implements AdditionalPropertiesInterface
 {
+    use AdditionalAndPatternProperties;
     /**
      * @var array
      */
@@ -24,7 +28,7 @@ class NetworkAttachmentConfig extends \ArrayObject
     /**
      * Discoverable alternate names for the service on this network.
      *
-     * @var string[]|null
+     * @var list<string>|null
      */
     protected $aliases;
     /**
@@ -56,7 +60,7 @@ class NetworkAttachmentConfig extends \ArrayObject
     /**
      * Discoverable alternate names for the service on this network.
      *
-     * @return string[]|null
+     * @return list<string>|null
      */
     public function getAliases(): ?array
     {
@@ -66,7 +70,7 @@ class NetworkAttachmentConfig extends \ArrayObject
     /**
      * Discoverable alternate names for the service on this network.
      *
-     * @param string[]|null $aliases
+     * @param list<string>|null $aliases
      */
     public function setAliases(?array $aliases): self
     {
@@ -97,5 +101,10 @@ class NetworkAttachmentConfig extends \ArrayObject
         $this->driverOpts = $driverOpts;
 
         return $this;
+    }
+
+    public function definedProperties(): array
+    {
+        return ['target' => ['Target', 'getTarget', 'setTarget'], 'aliases' => ['Aliases', 'getAliases', 'setAliases'], 'driverOpts' => ['DriverOpts', 'getDriverOpts', 'setDriverOpts']];
     }
 }

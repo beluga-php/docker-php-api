@@ -21,45 +21,48 @@ class OCIDescriptorNormalizer implements DenormalizerInterface, NormalizerInterf
     use NormalizerAwareTrait;
     use ValidatorTrait;
 
-    public function supportsDenormalization($data, $type, $format = null, array $context = []): bool
+    public function supportsDenormalization(mixed $data, string $type, ?string $format = null, array $context = []): bool
     {
-        return 'Docker\\API\\Model\\OCIDescriptor' === $type;
+        return \Docker\API\Model\OCIDescriptor::class === $type;
     }
 
-    public function supportsNormalization($data, $format = null, array $context = []): bool
+    public function supportsNormalization(mixed $data, ?string $format = null, array $context = []): bool
     {
-        return \is_object($data) && 'Docker\\API\\Model\\OCIDescriptor' === $data::class;
+        return \is_object($data) && \Docker\API\Model\OCIDescriptor::class === $data::class;
     }
 
-    public function denormalize($data, $class, $format = null, array $context = [])
+    public function denormalize(mixed $data, string $type, ?string $format = null, array $context = []): mixed
     {
-        if (isset($data['$ref'])) {
+        $object = new \Docker\API\Model\OCIDescriptor();
+        if (null === $data || false === \is_array($data)) {
+            return $object;
+        }
+        if (isset($data['$ref']) && !isset($data['type']) && !isset($data['properties']) && !isset($data['allOf'])) {
             return new Reference($data['$ref'], $context['document-origin']);
         }
         if (isset($data['$recursiveRef'])) {
             return new Reference($data['$recursiveRef'], $context['document-origin']);
-        }
-        $object = new \Docker\API\Model\OCIDescriptor();
-        if (null === $data || false === \is_array($data)) {
-            return $object;
         }
         if (\array_key_exists('mediaType', $data) && null !== $data['mediaType']) {
             $object->setMediaType($data['mediaType']);
             unset($data['mediaType']);
         } elseif (\array_key_exists('mediaType', $data) && null === $data['mediaType']) {
             $object->setMediaType(null);
+            unset($data['mediaType']);
         }
         if (\array_key_exists('digest', $data) && null !== $data['digest']) {
             $object->setDigest($data['digest']);
             unset($data['digest']);
         } elseif (\array_key_exists('digest', $data) && null === $data['digest']) {
             $object->setDigest(null);
+            unset($data['digest']);
         }
         if (\array_key_exists('size', $data) && null !== $data['size']) {
             $object->setSize($data['size']);
             unset($data['size']);
         } elseif (\array_key_exists('size', $data) && null === $data['size']) {
             $object->setSize(null);
+            unset($data['size']);
         }
         foreach ($data as $key => $value) {
             if (preg_match('/.*/', (string) $key)) {
@@ -70,32 +73,29 @@ class OCIDescriptorNormalizer implements DenormalizerInterface, NormalizerInterf
         return $object;
     }
 
-    /**
-     * @return array|string|int|float|bool|\ArrayObject|null
-     */
-    public function normalize($object, $format = null, array $context = [])
+    public function normalize(mixed $data, ?string $format = null, array $context = []): array|string|int|float|bool|\ArrayObject|null
     {
-        $data = [];
-        if ($object->isInitialized('mediaType') && null !== $object->getMediaType()) {
-            $data['mediaType'] = $object->getMediaType();
+        $dataArray = [];
+        if ($data->isInitialized('mediaType') && null !== $data->getMediaType()) {
+            $dataArray['mediaType'] = $data->getMediaType();
         }
-        if ($object->isInitialized('digest') && null !== $object->getDigest()) {
-            $data['digest'] = $object->getDigest();
+        if ($data->isInitialized('digest') && null !== $data->getDigest()) {
+            $dataArray['digest'] = $data->getDigest();
         }
-        if ($object->isInitialized('size') && null !== $object->getSize()) {
-            $data['size'] = $object->getSize();
+        if ($data->isInitialized('size') && null !== $data->getSize()) {
+            $dataArray['size'] = $data->getSize();
         }
-        foreach ($object as $key => $value) {
+        foreach ($data->additionalPropertyEntries() as $key => $value) {
             if (preg_match('/.*/', (string) $key)) {
-                $data[$key] = $value;
+                $dataArray[$key] = $value;
             }
         }
 
-        return $data;
+        return $dataArray;
     }
 
-    public function getSupportedTypes(string $format = null): array
+    public function getSupportedTypes(?string $format = null): array
     {
-        return ['Docker\\API\\Model\\OCIDescriptor' => false];
+        return [\Docker\API\Model\OCIDescriptor::class => false];
     }
 }

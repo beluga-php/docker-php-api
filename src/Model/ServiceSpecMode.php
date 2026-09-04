@@ -4,8 +4,12 @@ declare(strict_types=1);
 
 namespace Docker\API\Model;
 
-class ServiceSpecMode extends \ArrayObject
+use Docker\API\Runtime\AdditionalAndPatternProperties;
+use Docker\API\Runtime\AdditionalPropertiesInterface;
+
+class ServiceSpecMode implements AdditionalPropertiesInterface
 {
+    use AdditionalAndPatternProperties;
     /**
      * @var array
      */
@@ -104,5 +108,10 @@ class ServiceSpecMode extends \ArrayObject
         $this->globalJob = $globalJob;
 
         return $this;
+    }
+
+    public function definedProperties(): array
+    {
+        return ['replicated' => ['Replicated', 'getReplicated', 'setReplicated'], 'global' => ['Global', 'getGlobal', 'setGlobal'], 'replicatedJob' => ['ReplicatedJob', 'getReplicatedJob', 'setReplicatedJob'], 'globalJob' => ['GlobalJob', 'getGlobalJob', 'setGlobalJob']];
     }
 }

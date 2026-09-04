@@ -4,8 +4,12 @@ declare(strict_types=1);
 
 namespace Docker\API\Model;
 
-class NetworkContainer extends \ArrayObject
+use Docker\API\Runtime\AdditionalAndPatternProperties;
+use Docker\API\Runtime\AdditionalPropertiesInterface;
+
+class NetworkContainer implements AdditionalPropertiesInterface
 {
+    use AdditionalAndPatternProperties;
     /**
      * @var array
      */
@@ -99,5 +103,10 @@ class NetworkContainer extends \ArrayObject
         $this->iPv6Address = $iPv6Address;
 
         return $this;
+    }
+
+    public function definedProperties(): array
+    {
+        return ['name' => ['Name', 'getName', 'setName'], 'endpointID' => ['EndpointID', 'getEndpointID', 'setEndpointID'], 'macAddress' => ['MacAddress', 'getMacAddress', 'setMacAddress'], 'iPv4Address' => ['IPv4Address', 'getIPv4Address', 'setIPv4Address'], 'iPv6Address' => ['IPv6Address', 'getIPv6Address', 'setIPv6Address']];
     }
 }

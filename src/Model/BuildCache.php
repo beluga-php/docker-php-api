@@ -4,8 +4,12 @@ declare(strict_types=1);
 
 namespace Docker\API\Model;
 
-class BuildCache extends \ArrayObject
+use Docker\API\Runtime\AdditionalAndPatternProperties;
+use Docker\API\Runtime\AdditionalPropertiesInterface;
+
+class BuildCache implements AdditionalPropertiesInterface
 {
+    use AdditionalAndPatternProperties;
     /**
      * @var array
      */
@@ -32,7 +36,7 @@ class BuildCache extends \ArrayObject
     /**
      * List of parent build cache record IDs.
      *
-     * @var string[]|null
+     * @var list<string>|null
      */
     protected $parents;
     /**
@@ -129,7 +133,7 @@ class BuildCache extends \ArrayObject
     /**
      * List of parent build cache record IDs.
      *
-     * @return string[]|null
+     * @return list<string>|null
      */
     public function getParents(): ?array
     {
@@ -139,7 +143,7 @@ class BuildCache extends \ArrayObject
     /**
      * List of parent build cache record IDs.
      *
-     * @param string[]|null $parents
+     * @param list<string>|null $parents
      */
     public function setParents(?array $parents): self
     {
@@ -297,5 +301,10 @@ class BuildCache extends \ArrayObject
         $this->usageCount = $usageCount;
 
         return $this;
+    }
+
+    public function definedProperties(): array
+    {
+        return ['iD' => ['ID', 'getID', 'setID'], 'parent' => ['Parent', 'getParent', 'setParent'], 'parents' => ['Parents', 'getParents', 'setParents'], 'type' => ['Type', 'getType', 'setType'], 'description' => ['Description', 'getDescription', 'setDescription'], 'inUse' => ['InUse', 'getInUse', 'setInUse'], 'shared' => ['Shared', 'getShared', 'setShared'], 'size' => ['Size', 'getSize', 'setSize'], 'createdAt' => ['CreatedAt', 'getCreatedAt', 'setCreatedAt'], 'lastUsedAt' => ['LastUsedAt', 'getLastUsedAt', 'setLastUsedAt'], 'usageCount' => ['UsageCount', 'getUsageCount', 'setUsageCount']];
     }
 }

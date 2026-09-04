@@ -4,8 +4,12 @@ declare(strict_types=1);
 
 namespace Docker\API\Model;
 
-class GenericResourcesItemDiscreteResourceSpec extends \ArrayObject
+use Docker\API\Runtime\AdditionalAndPatternProperties;
+use Docker\API\Runtime\AdditionalPropertiesInterface;
+
+class GenericResourcesItemDiscreteResourceSpec implements AdditionalPropertiesInterface
 {
+    use AdditionalAndPatternProperties;
     /**
      * @var array
      */
@@ -48,5 +52,10 @@ class GenericResourcesItemDiscreteResourceSpec extends \ArrayObject
         $this->value = $value;
 
         return $this;
+    }
+
+    public function definedProperties(): array
+    {
+        return ['kind' => ['Kind', 'getKind', 'setKind'], 'value' => ['Value', 'getValue', 'setValue']];
     }
 }

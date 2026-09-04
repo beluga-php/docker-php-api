@@ -4,8 +4,12 @@ declare(strict_types=1);
 
 namespace Docker\API\Model;
 
-class EndpointSpec extends \ArrayObject
+use Docker\API\Runtime\AdditionalAndPatternProperties;
+use Docker\API\Runtime\AdditionalPropertiesInterface;
+
+class EndpointSpec implements AdditionalPropertiesInterface
 {
+    use AdditionalAndPatternProperties;
     /**
      * @var array
      */
@@ -25,7 +29,7 @@ class EndpointSpec extends \ArrayObject
      * List of exposed ports that this service is accessible on from the
      * outside. Ports can only be provided if `vip` resolution mode is used.
      *
-     * @var EndpointPortConfig[]|null
+     * @var list<EndpointPortConfig>|null
      */
     protected $ports;
 
@@ -52,7 +56,7 @@ class EndpointSpec extends \ArrayObject
      * List of exposed ports that this service is accessible on from the
      * outside. Ports can only be provided if `vip` resolution mode is used.
      *
-     * @return EndpointPortConfig[]|null
+     * @return list<EndpointPortConfig>|null
      */
     public function getPorts(): ?array
     {
@@ -63,7 +67,7 @@ class EndpointSpec extends \ArrayObject
      * List of exposed ports that this service is accessible on from the
      * outside. Ports can only be provided if `vip` resolution mode is used.
      *
-     * @param EndpointPortConfig[]|null $ports
+     * @param list<EndpointPortConfig>|null $ports
      */
     public function setPorts(?array $ports): self
     {
@@ -71,5 +75,10 @@ class EndpointSpec extends \ArrayObject
         $this->ports = $ports;
 
         return $this;
+    }
+
+    public function definedProperties(): array
+    {
+        return ['mode' => ['Mode', 'getMode', 'setMode'], 'ports' => ['Ports', 'getPorts', 'setPorts']];
     }
 }

@@ -4,8 +4,12 @@ declare(strict_types=1);
 
 namespace Docker\API\Model;
 
-class SystemVersion extends \ArrayObject
+use Docker\API\Runtime\AdditionalAndPatternProperties;
+use Docker\API\Runtime\AdditionalPropertiesInterface;
+
+class SystemVersion implements AdditionalPropertiesInterface
 {
+    use AdditionalAndPatternProperties;
     /**
      * @var array
      */
@@ -22,7 +26,7 @@ class SystemVersion extends \ArrayObject
     /**
      * Information about system components.
      *
-     * @var SystemVersionComponentsItem[]|null
+     * @var list<SystemVersionComponentsItem>|null
      */
     protected $components;
     /**
@@ -107,7 +111,7 @@ class SystemVersion extends \ArrayObject
     /**
      * Information about system components.
      *
-     * @return SystemVersionComponentsItem[]|null
+     * @return list<SystemVersionComponentsItem>|null
      */
     public function getComponents(): ?array
     {
@@ -117,7 +121,7 @@ class SystemVersion extends \ArrayObject
     /**
      * Information about system components.
      *
-     * @param SystemVersionComponentsItem[]|null $components
+     * @param list<SystemVersionComponentsItem>|null $components
      */
     public function setComponents(?array $components): self
     {
@@ -325,5 +329,10 @@ class SystemVersion extends \ArrayObject
         $this->buildTime = $buildTime;
 
         return $this;
+    }
+
+    public function definedProperties(): array
+    {
+        return ['platform' => ['Platform', 'getPlatform', 'setPlatform'], 'components' => ['Components', 'getComponents', 'setComponents'], 'version' => ['Version', 'getVersion', 'setVersion'], 'apiVersion' => ['ApiVersion', 'getApiVersion', 'setApiVersion'], 'minAPIVersion' => ['MinAPIVersion', 'getMinAPIVersion', 'setMinAPIVersion'], 'gitCommit' => ['GitCommit', 'getGitCommit', 'setGitCommit'], 'goVersion' => ['GoVersion', 'getGoVersion', 'setGoVersion'], 'os' => ['Os', 'getOs', 'setOs'], 'arch' => ['Arch', 'getArch', 'setArch'], 'kernelVersion' => ['KernelVersion', 'getKernelVersion', 'setKernelVersion'], 'experimental' => ['Experimental', 'getExperimental', 'setExperimental'], 'buildTime' => ['BuildTime', 'getBuildTime', 'setBuildTime']];
     }
 }

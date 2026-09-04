@@ -11,30 +11,24 @@ class PluginUpgrade extends \Docker\API\Runtime\Client\BaseEndpoint implements \
     protected $accept;
 
     /**
-     * @param string                                   $name            The name of the plugin. The `:latest` tag is optional, and is the
-     *                                                                  default if omitted.
+     * @param string                                   $name        The name of the plugin. The `:latest` tag is optional, and is the
+     *                                                              default if omitted.
      * @param \Docker\API\Model\PluginPrivilege[]|null $requestBody
-     * @param array                                    $queryParameters {
-     *
-     * @var string $remote Remote reference to upgrade to.
+     * @param array{
+     *    "remote": string, //Remote reference to upgrade to.
      *
      * The `:latest` tag is optional, and is used as the default if omitted.
-     *
-     * }
-     *
-     * @param array $headerParameters {
-     *
-     * @var string $X-Registry-Auth A base64url-encoded auth configuration to use when pulling a plugin
-     *             from a registry.
+     * } $queryParameters
+     * @param array{
+     *    "X-Registry-Auth"?: string, //A base64url-encoded auth configuration to use when pulling a plugin
+     * from a registry.
      *
      * Refer to the [authentication section](#section/Authentication) for
      * details.
-     *
-     * }
-     *
+     * } $headerParameters
      * @param array $accept Accept content header application/json|text/plain
      */
-    public function __construct(string $name, array $requestBody = null, array $queryParameters = [], array $headerParameters = [], array $accept = [])
+    public function __construct(string $name, ?array $requestBody = null, array $queryParameters = [], array $headerParameters = [], array $accept = [])
     {
         $this->name = $name;
         $this->body = $requestBody;
@@ -50,7 +44,7 @@ class PluginUpgrade extends \Docker\API\Runtime\Client\BaseEndpoint implements \
 
     public function getUri(): string
     {
-        return str_replace(['{name}'], [$this->name], '/plugins/{name}/upgrade');
+        return str_replace(['{name}'], [rawurlencode($this->name)], '/plugins/{name}/upgrade');
     }
 
     public function getBody(\Symfony\Component\Serializer\SerializerInterface $serializer, $streamFactory = null): array
@@ -102,17 +96,17 @@ class PluginUpgrade extends \Docker\API\Runtime\Client\BaseEndpoint implements \
      *
      * @return null
      */
-    protected function transformResponseBody(\Psr\Http\Message\ResponseInterface $response, \Symfony\Component\Serializer\SerializerInterface $serializer, string $contentType = null)
+    protected function transformResponseBody(\Psr\Http\Message\ResponseInterface $response, \Symfony\Component\Serializer\SerializerInterface $serializer, ?string $contentType = null)
     {
         $status = $response->getStatusCode();
         $body = (string) $response->getBody();
         if (204 === $status) {
         }
-        if ((null === $contentType) === false && (404 === $status && false !== mb_strpos($contentType, 'application/json'))) {
-            throw new \Docker\API\Exception\PluginUpgradeNotFoundException($serializer->deserialize($body, 'Docker\\API\\Model\\ErrorResponse', 'json'), $response);
+        if ((null === $contentType) === false && (404 === $status && false !== stripos(strtolower($contentType), 'application/json'))) {
+            throw new \Docker\API\Exception\PluginUpgradeNotFoundException($serializer->deserialize($body, 'Docker\API\Model\ErrorResponse', 'json'), $response);
         }
-        if ((null === $contentType) === false && (500 === $status && false !== mb_strpos($contentType, 'application/json'))) {
-            throw new \Docker\API\Exception\PluginUpgradeInternalServerErrorException($serializer->deserialize($body, 'Docker\\API\\Model\\ErrorResponse', 'json'), $response);
+        if ((null === $contentType) === false && (500 === $status && false !== stripos(strtolower($contentType), 'application/json'))) {
+            throw new \Docker\API\Exception\PluginUpgradeInternalServerErrorException($serializer->deserialize($body, 'Docker\API\Model\ErrorResponse', 'json'), $response);
         }
     }
 

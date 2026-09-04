@@ -4,8 +4,12 @@ declare(strict_types=1);
 
 namespace Docker\API\Model;
 
-class TaskSpecContainerSpecPrivilegesSELinuxContext extends \ArrayObject
+use Docker\API\Runtime\AdditionalAndPatternProperties;
+use Docker\API\Runtime\AdditionalPropertiesInterface;
+
+class TaskSpecContainerSpecPrivilegesSELinuxContext implements AdditionalPropertiesInterface
 {
+    use AdditionalAndPatternProperties;
     /**
      * @var array
      */
@@ -139,5 +143,10 @@ class TaskSpecContainerSpecPrivilegesSELinuxContext extends \ArrayObject
         $this->level = $level;
 
         return $this;
+    }
+
+    public function definedProperties(): array
+    {
+        return ['disable' => ['Disable', 'getDisable', 'setDisable'], 'user' => ['User', 'getUser', 'setUser'], 'role' => ['Role', 'getRole', 'setRole'], 'type' => ['Type', 'getType', 'setType'], 'level' => ['Level', 'getLevel', 'setLevel']];
     }
 }

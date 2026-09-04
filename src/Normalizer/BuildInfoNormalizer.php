@@ -21,75 +21,83 @@ class BuildInfoNormalizer implements DenormalizerInterface, NormalizerInterface,
     use NormalizerAwareTrait;
     use ValidatorTrait;
 
-    public function supportsDenormalization($data, $type, $format = null, array $context = []): bool
+    public function supportsDenormalization(mixed $data, string $type, ?string $format = null, array $context = []): bool
     {
-        return 'Docker\\API\\Model\\BuildInfo' === $type;
+        return \Docker\API\Model\BuildInfo::class === $type;
     }
 
-    public function supportsNormalization($data, $format = null, array $context = []): bool
+    public function supportsNormalization(mixed $data, ?string $format = null, array $context = []): bool
     {
-        return \is_object($data) && 'Docker\\API\\Model\\BuildInfo' === $data::class;
+        return \is_object($data) && \Docker\API\Model\BuildInfo::class === $data::class;
     }
 
-    public function denormalize($data, $class, $format = null, array $context = [])
+    public function denormalize(mixed $data, string $type, ?string $format = null, array $context = []): mixed
     {
-        if (isset($data['$ref'])) {
+        $object = new \Docker\API\Model\BuildInfo();
+        if (null === $data || false === \is_array($data)) {
+            return $object;
+        }
+        if (isset($data['$ref']) && !isset($data['type']) && !isset($data['properties']) && !isset($data['allOf'])) {
             return new Reference($data['$ref'], $context['document-origin']);
         }
         if (isset($data['$recursiveRef'])) {
             return new Reference($data['$recursiveRef'], $context['document-origin']);
-        }
-        $object = new \Docker\API\Model\BuildInfo();
-        if (null === $data || false === \is_array($data)) {
-            return $object;
         }
         if (\array_key_exists('id', $data) && null !== $data['id']) {
             $object->setId($data['id']);
             unset($data['id']);
         } elseif (\array_key_exists('id', $data) && null === $data['id']) {
             $object->setId(null);
+            unset($data['id']);
         }
         if (\array_key_exists('stream', $data) && null !== $data['stream']) {
             $object->setStream($data['stream']);
             unset($data['stream']);
         } elseif (\array_key_exists('stream', $data) && null === $data['stream']) {
             $object->setStream(null);
+            unset($data['stream']);
         }
         if (\array_key_exists('error', $data) && null !== $data['error']) {
             $object->setError($data['error']);
             unset($data['error']);
         } elseif (\array_key_exists('error', $data) && null === $data['error']) {
             $object->setError(null);
+            unset($data['error']);
         }
         if (\array_key_exists('errorDetail', $data) && null !== $data['errorDetail']) {
-            $object->setErrorDetail($this->denormalizer->denormalize($data['errorDetail'], 'Docker\\API\\Model\\ErrorDetail', 'json', $context));
+            $object->setErrorDetail($this->denormalizer->denormalize($data['errorDetail'], \Docker\API\Model\ErrorDetail::class, 'json', $context));
             unset($data['errorDetail']);
         } elseif (\array_key_exists('errorDetail', $data) && null === $data['errorDetail']) {
             $object->setErrorDetail(null);
+            unset($data['errorDetail']);
         }
         if (\array_key_exists('status', $data) && null !== $data['status']) {
             $object->setStatus($data['status']);
             unset($data['status']);
         } elseif (\array_key_exists('status', $data) && null === $data['status']) {
             $object->setStatus(null);
+            unset($data['status']);
         }
         if (\array_key_exists('progress', $data) && null !== $data['progress']) {
             $object->setProgress($data['progress']);
             unset($data['progress']);
         } elseif (\array_key_exists('progress', $data) && null === $data['progress']) {
             $object->setProgress(null);
+            unset($data['progress']);
         }
         if (\array_key_exists('progressDetail', $data) && null !== $data['progressDetail']) {
-            $object->setProgressDetail($this->denormalizer->denormalize($data['progressDetail'], 'Docker\\API\\Model\\ProgressDetail', 'json', $context));
+            $object->setProgressDetail($this->denormalizer->denormalize($data['progressDetail'], \Docker\API\Model\ProgressDetail::class, 'json', $context));
             unset($data['progressDetail']);
         } elseif (\array_key_exists('progressDetail', $data) && null === $data['progressDetail']) {
             $object->setProgressDetail(null);
+            unset($data['progressDetail']);
         }
         if (\array_key_exists('aux', $data) && null !== $data['aux']) {
-            $object->setAux($this->denormalizer->denormalize($data['aux'], 'Docker\\API\\Model\\ImageID', 'json', $context));
+            $object->setAux($this->denormalizer->denormalize($data['aux'], \Docker\API\Model\ImageID::class, 'json', $context));
             unset($data['aux']);
         } elseif (\array_key_exists('aux', $data) && null === $data['aux']) {
             $object->setAux(null);
+            unset($data['aux']);
         }
         foreach ($data as $key => $value) {
             if (preg_match('/.*/', (string) $key)) {
@@ -100,47 +108,44 @@ class BuildInfoNormalizer implements DenormalizerInterface, NormalizerInterface,
         return $object;
     }
 
-    /**
-     * @return array|string|int|float|bool|\ArrayObject|null
-     */
-    public function normalize($object, $format = null, array $context = [])
+    public function normalize(mixed $data, ?string $format = null, array $context = []): array|string|int|float|bool|\ArrayObject|null
     {
-        $data = [];
-        if ($object->isInitialized('id') && null !== $object->getId()) {
-            $data['id'] = $object->getId();
+        $dataArray = [];
+        if ($data->isInitialized('id') && null !== $data->getId()) {
+            $dataArray['id'] = $data->getId();
         }
-        if ($object->isInitialized('stream') && null !== $object->getStream()) {
-            $data['stream'] = $object->getStream();
+        if ($data->isInitialized('stream') && null !== $data->getStream()) {
+            $dataArray['stream'] = $data->getStream();
         }
-        if ($object->isInitialized('error') && null !== $object->getError()) {
-            $data['error'] = $object->getError();
+        if ($data->isInitialized('error') && null !== $data->getError()) {
+            $dataArray['error'] = $data->getError();
         }
-        if ($object->isInitialized('errorDetail') && null !== $object->getErrorDetail()) {
-            $data['errorDetail'] = null === $object->getErrorDetail() ? null : new \ArrayObject($this->normalizer->normalize($object->getErrorDetail(), 'json', $context), \ArrayObject::ARRAY_AS_PROPS);
+        if ($data->isInitialized('errorDetail') && null !== $data->getErrorDetail()) {
+            $dataArray['errorDetail'] = null === $data->getErrorDetail() ? null : new \Docker\API\Runtime\JsonObject($this->normalizer->normalize($data->getErrorDetail(), 'json', $context));
         }
-        if ($object->isInitialized('status') && null !== $object->getStatus()) {
-            $data['status'] = $object->getStatus();
+        if ($data->isInitialized('status') && null !== $data->getStatus()) {
+            $dataArray['status'] = $data->getStatus();
         }
-        if ($object->isInitialized('progress') && null !== $object->getProgress()) {
-            $data['progress'] = $object->getProgress();
+        if ($data->isInitialized('progress') && null !== $data->getProgress()) {
+            $dataArray['progress'] = $data->getProgress();
         }
-        if ($object->isInitialized('progressDetail') && null !== $object->getProgressDetail()) {
-            $data['progressDetail'] = null === $object->getProgressDetail() ? null : new \ArrayObject($this->normalizer->normalize($object->getProgressDetail(), 'json', $context), \ArrayObject::ARRAY_AS_PROPS);
+        if ($data->isInitialized('progressDetail') && null !== $data->getProgressDetail()) {
+            $dataArray['progressDetail'] = null === $data->getProgressDetail() ? null : new \Docker\API\Runtime\JsonObject($this->normalizer->normalize($data->getProgressDetail(), 'json', $context));
         }
-        if ($object->isInitialized('aux') && null !== $object->getAux()) {
-            $data['aux'] = null === $object->getAux() ? null : new \ArrayObject($this->normalizer->normalize($object->getAux(), 'json', $context), \ArrayObject::ARRAY_AS_PROPS);
+        if ($data->isInitialized('aux') && null !== $data->getAux()) {
+            $dataArray['aux'] = null === $data->getAux() ? null : new \Docker\API\Runtime\JsonObject($this->normalizer->normalize($data->getAux(), 'json', $context));
         }
-        foreach ($object as $key => $value) {
+        foreach ($data->additionalPropertyEntries() as $key => $value) {
             if (preg_match('/.*/', (string) $key)) {
-                $data[$key] = $value;
+                $dataArray[$key] = $value;
             }
         }
 
-        return $data;
+        return $dataArray;
     }
 
-    public function getSupportedTypes(string $format = null): array
+    public function getSupportedTypes(?string $format = null): array
     {
-        return ['Docker\\API\\Model\\BuildInfo' => false];
+        return [\Docker\API\Model\BuildInfo::class => false];
     }
 }

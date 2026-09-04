@@ -4,8 +4,12 @@ declare(strict_types=1);
 
 namespace Docker\API\Model;
 
-class ContainerState extends \ArrayObject
+use Docker\API\Runtime\AdditionalAndPatternProperties;
+use Docker\API\Runtime\AdditionalPropertiesInterface;
+
+class ContainerState implements AdditionalPropertiesInterface
 {
+    use AdditionalAndPatternProperties;
     /**
      * @var array
      */
@@ -328,5 +332,10 @@ class ContainerState extends \ArrayObject
         $this->health = $health;
 
         return $this;
+    }
+
+    public function definedProperties(): array
+    {
+        return ['status' => ['Status', 'getStatus', 'setStatus'], 'running' => ['Running', 'getRunning', 'setRunning'], 'paused' => ['Paused', 'getPaused', 'setPaused'], 'restarting' => ['Restarting', 'getRestarting', 'setRestarting'], 'oOMKilled' => ['OOMKilled', 'getOOMKilled', 'setOOMKilled'], 'dead' => ['Dead', 'getDead', 'setDead'], 'pid' => ['Pid', 'getPid', 'setPid'], 'exitCode' => ['ExitCode', 'getExitCode', 'setExitCode'], 'error' => ['Error', 'getError', 'setError'], 'startedAt' => ['StartedAt', 'getStartedAt', 'setStartedAt'], 'finishedAt' => ['FinishedAt', 'getFinishedAt', 'setFinishedAt'], 'health' => ['Health', 'getHealth', 'setHealth']];
     }
 }

@@ -4,8 +4,12 @@ declare(strict_types=1);
 
 namespace Docker\API\Model;
 
-class AuthConfig extends \ArrayObject
+use Docker\API\Runtime\AdditionalAndPatternProperties;
+use Docker\API\Runtime\AdditionalPropertiesInterface;
+
+class AuthConfig implements AdditionalPropertiesInterface
 {
+    use AdditionalAndPatternProperties;
     /**
      * @var array
      */
@@ -82,5 +86,10 @@ class AuthConfig extends \ArrayObject
         $this->serveraddress = $serveraddress;
 
         return $this;
+    }
+
+    public function definedProperties(): array
+    {
+        return ['username' => ['username', 'getUsername', 'setUsername'], 'password' => ['password', 'getPassword', 'setPassword'], 'email' => ['email', 'getEmail', 'setEmail'], 'serveraddress' => ['serveraddress', 'getServeraddress', 'setServeraddress']];
     }
 }

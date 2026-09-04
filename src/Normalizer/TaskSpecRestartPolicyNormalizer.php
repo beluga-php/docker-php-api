@@ -21,51 +21,55 @@ class TaskSpecRestartPolicyNormalizer implements DenormalizerInterface, Normaliz
     use NormalizerAwareTrait;
     use ValidatorTrait;
 
-    public function supportsDenormalization($data, $type, $format = null, array $context = []): bool
+    public function supportsDenormalization(mixed $data, string $type, ?string $format = null, array $context = []): bool
     {
-        return 'Docker\\API\\Model\\TaskSpecRestartPolicy' === $type;
+        return \Docker\API\Model\TaskSpecRestartPolicy::class === $type;
     }
 
-    public function supportsNormalization($data, $format = null, array $context = []): bool
+    public function supportsNormalization(mixed $data, ?string $format = null, array $context = []): bool
     {
-        return \is_object($data) && 'Docker\\API\\Model\\TaskSpecRestartPolicy' === $data::class;
+        return \is_object($data) && \Docker\API\Model\TaskSpecRestartPolicy::class === $data::class;
     }
 
-    public function denormalize($data, $class, $format = null, array $context = [])
+    public function denormalize(mixed $data, string $type, ?string $format = null, array $context = []): mixed
     {
-        if (isset($data['$ref'])) {
+        $object = new \Docker\API\Model\TaskSpecRestartPolicy();
+        if (null === $data || false === \is_array($data)) {
+            return $object;
+        }
+        if (isset($data['$ref']) && !isset($data['type']) && !isset($data['properties']) && !isset($data['allOf'])) {
             return new Reference($data['$ref'], $context['document-origin']);
         }
         if (isset($data['$recursiveRef'])) {
             return new Reference($data['$recursiveRef'], $context['document-origin']);
-        }
-        $object = new \Docker\API\Model\TaskSpecRestartPolicy();
-        if (null === $data || false === \is_array($data)) {
-            return $object;
         }
         if (\array_key_exists('Condition', $data) && null !== $data['Condition']) {
             $object->setCondition($data['Condition']);
             unset($data['Condition']);
         } elseif (\array_key_exists('Condition', $data) && null === $data['Condition']) {
             $object->setCondition(null);
+            unset($data['Condition']);
         }
         if (\array_key_exists('Delay', $data) && null !== $data['Delay']) {
             $object->setDelay($data['Delay']);
             unset($data['Delay']);
         } elseif (\array_key_exists('Delay', $data) && null === $data['Delay']) {
             $object->setDelay(null);
+            unset($data['Delay']);
         }
         if (\array_key_exists('MaxAttempts', $data) && null !== $data['MaxAttempts']) {
             $object->setMaxAttempts($data['MaxAttempts']);
             unset($data['MaxAttempts']);
         } elseif (\array_key_exists('MaxAttempts', $data) && null === $data['MaxAttempts']) {
             $object->setMaxAttempts(null);
+            unset($data['MaxAttempts']);
         }
         if (\array_key_exists('Window', $data) && null !== $data['Window']) {
             $object->setWindow($data['Window']);
             unset($data['Window']);
         } elseif (\array_key_exists('Window', $data) && null === $data['Window']) {
             $object->setWindow(null);
+            unset($data['Window']);
         }
         foreach ($data as $key => $value) {
             if (preg_match('/.*/', (string) $key)) {
@@ -76,35 +80,32 @@ class TaskSpecRestartPolicyNormalizer implements DenormalizerInterface, Normaliz
         return $object;
     }
 
-    /**
-     * @return array|string|int|float|bool|\ArrayObject|null
-     */
-    public function normalize($object, $format = null, array $context = [])
+    public function normalize(mixed $data, ?string $format = null, array $context = []): array|string|int|float|bool|\ArrayObject|null
     {
-        $data = [];
-        if ($object->isInitialized('condition') && null !== $object->getCondition()) {
-            $data['Condition'] = $object->getCondition();
+        $dataArray = [];
+        if ($data->isInitialized('condition') && null !== $data->getCondition()) {
+            $dataArray['Condition'] = $data->getCondition();
         }
-        if ($object->isInitialized('delay') && null !== $object->getDelay()) {
-            $data['Delay'] = $object->getDelay();
+        if ($data->isInitialized('delay') && null !== $data->getDelay()) {
+            $dataArray['Delay'] = $data->getDelay();
         }
-        if ($object->isInitialized('maxAttempts') && null !== $object->getMaxAttempts()) {
-            $data['MaxAttempts'] = $object->getMaxAttempts();
+        if ($data->isInitialized('maxAttempts') && null !== $data->getMaxAttempts()) {
+            $dataArray['MaxAttempts'] = $data->getMaxAttempts();
         }
-        if ($object->isInitialized('window') && null !== $object->getWindow()) {
-            $data['Window'] = $object->getWindow();
+        if ($data->isInitialized('window') && null !== $data->getWindow()) {
+            $dataArray['Window'] = $data->getWindow();
         }
-        foreach ($object as $key => $value) {
+        foreach ($data->additionalPropertyEntries() as $key => $value) {
             if (preg_match('/.*/', (string) $key)) {
-                $data[$key] = $value;
+                $dataArray[$key] = $value;
             }
         }
 
-        return $data;
+        return $dataArray;
     }
 
-    public function getSupportedTypes(string $format = null): array
+    public function getSupportedTypes(?string $format = null): array
     {
-        return ['Docker\\API\\Model\\TaskSpecRestartPolicy' => false];
+        return [\Docker\API\Model\TaskSpecRestartPolicy::class => false];
     }
 }

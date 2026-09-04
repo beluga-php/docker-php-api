@@ -4,8 +4,12 @@ declare(strict_types=1);
 
 namespace Docker\API\Model;
 
-class ContainersPrunePostResponse200 extends \ArrayObject
+use Docker\API\Runtime\AdditionalAndPatternProperties;
+use Docker\API\Runtime\AdditionalPropertiesInterface;
+
+class ContainersPrunePostResponse200 implements AdditionalPropertiesInterface
 {
+    use AdditionalAndPatternProperties;
     /**
      * @var array
      */
@@ -18,7 +22,7 @@ class ContainersPrunePostResponse200 extends \ArrayObject
     /**
      * Container IDs that were deleted.
      *
-     * @var string[]|null
+     * @var list<string>|null
      */
     protected $containersDeleted;
     /**
@@ -31,7 +35,7 @@ class ContainersPrunePostResponse200 extends \ArrayObject
     /**
      * Container IDs that were deleted.
      *
-     * @return string[]|null
+     * @return list<string>|null
      */
     public function getContainersDeleted(): ?array
     {
@@ -41,7 +45,7 @@ class ContainersPrunePostResponse200 extends \ArrayObject
     /**
      * Container IDs that were deleted.
      *
-     * @param string[]|null $containersDeleted
+     * @param list<string>|null $containersDeleted
      */
     public function setContainersDeleted(?array $containersDeleted): self
     {
@@ -68,5 +72,10 @@ class ContainersPrunePostResponse200 extends \ArrayObject
         $this->spaceReclaimed = $spaceReclaimed;
 
         return $this;
+    }
+
+    public function definedProperties(): array
+    {
+        return ['containersDeleted' => ['ContainersDeleted', 'getContainersDeleted', 'setContainersDeleted'], 'spaceReclaimed' => ['SpaceReclaimed', 'getSpaceReclaimed', 'setSpaceReclaimed']];
     }
 }

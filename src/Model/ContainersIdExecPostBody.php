@@ -4,8 +4,12 @@ declare(strict_types=1);
 
 namespace Docker\API\Model;
 
-class ContainersIdExecPostBody extends \ArrayObject
+use Docker\API\Runtime\AdditionalAndPatternProperties;
+use Docker\API\Runtime\AdditionalPropertiesInterface;
+
+class ContainersIdExecPostBody implements AdditionalPropertiesInterface
 {
+    use AdditionalAndPatternProperties;
     /**
      * @var array
      */
@@ -36,7 +40,7 @@ class ContainersIdExecPostBody extends \ArrayObject
     /**
      * Initial console size, as an `[height, width]` array.
      *
-     * @var int[]|null
+     * @var list<int>|null
      */
     protected $consoleSize;
     /**
@@ -56,13 +60,13 @@ class ContainersIdExecPostBody extends \ArrayObject
     /**
      * A list of environment variables in the form `["VAR=value", ...]`.
      *
-     * @var string[]|null
+     * @var list<string>|null
      */
     protected $env;
     /**
      * Command to run, as a string or array of strings.
      *
-     * @var string[]|null
+     * @var list<string>|null
      */
     protected $cmd;
     /**
@@ -146,7 +150,7 @@ class ContainersIdExecPostBody extends \ArrayObject
     /**
      * Initial console size, as an `[height, width]` array.
      *
-     * @return int[]|null
+     * @return list<int>|null
      */
     public function getConsoleSize(): ?array
     {
@@ -156,7 +160,7 @@ class ContainersIdExecPostBody extends \ArrayObject
     /**
      * Initial console size, as an `[height, width]` array.
      *
-     * @param int[]|null $consoleSize
+     * @param list<int>|null $consoleSize
      */
     public function setConsoleSize(?array $consoleSize): self
     {
@@ -211,7 +215,7 @@ class ContainersIdExecPostBody extends \ArrayObject
     /**
      * A list of environment variables in the form `["VAR=value", ...]`.
      *
-     * @return string[]|null
+     * @return list<string>|null
      */
     public function getEnv(): ?array
     {
@@ -221,7 +225,7 @@ class ContainersIdExecPostBody extends \ArrayObject
     /**
      * A list of environment variables in the form `["VAR=value", ...]`.
      *
-     * @param string[]|null $env
+     * @param list<string>|null $env
      */
     public function setEnv(?array $env): self
     {
@@ -234,7 +238,7 @@ class ContainersIdExecPostBody extends \ArrayObject
     /**
      * Command to run, as a string or array of strings.
      *
-     * @return string[]|null
+     * @return list<string>|null
      */
     public function getCmd(): ?array
     {
@@ -244,7 +248,7 @@ class ContainersIdExecPostBody extends \ArrayObject
     /**
      * Command to run, as a string or array of strings.
      *
-     * @param string[]|null $cmd
+     * @param list<string>|null $cmd
      */
     public function setCmd(?array $cmd): self
     {
@@ -313,5 +317,10 @@ class ContainersIdExecPostBody extends \ArrayObject
         $this->workingDir = $workingDir;
 
         return $this;
+    }
+
+    public function definedProperties(): array
+    {
+        return ['attachStdin' => ['AttachStdin', 'getAttachStdin', 'setAttachStdin'], 'attachStdout' => ['AttachStdout', 'getAttachStdout', 'setAttachStdout'], 'attachStderr' => ['AttachStderr', 'getAttachStderr', 'setAttachStderr'], 'consoleSize' => ['ConsoleSize', 'getConsoleSize', 'setConsoleSize'], 'detachKeys' => ['DetachKeys', 'getDetachKeys', 'setDetachKeys'], 'tty' => ['Tty', 'getTty', 'setTty'], 'env' => ['Env', 'getEnv', 'setEnv'], 'cmd' => ['Cmd', 'getCmd', 'setCmd'], 'privileged' => ['Privileged', 'getPrivileged', 'setPrivileged'], 'user' => ['User', 'getUser', 'setUser'], 'workingDir' => ['WorkingDir', 'getWorkingDir', 'setWorkingDir']];
     }
 }

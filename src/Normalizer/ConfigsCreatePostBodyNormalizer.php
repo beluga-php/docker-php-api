@@ -21,36 +21,37 @@ class ConfigsCreatePostBodyNormalizer implements DenormalizerInterface, Normaliz
     use NormalizerAwareTrait;
     use ValidatorTrait;
 
-    public function supportsDenormalization($data, $type, $format = null, array $context = []): bool
+    public function supportsDenormalization(mixed $data, string $type, ?string $format = null, array $context = []): bool
     {
-        return 'Docker\\API\\Model\\ConfigsCreatePostBody' === $type;
+        return \Docker\API\Model\ConfigsCreatePostBody::class === $type;
     }
 
-    public function supportsNormalization($data, $format = null, array $context = []): bool
+    public function supportsNormalization(mixed $data, ?string $format = null, array $context = []): bool
     {
-        return \is_object($data) && 'Docker\\API\\Model\\ConfigsCreatePostBody' === $data::class;
+        return \is_object($data) && \Docker\API\Model\ConfigsCreatePostBody::class === $data::class;
     }
 
-    public function denormalize($data, $class, $format = null, array $context = [])
+    public function denormalize(mixed $data, string $type, ?string $format = null, array $context = []): mixed
     {
-        if (isset($data['$ref'])) {
+        $object = new \Docker\API\Model\ConfigsCreatePostBody();
+        if (null === $data || false === \is_array($data)) {
+            return $object;
+        }
+        if (isset($data['$ref']) && !isset($data['type']) && !isset($data['properties']) && !isset($data['allOf'])) {
             return new Reference($data['$ref'], $context['document-origin']);
         }
         if (isset($data['$recursiveRef'])) {
             return new Reference($data['$recursiveRef'], $context['document-origin']);
-        }
-        $object = new \Docker\API\Model\ConfigsCreatePostBody();
-        if (null === $data || false === \is_array($data)) {
-            return $object;
         }
         if (\array_key_exists('Name', $data) && null !== $data['Name']) {
             $object->setName($data['Name']);
             unset($data['Name']);
         } elseif (\array_key_exists('Name', $data) && null === $data['Name']) {
             $object->setName(null);
+            unset($data['Name']);
         }
         if (\array_key_exists('Labels', $data) && null !== $data['Labels']) {
-            $values = new \ArrayObject([], \ArrayObject::ARRAY_AS_PROPS);
+            $values = new \Docker\API\Runtime\JsonObject();
             foreach ($data['Labels'] as $key => $value) {
                 $values[$key] = $value;
             }
@@ -58,18 +59,21 @@ class ConfigsCreatePostBodyNormalizer implements DenormalizerInterface, Normaliz
             unset($data['Labels']);
         } elseif (\array_key_exists('Labels', $data) && null === $data['Labels']) {
             $object->setLabels(null);
+            unset($data['Labels']);
         }
         if (\array_key_exists('Data', $data) && null !== $data['Data']) {
             $object->setData($data['Data']);
             unset($data['Data']);
         } elseif (\array_key_exists('Data', $data) && null === $data['Data']) {
             $object->setData(null);
+            unset($data['Data']);
         }
         if (\array_key_exists('Templating', $data) && null !== $data['Templating']) {
-            $object->setTemplating($this->denormalizer->denormalize($data['Templating'], 'Docker\\API\\Model\\Driver', 'json', $context));
+            $object->setTemplating($this->denormalizer->denormalize($data['Templating'], \Docker\API\Model\Driver::class, 'json', $context));
             unset($data['Templating']);
         } elseif (\array_key_exists('Templating', $data) && null === $data['Templating']) {
             $object->setTemplating(null);
+            unset($data['Templating']);
         }
         foreach ($data as $key_1 => $value_1) {
             if (preg_match('/.*/', (string) $key_1)) {
@@ -80,39 +84,36 @@ class ConfigsCreatePostBodyNormalizer implements DenormalizerInterface, Normaliz
         return $object;
     }
 
-    /**
-     * @return array|string|int|float|bool|\ArrayObject|null
-     */
-    public function normalize($object, $format = null, array $context = [])
+    public function normalize(mixed $data, ?string $format = null, array $context = []): array|string|int|float|bool|\ArrayObject|null
     {
-        $data = [];
-        if ($object->isInitialized('name') && null !== $object->getName()) {
-            $data['Name'] = $object->getName();
+        $dataArray = [];
+        if ($data->isInitialized('name') && null !== $data->getName()) {
+            $dataArray['Name'] = $data->getName();
         }
-        if ($object->isInitialized('labels') && null !== $object->getLabels()) {
-            $values = new \ArrayObject([], \ArrayObject::ARRAY_AS_PROPS);
-            foreach ($object->getLabels() as $key => $value) {
+        if ($data->isInitialized('labels') && null !== $data->getLabels()) {
+            $values = new \Docker\API\Runtime\JsonObject();
+            foreach ($data->getLabels() as $key => $value) {
                 $values[$key] = $value;
             }
-            $data['Labels'] = $values;
+            $dataArray['Labels'] = $values;
         }
-        if ($object->isInitialized('data') && null !== $object->getData()) {
-            $data['Data'] = $object->getData();
+        if ($data->isInitialized('data') && null !== $data->getData()) {
+            $dataArray['Data'] = $data->getData();
         }
-        if ($object->isInitialized('templating') && null !== $object->getTemplating()) {
-            $data['Templating'] = null === $object->getTemplating() ? null : new \ArrayObject($this->normalizer->normalize($object->getTemplating(), 'json', $context), \ArrayObject::ARRAY_AS_PROPS);
+        if ($data->isInitialized('templating') && null !== $data->getTemplating()) {
+            $dataArray['Templating'] = null === $data->getTemplating() ? null : new \Docker\API\Runtime\JsonObject($this->normalizer->normalize($data->getTemplating(), 'json', $context));
         }
-        foreach ($object as $key_1 => $value_1) {
+        foreach ($data->additionalPropertyEntries() as $key_1 => $value_1) {
             if (preg_match('/.*/', (string) $key_1)) {
-                $data[$key_1] = $value_1;
+                $dataArray[$key_1] = $value_1;
             }
         }
 
-        return $data;
+        return $dataArray;
     }
 
-    public function getSupportedTypes(string $format = null): array
+    public function getSupportedTypes(?string $format = null): array
     {
-        return ['Docker\\API\\Model\\ConfigsCreatePostBody' => false];
+        return [\Docker\API\Model\ConfigsCreatePostBody::class => false];
     }
 }

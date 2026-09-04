@@ -11,17 +11,15 @@ class ImageSearch extends \Docker\API\Runtime\Client\BaseEndpoint implements \Do
     /**
      * Search for an image on Docker Hub.
      *
-     * @param array $queryParameters {
-     *
-     * @var string $term Term to search
-     * @var int    $limit Maximum number of results to return
-     * @var string $filters A JSON encoded value of the filters (a `map[string][]string`) to process on the images list. Available filters:
+     * @param array{
+     *    "term": string, //Term to search
+     *    "limit"?: int, //Maximum number of results to return
+     *    "filters"?: string, //A JSON encoded value of the filters (a `map[string][]string`) to process on the images list. Available filters:
      *
      * - `is-automated=(true|false)`
      * - `is-official=(true|false)`
      * - `stars=<number>` Matches images that has at least 'number' stars.
-     *
-     * }
+     * } $queryParameters
      */
     public function __construct(array $queryParameters = [])
     {
@@ -66,15 +64,15 @@ class ImageSearch extends \Docker\API\Runtime\Client\BaseEndpoint implements \Do
      *
      * @return \Docker\API\Model\ImagesSearchGetResponse200Item[]|null
      */
-    protected function transformResponseBody(\Psr\Http\Message\ResponseInterface $response, \Symfony\Component\Serializer\SerializerInterface $serializer, string $contentType = null)
+    protected function transformResponseBody(\Psr\Http\Message\ResponseInterface $response, \Symfony\Component\Serializer\SerializerInterface $serializer, ?string $contentType = null)
     {
         $status = $response->getStatusCode();
         $body = (string) $response->getBody();
-        if ((null === $contentType) === false && (200 === $status && false !== mb_strpos($contentType, 'application/json'))) {
-            return $serializer->deserialize($body, 'Docker\\API\\Model\\ImagesSearchGetResponse200Item[]', 'json');
+        if ((null === $contentType) === false && (200 === $status && false !== stripos(strtolower($contentType), 'application/json'))) {
+            return $serializer->deserialize($body, 'Docker\API\Model\ImagesSearchGetResponse200Item[]', 'json');
         }
-        if ((null === $contentType) === false && (500 === $status && false !== mb_strpos($contentType, 'application/json'))) {
-            throw new \Docker\API\Exception\ImageSearchInternalServerErrorException($serializer->deserialize($body, 'Docker\\API\\Model\\ErrorResponse', 'json'), $response);
+        if ((null === $contentType) === false && (500 === $status && false !== stripos(strtolower($contentType), 'application/json'))) {
+            throw new \Docker\API\Exception\ImageSearchInternalServerErrorException($serializer->deserialize($body, 'Docker\API\Model\ErrorResponse', 'json'), $response);
         }
     }
 

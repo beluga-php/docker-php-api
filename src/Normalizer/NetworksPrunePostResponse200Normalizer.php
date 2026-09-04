@@ -21,27 +21,27 @@ class NetworksPrunePostResponse200Normalizer implements DenormalizerInterface, N
     use NormalizerAwareTrait;
     use ValidatorTrait;
 
-    public function supportsDenormalization($data, $type, $format = null, array $context = []): bool
+    public function supportsDenormalization(mixed $data, string $type, ?string $format = null, array $context = []): bool
     {
-        return 'Docker\\API\\Model\\NetworksPrunePostResponse200' === $type;
+        return \Docker\API\Model\NetworksPrunePostResponse200::class === $type;
     }
 
-    public function supportsNormalization($data, $format = null, array $context = []): bool
+    public function supportsNormalization(mixed $data, ?string $format = null, array $context = []): bool
     {
-        return \is_object($data) && 'Docker\\API\\Model\\NetworksPrunePostResponse200' === $data::class;
+        return \is_object($data) && \Docker\API\Model\NetworksPrunePostResponse200::class === $data::class;
     }
 
-    public function denormalize($data, $class, $format = null, array $context = [])
+    public function denormalize(mixed $data, string $type, ?string $format = null, array $context = []): mixed
     {
-        if (isset($data['$ref'])) {
+        $object = new \Docker\API\Model\NetworksPrunePostResponse200();
+        if (null === $data || false === \is_array($data)) {
+            return $object;
+        }
+        if (isset($data['$ref']) && !isset($data['type']) && !isset($data['properties']) && !isset($data['allOf'])) {
             return new Reference($data['$ref'], $context['document-origin']);
         }
         if (isset($data['$recursiveRef'])) {
             return new Reference($data['$recursiveRef'], $context['document-origin']);
-        }
-        $object = new \Docker\API\Model\NetworksPrunePostResponse200();
-        if (null === $data || false === \is_array($data)) {
-            return $object;
         }
         if (\array_key_exists('NetworksDeleted', $data) && null !== $data['NetworksDeleted']) {
             $values = [];
@@ -52,6 +52,7 @@ class NetworksPrunePostResponse200Normalizer implements DenormalizerInterface, N
             unset($data['NetworksDeleted']);
         } elseif (\array_key_exists('NetworksDeleted', $data) && null === $data['NetworksDeleted']) {
             $object->setNetworksDeleted(null);
+            unset($data['NetworksDeleted']);
         }
         foreach ($data as $key => $value_1) {
             if (preg_match('/.*/', (string) $key)) {
@@ -62,30 +63,27 @@ class NetworksPrunePostResponse200Normalizer implements DenormalizerInterface, N
         return $object;
     }
 
-    /**
-     * @return array|string|int|float|bool|\ArrayObject|null
-     */
-    public function normalize($object, $format = null, array $context = [])
+    public function normalize(mixed $data, ?string $format = null, array $context = []): array|string|int|float|bool|\ArrayObject|null
     {
-        $data = [];
-        if ($object->isInitialized('networksDeleted') && null !== $object->getNetworksDeleted()) {
+        $dataArray = [];
+        if ($data->isInitialized('networksDeleted') && null !== $data->getNetworksDeleted()) {
             $values = [];
-            foreach ($object->getNetworksDeleted() as $value) {
+            foreach ($data->getNetworksDeleted() as $value) {
                 $values[] = $value;
             }
-            $data['NetworksDeleted'] = $values;
+            $dataArray['NetworksDeleted'] = $values;
         }
-        foreach ($object as $key => $value_1) {
+        foreach ($data->additionalPropertyEntries() as $key => $value_1) {
             if (preg_match('/.*/', (string) $key)) {
-                $data[$key] = $value_1;
+                $dataArray[$key] = $value_1;
             }
         }
 
-        return $data;
+        return $dataArray;
     }
 
-    public function getSupportedTypes(string $format = null): array
+    public function getSupportedTypes(?string $format = null): array
     {
-        return ['Docker\\API\\Model\\NetworksPrunePostResponse200' => false];
+        return [\Docker\API\Model\NetworksPrunePostResponse200::class => false];
     }
 }

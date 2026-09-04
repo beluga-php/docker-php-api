@@ -4,8 +4,12 @@ declare(strict_types=1);
 
 namespace Docker\API\Model;
 
-class EndpointSettings extends \ArrayObject
+use Docker\API\Runtime\AdditionalAndPatternProperties;
+use Docker\API\Runtime\AdditionalPropertiesInterface;
+
+class EndpointSettings implements AdditionalPropertiesInterface
 {
+    use AdditionalAndPatternProperties;
     /**
      * @var array
      */
@@ -22,11 +26,11 @@ class EndpointSettings extends \ArrayObject
      */
     protected $iPAMConfig;
     /**
-     * @var string[]|null
+     * @var list<string>|null
      */
     protected $links;
     /**
-     * @var string[]|null
+     * @var list<string>|null
      */
     protected $aliases;
     /**
@@ -111,7 +115,7 @@ class EndpointSettings extends \ArrayObject
     }
 
     /**
-     * @return string[]|null
+     * @return list<string>|null
      */
     public function getLinks(): ?array
     {
@@ -119,7 +123,7 @@ class EndpointSettings extends \ArrayObject
     }
 
     /**
-     * @param string[]|null $links
+     * @param list<string>|null $links
      */
     public function setLinks(?array $links): self
     {
@@ -130,7 +134,7 @@ class EndpointSettings extends \ArrayObject
     }
 
     /**
-     * @return string[]|null
+     * @return list<string>|null
      */
     public function getAliases(): ?array
     {
@@ -138,7 +142,7 @@ class EndpointSettings extends \ArrayObject
     }
 
     /**
-     * @param string[]|null $aliases
+     * @param list<string>|null $aliases
      */
     public function setAliases(?array $aliases): self
     {
@@ -342,5 +346,10 @@ class EndpointSettings extends \ArrayObject
         $this->driverOpts = $driverOpts;
 
         return $this;
+    }
+
+    public function definedProperties(): array
+    {
+        return ['iPAMConfig' => ['IPAMConfig', 'getIPAMConfig', 'setIPAMConfig'], 'links' => ['Links', 'getLinks', 'setLinks'], 'aliases' => ['Aliases', 'getAliases', 'setAliases'], 'networkID' => ['NetworkID', 'getNetworkID', 'setNetworkID'], 'endpointID' => ['EndpointID', 'getEndpointID', 'setEndpointID'], 'gateway' => ['Gateway', 'getGateway', 'setGateway'], 'iPAddress' => ['IPAddress', 'getIPAddress', 'setIPAddress'], 'iPPrefixLen' => ['IPPrefixLen', 'getIPPrefixLen', 'setIPPrefixLen'], 'iPv6Gateway' => ['IPv6Gateway', 'getIPv6Gateway', 'setIPv6Gateway'], 'globalIPv6Address' => ['GlobalIPv6Address', 'getGlobalIPv6Address', 'setGlobalIPv6Address'], 'globalIPv6PrefixLen' => ['GlobalIPv6PrefixLen', 'getGlobalIPv6PrefixLen', 'setGlobalIPv6PrefixLen'], 'macAddress' => ['MacAddress', 'getMacAddress', 'setMacAddress'], 'driverOpts' => ['DriverOpts', 'getDriverOpts', 'setDriverOpts']];
     }
 }

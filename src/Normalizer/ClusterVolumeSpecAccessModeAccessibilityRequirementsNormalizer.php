@@ -21,32 +21,32 @@ class ClusterVolumeSpecAccessModeAccessibilityRequirementsNormalizer implements 
     use NormalizerAwareTrait;
     use ValidatorTrait;
 
-    public function supportsDenormalization($data, $type, $format = null, array $context = []): bool
+    public function supportsDenormalization(mixed $data, string $type, ?string $format = null, array $context = []): bool
     {
-        return 'Docker\\API\\Model\\ClusterVolumeSpecAccessModeAccessibilityRequirements' === $type;
+        return \Docker\API\Model\ClusterVolumeSpecAccessModeAccessibilityRequirements::class === $type;
     }
 
-    public function supportsNormalization($data, $format = null, array $context = []): bool
+    public function supportsNormalization(mixed $data, ?string $format = null, array $context = []): bool
     {
-        return \is_object($data) && 'Docker\\API\\Model\\ClusterVolumeSpecAccessModeAccessibilityRequirements' === $data::class;
+        return \is_object($data) && \Docker\API\Model\ClusterVolumeSpecAccessModeAccessibilityRequirements::class === $data::class;
     }
 
-    public function denormalize($data, $class, $format = null, array $context = [])
+    public function denormalize(mixed $data, string $type, ?string $format = null, array $context = []): mixed
     {
-        if (isset($data['$ref'])) {
+        $object = new \Docker\API\Model\ClusterVolumeSpecAccessModeAccessibilityRequirements();
+        if (null === $data || false === \is_array($data)) {
+            return $object;
+        }
+        if (isset($data['$ref']) && !isset($data['type']) && !isset($data['properties']) && !isset($data['allOf'])) {
             return new Reference($data['$ref'], $context['document-origin']);
         }
         if (isset($data['$recursiveRef'])) {
             return new Reference($data['$recursiveRef'], $context['document-origin']);
         }
-        $object = new \Docker\API\Model\ClusterVolumeSpecAccessModeAccessibilityRequirements();
-        if (null === $data || false === \is_array($data)) {
-            return $object;
-        }
         if (\array_key_exists('Requisite', $data) && null !== $data['Requisite']) {
             $values = [];
             foreach ($data['Requisite'] as $value) {
-                $values_1 = new \ArrayObject([], \ArrayObject::ARRAY_AS_PROPS);
+                $values_1 = new \Docker\API\Runtime\JsonObject();
                 foreach ($value as $key => $value_1) {
                     $values_1[$key] = $value_1;
                 }
@@ -56,11 +56,12 @@ class ClusterVolumeSpecAccessModeAccessibilityRequirementsNormalizer implements 
             unset($data['Requisite']);
         } elseif (\array_key_exists('Requisite', $data) && null === $data['Requisite']) {
             $object->setRequisite(null);
+            unset($data['Requisite']);
         }
         if (\array_key_exists('Preferred', $data) && null !== $data['Preferred']) {
             $values_2 = [];
             foreach ($data['Preferred'] as $value_2) {
-                $values_3 = new \ArrayObject([], \ArrayObject::ARRAY_AS_PROPS);
+                $values_3 = new \Docker\API\Runtime\JsonObject();
                 foreach ($value_2 as $key_1 => $value_3) {
                     $values_3[$key_1] = $value_3;
                 }
@@ -70,6 +71,7 @@ class ClusterVolumeSpecAccessModeAccessibilityRequirementsNormalizer implements 
             unset($data['Preferred']);
         } elseif (\array_key_exists('Preferred', $data) && null === $data['Preferred']) {
             $object->setPreferred(null);
+            unset($data['Preferred']);
         }
         foreach ($data as $key_2 => $value_4) {
             if (preg_match('/.*/', (string) $key_2)) {
@@ -80,45 +82,42 @@ class ClusterVolumeSpecAccessModeAccessibilityRequirementsNormalizer implements 
         return $object;
     }
 
-    /**
-     * @return array|string|int|float|bool|\ArrayObject|null
-     */
-    public function normalize($object, $format = null, array $context = [])
+    public function normalize(mixed $data, ?string $format = null, array $context = []): array|string|int|float|bool|\ArrayObject|null
     {
-        $data = [];
-        if ($object->isInitialized('requisite') && null !== $object->getRequisite()) {
+        $dataArray = [];
+        if ($data->isInitialized('requisite') && null !== $data->getRequisite()) {
             $values = [];
-            foreach ($object->getRequisite() as $value) {
-                $values_1 = new \ArrayObject([], \ArrayObject::ARRAY_AS_PROPS);
+            foreach ($data->getRequisite() as $value) {
+                $values_1 = new \Docker\API\Runtime\JsonObject();
                 foreach ($value as $key => $value_1) {
                     $values_1[$key] = $value_1;
                 }
                 $values[] = $values_1;
             }
-            $data['Requisite'] = $values;
+            $dataArray['Requisite'] = $values;
         }
-        if ($object->isInitialized('preferred') && null !== $object->getPreferred()) {
+        if ($data->isInitialized('preferred') && null !== $data->getPreferred()) {
             $values_2 = [];
-            foreach ($object->getPreferred() as $value_2) {
-                $values_3 = new \ArrayObject([], \ArrayObject::ARRAY_AS_PROPS);
+            foreach ($data->getPreferred() as $value_2) {
+                $values_3 = new \Docker\API\Runtime\JsonObject();
                 foreach ($value_2 as $key_1 => $value_3) {
                     $values_3[$key_1] = $value_3;
                 }
                 $values_2[] = $values_3;
             }
-            $data['Preferred'] = $values_2;
+            $dataArray['Preferred'] = $values_2;
         }
-        foreach ($object as $key_2 => $value_4) {
+        foreach ($data->additionalPropertyEntries() as $key_2 => $value_4) {
             if (preg_match('/.*/', (string) $key_2)) {
-                $data[$key_2] = $value_4;
+                $dataArray[$key_2] = $value_4;
             }
         }
 
-        return $data;
+        return $dataArray;
     }
 
-    public function getSupportedTypes(string $format = null): array
+    public function getSupportedTypes(?string $format = null): array
     {
-        return ['Docker\\API\\Model\\ClusterVolumeSpecAccessModeAccessibilityRequirements' => false];
+        return [\Docker\API\Model\ClusterVolumeSpecAccessModeAccessibilityRequirements::class => false];
     }
 }

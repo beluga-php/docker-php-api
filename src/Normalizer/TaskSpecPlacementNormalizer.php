@@ -21,27 +21,27 @@ class TaskSpecPlacementNormalizer implements DenormalizerInterface, NormalizerIn
     use NormalizerAwareTrait;
     use ValidatorTrait;
 
-    public function supportsDenormalization($data, $type, $format = null, array $context = []): bool
+    public function supportsDenormalization(mixed $data, string $type, ?string $format = null, array $context = []): bool
     {
-        return 'Docker\\API\\Model\\TaskSpecPlacement' === $type;
+        return \Docker\API\Model\TaskSpecPlacement::class === $type;
     }
 
-    public function supportsNormalization($data, $format = null, array $context = []): bool
+    public function supportsNormalization(mixed $data, ?string $format = null, array $context = []): bool
     {
-        return \is_object($data) && 'Docker\\API\\Model\\TaskSpecPlacement' === $data::class;
+        return \is_object($data) && \Docker\API\Model\TaskSpecPlacement::class === $data::class;
     }
 
-    public function denormalize($data, $class, $format = null, array $context = [])
+    public function denormalize(mixed $data, string $type, ?string $format = null, array $context = []): mixed
     {
-        if (isset($data['$ref'])) {
+        $object = new \Docker\API\Model\TaskSpecPlacement();
+        if (null === $data || false === \is_array($data)) {
+            return $object;
+        }
+        if (isset($data['$ref']) && !isset($data['type']) && !isset($data['properties']) && !isset($data['allOf'])) {
             return new Reference($data['$ref'], $context['document-origin']);
         }
         if (isset($data['$recursiveRef'])) {
             return new Reference($data['$recursiveRef'], $context['document-origin']);
-        }
-        $object = new \Docker\API\Model\TaskSpecPlacement();
-        if (null === $data || false === \is_array($data)) {
-            return $object;
         }
         if (\array_key_exists('Constraints', $data) && null !== $data['Constraints']) {
             $values = [];
@@ -52,32 +52,36 @@ class TaskSpecPlacementNormalizer implements DenormalizerInterface, NormalizerIn
             unset($data['Constraints']);
         } elseif (\array_key_exists('Constraints', $data) && null === $data['Constraints']) {
             $object->setConstraints(null);
+            unset($data['Constraints']);
         }
         if (\array_key_exists('Preferences', $data) && null !== $data['Preferences']) {
             $values_1 = [];
             foreach ($data['Preferences'] as $value_1) {
-                $values_1[] = $this->denormalizer->denormalize($value_1, 'Docker\\API\\Model\\TaskSpecPlacementPreferencesItem', 'json', $context);
+                $values_1[] = $this->denormalizer->denormalize($value_1, \Docker\API\Model\TaskSpecPlacementPreferencesItem::class, 'json', $context);
             }
             $object->setPreferences($values_1);
             unset($data['Preferences']);
         } elseif (\array_key_exists('Preferences', $data) && null === $data['Preferences']) {
             $object->setPreferences(null);
+            unset($data['Preferences']);
         }
         if (\array_key_exists('MaxReplicas', $data) && null !== $data['MaxReplicas']) {
             $object->setMaxReplicas($data['MaxReplicas']);
             unset($data['MaxReplicas']);
         } elseif (\array_key_exists('MaxReplicas', $data) && null === $data['MaxReplicas']) {
             $object->setMaxReplicas(null);
+            unset($data['MaxReplicas']);
         }
         if (\array_key_exists('Platforms', $data) && null !== $data['Platforms']) {
             $values_2 = [];
             foreach ($data['Platforms'] as $value_2) {
-                $values_2[] = $this->denormalizer->denormalize($value_2, 'Docker\\API\\Model\\Platform', 'json', $context);
+                $values_2[] = $this->denormalizer->denormalize($value_2, \Docker\API\Model\Platform::class, 'json', $context);
             }
             $object->setPlatforms($values_2);
             unset($data['Platforms']);
         } elseif (\array_key_exists('Platforms', $data) && null === $data['Platforms']) {
             $object->setPlatforms(null);
+            unset($data['Platforms']);
         }
         foreach ($data as $key => $value_3) {
             if (preg_match('/.*/', (string) $key)) {
@@ -88,47 +92,44 @@ class TaskSpecPlacementNormalizer implements DenormalizerInterface, NormalizerIn
         return $object;
     }
 
-    /**
-     * @return array|string|int|float|bool|\ArrayObject|null
-     */
-    public function normalize($object, $format = null, array $context = [])
+    public function normalize(mixed $data, ?string $format = null, array $context = []): array|string|int|float|bool|\ArrayObject|null
     {
-        $data = [];
-        if ($object->isInitialized('constraints') && null !== $object->getConstraints()) {
+        $dataArray = [];
+        if ($data->isInitialized('constraints') && null !== $data->getConstraints()) {
             $values = [];
-            foreach ($object->getConstraints() as $value) {
+            foreach ($data->getConstraints() as $value) {
                 $values[] = $value;
             }
-            $data['Constraints'] = $values;
+            $dataArray['Constraints'] = $values;
         }
-        if ($object->isInitialized('preferences') && null !== $object->getPreferences()) {
+        if ($data->isInitialized('preferences') && null !== $data->getPreferences()) {
             $values_1 = [];
-            foreach ($object->getPreferences() as $value_1) {
-                $values_1[] = null === $value_1 ? null : new \ArrayObject($this->normalizer->normalize($value_1, 'json', $context), \ArrayObject::ARRAY_AS_PROPS);
+            foreach ($data->getPreferences() as $value_1) {
+                $values_1[] = null === $value_1 ? null : new \Docker\API\Runtime\JsonObject($this->normalizer->normalize($value_1, 'json', $context));
             }
-            $data['Preferences'] = $values_1;
+            $dataArray['Preferences'] = $values_1;
         }
-        if ($object->isInitialized('maxReplicas') && null !== $object->getMaxReplicas()) {
-            $data['MaxReplicas'] = $object->getMaxReplicas();
+        if ($data->isInitialized('maxReplicas') && null !== $data->getMaxReplicas()) {
+            $dataArray['MaxReplicas'] = $data->getMaxReplicas();
         }
-        if ($object->isInitialized('platforms') && null !== $object->getPlatforms()) {
+        if ($data->isInitialized('platforms') && null !== $data->getPlatforms()) {
             $values_2 = [];
-            foreach ($object->getPlatforms() as $value_2) {
-                $values_2[] = null === $value_2 ? null : new \ArrayObject($this->normalizer->normalize($value_2, 'json', $context), \ArrayObject::ARRAY_AS_PROPS);
+            foreach ($data->getPlatforms() as $value_2) {
+                $values_2[] = null === $value_2 ? null : new \Docker\API\Runtime\JsonObject($this->normalizer->normalize($value_2, 'json', $context));
             }
-            $data['Platforms'] = $values_2;
+            $dataArray['Platforms'] = $values_2;
         }
-        foreach ($object as $key => $value_3) {
+        foreach ($data->additionalPropertyEntries() as $key => $value_3) {
             if (preg_match('/.*/', (string) $key)) {
-                $data[$key] = $value_3;
+                $dataArray[$key] = $value_3;
             }
         }
 
-        return $data;
+        return $dataArray;
     }
 
-    public function getSupportedTypes(string $format = null): array
+    public function getSupportedTypes(?string $format = null): array
     {
-        return ['Docker\\API\\Model\\TaskSpecPlacement' => false];
+        return [\Docker\API\Model\TaskSpecPlacement::class => false];
     }
 }

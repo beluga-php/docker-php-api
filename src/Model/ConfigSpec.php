@@ -4,8 +4,12 @@ declare(strict_types=1);
 
 namespace Docker\API\Model;
 
-class ConfigSpec extends \ArrayObject
+use Docker\API\Runtime\AdditionalAndPatternProperties;
+use Docker\API\Runtime\AdditionalPropertiesInterface;
+
+class ConfigSpec implements AdditionalPropertiesInterface
 {
+    use AdditionalAndPatternProperties;
     /**
      * @var array
      */
@@ -121,5 +125,10 @@ class ConfigSpec extends \ArrayObject
         $this->templating = $templating;
 
         return $this;
+    }
+
+    public function definedProperties(): array
+    {
+        return ['name' => ['Name', 'getName', 'setName'], 'labels' => ['Labels', 'getLabels', 'setLabels'], 'data' => ['Data', 'getData', 'setData'], 'templating' => ['Templating', 'getTemplating', 'setTemplating']];
     }
 }

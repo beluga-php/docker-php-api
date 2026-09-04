@@ -4,8 +4,12 @@ declare(strict_types=1);
 
 namespace Docker\API\Model;
 
-class ImagesPrunePostResponse200 extends \ArrayObject
+use Docker\API\Runtime\AdditionalAndPatternProperties;
+use Docker\API\Runtime\AdditionalPropertiesInterface;
+
+class ImagesPrunePostResponse200 implements AdditionalPropertiesInterface
 {
+    use AdditionalAndPatternProperties;
     /**
      * @var array
      */
@@ -18,7 +22,7 @@ class ImagesPrunePostResponse200 extends \ArrayObject
     /**
      * Images that were deleted.
      *
-     * @var ImageDeleteResponseItem[]|null
+     * @var list<ImageDeleteResponseItem>|null
      */
     protected $imagesDeleted;
     /**
@@ -31,7 +35,7 @@ class ImagesPrunePostResponse200 extends \ArrayObject
     /**
      * Images that were deleted.
      *
-     * @return ImageDeleteResponseItem[]|null
+     * @return list<ImageDeleteResponseItem>|null
      */
     public function getImagesDeleted(): ?array
     {
@@ -41,7 +45,7 @@ class ImagesPrunePostResponse200 extends \ArrayObject
     /**
      * Images that were deleted.
      *
-     * @param ImageDeleteResponseItem[]|null $imagesDeleted
+     * @param list<ImageDeleteResponseItem>|null $imagesDeleted
      */
     public function setImagesDeleted(?array $imagesDeleted): self
     {
@@ -68,5 +72,10 @@ class ImagesPrunePostResponse200 extends \ArrayObject
         $this->spaceReclaimed = $spaceReclaimed;
 
         return $this;
+    }
+
+    public function definedProperties(): array
+    {
+        return ['imagesDeleted' => ['ImagesDeleted', 'getImagesDeleted', 'setImagesDeleted'], 'spaceReclaimed' => ['SpaceReclaimed', 'getSpaceReclaimed', 'setSpaceReclaimed']];
     }
 }

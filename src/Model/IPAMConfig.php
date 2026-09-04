@@ -4,8 +4,12 @@ declare(strict_types=1);
 
 namespace Docker\API\Model;
 
-class IPAMConfig extends \ArrayObject
+use Docker\API\Runtime\AdditionalAndPatternProperties;
+use Docker\API\Runtime\AdditionalPropertiesInterface;
+
+class IPAMConfig implements AdditionalPropertiesInterface
 {
+    use AdditionalAndPatternProperties;
     /**
      * @var array
      */
@@ -88,5 +92,10 @@ class IPAMConfig extends \ArrayObject
         $this->auxiliaryAddresses = $auxiliaryAddresses;
 
         return $this;
+    }
+
+    public function definedProperties(): array
+    {
+        return ['subnet' => ['Subnet', 'getSubnet', 'setSubnet'], 'iPRange' => ['IPRange', 'getIPRange', 'setIPRange'], 'gateway' => ['Gateway', 'getGateway', 'setGateway'], 'auxiliaryAddresses' => ['AuxiliaryAddresses', 'getAuxiliaryAddresses', 'setAuxiliaryAddresses']];
     }
 }

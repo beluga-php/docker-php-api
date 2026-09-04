@@ -4,8 +4,12 @@ declare(strict_types=1);
 
 namespace Docker\API\Model;
 
-class TaskSpecContainerSpecPrivilegesCredentialSpec extends \ArrayObject
+use Docker\API\Runtime\AdditionalAndPatternProperties;
+use Docker\API\Runtime\AdditionalPropertiesInterface;
+
+class TaskSpecContainerSpecPrivilegesCredentialSpec implements AdditionalPropertiesInterface
 {
+    use AdditionalAndPatternProperties;
     /**
      * @var array
      */
@@ -48,7 +52,7 @@ class TaskSpecContainerSpecPrivilegesCredentialSpec extends \ArrayObject
     protected $file;
     /**
      * Load credential spec from this value in the Windows
-     * registry. The specified registry value must be located in:.
+     * registry. The specified registry value must be located in:
      *
      * `HKLM\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Virtualization\Containers\CredentialSpecs`
      *
@@ -140,7 +144,7 @@ class TaskSpecContainerSpecPrivilegesCredentialSpec extends \ArrayObject
 
     /**
      * Load credential spec from this value in the Windows
-     * registry. The specified registry value must be located in:.
+     * registry. The specified registry value must be located in:
      *
      * `HKLM\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Virtualization\Containers\CredentialSpecs`
      *
@@ -157,7 +161,7 @@ class TaskSpecContainerSpecPrivilegesCredentialSpec extends \ArrayObject
 
     /**
      * Load credential spec from this value in the Windows
-     * registry. The specified registry value must be located in:.
+     * registry. The specified registry value must be located in:
      *
      * `HKLM\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Virtualization\Containers\CredentialSpecs`
      *
@@ -173,5 +177,10 @@ class TaskSpecContainerSpecPrivilegesCredentialSpec extends \ArrayObject
         $this->registry = $registry;
 
         return $this;
+    }
+
+    public function definedProperties(): array
+    {
+        return ['config' => ['Config', 'getConfig', 'setConfig'], 'file' => ['File', 'getFile', 'setFile'], 'registry' => ['Registry', 'getRegistry', 'setRegistry']];
     }
 }

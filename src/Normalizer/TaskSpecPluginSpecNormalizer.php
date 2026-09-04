@@ -21,55 +21,62 @@ class TaskSpecPluginSpecNormalizer implements DenormalizerInterface, NormalizerI
     use NormalizerAwareTrait;
     use ValidatorTrait;
 
-    public function supportsDenormalization($data, $type, $format = null, array $context = []): bool
+    public function supportsDenormalization(mixed $data, string $type, ?string $format = null, array $context = []): bool
     {
-        return 'Docker\\API\\Model\\TaskSpecPluginSpec' === $type;
+        return \Docker\API\Model\TaskSpecPluginSpec::class === $type;
     }
 
-    public function supportsNormalization($data, $format = null, array $context = []): bool
+    public function supportsNormalization(mixed $data, ?string $format = null, array $context = []): bool
     {
-        return \is_object($data) && 'Docker\\API\\Model\\TaskSpecPluginSpec' === $data::class;
+        return \is_object($data) && \Docker\API\Model\TaskSpecPluginSpec::class === $data::class;
     }
 
-    public function denormalize($data, $class, $format = null, array $context = [])
+    public function denormalize(mixed $data, string $type, ?string $format = null, array $context = []): mixed
     {
-        if (isset($data['$ref'])) {
+        $object = new \Docker\API\Model\TaskSpecPluginSpec();
+        if (null === $data || false === \is_array($data)) {
+            return $object;
+        }
+        if (isset($data['$ref']) && !isset($data['type']) && !isset($data['properties']) && !isset($data['allOf'])) {
             return new Reference($data['$ref'], $context['document-origin']);
         }
         if (isset($data['$recursiveRef'])) {
             return new Reference($data['$recursiveRef'], $context['document-origin']);
         }
-        $object = new \Docker\API\Model\TaskSpecPluginSpec();
-        if (null === $data || false === \is_array($data)) {
-            return $object;
+        if (\array_key_exists('Disabled', $data) && \is_int($data['Disabled'])) {
+            $data['Disabled'] = (bool) $data['Disabled'];
         }
         if (\array_key_exists('Name', $data) && null !== $data['Name']) {
             $object->setName($data['Name']);
             unset($data['Name']);
         } elseif (\array_key_exists('Name', $data) && null === $data['Name']) {
             $object->setName(null);
+            unset($data['Name']);
         }
         if (\array_key_exists('Remote', $data) && null !== $data['Remote']) {
             $object->setRemote($data['Remote']);
             unset($data['Remote']);
         } elseif (\array_key_exists('Remote', $data) && null === $data['Remote']) {
             $object->setRemote(null);
+            unset($data['Remote']);
         }
         if (\array_key_exists('Disabled', $data) && null !== $data['Disabled']) {
             $object->setDisabled($data['Disabled']);
             unset($data['Disabled']);
         } elseif (\array_key_exists('Disabled', $data) && null === $data['Disabled']) {
             $object->setDisabled(null);
+            unset($data['Disabled']);
         }
         if (\array_key_exists('PluginPrivilege', $data) && null !== $data['PluginPrivilege']) {
             $values = [];
             foreach ($data['PluginPrivilege'] as $value) {
-                $values[] = $this->denormalizer->denormalize($value, 'Docker\\API\\Model\\PluginPrivilege', 'json', $context);
+                $values[] = $this->denormalizer->denormalize($value, \Docker\API\Model\PluginPrivilege::class, 'json', $context);
             }
             $object->setPluginPrivilege($values);
             unset($data['PluginPrivilege']);
         } elseif (\array_key_exists('PluginPrivilege', $data) && null === $data['PluginPrivilege']) {
             $object->setPluginPrivilege(null);
+            unset($data['PluginPrivilege']);
         }
         foreach ($data as $key => $value_1) {
             if (preg_match('/.*/', (string) $key)) {
@@ -80,39 +87,36 @@ class TaskSpecPluginSpecNormalizer implements DenormalizerInterface, NormalizerI
         return $object;
     }
 
-    /**
-     * @return array|string|int|float|bool|\ArrayObject|null
-     */
-    public function normalize($object, $format = null, array $context = [])
+    public function normalize(mixed $data, ?string $format = null, array $context = []): array|string|int|float|bool|\ArrayObject|null
     {
-        $data = [];
-        if ($object->isInitialized('name') && null !== $object->getName()) {
-            $data['Name'] = $object->getName();
+        $dataArray = [];
+        if ($data->isInitialized('name') && null !== $data->getName()) {
+            $dataArray['Name'] = $data->getName();
         }
-        if ($object->isInitialized('remote') && null !== $object->getRemote()) {
-            $data['Remote'] = $object->getRemote();
+        if ($data->isInitialized('remote') && null !== $data->getRemote()) {
+            $dataArray['Remote'] = $data->getRemote();
         }
-        if ($object->isInitialized('disabled') && null !== $object->getDisabled()) {
-            $data['Disabled'] = $object->getDisabled();
+        if ($data->isInitialized('disabled') && null !== $data->getDisabled()) {
+            $dataArray['Disabled'] = $data->getDisabled();
         }
-        if ($object->isInitialized('pluginPrivilege') && null !== $object->getPluginPrivilege()) {
+        if ($data->isInitialized('pluginPrivilege') && null !== $data->getPluginPrivilege()) {
             $values = [];
-            foreach ($object->getPluginPrivilege() as $value) {
-                $values[] = null === $value ? null : new \ArrayObject($this->normalizer->normalize($value, 'json', $context), \ArrayObject::ARRAY_AS_PROPS);
+            foreach ($data->getPluginPrivilege() as $value) {
+                $values[] = null === $value ? null : new \Docker\API\Runtime\JsonObject($this->normalizer->normalize($value, 'json', $context));
             }
-            $data['PluginPrivilege'] = $values;
+            $dataArray['PluginPrivilege'] = $values;
         }
-        foreach ($object as $key => $value_1) {
+        foreach ($data->additionalPropertyEntries() as $key => $value_1) {
             if (preg_match('/.*/', (string) $key)) {
-                $data[$key] = $value_1;
+                $dataArray[$key] = $value_1;
             }
         }
 
-        return $data;
+        return $dataArray;
     }
 
-    public function getSupportedTypes(string $format = null): array
+    public function getSupportedTypes(?string $format = null): array
     {
-        return ['Docker\\API\\Model\\TaskSpecPluginSpec' => false];
+        return [\Docker\API\Model\TaskSpecPluginSpec::class => false];
     }
 }

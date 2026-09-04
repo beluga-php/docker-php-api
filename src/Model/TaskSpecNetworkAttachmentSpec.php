@@ -4,8 +4,12 @@ declare(strict_types=1);
 
 namespace Docker\API\Model;
 
-class TaskSpecNetworkAttachmentSpec extends \ArrayObject
+use Docker\API\Runtime\AdditionalAndPatternProperties;
+use Docker\API\Runtime\AdditionalPropertiesInterface;
+
+class TaskSpecNetworkAttachmentSpec implements AdditionalPropertiesInterface
 {
+    use AdditionalAndPatternProperties;
     /**
      * @var array
      */
@@ -39,5 +43,10 @@ class TaskSpecNetworkAttachmentSpec extends \ArrayObject
         $this->containerID = $containerID;
 
         return $this;
+    }
+
+    public function definedProperties(): array
+    {
+        return ['containerID' => ['ContainerID', 'getContainerID', 'setContainerID']];
     }
 }

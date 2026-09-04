@@ -21,42 +21,44 @@ class VolumeCreateOptionsNormalizer implements DenormalizerInterface, Normalizer
     use NormalizerAwareTrait;
     use ValidatorTrait;
 
-    public function supportsDenormalization($data, $type, $format = null, array $context = []): bool
+    public function supportsDenormalization(mixed $data, string $type, ?string $format = null, array $context = []): bool
     {
-        return 'Docker\\API\\Model\\VolumeCreateOptions' === $type;
+        return \Docker\API\Model\VolumeCreateOptions::class === $type;
     }
 
-    public function supportsNormalization($data, $format = null, array $context = []): bool
+    public function supportsNormalization(mixed $data, ?string $format = null, array $context = []): bool
     {
-        return \is_object($data) && 'Docker\\API\\Model\\VolumeCreateOptions' === $data::class;
+        return \is_object($data) && \Docker\API\Model\VolumeCreateOptions::class === $data::class;
     }
 
-    public function denormalize($data, $class, $format = null, array $context = [])
+    public function denormalize(mixed $data, string $type, ?string $format = null, array $context = []): mixed
     {
-        if (isset($data['$ref'])) {
+        $object = new \Docker\API\Model\VolumeCreateOptions();
+        if (null === $data || false === \is_array($data)) {
+            return $object;
+        }
+        if (isset($data['$ref']) && !isset($data['type']) && !isset($data['properties']) && !isset($data['allOf'])) {
             return new Reference($data['$ref'], $context['document-origin']);
         }
         if (isset($data['$recursiveRef'])) {
             return new Reference($data['$recursiveRef'], $context['document-origin']);
-        }
-        $object = new \Docker\API\Model\VolumeCreateOptions();
-        if (null === $data || false === \is_array($data)) {
-            return $object;
         }
         if (\array_key_exists('Name', $data) && null !== $data['Name']) {
             $object->setName($data['Name']);
             unset($data['Name']);
         } elseif (\array_key_exists('Name', $data) && null === $data['Name']) {
             $object->setName(null);
+            unset($data['Name']);
         }
         if (\array_key_exists('Driver', $data) && null !== $data['Driver']) {
             $object->setDriver($data['Driver']);
             unset($data['Driver']);
         } elseif (\array_key_exists('Driver', $data) && null === $data['Driver']) {
             $object->setDriver(null);
+            unset($data['Driver']);
         }
         if (\array_key_exists('DriverOpts', $data) && null !== $data['DriverOpts']) {
-            $values = new \ArrayObject([], \ArrayObject::ARRAY_AS_PROPS);
+            $values = new \Docker\API\Runtime\JsonObject();
             foreach ($data['DriverOpts'] as $key => $value) {
                 $values[$key] = $value;
             }
@@ -64,9 +66,10 @@ class VolumeCreateOptionsNormalizer implements DenormalizerInterface, Normalizer
             unset($data['DriverOpts']);
         } elseif (\array_key_exists('DriverOpts', $data) && null === $data['DriverOpts']) {
             $object->setDriverOpts(null);
+            unset($data['DriverOpts']);
         }
         if (\array_key_exists('Labels', $data) && null !== $data['Labels']) {
-            $values_1 = new \ArrayObject([], \ArrayObject::ARRAY_AS_PROPS);
+            $values_1 = new \Docker\API\Runtime\JsonObject();
             foreach ($data['Labels'] as $key_1 => $value_1) {
                 $values_1[$key_1] = $value_1;
             }
@@ -74,12 +77,14 @@ class VolumeCreateOptionsNormalizer implements DenormalizerInterface, Normalizer
             unset($data['Labels']);
         } elseif (\array_key_exists('Labels', $data) && null === $data['Labels']) {
             $object->setLabels(null);
+            unset($data['Labels']);
         }
         if (\array_key_exists('ClusterVolumeSpec', $data) && null !== $data['ClusterVolumeSpec']) {
-            $object->setClusterVolumeSpec($this->denormalizer->denormalize($data['ClusterVolumeSpec'], 'Docker\\API\\Model\\ClusterVolumeSpec', 'json', $context));
+            $object->setClusterVolumeSpec($this->denormalizer->denormalize($data['ClusterVolumeSpec'], \Docker\API\Model\ClusterVolumeSpec::class, 'json', $context));
             unset($data['ClusterVolumeSpec']);
         } elseif (\array_key_exists('ClusterVolumeSpec', $data) && null === $data['ClusterVolumeSpec']) {
             $object->setClusterVolumeSpec(null);
+            unset($data['ClusterVolumeSpec']);
         }
         foreach ($data as $key_2 => $value_2) {
             if (preg_match('/.*/', (string) $key_2)) {
@@ -90,46 +95,43 @@ class VolumeCreateOptionsNormalizer implements DenormalizerInterface, Normalizer
         return $object;
     }
 
-    /**
-     * @return array|string|int|float|bool|\ArrayObject|null
-     */
-    public function normalize($object, $format = null, array $context = [])
+    public function normalize(mixed $data, ?string $format = null, array $context = []): array|string|int|float|bool|\ArrayObject|null
     {
-        $data = [];
-        if ($object->isInitialized('name') && null !== $object->getName()) {
-            $data['Name'] = $object->getName();
+        $dataArray = [];
+        if ($data->isInitialized('name') && null !== $data->getName()) {
+            $dataArray['Name'] = $data->getName();
         }
-        if ($object->isInitialized('driver') && null !== $object->getDriver()) {
-            $data['Driver'] = $object->getDriver();
+        if ($data->isInitialized('driver') && null !== $data->getDriver()) {
+            $dataArray['Driver'] = $data->getDriver();
         }
-        if ($object->isInitialized('driverOpts') && null !== $object->getDriverOpts()) {
-            $values = new \ArrayObject([], \ArrayObject::ARRAY_AS_PROPS);
-            foreach ($object->getDriverOpts() as $key => $value) {
+        if ($data->isInitialized('driverOpts') && null !== $data->getDriverOpts()) {
+            $values = new \Docker\API\Runtime\JsonObject();
+            foreach ($data->getDriverOpts() as $key => $value) {
                 $values[$key] = $value;
             }
-            $data['DriverOpts'] = $values;
+            $dataArray['DriverOpts'] = $values;
         }
-        if ($object->isInitialized('labels') && null !== $object->getLabels()) {
-            $values_1 = new \ArrayObject([], \ArrayObject::ARRAY_AS_PROPS);
-            foreach ($object->getLabels() as $key_1 => $value_1) {
+        if ($data->isInitialized('labels') && null !== $data->getLabels()) {
+            $values_1 = new \Docker\API\Runtime\JsonObject();
+            foreach ($data->getLabels() as $key_1 => $value_1) {
                 $values_1[$key_1] = $value_1;
             }
-            $data['Labels'] = $values_1;
+            $dataArray['Labels'] = $values_1;
         }
-        if ($object->isInitialized('clusterVolumeSpec') && null !== $object->getClusterVolumeSpec()) {
-            $data['ClusterVolumeSpec'] = null === $object->getClusterVolumeSpec() ? null : new \ArrayObject($this->normalizer->normalize($object->getClusterVolumeSpec(), 'json', $context), \ArrayObject::ARRAY_AS_PROPS);
+        if ($data->isInitialized('clusterVolumeSpec') && null !== $data->getClusterVolumeSpec()) {
+            $dataArray['ClusterVolumeSpec'] = null === $data->getClusterVolumeSpec() ? null : new \Docker\API\Runtime\JsonObject($this->normalizer->normalize($data->getClusterVolumeSpec(), 'json', $context));
         }
-        foreach ($object as $key_2 => $value_2) {
+        foreach ($data->additionalPropertyEntries() as $key_2 => $value_2) {
             if (preg_match('/.*/', (string) $key_2)) {
-                $data[$key_2] = $value_2;
+                $dataArray[$key_2] = $value_2;
             }
         }
 
-        return $data;
+        return $dataArray;
     }
 
-    public function getSupportedTypes(string $format = null): array
+    public function getSupportedTypes(?string $format = null): array
     {
-        return ['Docker\\API\\Model\\VolumeCreateOptions' => false];
+        return [\Docker\API\Model\VolumeCreateOptions::class => false];
     }
 }

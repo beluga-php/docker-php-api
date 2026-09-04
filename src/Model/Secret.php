@@ -4,8 +4,12 @@ declare(strict_types=1);
 
 namespace Docker\API\Model;
 
-class Secret extends \ArrayObject
+use Docker\API\Runtime\AdditionalAndPatternProperties;
+use Docker\API\Runtime\AdditionalPropertiesInterface;
+
+class Secret implements AdditionalPropertiesInterface
 {
+    use AdditionalAndPatternProperties;
     /**
      * @var array
      */
@@ -134,5 +138,10 @@ class Secret extends \ArrayObject
         $this->spec = $spec;
 
         return $this;
+    }
+
+    public function definedProperties(): array
+    {
+        return ['iD' => ['ID', 'getID', 'setID'], 'version' => ['Version', 'getVersion', 'setVersion'], 'createdAt' => ['CreatedAt', 'getCreatedAt', 'setCreatedAt'], 'updatedAt' => ['UpdatedAt', 'getUpdatedAt', 'setUpdatedAt'], 'spec' => ['Spec', 'getSpec', 'setSpec']];
     }
 }

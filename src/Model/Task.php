@@ -4,8 +4,12 @@ declare(strict_types=1);
 
 namespace Docker\API\Model;
 
-class Task extends \ArrayObject
+use Docker\API\Runtime\AdditionalAndPatternProperties;
+use Docker\API\Runtime\AdditionalPropertiesInterface;
+
+class Task implements AdditionalPropertiesInterface
 {
+    use AdditionalAndPatternProperties;
     /**
      * @var array
      */
@@ -82,7 +86,7 @@ class Task extends \ArrayObject
      * User-defined resources can be either Integer resources (e.g, `SSD=3`) or
      * String resources (e.g, `GPU=UUID1`).
      *
-     * @var GenericResourcesItem[]|null
+     * @var list<GenericResourcesItem>|null
      */
     protected $assignedGenericResources;
     /**
@@ -307,7 +311,7 @@ class Task extends \ArrayObject
      * User-defined resources can be either Integer resources (e.g, `SSD=3`) or
      * String resources (e.g, `GPU=UUID1`).
      *
-     * @return GenericResourcesItem[]|null
+     * @return list<GenericResourcesItem>|null
      */
     public function getAssignedGenericResources(): ?array
     {
@@ -318,7 +322,7 @@ class Task extends \ArrayObject
      * User-defined resources can be either Integer resources (e.g, `SSD=3`) or
      * String resources (e.g, `GPU=UUID1`).
      *
-     * @param GenericResourcesItem[]|null $assignedGenericResources
+     * @param list<GenericResourcesItem>|null $assignedGenericResources
      */
     public function setAssignedGenericResources(?array $assignedGenericResources): self
     {
@@ -389,5 +393,10 @@ class Task extends \ArrayObject
         $this->jobIteration = $jobIteration;
 
         return $this;
+    }
+
+    public function definedProperties(): array
+    {
+        return ['iD' => ['ID', 'getID', 'setID'], 'version' => ['Version', 'getVersion', 'setVersion'], 'createdAt' => ['CreatedAt', 'getCreatedAt', 'setCreatedAt'], 'updatedAt' => ['UpdatedAt', 'getUpdatedAt', 'setUpdatedAt'], 'name' => ['Name', 'getName', 'setName'], 'labels' => ['Labels', 'getLabels', 'setLabels'], 'spec' => ['Spec', 'getSpec', 'setSpec'], 'serviceID' => ['ServiceID', 'getServiceID', 'setServiceID'], 'slot' => ['Slot', 'getSlot', 'setSlot'], 'nodeID' => ['NodeID', 'getNodeID', 'setNodeID'], 'assignedGenericResources' => ['AssignedGenericResources', 'getAssignedGenericResources', 'setAssignedGenericResources'], 'status' => ['Status', 'getStatus', 'setStatus'], 'desiredState' => ['DesiredState', 'getDesiredState', 'setDesiredState'], 'jobIteration' => ['JobIteration', 'getJobIteration', 'setJobIteration']];
     }
 }

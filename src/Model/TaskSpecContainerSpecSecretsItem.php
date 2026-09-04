@@ -4,8 +4,12 @@ declare(strict_types=1);
 
 namespace Docker\API\Model;
 
-class TaskSpecContainerSpecSecretsItem extends \ArrayObject
+use Docker\API\Runtime\AdditionalAndPatternProperties;
+use Docker\API\Runtime\AdditionalPropertiesInterface;
+
+class TaskSpecContainerSpecSecretsItem implements AdditionalPropertiesInterface
 {
+    use AdditionalAndPatternProperties;
     /**
      * @var array
      */
@@ -98,5 +102,10 @@ class TaskSpecContainerSpecSecretsItem extends \ArrayObject
         $this->secretName = $secretName;
 
         return $this;
+    }
+
+    public function definedProperties(): array
+    {
+        return ['file' => ['File', 'getFile', 'setFile'], 'secretID' => ['SecretID', 'getSecretID', 'setSecretID'], 'secretName' => ['SecretName', 'getSecretName', 'setSecretName']];
     }
 }

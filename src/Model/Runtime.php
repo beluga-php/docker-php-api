@@ -4,8 +4,12 @@ declare(strict_types=1);
 
 namespace Docker\API\Model;
 
-class Runtime extends \ArrayObject
+use Docker\API\Runtime\AdditionalAndPatternProperties;
+use Docker\API\Runtime\AdditionalPropertiesInterface;
+
+class Runtime implements AdditionalPropertiesInterface
 {
+    use AdditionalAndPatternProperties;
     /**
      * @var array
      */
@@ -27,7 +31,7 @@ class Runtime extends \ArrayObject
     /**
      * List of command-line arguments to pass to the runtime when invoked.
      *
-     * @var string[]|null
+     * @var list<string>|null
      */
     protected $runtimeArgs;
 
@@ -59,7 +63,7 @@ class Runtime extends \ArrayObject
     /**
      * List of command-line arguments to pass to the runtime when invoked.
      *
-     * @return string[]|null
+     * @return list<string>|null
      */
     public function getRuntimeArgs(): ?array
     {
@@ -69,7 +73,7 @@ class Runtime extends \ArrayObject
     /**
      * List of command-line arguments to pass to the runtime when invoked.
      *
-     * @param string[]|null $runtimeArgs
+     * @param list<string>|null $runtimeArgs
      */
     public function setRuntimeArgs(?array $runtimeArgs): self
     {
@@ -77,5 +81,10 @@ class Runtime extends \ArrayObject
         $this->runtimeArgs = $runtimeArgs;
 
         return $this;
+    }
+
+    public function definedProperties(): array
+    {
+        return ['path' => ['path', 'getPath', 'setPath'], 'runtimeArgs' => ['runtimeArgs', 'getRuntimeArgs', 'setRuntimeArgs']];
     }
 }
