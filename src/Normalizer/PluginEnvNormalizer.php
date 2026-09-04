@@ -21,39 +21,41 @@ class PluginEnvNormalizer implements DenormalizerInterface, NormalizerInterface,
     use NormalizerAwareTrait;
     use ValidatorTrait;
 
-    public function supportsDenormalization($data, $type, $format = null, array $context = []): bool
+    public function supportsDenormalization(mixed $data, string $type, ?string $format = null, array $context = []): bool
     {
-        return 'Docker\\API\\Model\\PluginEnv' === $type;
+        return \Docker\API\Model\PluginEnv::class === $type;
     }
 
-    public function supportsNormalization($data, $format = null, array $context = []): bool
+    public function supportsNormalization(mixed $data, ?string $format = null, array $context = []): bool
     {
-        return \is_object($data) && 'Docker\\API\\Model\\PluginEnv' === $data::class;
+        return \is_object($data) && \Docker\API\Model\PluginEnv::class === $data::class;
     }
 
-    public function denormalize($data, $class, $format = null, array $context = [])
+    public function denormalize(mixed $data, string $type, ?string $format = null, array $context = []): mixed
     {
-        if (isset($data['$ref'])) {
+        $object = new \Docker\API\Model\PluginEnv();
+        if (null === $data || false === \is_array($data)) {
+            return $object;
+        }
+        if (isset($data['$ref']) && !isset($data['type']) && !isset($data['properties']) && !isset($data['allOf'])) {
             return new Reference($data['$ref'], $context['document-origin']);
         }
         if (isset($data['$recursiveRef'])) {
             return new Reference($data['$recursiveRef'], $context['document-origin']);
-        }
-        $object = new \Docker\API\Model\PluginEnv();
-        if (null === $data || false === \is_array($data)) {
-            return $object;
         }
         if (\array_key_exists('Name', $data) && null !== $data['Name']) {
             $object->setName($data['Name']);
             unset($data['Name']);
         } elseif (\array_key_exists('Name', $data) && null === $data['Name']) {
             $object->setName(null);
+            unset($data['Name']);
         }
         if (\array_key_exists('Description', $data) && null !== $data['Description']) {
             $object->setDescription($data['Description']);
             unset($data['Description']);
         } elseif (\array_key_exists('Description', $data) && null === $data['Description']) {
             $object->setDescription(null);
+            unset($data['Description']);
         }
         if (\array_key_exists('Settable', $data) && null !== $data['Settable']) {
             $values = [];
@@ -64,12 +66,14 @@ class PluginEnvNormalizer implements DenormalizerInterface, NormalizerInterface,
             unset($data['Settable']);
         } elseif (\array_key_exists('Settable', $data) && null === $data['Settable']) {
             $object->setSettable(null);
+            unset($data['Settable']);
         }
         if (\array_key_exists('Value', $data) && null !== $data['Value']) {
             $object->setValue($data['Value']);
             unset($data['Value']);
         } elseif (\array_key_exists('Value', $data) && null === $data['Value']) {
             $object->setValue(null);
+            unset($data['Value']);
         }
         foreach ($data as $key => $value_1) {
             if (preg_match('/.*/', (string) $key)) {
@@ -80,31 +84,28 @@ class PluginEnvNormalizer implements DenormalizerInterface, NormalizerInterface,
         return $object;
     }
 
-    /**
-     * @return array|string|int|float|bool|\ArrayObject|null
-     */
-    public function normalize($object, $format = null, array $context = [])
+    public function normalize(mixed $data, ?string $format = null, array $context = []): array|string|int|float|bool|\ArrayObject|null
     {
-        $data = [];
-        $data['Name'] = $object->getName();
-        $data['Description'] = $object->getDescription();
+        $dataArray = [];
+        $dataArray['Name'] = $data->getName();
+        $dataArray['Description'] = $data->getDescription();
         $values = [];
-        foreach ($object->getSettable() as $value) {
+        foreach ($data->getSettable() as $value) {
             $values[] = $value;
         }
-        $data['Settable'] = $values;
-        $data['Value'] = $object->getValue();
-        foreach ($object as $key => $value_1) {
+        $dataArray['Settable'] = $values;
+        $dataArray['Value'] = $data->getValue();
+        foreach ($data->additionalPropertyEntries() as $key => $value_1) {
             if (preg_match('/.*/', (string) $key)) {
-                $data[$key] = $value_1;
+                $dataArray[$key] = $value_1;
             }
         }
 
-        return $data;
+        return $dataArray;
     }
 
-    public function getSupportedTypes(string $format = null): array
+    public function getSupportedTypes(?string $format = null): array
     {
-        return ['Docker\\API\\Model\\PluginEnv' => false];
+        return [\Docker\API\Model\PluginEnv::class => false];
     }
 }

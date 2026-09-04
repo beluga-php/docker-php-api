@@ -4,8 +4,12 @@ declare(strict_types=1);
 
 namespace Docker\API\Model;
 
-class ResourceObject extends \ArrayObject
+use Docker\API\Runtime\AdditionalAndPatternProperties;
+use Docker\API\Runtime\AdditionalPropertiesInterface;
+
+class ResourceObject implements AdditionalPropertiesInterface
 {
+    use AdditionalAndPatternProperties;
     /**
      * @var array
      */
@@ -27,7 +31,7 @@ class ResourceObject extends \ArrayObject
      * User-defined resources can be either Integer resources (e.g, `SSD=3`) or
      * String resources (e.g, `GPU=UUID1`).
      *
-     * @var GenericResourcesItem[]|null
+     * @var list<GenericResourcesItem>|null
      */
     protected $genericResources;
 
@@ -61,7 +65,7 @@ class ResourceObject extends \ArrayObject
      * User-defined resources can be either Integer resources (e.g, `SSD=3`) or
      * String resources (e.g, `GPU=UUID1`).
      *
-     * @return GenericResourcesItem[]|null
+     * @return list<GenericResourcesItem>|null
      */
     public function getGenericResources(): ?array
     {
@@ -72,7 +76,7 @@ class ResourceObject extends \ArrayObject
      * User-defined resources can be either Integer resources (e.g, `SSD=3`) or
      * String resources (e.g, `GPU=UUID1`).
      *
-     * @param GenericResourcesItem[]|null $genericResources
+     * @param list<GenericResourcesItem>|null $genericResources
      */
     public function setGenericResources(?array $genericResources): self
     {
@@ -80,5 +84,10 @@ class ResourceObject extends \ArrayObject
         $this->genericResources = $genericResources;
 
         return $this;
+    }
+
+    public function definedProperties(): array
+    {
+        return ['nanoCPUs' => ['NanoCPUs', 'getNanoCPUs', 'setNanoCPUs'], 'memoryBytes' => ['MemoryBytes', 'getMemoryBytes', 'setMemoryBytes'], 'genericResources' => ['GenericResources', 'getGenericResources', 'setGenericResources']];
     }
 }

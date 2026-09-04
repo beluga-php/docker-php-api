@@ -21,57 +21,62 @@ class EndpointPortConfigNormalizer implements DenormalizerInterface, NormalizerI
     use NormalizerAwareTrait;
     use ValidatorTrait;
 
-    public function supportsDenormalization($data, $type, $format = null, array $context = []): bool
+    public function supportsDenormalization(mixed $data, string $type, ?string $format = null, array $context = []): bool
     {
-        return 'Docker\\API\\Model\\EndpointPortConfig' === $type;
+        return \Docker\API\Model\EndpointPortConfig::class === $type;
     }
 
-    public function supportsNormalization($data, $format = null, array $context = []): bool
+    public function supportsNormalization(mixed $data, ?string $format = null, array $context = []): bool
     {
-        return \is_object($data) && 'Docker\\API\\Model\\EndpointPortConfig' === $data::class;
+        return \is_object($data) && \Docker\API\Model\EndpointPortConfig::class === $data::class;
     }
 
-    public function denormalize($data, $class, $format = null, array $context = [])
+    public function denormalize(mixed $data, string $type, ?string $format = null, array $context = []): mixed
     {
-        if (isset($data['$ref'])) {
+        $object = new \Docker\API\Model\EndpointPortConfig();
+        if (null === $data || false === \is_array($data)) {
+            return $object;
+        }
+        if (isset($data['$ref']) && !isset($data['type']) && !isset($data['properties']) && !isset($data['allOf'])) {
             return new Reference($data['$ref'], $context['document-origin']);
         }
         if (isset($data['$recursiveRef'])) {
             return new Reference($data['$recursiveRef'], $context['document-origin']);
-        }
-        $object = new \Docker\API\Model\EndpointPortConfig();
-        if (null === $data || false === \is_array($data)) {
-            return $object;
         }
         if (\array_key_exists('Name', $data) && null !== $data['Name']) {
             $object->setName($data['Name']);
             unset($data['Name']);
         } elseif (\array_key_exists('Name', $data) && null === $data['Name']) {
             $object->setName(null);
+            unset($data['Name']);
         }
         if (\array_key_exists('Protocol', $data) && null !== $data['Protocol']) {
             $object->setProtocol($data['Protocol']);
             unset($data['Protocol']);
         } elseif (\array_key_exists('Protocol', $data) && null === $data['Protocol']) {
             $object->setProtocol(null);
+            unset($data['Protocol']);
         }
         if (\array_key_exists('TargetPort', $data) && null !== $data['TargetPort']) {
             $object->setTargetPort($data['TargetPort']);
             unset($data['TargetPort']);
         } elseif (\array_key_exists('TargetPort', $data) && null === $data['TargetPort']) {
             $object->setTargetPort(null);
+            unset($data['TargetPort']);
         }
         if (\array_key_exists('PublishedPort', $data) && null !== $data['PublishedPort']) {
             $object->setPublishedPort($data['PublishedPort']);
             unset($data['PublishedPort']);
         } elseif (\array_key_exists('PublishedPort', $data) && null === $data['PublishedPort']) {
             $object->setPublishedPort(null);
+            unset($data['PublishedPort']);
         }
         if (\array_key_exists('PublishMode', $data) && null !== $data['PublishMode']) {
             $object->setPublishMode($data['PublishMode']);
             unset($data['PublishMode']);
         } elseif (\array_key_exists('PublishMode', $data) && null === $data['PublishMode']) {
             $object->setPublishMode(null);
+            unset($data['PublishMode']);
         }
         foreach ($data as $key => $value) {
             if (preg_match('/.*/', (string) $key)) {
@@ -82,38 +87,35 @@ class EndpointPortConfigNormalizer implements DenormalizerInterface, NormalizerI
         return $object;
     }
 
-    /**
-     * @return array|string|int|float|bool|\ArrayObject|null
-     */
-    public function normalize($object, $format = null, array $context = [])
+    public function normalize(mixed $data, ?string $format = null, array $context = []): array|string|int|float|bool|\ArrayObject|null
     {
-        $data = [];
-        if ($object->isInitialized('name') && null !== $object->getName()) {
-            $data['Name'] = $object->getName();
+        $dataArray = [];
+        if ($data->isInitialized('name') && null !== $data->getName()) {
+            $dataArray['Name'] = $data->getName();
         }
-        if ($object->isInitialized('protocol') && null !== $object->getProtocol()) {
-            $data['Protocol'] = $object->getProtocol();
+        if ($data->isInitialized('protocol') && null !== $data->getProtocol()) {
+            $dataArray['Protocol'] = $data->getProtocol();
         }
-        if ($object->isInitialized('targetPort') && null !== $object->getTargetPort()) {
-            $data['TargetPort'] = $object->getTargetPort();
+        if ($data->isInitialized('targetPort') && null !== $data->getTargetPort()) {
+            $dataArray['TargetPort'] = $data->getTargetPort();
         }
-        if ($object->isInitialized('publishedPort') && null !== $object->getPublishedPort()) {
-            $data['PublishedPort'] = $object->getPublishedPort();
+        if ($data->isInitialized('publishedPort') && null !== $data->getPublishedPort()) {
+            $dataArray['PublishedPort'] = $data->getPublishedPort();
         }
-        if ($object->isInitialized('publishMode') && null !== $object->getPublishMode()) {
-            $data['PublishMode'] = $object->getPublishMode();
+        if ($data->isInitialized('publishMode') && null !== $data->getPublishMode()) {
+            $dataArray['PublishMode'] = $data->getPublishMode();
         }
-        foreach ($object as $key => $value) {
+        foreach ($data->additionalPropertyEntries() as $key => $value) {
             if (preg_match('/.*/', (string) $key)) {
-                $data[$key] = $value;
+                $dataArray[$key] = $value;
             }
         }
 
-        return $data;
+        return $dataArray;
     }
 
-    public function getSupportedTypes(string $format = null): array
+    public function getSupportedTypes(?string $format = null): array
     {
-        return ['Docker\\API\\Model\\EndpointPortConfig' => false];
+        return [\Docker\API\Model\EndpointPortConfig::class => false];
     }
 }

@@ -4,8 +4,12 @@ declare(strict_types=1);
 
 namespace Docker\API\Model;
 
-class EndpointPortConfig extends \ArrayObject
+use Docker\API\Runtime\AdditionalAndPatternProperties;
+use Docker\API\Runtime\AdditionalPropertiesInterface;
+
+class EndpointPortConfig implements AdditionalPropertiesInterface
 {
+    use AdditionalAndPatternProperties;
     /**
      * @var array
      */
@@ -41,10 +45,10 @@ class EndpointPortConfig extends \ArrayObject
      * <p><br /></p>
      *
      * - "ingress" makes the target port accessible on every node,
-     * regardless of whether there is a task for the service running on
-     * that node or not.
+     *   regardless of whether there is a task for the service running on
+     *   that node or not.
      * - "host" bypasses the routing mesh and publish the port directly on
-     * the swarm node where that service is running.
+     *   the swarm node where that service is running.
      *
      * @var string|null
      */
@@ -120,10 +124,10 @@ class EndpointPortConfig extends \ArrayObject
      * <p><br /></p>
      *
      * - "ingress" makes the target port accessible on every node,
-     * regardless of whether there is a task for the service running on
-     * that node or not.
+     *   regardless of whether there is a task for the service running on
+     *   that node or not.
      * - "host" bypasses the routing mesh and publish the port directly on
-     * the swarm node where that service is running.
+     *   the swarm node where that service is running.
      */
     public function getPublishMode(): ?string
     {
@@ -147,5 +151,10 @@ class EndpointPortConfig extends \ArrayObject
         $this->publishMode = $publishMode;
 
         return $this;
+    }
+
+    public function definedProperties(): array
+    {
+        return ['name' => ['Name', 'getName', 'setName'], 'protocol' => ['Protocol', 'getProtocol', 'setProtocol'], 'targetPort' => ['TargetPort', 'getTargetPort', 'setTargetPort'], 'publishedPort' => ['PublishedPort', 'getPublishedPort', 'setPublishedPort'], 'publishMode' => ['PublishMode', 'getPublishMode', 'setPublishMode']];
     }
 }

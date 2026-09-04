@@ -4,8 +4,12 @@ declare(strict_types=1);
 
 namespace Docker\API\Model;
 
-class TaskStatus extends \ArrayObject
+use Docker\API\Runtime\AdditionalAndPatternProperties;
+use Docker\API\Runtime\AdditionalPropertiesInterface;
+
+class TaskStatus implements AdditionalPropertiesInterface
 {
+    use AdditionalAndPatternProperties;
     /**
      * @var array
      */
@@ -99,5 +103,10 @@ class TaskStatus extends \ArrayObject
         $this->containerStatus = $containerStatus;
 
         return $this;
+    }
+
+    public function definedProperties(): array
+    {
+        return ['timestamp' => ['Timestamp', 'getTimestamp', 'setTimestamp'], 'state' => ['State', 'getState', 'setState'], 'message' => ['Message', 'getMessage', 'setMessage'], 'err' => ['Err', 'getErr', 'setErr'], 'containerStatus' => ['ContainerStatus', 'getContainerStatus', 'setContainerStatus']];
     }
 }

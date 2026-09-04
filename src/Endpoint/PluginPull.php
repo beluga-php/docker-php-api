@@ -13,28 +13,23 @@ class PluginPull extends \Docker\API\Runtime\Client\BaseEndpoint implements \Doc
      * enabled using the [`POST /plugins/{name}/enable` endpoint](#operation/PostPluginsEnable).
      *
      * @param \Docker\API\Model\PluginPrivilege[]|null $requestBody
-     * @param array                                    $queryParameters {
-     *
-     * @var string $remote Remote reference for plugin to install.
-     *
-     * The `:latest` tag is optional, and is used as the default if omitted.
-     * @var string $name Local name for the pulled plugin.
+     * @param array{
+     *    "remote": string, //Remote reference for plugin to install.
      *
      * The `:latest` tag is optional, and is used as the default if omitted.
+     *    "name"?: string, //Local name for the pulled plugin.
      *
-     * }
-     *
-     * @param array $headerParameters {
-     *
-     * @var string $X-Registry-Auth A base64url-encoded auth configuration to use when pulling a plugin
-     *             from a registry.
+     * The `:latest` tag is optional, and is used as the default if omitted.
+     * } $queryParameters
+     * @param array{
+     *    "X-Registry-Auth"?: string, //A base64url-encoded auth configuration to use when pulling a plugin
+     * from a registry.
      *
      * Refer to the [authentication section](#section/Authentication) for
      * details.
-     *
-     * }
+     * } $headerParameters
      */
-    public function __construct(array $requestBody = null, array $queryParameters = [], array $headerParameters = [])
+    public function __construct(?array $requestBody = null, array $queryParameters = [], array $headerParameters = [])
     {
         $this->body = $requestBody;
         $this->queryParameters = $queryParameters;
@@ -96,14 +91,14 @@ class PluginPull extends \Docker\API\Runtime\Client\BaseEndpoint implements \Doc
      *
      * @return null
      */
-    protected function transformResponseBody(\Psr\Http\Message\ResponseInterface $response, \Symfony\Component\Serializer\SerializerInterface $serializer, string $contentType = null)
+    protected function transformResponseBody(\Psr\Http\Message\ResponseInterface $response, \Symfony\Component\Serializer\SerializerInterface $serializer, ?string $contentType = null)
     {
         $status = $response->getStatusCode();
         $body = (string) $response->getBody();
         if (204 === $status) {
         }
-        if ((null === $contentType) === false && (500 === $status && false !== mb_strpos($contentType, 'application/json'))) {
-            throw new \Docker\API\Exception\PluginPullInternalServerErrorException($serializer->deserialize($body, 'Docker\\API\\Model\\ErrorResponse', 'json'), $response);
+        if ((null === $contentType) === false && (500 === $status && false !== stripos(strtolower($contentType), 'application/json'))) {
+            throw new \Docker\API\Exception\PluginPullInternalServerErrorException($serializer->deserialize($body, 'Docker\API\Model\ErrorResponse', 'json'), $response);
         }
     }
 

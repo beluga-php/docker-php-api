@@ -21,45 +21,63 @@ class ContainersIdExecPostBodyNormalizer implements DenormalizerInterface, Norma
     use NormalizerAwareTrait;
     use ValidatorTrait;
 
-    public function supportsDenormalization($data, $type, $format = null, array $context = []): bool
+    public function supportsDenormalization(mixed $data, string $type, ?string $format = null, array $context = []): bool
     {
-        return 'Docker\\API\\Model\\ContainersIdExecPostBody' === $type;
+        return \Docker\API\Model\ContainersIdExecPostBody::class === $type;
     }
 
-    public function supportsNormalization($data, $format = null, array $context = []): bool
+    public function supportsNormalization(mixed $data, ?string $format = null, array $context = []): bool
     {
-        return \is_object($data) && 'Docker\\API\\Model\\ContainersIdExecPostBody' === $data::class;
+        return \is_object($data) && \Docker\API\Model\ContainersIdExecPostBody::class === $data::class;
     }
 
-    public function denormalize($data, $class, $format = null, array $context = [])
+    public function denormalize(mixed $data, string $type, ?string $format = null, array $context = []): mixed
     {
-        if (isset($data['$ref'])) {
+        $object = new \Docker\API\Model\ContainersIdExecPostBody();
+        if (null === $data || false === \is_array($data)) {
+            return $object;
+        }
+        if (isset($data['$ref']) && !isset($data['type']) && !isset($data['properties']) && !isset($data['allOf'])) {
             return new Reference($data['$ref'], $context['document-origin']);
         }
         if (isset($data['$recursiveRef'])) {
             return new Reference($data['$recursiveRef'], $context['document-origin']);
         }
-        $object = new \Docker\API\Model\ContainersIdExecPostBody();
-        if (null === $data || false === \is_array($data)) {
-            return $object;
+        if (\array_key_exists('AttachStdin', $data) && \is_int($data['AttachStdin'])) {
+            $data['AttachStdin'] = (bool) $data['AttachStdin'];
+        }
+        if (\array_key_exists('AttachStdout', $data) && \is_int($data['AttachStdout'])) {
+            $data['AttachStdout'] = (bool) $data['AttachStdout'];
+        }
+        if (\array_key_exists('AttachStderr', $data) && \is_int($data['AttachStderr'])) {
+            $data['AttachStderr'] = (bool) $data['AttachStderr'];
+        }
+        if (\array_key_exists('Tty', $data) && \is_int($data['Tty'])) {
+            $data['Tty'] = (bool) $data['Tty'];
+        }
+        if (\array_key_exists('Privileged', $data) && \is_int($data['Privileged'])) {
+            $data['Privileged'] = (bool) $data['Privileged'];
         }
         if (\array_key_exists('AttachStdin', $data) && null !== $data['AttachStdin']) {
             $object->setAttachStdin($data['AttachStdin']);
             unset($data['AttachStdin']);
         } elseif (\array_key_exists('AttachStdin', $data) && null === $data['AttachStdin']) {
             $object->setAttachStdin(null);
+            unset($data['AttachStdin']);
         }
         if (\array_key_exists('AttachStdout', $data) && null !== $data['AttachStdout']) {
             $object->setAttachStdout($data['AttachStdout']);
             unset($data['AttachStdout']);
         } elseif (\array_key_exists('AttachStdout', $data) && null === $data['AttachStdout']) {
             $object->setAttachStdout(null);
+            unset($data['AttachStdout']);
         }
         if (\array_key_exists('AttachStderr', $data) && null !== $data['AttachStderr']) {
             $object->setAttachStderr($data['AttachStderr']);
             unset($data['AttachStderr']);
         } elseif (\array_key_exists('AttachStderr', $data) && null === $data['AttachStderr']) {
             $object->setAttachStderr(null);
+            unset($data['AttachStderr']);
         }
         if (\array_key_exists('ConsoleSize', $data) && null !== $data['ConsoleSize']) {
             $values = [];
@@ -70,18 +88,21 @@ class ContainersIdExecPostBodyNormalizer implements DenormalizerInterface, Norma
             unset($data['ConsoleSize']);
         } elseif (\array_key_exists('ConsoleSize', $data) && null === $data['ConsoleSize']) {
             $object->setConsoleSize(null);
+            unset($data['ConsoleSize']);
         }
         if (\array_key_exists('DetachKeys', $data) && null !== $data['DetachKeys']) {
             $object->setDetachKeys($data['DetachKeys']);
             unset($data['DetachKeys']);
         } elseif (\array_key_exists('DetachKeys', $data) && null === $data['DetachKeys']) {
             $object->setDetachKeys(null);
+            unset($data['DetachKeys']);
         }
         if (\array_key_exists('Tty', $data) && null !== $data['Tty']) {
             $object->setTty($data['Tty']);
             unset($data['Tty']);
         } elseif (\array_key_exists('Tty', $data) && null === $data['Tty']) {
             $object->setTty(null);
+            unset($data['Tty']);
         }
         if (\array_key_exists('Env', $data) && null !== $data['Env']) {
             $values_1 = [];
@@ -92,6 +113,7 @@ class ContainersIdExecPostBodyNormalizer implements DenormalizerInterface, Norma
             unset($data['Env']);
         } elseif (\array_key_exists('Env', $data) && null === $data['Env']) {
             $object->setEnv(null);
+            unset($data['Env']);
         }
         if (\array_key_exists('Cmd', $data) && null !== $data['Cmd']) {
             $values_2 = [];
@@ -102,24 +124,28 @@ class ContainersIdExecPostBodyNormalizer implements DenormalizerInterface, Norma
             unset($data['Cmd']);
         } elseif (\array_key_exists('Cmd', $data) && null === $data['Cmd']) {
             $object->setCmd(null);
+            unset($data['Cmd']);
         }
         if (\array_key_exists('Privileged', $data) && null !== $data['Privileged']) {
             $object->setPrivileged($data['Privileged']);
             unset($data['Privileged']);
         } elseif (\array_key_exists('Privileged', $data) && null === $data['Privileged']) {
             $object->setPrivileged(null);
+            unset($data['Privileged']);
         }
         if (\array_key_exists('User', $data) && null !== $data['User']) {
             $object->setUser($data['User']);
             unset($data['User']);
         } elseif (\array_key_exists('User', $data) && null === $data['User']) {
             $object->setUser(null);
+            unset($data['User']);
         }
         if (\array_key_exists('WorkingDir', $data) && null !== $data['WorkingDir']) {
             $object->setWorkingDir($data['WorkingDir']);
             unset($data['WorkingDir']);
         } elseif (\array_key_exists('WorkingDir', $data) && null === $data['WorkingDir']) {
             $object->setWorkingDir(null);
+            unset($data['WorkingDir']);
         }
         foreach ($data as $key => $value_3) {
             if (preg_match('/.*/', (string) $key)) {
@@ -130,68 +156,65 @@ class ContainersIdExecPostBodyNormalizer implements DenormalizerInterface, Norma
         return $object;
     }
 
-    /**
-     * @return array|string|int|float|bool|\ArrayObject|null
-     */
-    public function normalize($object, $format = null, array $context = [])
+    public function normalize(mixed $data, ?string $format = null, array $context = []): array|string|int|float|bool|\ArrayObject|null
     {
-        $data = [];
-        if ($object->isInitialized('attachStdin') && null !== $object->getAttachStdin()) {
-            $data['AttachStdin'] = $object->getAttachStdin();
+        $dataArray = [];
+        if ($data->isInitialized('attachStdin') && null !== $data->getAttachStdin()) {
+            $dataArray['AttachStdin'] = $data->getAttachStdin();
         }
-        if ($object->isInitialized('attachStdout') && null !== $object->getAttachStdout()) {
-            $data['AttachStdout'] = $object->getAttachStdout();
+        if ($data->isInitialized('attachStdout') && null !== $data->getAttachStdout()) {
+            $dataArray['AttachStdout'] = $data->getAttachStdout();
         }
-        if ($object->isInitialized('attachStderr') && null !== $object->getAttachStderr()) {
-            $data['AttachStderr'] = $object->getAttachStderr();
+        if ($data->isInitialized('attachStderr') && null !== $data->getAttachStderr()) {
+            $dataArray['AttachStderr'] = $data->getAttachStderr();
         }
-        if ($object->isInitialized('consoleSize') && null !== $object->getConsoleSize()) {
+        if ($data->isInitialized('consoleSize') && null !== $data->getConsoleSize()) {
             $values = [];
-            foreach ($object->getConsoleSize() as $value) {
+            foreach ($data->getConsoleSize() as $value) {
                 $values[] = $value;
             }
-            $data['ConsoleSize'] = $values;
+            $dataArray['ConsoleSize'] = $values;
         }
-        if ($object->isInitialized('detachKeys') && null !== $object->getDetachKeys()) {
-            $data['DetachKeys'] = $object->getDetachKeys();
+        if ($data->isInitialized('detachKeys') && null !== $data->getDetachKeys()) {
+            $dataArray['DetachKeys'] = $data->getDetachKeys();
         }
-        if ($object->isInitialized('tty') && null !== $object->getTty()) {
-            $data['Tty'] = $object->getTty();
+        if ($data->isInitialized('tty') && null !== $data->getTty()) {
+            $dataArray['Tty'] = $data->getTty();
         }
-        if ($object->isInitialized('env') && null !== $object->getEnv()) {
+        if ($data->isInitialized('env') && null !== $data->getEnv()) {
             $values_1 = [];
-            foreach ($object->getEnv() as $value_1) {
+            foreach ($data->getEnv() as $value_1) {
                 $values_1[] = $value_1;
             }
-            $data['Env'] = $values_1;
+            $dataArray['Env'] = $values_1;
         }
-        if ($object->isInitialized('cmd') && null !== $object->getCmd()) {
+        if ($data->isInitialized('cmd') && null !== $data->getCmd()) {
             $values_2 = [];
-            foreach ($object->getCmd() as $value_2) {
+            foreach ($data->getCmd() as $value_2) {
                 $values_2[] = $value_2;
             }
-            $data['Cmd'] = $values_2;
+            $dataArray['Cmd'] = $values_2;
         }
-        if ($object->isInitialized('privileged') && null !== $object->getPrivileged()) {
-            $data['Privileged'] = $object->getPrivileged();
+        if ($data->isInitialized('privileged') && null !== $data->getPrivileged()) {
+            $dataArray['Privileged'] = $data->getPrivileged();
         }
-        if ($object->isInitialized('user') && null !== $object->getUser()) {
-            $data['User'] = $object->getUser();
+        if ($data->isInitialized('user') && null !== $data->getUser()) {
+            $dataArray['User'] = $data->getUser();
         }
-        if ($object->isInitialized('workingDir') && null !== $object->getWorkingDir()) {
-            $data['WorkingDir'] = $object->getWorkingDir();
+        if ($data->isInitialized('workingDir') && null !== $data->getWorkingDir()) {
+            $dataArray['WorkingDir'] = $data->getWorkingDir();
         }
-        foreach ($object as $key => $value_3) {
+        foreach ($data->additionalPropertyEntries() as $key => $value_3) {
             if (preg_match('/.*/', (string) $key)) {
-                $data[$key] = $value_3;
+                $dataArray[$key] = $value_3;
             }
         }
 
-        return $data;
+        return $dataArray;
     }
 
-    public function getSupportedTypes(string $format = null): array
+    public function getSupportedTypes(?string $format = null): array
     {
-        return ['Docker\\API\\Model\\ContainersIdExecPostBody' => false];
+        return [\Docker\API\Model\ContainersIdExecPostBody::class => false];
     }
 }

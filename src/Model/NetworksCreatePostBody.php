@@ -4,8 +4,12 @@ declare(strict_types=1);
 
 namespace Docker\API\Model;
 
-class NetworksCreatePostBody extends \ArrayObject
+use Docker\API\Runtime\AdditionalAndPatternProperties;
+use Docker\API\Runtime\AdditionalPropertiesInterface;
+
+class NetworksCreatePostBody implements AdditionalPropertiesInterface
 {
+    use AdditionalAndPatternProperties;
     /**
      * @var array
      */
@@ -288,5 +292,10 @@ class NetworksCreatePostBody extends \ArrayObject
         $this->labels = $labels;
 
         return $this;
+    }
+
+    public function definedProperties(): array
+    {
+        return ['name' => ['Name', 'getName', 'setName'], 'checkDuplicate' => ['CheckDuplicate', 'getCheckDuplicate', 'setCheckDuplicate'], 'driver' => ['Driver', 'getDriver', 'setDriver'], 'internal' => ['Internal', 'getInternal', 'setInternal'], 'attachable' => ['Attachable', 'getAttachable', 'setAttachable'], 'ingress' => ['Ingress', 'getIngress', 'setIngress'], 'iPAM' => ['IPAM', 'getIPAM', 'setIPAM'], 'enableIPv6' => ['EnableIPv6', 'getEnableIPv6', 'setEnableIPv6'], 'options' => ['Options', 'getOptions', 'setOptions'], 'labels' => ['Labels', 'getLabels', 'setLabels']];
     }
 }

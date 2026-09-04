@@ -4,8 +4,12 @@ declare(strict_types=1);
 
 namespace Docker\API\Model;
 
-class ResourcesBlkioWeightDeviceItem extends \ArrayObject
+use Docker\API\Runtime\AdditionalAndPatternProperties;
+use Docker\API\Runtime\AdditionalPropertiesInterface;
+
+class ResourcesBlkioWeightDeviceItem implements AdditionalPropertiesInterface
 {
+    use AdditionalAndPatternProperties;
     /**
      * @var array
      */
@@ -48,5 +52,10 @@ class ResourcesBlkioWeightDeviceItem extends \ArrayObject
         $this->weight = $weight;
 
         return $this;
+    }
+
+    public function definedProperties(): array
+    {
+        return ['path' => ['Path', 'getPath', 'setPath'], 'weight' => ['Weight', 'getWeight', 'setWeight']];
     }
 }

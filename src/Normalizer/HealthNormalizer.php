@@ -21,49 +21,52 @@ class HealthNormalizer implements DenormalizerInterface, NormalizerInterface, De
     use NormalizerAwareTrait;
     use ValidatorTrait;
 
-    public function supportsDenormalization($data, $type, $format = null, array $context = []): bool
+    public function supportsDenormalization(mixed $data, string $type, ?string $format = null, array $context = []): bool
     {
-        return 'Docker\\API\\Model\\Health' === $type;
+        return \Docker\API\Model\Health::class === $type;
     }
 
-    public function supportsNormalization($data, $format = null, array $context = []): bool
+    public function supportsNormalization(mixed $data, ?string $format = null, array $context = []): bool
     {
-        return \is_object($data) && 'Docker\\API\\Model\\Health' === $data::class;
+        return \is_object($data) && \Docker\API\Model\Health::class === $data::class;
     }
 
-    public function denormalize($data, $class, $format = null, array $context = [])
+    public function denormalize(mixed $data, string $type, ?string $format = null, array $context = []): mixed
     {
-        if (isset($data['$ref'])) {
+        $object = new \Docker\API\Model\Health();
+        if (null === $data || false === \is_array($data)) {
+            return $object;
+        }
+        if (isset($data['$ref']) && !isset($data['type']) && !isset($data['properties']) && !isset($data['allOf'])) {
             return new Reference($data['$ref'], $context['document-origin']);
         }
         if (isset($data['$recursiveRef'])) {
             return new Reference($data['$recursiveRef'], $context['document-origin']);
-        }
-        $object = new \Docker\API\Model\Health();
-        if (null === $data || false === \is_array($data)) {
-            return $object;
         }
         if (\array_key_exists('Status', $data) && null !== $data['Status']) {
             $object->setStatus($data['Status']);
             unset($data['Status']);
         } elseif (\array_key_exists('Status', $data) && null === $data['Status']) {
             $object->setStatus(null);
+            unset($data['Status']);
         }
         if (\array_key_exists('FailingStreak', $data) && null !== $data['FailingStreak']) {
             $object->setFailingStreak($data['FailingStreak']);
             unset($data['FailingStreak']);
         } elseif (\array_key_exists('FailingStreak', $data) && null === $data['FailingStreak']) {
             $object->setFailingStreak(null);
+            unset($data['FailingStreak']);
         }
         if (\array_key_exists('Log', $data) && null !== $data['Log']) {
             $values = [];
             foreach ($data['Log'] as $value) {
-                $values[] = $this->denormalizer->denormalize($value, 'Docker\\API\\Model\\HealthcheckResult', 'json', $context);
+                $values[] = $this->denormalizer->denormalize($value, \Docker\API\Model\HealthcheckResult::class, 'json', $context);
             }
             $object->setLog($values);
             unset($data['Log']);
         } elseif (\array_key_exists('Log', $data) && null === $data['Log']) {
             $object->setLog(null);
+            unset($data['Log']);
         }
         foreach ($data as $key => $value_1) {
             if (preg_match('/.*/', (string) $key)) {
@@ -74,36 +77,33 @@ class HealthNormalizer implements DenormalizerInterface, NormalizerInterface, De
         return $object;
     }
 
-    /**
-     * @return array|string|int|float|bool|\ArrayObject|null
-     */
-    public function normalize($object, $format = null, array $context = [])
+    public function normalize(mixed $data, ?string $format = null, array $context = []): array|string|int|float|bool|\ArrayObject|null
     {
-        $data = [];
-        if ($object->isInitialized('status') && null !== $object->getStatus()) {
-            $data['Status'] = $object->getStatus();
+        $dataArray = [];
+        if ($data->isInitialized('status') && null !== $data->getStatus()) {
+            $dataArray['Status'] = $data->getStatus();
         }
-        if ($object->isInitialized('failingStreak') && null !== $object->getFailingStreak()) {
-            $data['FailingStreak'] = $object->getFailingStreak();
+        if ($data->isInitialized('failingStreak') && null !== $data->getFailingStreak()) {
+            $dataArray['FailingStreak'] = $data->getFailingStreak();
         }
-        if ($object->isInitialized('log') && null !== $object->getLog()) {
+        if ($data->isInitialized('log') && null !== $data->getLog()) {
             $values = [];
-            foreach ($object->getLog() as $value) {
-                $values[] = null === $value ? null : new \ArrayObject($this->normalizer->normalize($value, 'json', $context), \ArrayObject::ARRAY_AS_PROPS);
+            foreach ($data->getLog() as $value) {
+                $values[] = null === $value ? null : new \Docker\API\Runtime\JsonObject($this->normalizer->normalize($value, 'json', $context));
             }
-            $data['Log'] = $values;
+            $dataArray['Log'] = $values;
         }
-        foreach ($object as $key => $value_1) {
+        foreach ($data->additionalPropertyEntries() as $key => $value_1) {
             if (preg_match('/.*/', (string) $key)) {
-                $data[$key] = $value_1;
+                $dataArray[$key] = $value_1;
             }
         }
 
-        return $data;
+        return $dataArray;
     }
 
-    public function getSupportedTypes(string $format = null): array
+    public function getSupportedTypes(?string $format = null): array
     {
-        return ['Docker\\API\\Model\\Health' => false];
+        return [\Docker\API\Model\Health::class => false];
     }
 }

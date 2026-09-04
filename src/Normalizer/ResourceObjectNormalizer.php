@@ -21,49 +21,52 @@ class ResourceObjectNormalizer implements DenormalizerInterface, NormalizerInter
     use NormalizerAwareTrait;
     use ValidatorTrait;
 
-    public function supportsDenormalization($data, $type, $format = null, array $context = []): bool
+    public function supportsDenormalization(mixed $data, string $type, ?string $format = null, array $context = []): bool
     {
-        return 'Docker\\API\\Model\\ResourceObject' === $type;
+        return \Docker\API\Model\ResourceObject::class === $type;
     }
 
-    public function supportsNormalization($data, $format = null, array $context = []): bool
+    public function supportsNormalization(mixed $data, ?string $format = null, array $context = []): bool
     {
-        return \is_object($data) && 'Docker\\API\\Model\\ResourceObject' === $data::class;
+        return \is_object($data) && \Docker\API\Model\ResourceObject::class === $data::class;
     }
 
-    public function denormalize($data, $class, $format = null, array $context = [])
+    public function denormalize(mixed $data, string $type, ?string $format = null, array $context = []): mixed
     {
-        if (isset($data['$ref'])) {
+        $object = new \Docker\API\Model\ResourceObject();
+        if (null === $data || false === \is_array($data)) {
+            return $object;
+        }
+        if (isset($data['$ref']) && !isset($data['type']) && !isset($data['properties']) && !isset($data['allOf'])) {
             return new Reference($data['$ref'], $context['document-origin']);
         }
         if (isset($data['$recursiveRef'])) {
             return new Reference($data['$recursiveRef'], $context['document-origin']);
-        }
-        $object = new \Docker\API\Model\ResourceObject();
-        if (null === $data || false === \is_array($data)) {
-            return $object;
         }
         if (\array_key_exists('NanoCPUs', $data) && null !== $data['NanoCPUs']) {
             $object->setNanoCPUs($data['NanoCPUs']);
             unset($data['NanoCPUs']);
         } elseif (\array_key_exists('NanoCPUs', $data) && null === $data['NanoCPUs']) {
             $object->setNanoCPUs(null);
+            unset($data['NanoCPUs']);
         }
         if (\array_key_exists('MemoryBytes', $data) && null !== $data['MemoryBytes']) {
             $object->setMemoryBytes($data['MemoryBytes']);
             unset($data['MemoryBytes']);
         } elseif (\array_key_exists('MemoryBytes', $data) && null === $data['MemoryBytes']) {
             $object->setMemoryBytes(null);
+            unset($data['MemoryBytes']);
         }
         if (\array_key_exists('GenericResources', $data) && null !== $data['GenericResources']) {
             $values = [];
             foreach ($data['GenericResources'] as $value) {
-                $values[] = $this->denormalizer->denormalize($value, 'Docker\\API\\Model\\GenericResourcesItem', 'json', $context);
+                $values[] = $this->denormalizer->denormalize($value, \Docker\API\Model\GenericResourcesItem::class, 'json', $context);
             }
             $object->setGenericResources($values);
             unset($data['GenericResources']);
         } elseif (\array_key_exists('GenericResources', $data) && null === $data['GenericResources']) {
             $object->setGenericResources(null);
+            unset($data['GenericResources']);
         }
         foreach ($data as $key => $value_1) {
             if (preg_match('/.*/', (string) $key)) {
@@ -74,36 +77,33 @@ class ResourceObjectNormalizer implements DenormalizerInterface, NormalizerInter
         return $object;
     }
 
-    /**
-     * @return array|string|int|float|bool|\ArrayObject|null
-     */
-    public function normalize($object, $format = null, array $context = [])
+    public function normalize(mixed $data, ?string $format = null, array $context = []): array|string|int|float|bool|\ArrayObject|null
     {
-        $data = [];
-        if ($object->isInitialized('nanoCPUs') && null !== $object->getNanoCPUs()) {
-            $data['NanoCPUs'] = $object->getNanoCPUs();
+        $dataArray = [];
+        if ($data->isInitialized('nanoCPUs') && null !== $data->getNanoCPUs()) {
+            $dataArray['NanoCPUs'] = $data->getNanoCPUs();
         }
-        if ($object->isInitialized('memoryBytes') && null !== $object->getMemoryBytes()) {
-            $data['MemoryBytes'] = $object->getMemoryBytes();
+        if ($data->isInitialized('memoryBytes') && null !== $data->getMemoryBytes()) {
+            $dataArray['MemoryBytes'] = $data->getMemoryBytes();
         }
-        if ($object->isInitialized('genericResources') && null !== $object->getGenericResources()) {
+        if ($data->isInitialized('genericResources') && null !== $data->getGenericResources()) {
             $values = [];
-            foreach ($object->getGenericResources() as $value) {
-                $values[] = null === $value ? null : new \ArrayObject($this->normalizer->normalize($value, 'json', $context), \ArrayObject::ARRAY_AS_PROPS);
+            foreach ($data->getGenericResources() as $value) {
+                $values[] = null === $value ? null : new \Docker\API\Runtime\JsonObject($this->normalizer->normalize($value, 'json', $context));
             }
-            $data['GenericResources'] = $values;
+            $dataArray['GenericResources'] = $values;
         }
-        foreach ($object as $key => $value_1) {
+        foreach ($data->additionalPropertyEntries() as $key => $value_1) {
             if (preg_match('/.*/', (string) $key)) {
-                $data[$key] = $value_1;
+                $dataArray[$key] = $value_1;
             }
         }
 
-        return $data;
+        return $dataArray;
     }
 
-    public function getSupportedTypes(string $format = null): array
+    public function getSupportedTypes(?string $format = null): array
     {
-        return ['Docker\\API\\Model\\ResourceObject' => false];
+        return [\Docker\API\Model\ResourceObject::class => false];
     }
 }

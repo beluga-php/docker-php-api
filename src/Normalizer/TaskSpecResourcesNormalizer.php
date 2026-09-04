@@ -21,39 +21,41 @@ class TaskSpecResourcesNormalizer implements DenormalizerInterface, NormalizerIn
     use NormalizerAwareTrait;
     use ValidatorTrait;
 
-    public function supportsDenormalization($data, $type, $format = null, array $context = []): bool
+    public function supportsDenormalization(mixed $data, string $type, ?string $format = null, array $context = []): bool
     {
-        return 'Docker\\API\\Model\\TaskSpecResources' === $type;
+        return \Docker\API\Model\TaskSpecResources::class === $type;
     }
 
-    public function supportsNormalization($data, $format = null, array $context = []): bool
+    public function supportsNormalization(mixed $data, ?string $format = null, array $context = []): bool
     {
-        return \is_object($data) && 'Docker\\API\\Model\\TaskSpecResources' === $data::class;
+        return \is_object($data) && \Docker\API\Model\TaskSpecResources::class === $data::class;
     }
 
-    public function denormalize($data, $class, $format = null, array $context = [])
+    public function denormalize(mixed $data, string $type, ?string $format = null, array $context = []): mixed
     {
-        if (isset($data['$ref'])) {
+        $object = new \Docker\API\Model\TaskSpecResources();
+        if (null === $data || false === \is_array($data)) {
+            return $object;
+        }
+        if (isset($data['$ref']) && !isset($data['type']) && !isset($data['properties']) && !isset($data['allOf'])) {
             return new Reference($data['$ref'], $context['document-origin']);
         }
         if (isset($data['$recursiveRef'])) {
             return new Reference($data['$recursiveRef'], $context['document-origin']);
         }
-        $object = new \Docker\API\Model\TaskSpecResources();
-        if (null === $data || false === \is_array($data)) {
-            return $object;
-        }
         if (\array_key_exists('Limits', $data) && null !== $data['Limits']) {
-            $object->setLimits($this->denormalizer->denormalize($data['Limits'], 'Docker\\API\\Model\\Limit', 'json', $context));
+            $object->setLimits($this->denormalizer->denormalize($data['Limits'], \Docker\API\Model\Limit::class, 'json', $context));
             unset($data['Limits']);
         } elseif (\array_key_exists('Limits', $data) && null === $data['Limits']) {
             $object->setLimits(null);
+            unset($data['Limits']);
         }
         if (\array_key_exists('Reservations', $data) && null !== $data['Reservations']) {
-            $object->setReservations($this->denormalizer->denormalize($data['Reservations'], 'Docker\\API\\Model\\ResourceObject', 'json', $context));
+            $object->setReservations($this->denormalizer->denormalize($data['Reservations'], \Docker\API\Model\ResourceObject::class, 'json', $context));
             unset($data['Reservations']);
         } elseif (\array_key_exists('Reservations', $data) && null === $data['Reservations']) {
             $object->setReservations(null);
+            unset($data['Reservations']);
         }
         foreach ($data as $key => $value) {
             if (preg_match('/.*/', (string) $key)) {
@@ -64,29 +66,26 @@ class TaskSpecResourcesNormalizer implements DenormalizerInterface, NormalizerIn
         return $object;
     }
 
-    /**
-     * @return array|string|int|float|bool|\ArrayObject|null
-     */
-    public function normalize($object, $format = null, array $context = [])
+    public function normalize(mixed $data, ?string $format = null, array $context = []): array|string|int|float|bool|\ArrayObject|null
     {
-        $data = [];
-        if ($object->isInitialized('limits') && null !== $object->getLimits()) {
-            $data['Limits'] = null === $object->getLimits() ? null : new \ArrayObject($this->normalizer->normalize($object->getLimits(), 'json', $context), \ArrayObject::ARRAY_AS_PROPS);
+        $dataArray = [];
+        if ($data->isInitialized('limits') && null !== $data->getLimits()) {
+            $dataArray['Limits'] = null === $data->getLimits() ? null : new \Docker\API\Runtime\JsonObject($this->normalizer->normalize($data->getLimits(), 'json', $context));
         }
-        if ($object->isInitialized('reservations') && null !== $object->getReservations()) {
-            $data['Reservations'] = null === $object->getReservations() ? null : new \ArrayObject($this->normalizer->normalize($object->getReservations(), 'json', $context), \ArrayObject::ARRAY_AS_PROPS);
+        if ($data->isInitialized('reservations') && null !== $data->getReservations()) {
+            $dataArray['Reservations'] = null === $data->getReservations() ? null : new \Docker\API\Runtime\JsonObject($this->normalizer->normalize($data->getReservations(), 'json', $context));
         }
-        foreach ($object as $key => $value) {
+        foreach ($data->additionalPropertyEntries() as $key => $value) {
             if (preg_match('/.*/', (string) $key)) {
-                $data[$key] = $value;
+                $dataArray[$key] = $value;
             }
         }
 
-        return $data;
+        return $dataArray;
     }
 
-    public function getSupportedTypes(string $format = null): array
+    public function getSupportedTypes(?string $format = null): array
     {
-        return ['Docker\\API\\Model\\TaskSpecResources' => false];
+        return [\Docker\API\Model\TaskSpecResources::class => false];
     }
 }

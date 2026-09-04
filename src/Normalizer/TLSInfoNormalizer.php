@@ -21,45 +21,48 @@ class TLSInfoNormalizer implements DenormalizerInterface, NormalizerInterface, D
     use NormalizerAwareTrait;
     use ValidatorTrait;
 
-    public function supportsDenormalization($data, $type, $format = null, array $context = []): bool
+    public function supportsDenormalization(mixed $data, string $type, ?string $format = null, array $context = []): bool
     {
-        return 'Docker\\API\\Model\\TLSInfo' === $type;
+        return \Docker\API\Model\TLSInfo::class === $type;
     }
 
-    public function supportsNormalization($data, $format = null, array $context = []): bool
+    public function supportsNormalization(mixed $data, ?string $format = null, array $context = []): bool
     {
-        return \is_object($data) && 'Docker\\API\\Model\\TLSInfo' === $data::class;
+        return \is_object($data) && \Docker\API\Model\TLSInfo::class === $data::class;
     }
 
-    public function denormalize($data, $class, $format = null, array $context = [])
+    public function denormalize(mixed $data, string $type, ?string $format = null, array $context = []): mixed
     {
-        if (isset($data['$ref'])) {
+        $object = new \Docker\API\Model\TLSInfo();
+        if (null === $data || false === \is_array($data)) {
+            return $object;
+        }
+        if (isset($data['$ref']) && !isset($data['type']) && !isset($data['properties']) && !isset($data['allOf'])) {
             return new Reference($data['$ref'], $context['document-origin']);
         }
         if (isset($data['$recursiveRef'])) {
             return new Reference($data['$recursiveRef'], $context['document-origin']);
-        }
-        $object = new \Docker\API\Model\TLSInfo();
-        if (null === $data || false === \is_array($data)) {
-            return $object;
         }
         if (\array_key_exists('TrustRoot', $data) && null !== $data['TrustRoot']) {
             $object->setTrustRoot($data['TrustRoot']);
             unset($data['TrustRoot']);
         } elseif (\array_key_exists('TrustRoot', $data) && null === $data['TrustRoot']) {
             $object->setTrustRoot(null);
+            unset($data['TrustRoot']);
         }
         if (\array_key_exists('CertIssuerSubject', $data) && null !== $data['CertIssuerSubject']) {
             $object->setCertIssuerSubject($data['CertIssuerSubject']);
             unset($data['CertIssuerSubject']);
         } elseif (\array_key_exists('CertIssuerSubject', $data) && null === $data['CertIssuerSubject']) {
             $object->setCertIssuerSubject(null);
+            unset($data['CertIssuerSubject']);
         }
         if (\array_key_exists('CertIssuerPublicKey', $data) && null !== $data['CertIssuerPublicKey']) {
             $object->setCertIssuerPublicKey($data['CertIssuerPublicKey']);
             unset($data['CertIssuerPublicKey']);
         } elseif (\array_key_exists('CertIssuerPublicKey', $data) && null === $data['CertIssuerPublicKey']) {
             $object->setCertIssuerPublicKey(null);
+            unset($data['CertIssuerPublicKey']);
         }
         foreach ($data as $key => $value) {
             if (preg_match('/.*/', (string) $key)) {
@@ -70,32 +73,29 @@ class TLSInfoNormalizer implements DenormalizerInterface, NormalizerInterface, D
         return $object;
     }
 
-    /**
-     * @return array|string|int|float|bool|\ArrayObject|null
-     */
-    public function normalize($object, $format = null, array $context = [])
+    public function normalize(mixed $data, ?string $format = null, array $context = []): array|string|int|float|bool|\ArrayObject|null
     {
-        $data = [];
-        if ($object->isInitialized('trustRoot') && null !== $object->getTrustRoot()) {
-            $data['TrustRoot'] = $object->getTrustRoot();
+        $dataArray = [];
+        if ($data->isInitialized('trustRoot') && null !== $data->getTrustRoot()) {
+            $dataArray['TrustRoot'] = $data->getTrustRoot();
         }
-        if ($object->isInitialized('certIssuerSubject') && null !== $object->getCertIssuerSubject()) {
-            $data['CertIssuerSubject'] = $object->getCertIssuerSubject();
+        if ($data->isInitialized('certIssuerSubject') && null !== $data->getCertIssuerSubject()) {
+            $dataArray['CertIssuerSubject'] = $data->getCertIssuerSubject();
         }
-        if ($object->isInitialized('certIssuerPublicKey') && null !== $object->getCertIssuerPublicKey()) {
-            $data['CertIssuerPublicKey'] = $object->getCertIssuerPublicKey();
+        if ($data->isInitialized('certIssuerPublicKey') && null !== $data->getCertIssuerPublicKey()) {
+            $dataArray['CertIssuerPublicKey'] = $data->getCertIssuerPublicKey();
         }
-        foreach ($object as $key => $value) {
+        foreach ($data->additionalPropertyEntries() as $key => $value) {
             if (preg_match('/.*/', (string) $key)) {
-                $data[$key] = $value;
+                $dataArray[$key] = $value;
             }
         }
 
-        return $data;
+        return $dataArray;
     }
 
-    public function getSupportedTypes(string $format = null): array
+    public function getSupportedTypes(?string $format = null): array
     {
-        return ['Docker\\API\\Model\\TLSInfo' => false];
+        return [\Docker\API\Model\TLSInfo::class => false];
     }
 }

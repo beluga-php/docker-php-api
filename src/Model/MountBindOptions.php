@@ -4,8 +4,12 @@ declare(strict_types=1);
 
 namespace Docker\API\Model;
 
-class MountBindOptions extends \ArrayObject
+use Docker\API\Runtime\AdditionalAndPatternProperties;
+use Docker\API\Runtime\AdditionalPropertiesInterface;
+
+class MountBindOptions implements AdditionalPropertiesInterface
 {
+    use AdditionalAndPatternProperties;
     /**
      * @var array
      */
@@ -89,5 +93,10 @@ class MountBindOptions extends \ArrayObject
         $this->createMountpoint = $createMountpoint;
 
         return $this;
+    }
+
+    public function definedProperties(): array
+    {
+        return ['propagation' => ['Propagation', 'getPropagation', 'setPropagation'], 'nonRecursive' => ['NonRecursive', 'getNonRecursive', 'setNonRecursive'], 'createMountpoint' => ['CreateMountpoint', 'getCreateMountpoint', 'setCreateMountpoint']];
     }
 }

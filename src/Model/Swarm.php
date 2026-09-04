@@ -4,8 +4,12 @@ declare(strict_types=1);
 
 namespace Docker\API\Model;
 
-class Swarm extends \ArrayObject
+use Docker\API\Runtime\AdditionalAndPatternProperties;
+use Docker\API\Runtime\AdditionalPropertiesInterface;
+
+class Swarm implements AdditionalPropertiesInterface
 {
+    use AdditionalAndPatternProperties;
     /**
      * @var array
      */
@@ -81,7 +85,7 @@ class Swarm extends \ArrayObject
      * Default Address Pool specifies default subnet pools for global scope
      * networks.
      *
-     * @var string[]|null
+     * @var list<string>|null
      */
     protected $defaultAddrPool;
     /**
@@ -282,7 +286,7 @@ class Swarm extends \ArrayObject
      * Default Address Pool specifies default subnet pools for global scope
      * networks.
      *
-     * @return string[]|null
+     * @return list<string>|null
      */
     public function getDefaultAddrPool(): ?array
     {
@@ -293,7 +297,7 @@ class Swarm extends \ArrayObject
      * Default Address Pool specifies default subnet pools for global scope
      * networks.
      *
-     * @param string[]|null $defaultAddrPool
+     * @param list<string>|null $defaultAddrPool
      */
     public function setDefaultAddrPool(?array $defaultAddrPool): self
     {
@@ -341,5 +345,10 @@ class Swarm extends \ArrayObject
         $this->joinTokens = $joinTokens;
 
         return $this;
+    }
+
+    public function definedProperties(): array
+    {
+        return ['iD' => ['ID', 'getID', 'setID'], 'version' => ['Version', 'getVersion', 'setVersion'], 'createdAt' => ['CreatedAt', 'getCreatedAt', 'setCreatedAt'], 'updatedAt' => ['UpdatedAt', 'getUpdatedAt', 'setUpdatedAt'], 'spec' => ['Spec', 'getSpec', 'setSpec'], 'tLSInfo' => ['TLSInfo', 'getTLSInfo', 'setTLSInfo'], 'rootRotationInProgress' => ['RootRotationInProgress', 'getRootRotationInProgress', 'setRootRotationInProgress'], 'dataPathPort' => ['DataPathPort', 'getDataPathPort', 'setDataPathPort'], 'defaultAddrPool' => ['DefaultAddrPool', 'getDefaultAddrPool', 'setDefaultAddrPool'], 'subnetSize' => ['SubnetSize', 'getSubnetSize', 'setSubnetSize'], 'joinTokens' => ['JoinTokens', 'getJoinTokens', 'setJoinTokens']];
     }
 }

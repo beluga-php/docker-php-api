@@ -21,27 +21,27 @@ class HealthConfigNormalizer implements DenormalizerInterface, NormalizerInterfa
     use NormalizerAwareTrait;
     use ValidatorTrait;
 
-    public function supportsDenormalization($data, $type, $format = null, array $context = []): bool
+    public function supportsDenormalization(mixed $data, string $type, ?string $format = null, array $context = []): bool
     {
-        return 'Docker\\API\\Model\\HealthConfig' === $type;
+        return \Docker\API\Model\HealthConfig::class === $type;
     }
 
-    public function supportsNormalization($data, $format = null, array $context = []): bool
+    public function supportsNormalization(mixed $data, ?string $format = null, array $context = []): bool
     {
-        return \is_object($data) && 'Docker\\API\\Model\\HealthConfig' === $data::class;
+        return \is_object($data) && \Docker\API\Model\HealthConfig::class === $data::class;
     }
 
-    public function denormalize($data, $class, $format = null, array $context = [])
+    public function denormalize(mixed $data, string $type, ?string $format = null, array $context = []): mixed
     {
-        if (isset($data['$ref'])) {
+        $object = new \Docker\API\Model\HealthConfig();
+        if (null === $data || false === \is_array($data)) {
+            return $object;
+        }
+        if (isset($data['$ref']) && !isset($data['type']) && !isset($data['properties']) && !isset($data['allOf'])) {
             return new Reference($data['$ref'], $context['document-origin']);
         }
         if (isset($data['$recursiveRef'])) {
             return new Reference($data['$recursiveRef'], $context['document-origin']);
-        }
-        $object = new \Docker\API\Model\HealthConfig();
-        if (null === $data || false === \is_array($data)) {
-            return $object;
         }
         if (\array_key_exists('Test', $data) && null !== $data['Test']) {
             $values = [];
@@ -52,30 +52,35 @@ class HealthConfigNormalizer implements DenormalizerInterface, NormalizerInterfa
             unset($data['Test']);
         } elseif (\array_key_exists('Test', $data) && null === $data['Test']) {
             $object->setTest(null);
+            unset($data['Test']);
         }
         if (\array_key_exists('Interval', $data) && null !== $data['Interval']) {
             $object->setInterval($data['Interval']);
             unset($data['Interval']);
         } elseif (\array_key_exists('Interval', $data) && null === $data['Interval']) {
             $object->setInterval(null);
+            unset($data['Interval']);
         }
         if (\array_key_exists('Timeout', $data) && null !== $data['Timeout']) {
             $object->setTimeout($data['Timeout']);
             unset($data['Timeout']);
         } elseif (\array_key_exists('Timeout', $data) && null === $data['Timeout']) {
             $object->setTimeout(null);
+            unset($data['Timeout']);
         }
         if (\array_key_exists('Retries', $data) && null !== $data['Retries']) {
             $object->setRetries($data['Retries']);
             unset($data['Retries']);
         } elseif (\array_key_exists('Retries', $data) && null === $data['Retries']) {
             $object->setRetries(null);
+            unset($data['Retries']);
         }
         if (\array_key_exists('StartPeriod', $data) && null !== $data['StartPeriod']) {
             $object->setStartPeriod($data['StartPeriod']);
             unset($data['StartPeriod']);
         } elseif (\array_key_exists('StartPeriod', $data) && null === $data['StartPeriod']) {
             $object->setStartPeriod(null);
+            unset($data['StartPeriod']);
         }
         foreach ($data as $key => $value_1) {
             if (preg_match('/.*/', (string) $key)) {
@@ -86,42 +91,39 @@ class HealthConfigNormalizer implements DenormalizerInterface, NormalizerInterfa
         return $object;
     }
 
-    /**
-     * @return array|string|int|float|bool|\ArrayObject|null
-     */
-    public function normalize($object, $format = null, array $context = [])
+    public function normalize(mixed $data, ?string $format = null, array $context = []): array|string|int|float|bool|\ArrayObject|null
     {
-        $data = [];
-        if ($object->isInitialized('test') && null !== $object->getTest()) {
+        $dataArray = [];
+        if ($data->isInitialized('test') && null !== $data->getTest()) {
             $values = [];
-            foreach ($object->getTest() as $value) {
+            foreach ($data->getTest() as $value) {
                 $values[] = $value;
             }
-            $data['Test'] = $values;
+            $dataArray['Test'] = $values;
         }
-        if ($object->isInitialized('interval') && null !== $object->getInterval()) {
-            $data['Interval'] = $object->getInterval();
+        if ($data->isInitialized('interval') && null !== $data->getInterval()) {
+            $dataArray['Interval'] = $data->getInterval();
         }
-        if ($object->isInitialized('timeout') && null !== $object->getTimeout()) {
-            $data['Timeout'] = $object->getTimeout();
+        if ($data->isInitialized('timeout') && null !== $data->getTimeout()) {
+            $dataArray['Timeout'] = $data->getTimeout();
         }
-        if ($object->isInitialized('retries') && null !== $object->getRetries()) {
-            $data['Retries'] = $object->getRetries();
+        if ($data->isInitialized('retries') && null !== $data->getRetries()) {
+            $dataArray['Retries'] = $data->getRetries();
         }
-        if ($object->isInitialized('startPeriod') && null !== $object->getStartPeriod()) {
-            $data['StartPeriod'] = $object->getStartPeriod();
+        if ($data->isInitialized('startPeriod') && null !== $data->getStartPeriod()) {
+            $dataArray['StartPeriod'] = $data->getStartPeriod();
         }
-        foreach ($object as $key => $value_1) {
+        foreach ($data->additionalPropertyEntries() as $key => $value_1) {
             if (preg_match('/.*/', (string) $key)) {
-                $data[$key] = $value_1;
+                $dataArray[$key] = $value_1;
             }
         }
 
-        return $data;
+        return $dataArray;
     }
 
-    public function getSupportedTypes(string $format = null): array
+    public function getSupportedTypes(?string $format = null): array
     {
-        return ['Docker\\API\\Model\\HealthConfig' => false];
+        return [\Docker\API\Model\HealthConfig::class => false];
     }
 }

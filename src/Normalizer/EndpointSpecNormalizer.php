@@ -21,43 +21,45 @@ class EndpointSpecNormalizer implements DenormalizerInterface, NormalizerInterfa
     use NormalizerAwareTrait;
     use ValidatorTrait;
 
-    public function supportsDenormalization($data, $type, $format = null, array $context = []): bool
+    public function supportsDenormalization(mixed $data, string $type, ?string $format = null, array $context = []): bool
     {
-        return 'Docker\\API\\Model\\EndpointSpec' === $type;
+        return \Docker\API\Model\EndpointSpec::class === $type;
     }
 
-    public function supportsNormalization($data, $format = null, array $context = []): bool
+    public function supportsNormalization(mixed $data, ?string $format = null, array $context = []): bool
     {
-        return \is_object($data) && 'Docker\\API\\Model\\EndpointSpec' === $data::class;
+        return \is_object($data) && \Docker\API\Model\EndpointSpec::class === $data::class;
     }
 
-    public function denormalize($data, $class, $format = null, array $context = [])
+    public function denormalize(mixed $data, string $type, ?string $format = null, array $context = []): mixed
     {
-        if (isset($data['$ref'])) {
+        $object = new \Docker\API\Model\EndpointSpec();
+        if (null === $data || false === \is_array($data)) {
+            return $object;
+        }
+        if (isset($data['$ref']) && !isset($data['type']) && !isset($data['properties']) && !isset($data['allOf'])) {
             return new Reference($data['$ref'], $context['document-origin']);
         }
         if (isset($data['$recursiveRef'])) {
             return new Reference($data['$recursiveRef'], $context['document-origin']);
-        }
-        $object = new \Docker\API\Model\EndpointSpec();
-        if (null === $data || false === \is_array($data)) {
-            return $object;
         }
         if (\array_key_exists('Mode', $data) && null !== $data['Mode']) {
             $object->setMode($data['Mode']);
             unset($data['Mode']);
         } elseif (\array_key_exists('Mode', $data) && null === $data['Mode']) {
             $object->setMode(null);
+            unset($data['Mode']);
         }
         if (\array_key_exists('Ports', $data) && null !== $data['Ports']) {
             $values = [];
             foreach ($data['Ports'] as $value) {
-                $values[] = $this->denormalizer->denormalize($value, 'Docker\\API\\Model\\EndpointPortConfig', 'json', $context);
+                $values[] = $this->denormalizer->denormalize($value, \Docker\API\Model\EndpointPortConfig::class, 'json', $context);
             }
             $object->setPorts($values);
             unset($data['Ports']);
         } elseif (\array_key_exists('Ports', $data) && null === $data['Ports']) {
             $object->setPorts(null);
+            unset($data['Ports']);
         }
         foreach ($data as $key => $value_1) {
             if (preg_match('/.*/', (string) $key)) {
@@ -68,33 +70,30 @@ class EndpointSpecNormalizer implements DenormalizerInterface, NormalizerInterfa
         return $object;
     }
 
-    /**
-     * @return array|string|int|float|bool|\ArrayObject|null
-     */
-    public function normalize($object, $format = null, array $context = [])
+    public function normalize(mixed $data, ?string $format = null, array $context = []): array|string|int|float|bool|\ArrayObject|null
     {
-        $data = [];
-        if ($object->isInitialized('mode') && null !== $object->getMode()) {
-            $data['Mode'] = $object->getMode();
+        $dataArray = [];
+        if ($data->isInitialized('mode') && null !== $data->getMode()) {
+            $dataArray['Mode'] = $data->getMode();
         }
-        if ($object->isInitialized('ports') && null !== $object->getPorts()) {
+        if ($data->isInitialized('ports') && null !== $data->getPorts()) {
             $values = [];
-            foreach ($object->getPorts() as $value) {
-                $values[] = null === $value ? null : new \ArrayObject($this->normalizer->normalize($value, 'json', $context), \ArrayObject::ARRAY_AS_PROPS);
+            foreach ($data->getPorts() as $value) {
+                $values[] = null === $value ? null : new \Docker\API\Runtime\JsonObject($this->normalizer->normalize($value, 'json', $context));
             }
-            $data['Ports'] = $values;
+            $dataArray['Ports'] = $values;
         }
-        foreach ($object as $key => $value_1) {
+        foreach ($data->additionalPropertyEntries() as $key => $value_1) {
             if (preg_match('/.*/', (string) $key)) {
-                $data[$key] = $value_1;
+                $dataArray[$key] = $value_1;
             }
         }
 
-        return $data;
+        return $dataArray;
     }
 
-    public function getSupportedTypes(string $format = null): array
+    public function getSupportedTypes(?string $format = null): array
     {
-        return ['Docker\\API\\Model\\EndpointSpec' => false];
+        return [\Docker\API\Model\EndpointSpec::class => false];
     }
 }

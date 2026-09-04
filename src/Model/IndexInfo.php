@@ -4,8 +4,12 @@ declare(strict_types=1);
 
 namespace Docker\API\Model;
 
-class IndexInfo extends \ArrayObject
+use Docker\API\Runtime\AdditionalAndPatternProperties;
+use Docker\API\Runtime\AdditionalPropertiesInterface;
+
+class IndexInfo implements AdditionalPropertiesInterface
 {
+    use AdditionalAndPatternProperties;
     /**
      * @var array
      */
@@ -24,7 +28,7 @@ class IndexInfo extends \ArrayObject
     /**
      * List of mirrors, expressed as URIs.
      *
-     * @var string[]|null
+     * @var list<string>|null
      */
     protected $mirrors;
     /**
@@ -73,7 +77,7 @@ class IndexInfo extends \ArrayObject
     /**
      * List of mirrors, expressed as URIs.
      *
-     * @return string[]|null
+     * @return list<string>|null
      */
     public function getMirrors(): ?array
     {
@@ -83,7 +87,7 @@ class IndexInfo extends \ArrayObject
     /**
      * List of mirrors, expressed as URIs.
      *
-     * @param string[]|null $mirrors
+     * @param list<string>|null $mirrors
      */
     public function setMirrors(?array $mirrors): self
     {
@@ -151,5 +155,10 @@ class IndexInfo extends \ArrayObject
         $this->official = $official;
 
         return $this;
+    }
+
+    public function definedProperties(): array
+    {
+        return ['name' => ['Name', 'getName', 'setName'], 'mirrors' => ['Mirrors', 'getMirrors', 'setMirrors'], 'secure' => ['Secure', 'getSecure', 'setSecure'], 'official' => ['Official', 'getOfficial', 'setOfficial']];
     }
 }

@@ -21,51 +21,55 @@ class PortNormalizer implements DenormalizerInterface, NormalizerInterface, Deno
     use NormalizerAwareTrait;
     use ValidatorTrait;
 
-    public function supportsDenormalization($data, $type, $format = null, array $context = []): bool
+    public function supportsDenormalization(mixed $data, string $type, ?string $format = null, array $context = []): bool
     {
-        return 'Docker\\API\\Model\\Port' === $type;
+        return \Docker\API\Model\Port::class === $type;
     }
 
-    public function supportsNormalization($data, $format = null, array $context = []): bool
+    public function supportsNormalization(mixed $data, ?string $format = null, array $context = []): bool
     {
-        return \is_object($data) && 'Docker\\API\\Model\\Port' === $data::class;
+        return \is_object($data) && \Docker\API\Model\Port::class === $data::class;
     }
 
-    public function denormalize($data, $class, $format = null, array $context = [])
+    public function denormalize(mixed $data, string $type, ?string $format = null, array $context = []): mixed
     {
-        if (isset($data['$ref'])) {
+        $object = new \Docker\API\Model\Port();
+        if (null === $data || false === \is_array($data)) {
+            return $object;
+        }
+        if (isset($data['$ref']) && !isset($data['type']) && !isset($data['properties']) && !isset($data['allOf'])) {
             return new Reference($data['$ref'], $context['document-origin']);
         }
         if (isset($data['$recursiveRef'])) {
             return new Reference($data['$recursiveRef'], $context['document-origin']);
-        }
-        $object = new \Docker\API\Model\Port();
-        if (null === $data || false === \is_array($data)) {
-            return $object;
         }
         if (\array_key_exists('IP', $data) && null !== $data['IP']) {
             $object->setIP($data['IP']);
             unset($data['IP']);
         } elseif (\array_key_exists('IP', $data) && null === $data['IP']) {
             $object->setIP(null);
+            unset($data['IP']);
         }
         if (\array_key_exists('PrivatePort', $data) && null !== $data['PrivatePort']) {
             $object->setPrivatePort($data['PrivatePort']);
             unset($data['PrivatePort']);
         } elseif (\array_key_exists('PrivatePort', $data) && null === $data['PrivatePort']) {
             $object->setPrivatePort(null);
+            unset($data['PrivatePort']);
         }
         if (\array_key_exists('PublicPort', $data) && null !== $data['PublicPort']) {
             $object->setPublicPort($data['PublicPort']);
             unset($data['PublicPort']);
         } elseif (\array_key_exists('PublicPort', $data) && null === $data['PublicPort']) {
             $object->setPublicPort(null);
+            unset($data['PublicPort']);
         }
         if (\array_key_exists('Type', $data) && null !== $data['Type']) {
             $object->setType($data['Type']);
             unset($data['Type']);
         } elseif (\array_key_exists('Type', $data) && null === $data['Type']) {
             $object->setType(null);
+            unset($data['Type']);
         }
         foreach ($data as $key => $value) {
             if (preg_match('/.*/', (string) $key)) {
@@ -76,31 +80,28 @@ class PortNormalizer implements DenormalizerInterface, NormalizerInterface, Deno
         return $object;
     }
 
-    /**
-     * @return array|string|int|float|bool|\ArrayObject|null
-     */
-    public function normalize($object, $format = null, array $context = [])
+    public function normalize(mixed $data, ?string $format = null, array $context = []): array|string|int|float|bool|\ArrayObject|null
     {
-        $data = [];
-        if ($object->isInitialized('iP') && null !== $object->getIP()) {
-            $data['IP'] = $object->getIP();
+        $dataArray = [];
+        if ($data->isInitialized('iP') && null !== $data->getIP()) {
+            $dataArray['IP'] = $data->getIP();
         }
-        $data['PrivatePort'] = $object->getPrivatePort();
-        if ($object->isInitialized('publicPort') && null !== $object->getPublicPort()) {
-            $data['PublicPort'] = $object->getPublicPort();
+        $dataArray['PrivatePort'] = $data->getPrivatePort();
+        if ($data->isInitialized('publicPort') && null !== $data->getPublicPort()) {
+            $dataArray['PublicPort'] = $data->getPublicPort();
         }
-        $data['Type'] = $object->getType();
-        foreach ($object as $key => $value) {
+        $dataArray['Type'] = $data->getType();
+        foreach ($data->additionalPropertyEntries() as $key => $value) {
             if (preg_match('/.*/', (string) $key)) {
-                $data[$key] = $value;
+                $dataArray[$key] = $value;
             }
         }
 
-        return $data;
+        return $dataArray;
     }
 
-    public function getSupportedTypes(string $format = null): array
+    public function getSupportedTypes(?string $format = null): array
     {
-        return ['Docker\\API\\Model\\Port' => false];
+        return [\Docker\API\Model\Port::class => false];
     }
 }

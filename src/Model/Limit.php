@@ -4,8 +4,12 @@ declare(strict_types=1);
 
 namespace Docker\API\Model;
 
-class Limit extends \ArrayObject
+use Docker\API\Runtime\AdditionalAndPatternProperties;
+use Docker\API\Runtime\AdditionalPropertiesInterface;
+
+class Limit implements AdditionalPropertiesInterface
 {
+    use AdditionalAndPatternProperties;
     /**
      * @var array
      */
@@ -73,5 +77,10 @@ class Limit extends \ArrayObject
         $this->pids = $pids;
 
         return $this;
+    }
+
+    public function definedProperties(): array
+    {
+        return ['nanoCPUs' => ['NanoCPUs', 'getNanoCPUs', 'setNanoCPUs'], 'memoryBytes' => ['MemoryBytes', 'getMemoryBytes', 'setMemoryBytes'], 'pids' => ['Pids', 'getPids', 'setPids']];
     }
 }

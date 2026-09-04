@@ -4,8 +4,12 @@ declare(strict_types=1);
 
 namespace Docker\API\Model;
 
-class PluginInterfaceType extends \ArrayObject
+use Docker\API\Runtime\AdditionalAndPatternProperties;
+use Docker\API\Runtime\AdditionalPropertiesInterface;
+
+class PluginInterfaceType implements AdditionalPropertiesInterface
 {
+    use AdditionalAndPatternProperties;
     /**
      * @var array
      */
@@ -65,5 +69,10 @@ class PluginInterfaceType extends \ArrayObject
         $this->version = $version;
 
         return $this;
+    }
+
+    public function definedProperties(): array
+    {
+        return ['prefix' => ['Prefix', 'getPrefix', 'setPrefix'], 'capability' => ['Capability', 'getCapability', 'setCapability'], 'version' => ['Version', 'getVersion', 'setVersion']];
     }
 }

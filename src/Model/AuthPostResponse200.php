@@ -4,8 +4,12 @@ declare(strict_types=1);
 
 namespace Docker\API\Model;
 
-class AuthPostResponse200 extends \ArrayObject
+use Docker\API\Runtime\AdditionalAndPatternProperties;
+use Docker\API\Runtime\AdditionalPropertiesInterface;
+
+class AuthPostResponse200 implements AdditionalPropertiesInterface
 {
+    use AdditionalAndPatternProperties;
     /**
      * @var array
      */
@@ -64,5 +68,10 @@ class AuthPostResponse200 extends \ArrayObject
         $this->identityToken = $identityToken;
 
         return $this;
+    }
+
+    public function definedProperties(): array
+    {
+        return ['status' => ['Status', 'getStatus', 'setStatus'], 'identityToken' => ['IdentityToken', 'getIdentityToken', 'setIdentityToken']];
     }
 }

@@ -4,8 +4,12 @@ declare(strict_types=1);
 
 namespace Docker\API\Model;
 
-class ContainerConfig extends \ArrayObject
+use Docker\API\Runtime\AdditionalAndPatternProperties;
+use Docker\API\Runtime\AdditionalPropertiesInterface;
+
+class ContainerConfig implements AdditionalPropertiesInterface
 {
+    use AdditionalAndPatternProperties;
     /**
      * @var array
      */
@@ -52,7 +56,7 @@ class ContainerConfig extends \ArrayObject
      */
     protected $attachStderr = true;
     /**
-     * An object mapping ports to an empty object in the form:.
+     * An object mapping ports to an empty object in the form:
      *
      * `{"<port>/<tcp|udp|sctp>": {}}`
      *
@@ -82,13 +86,13 @@ class ContainerConfig extends \ArrayObject
      * form `["VAR=value", ...]`. A variable without `=` is removed from the
      * environment, rather than to have an empty value.
      *
-     * @var string[]|null
+     * @var list<string>|null
      */
     protected $env;
     /**
      * Command to run specified as a string or an array of strings.
      *
-     * @var string[]|null
+     * @var list<string>|null
      */
     protected $cmd;
     /**
@@ -130,7 +134,7 @@ class ContainerConfig extends \ArrayObject
      * entry point is reset to system default (i.e., the entry point used by
      * docker when there is no `ENTRYPOINT` instruction in the `Dockerfile`).
      *
-     * @var string[]|null
+     * @var list<string>|null
      */
     protected $entrypoint;
     /**
@@ -148,7 +152,7 @@ class ContainerConfig extends \ArrayObject
     /**
      * `ONBUILD` metadata that were defined in the image's `Dockerfile`.
      *
-     * @var string[]|null
+     * @var list<string>|null
      */
     protected $onBuild;
     /**
@@ -172,7 +176,7 @@ class ContainerConfig extends \ArrayObject
     /**
      * Shell for when `RUN`, `CMD`, and `ENTRYPOINT` uses a shell.
      *
-     * @var string[]|null
+     * @var list<string>|null
      */
     protected $shell;
 
@@ -291,7 +295,7 @@ class ContainerConfig extends \ArrayObject
     }
 
     /**
-     * An object mapping ports to an empty object in the form:.
+     * An object mapping ports to an empty object in the form:
      *
      * `{"<port>/<tcp|udp|sctp>": {}}`
      *
@@ -303,7 +307,7 @@ class ContainerConfig extends \ArrayObject
     }
 
     /**
-     * An object mapping ports to an empty object in the form:.
+     * An object mapping ports to an empty object in the form:
      *
      * `{"<port>/<tcp|udp|sctp>": {}}`
      *
@@ -379,7 +383,7 @@ class ContainerConfig extends \ArrayObject
      * form `["VAR=value", ...]`. A variable without `=` is removed from the
      * environment, rather than to have an empty value.
      *
-     * @return string[]|null
+     * @return list<string>|null
      */
     public function getEnv(): ?array
     {
@@ -391,7 +395,7 @@ class ContainerConfig extends \ArrayObject
      * form `["VAR=value", ...]`. A variable without `=` is removed from the
      * environment, rather than to have an empty value.
      *
-     * @param string[]|null $env
+     * @param list<string>|null $env
      */
     public function setEnv(?array $env): self
     {
@@ -404,7 +408,7 @@ class ContainerConfig extends \ArrayObject
     /**
      * Command to run specified as a string or an array of strings.
      *
-     * @return string[]|null
+     * @return list<string>|null
      */
     public function getCmd(): ?array
     {
@@ -414,7 +418,7 @@ class ContainerConfig extends \ArrayObject
     /**
      * Command to run specified as a string or an array of strings.
      *
-     * @param string[]|null $cmd
+     * @param list<string>|null $cmd
      */
     public function setCmd(?array $cmd): self
     {
@@ -534,7 +538,7 @@ class ContainerConfig extends \ArrayObject
      * entry point is reset to system default (i.e., the entry point used by
      * docker when there is no `ENTRYPOINT` instruction in the `Dockerfile`).
      *
-     * @return string[]|null
+     * @return list<string>|null
      */
     public function getEntrypoint(): ?array
     {
@@ -548,7 +552,7 @@ class ContainerConfig extends \ArrayObject
      * entry point is reset to system default (i.e., the entry point used by
      * docker when there is no `ENTRYPOINT` instruction in the `Dockerfile`).
      *
-     * @param string[]|null $entrypoint
+     * @param list<string>|null $entrypoint
      */
     public function setEntrypoint(?array $entrypoint): self
     {
@@ -599,7 +603,7 @@ class ContainerConfig extends \ArrayObject
     /**
      * `ONBUILD` metadata that were defined in the image's `Dockerfile`.
      *
-     * @return string[]|null
+     * @return list<string>|null
      */
     public function getOnBuild(): ?array
     {
@@ -609,7 +613,7 @@ class ContainerConfig extends \ArrayObject
     /**
      * `ONBUILD` metadata that were defined in the image's `Dockerfile`.
      *
-     * @param string[]|null $onBuild
+     * @param list<string>|null $onBuild
      */
     public function setOnBuild(?array $onBuild): self
     {
@@ -683,7 +687,7 @@ class ContainerConfig extends \ArrayObject
     /**
      * Shell for when `RUN`, `CMD`, and `ENTRYPOINT` uses a shell.
      *
-     * @return string[]|null
+     * @return list<string>|null
      */
     public function getShell(): ?array
     {
@@ -693,7 +697,7 @@ class ContainerConfig extends \ArrayObject
     /**
      * Shell for when `RUN`, `CMD`, and `ENTRYPOINT` uses a shell.
      *
-     * @param string[]|null $shell
+     * @param list<string>|null $shell
      */
     public function setShell(?array $shell): self
     {
@@ -701,5 +705,10 @@ class ContainerConfig extends \ArrayObject
         $this->shell = $shell;
 
         return $this;
+    }
+
+    public function definedProperties(): array
+    {
+        return ['hostname' => ['Hostname', 'getHostname', 'setHostname'], 'domainname' => ['Domainname', 'getDomainname', 'setDomainname'], 'user' => ['User', 'getUser', 'setUser'], 'attachStdin' => ['AttachStdin', 'getAttachStdin', 'setAttachStdin'], 'attachStdout' => ['AttachStdout', 'getAttachStdout', 'setAttachStdout'], 'attachStderr' => ['AttachStderr', 'getAttachStderr', 'setAttachStderr'], 'exposedPorts' => ['ExposedPorts', 'getExposedPorts', 'setExposedPorts'], 'tty' => ['Tty', 'getTty', 'setTty'], 'openStdin' => ['OpenStdin', 'getOpenStdin', 'setOpenStdin'], 'stdinOnce' => ['StdinOnce', 'getStdinOnce', 'setStdinOnce'], 'env' => ['Env', 'getEnv', 'setEnv'], 'cmd' => ['Cmd', 'getCmd', 'setCmd'], 'healthcheck' => ['Healthcheck', 'getHealthcheck', 'setHealthcheck'], 'argsEscaped' => ['ArgsEscaped', 'getArgsEscaped', 'setArgsEscaped'], 'image' => ['Image', 'getImage', 'setImage'], 'volumes' => ['Volumes', 'getVolumes', 'setVolumes'], 'workingDir' => ['WorkingDir', 'getWorkingDir', 'setWorkingDir'], 'entrypoint' => ['Entrypoint', 'getEntrypoint', 'setEntrypoint'], 'networkDisabled' => ['NetworkDisabled', 'getNetworkDisabled', 'setNetworkDisabled'], 'macAddress' => ['MacAddress', 'getMacAddress', 'setMacAddress'], 'onBuild' => ['OnBuild', 'getOnBuild', 'setOnBuild'], 'labels' => ['Labels', 'getLabels', 'setLabels'], 'stopSignal' => ['StopSignal', 'getStopSignal', 'setStopSignal'], 'stopTimeout' => ['StopTimeout', 'getStopTimeout', 'setStopTimeout'], 'shell' => ['Shell', 'getShell', 'setShell']];
     }
 }

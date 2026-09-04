@@ -4,8 +4,12 @@ declare(strict_types=1);
 
 namespace Docker\API\Model;
 
-class PluginConfig extends \ArrayObject
+use Docker\API\Runtime\AdditionalAndPatternProperties;
+use Docker\API\Runtime\AdditionalPropertiesInterface;
+
+class PluginConfig implements AdditionalPropertiesInterface
 {
+    use AdditionalAndPatternProperties;
     /**
      * @var array
      */
@@ -36,7 +40,7 @@ class PluginConfig extends \ArrayObject
      */
     protected $interface;
     /**
-     * @var string[]|null
+     * @var list<string>|null
      */
     protected $entrypoint;
     /**
@@ -68,11 +72,11 @@ class PluginConfig extends \ArrayObject
      */
     protected $pidHost;
     /**
-     * @var PluginMount[]|null
+     * @var list<PluginMount>|null
      */
     protected $mounts;
     /**
-     * @var PluginEnv[]|null
+     * @var list<PluginEnv>|null
      */
     protected $env;
     /**
@@ -149,7 +153,7 @@ class PluginConfig extends \ArrayObject
     }
 
     /**
-     * @return string[]|null
+     * @return list<string>|null
      */
     public function getEntrypoint(): ?array
     {
@@ -157,7 +161,7 @@ class PluginConfig extends \ArrayObject
     }
 
     /**
-     * @param string[]|null $entrypoint
+     * @param list<string>|null $entrypoint
      */
     public function setEntrypoint(?array $entrypoint): self
     {
@@ -259,7 +263,7 @@ class PluginConfig extends \ArrayObject
     }
 
     /**
-     * @return PluginMount[]|null
+     * @return list<PluginMount>|null
      */
     public function getMounts(): ?array
     {
@@ -267,7 +271,7 @@ class PluginConfig extends \ArrayObject
     }
 
     /**
-     * @param PluginMount[]|null $mounts
+     * @param list<PluginMount>|null $mounts
      */
     public function setMounts(?array $mounts): self
     {
@@ -278,7 +282,7 @@ class PluginConfig extends \ArrayObject
     }
 
     /**
-     * @return PluginEnv[]|null
+     * @return list<PluginEnv>|null
      */
     public function getEnv(): ?array
     {
@@ -286,7 +290,7 @@ class PluginConfig extends \ArrayObject
     }
 
     /**
-     * @param PluginEnv[]|null $env
+     * @param list<PluginEnv>|null $env
      */
     public function setEnv(?array $env): self
     {
@@ -320,5 +324,10 @@ class PluginConfig extends \ArrayObject
         $this->rootfs = $rootfs;
 
         return $this;
+    }
+
+    public function definedProperties(): array
+    {
+        return ['dockerVersion' => ['DockerVersion', 'getDockerVersion', 'setDockerVersion'], 'description' => ['Description', 'getDescription', 'setDescription'], 'documentation' => ['Documentation', 'getDocumentation', 'setDocumentation'], 'interface' => ['Interface', 'getInterface', 'setInterface'], 'entrypoint' => ['Entrypoint', 'getEntrypoint', 'setEntrypoint'], 'workDir' => ['WorkDir', 'getWorkDir', 'setWorkDir'], 'user' => ['User', 'getUser', 'setUser'], 'network' => ['Network', 'getNetwork', 'setNetwork'], 'linux' => ['Linux', 'getLinux', 'setLinux'], 'propagatedMount' => ['PropagatedMount', 'getPropagatedMount', 'setPropagatedMount'], 'ipcHost' => ['IpcHost', 'getIpcHost', 'setIpcHost'], 'pidHost' => ['PidHost', 'getPidHost', 'setPidHost'], 'mounts' => ['Mounts', 'getMounts', 'setMounts'], 'env' => ['Env', 'getEnv', 'setEnv'], 'args' => ['Args', 'getArgs', 'setArgs'], 'rootfs' => ['rootfs', 'getRootfs', 'setRootfs']];
     }
 }

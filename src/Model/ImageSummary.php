@@ -4,8 +4,12 @@ declare(strict_types=1);
 
 namespace Docker\API\Model;
 
-class ImageSummary extends \ArrayObject
+use Docker\API\Runtime\AdditionalAndPatternProperties;
+use Docker\API\Runtime\AdditionalPropertiesInterface;
+
+class ImageSummary implements AdditionalPropertiesInterface
 {
+    use AdditionalAndPatternProperties;
     /**
      * @var array
      */
@@ -46,7 +50,7 @@ class ImageSummary extends \ArrayObject
      * empty if no tags reference the image, in which case the image is
      * "untagged", in which case it can still be referenced by its ID.
      *
-     * @var string[]|null
+     * @var list<string>|null
      */
     protected $repoTags;
     /**
@@ -58,7 +62,7 @@ class ImageSummary extends \ArrayObject
      * from a registry, or if the image was pushed to a registry, which is when
      * the manifest is generated and its digest calculated.
      *
-     * @var string[]|null
+     * @var list<string>|null
      */
     protected $repoDigests;
     /**
@@ -182,7 +186,7 @@ class ImageSummary extends \ArrayObject
      * empty if no tags reference the image, in which case the image is
      * "untagged", in which case it can still be referenced by its ID.
      *
-     * @return string[]|null
+     * @return list<string>|null
      */
     public function getRepoTags(): ?array
     {
@@ -197,7 +201,7 @@ class ImageSummary extends \ArrayObject
      * empty if no tags reference the image, in which case the image is
      * "untagged", in which case it can still be referenced by its ID.
      *
-     * @param string[]|null $repoTags
+     * @param list<string>|null $repoTags
      */
     public function setRepoTags(?array $repoTags): self
     {
@@ -216,7 +220,7 @@ class ImageSummary extends \ArrayObject
      * from a registry, or if the image was pushed to a registry, which is when
      * the manifest is generated and its digest calculated.
      *
-     * @return string[]|null
+     * @return list<string>|null
      */
     public function getRepoDigests(): ?array
     {
@@ -232,7 +236,7 @@ class ImageSummary extends \ArrayObject
      * from a registry, or if the image was pushed to a registry, which is when
      * the manifest is generated and its digest calculated.
      *
-     * @param string[]|null $repoDigests
+     * @param list<string>|null $repoDigests
      */
     public function setRepoDigests(?array $repoDigests): self
     {
@@ -390,5 +394,10 @@ class ImageSummary extends \ArrayObject
         $this->containers = $containers;
 
         return $this;
+    }
+
+    public function definedProperties(): array
+    {
+        return ['id' => ['Id', 'getId', 'setId'], 'parentId' => ['ParentId', 'getParentId', 'setParentId'], 'repoTags' => ['RepoTags', 'getRepoTags', 'setRepoTags'], 'repoDigests' => ['RepoDigests', 'getRepoDigests', 'setRepoDigests'], 'created' => ['Created', 'getCreated', 'setCreated'], 'size' => ['Size', 'getSize', 'setSize'], 'sharedSize' => ['SharedSize', 'getSharedSize', 'setSharedSize'], 'virtualSize' => ['VirtualSize', 'getVirtualSize', 'setVirtualSize'], 'labels' => ['Labels', 'getLabels', 'setLabels'], 'containers' => ['Containers', 'getContainers', 'setContainers']];
     }
 }

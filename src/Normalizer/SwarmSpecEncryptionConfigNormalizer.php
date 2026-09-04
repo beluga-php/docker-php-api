@@ -21,33 +21,37 @@ class SwarmSpecEncryptionConfigNormalizer implements DenormalizerInterface, Norm
     use NormalizerAwareTrait;
     use ValidatorTrait;
 
-    public function supportsDenormalization($data, $type, $format = null, array $context = []): bool
+    public function supportsDenormalization(mixed $data, string $type, ?string $format = null, array $context = []): bool
     {
-        return 'Docker\\API\\Model\\SwarmSpecEncryptionConfig' === $type;
+        return \Docker\API\Model\SwarmSpecEncryptionConfig::class === $type;
     }
 
-    public function supportsNormalization($data, $format = null, array $context = []): bool
+    public function supportsNormalization(mixed $data, ?string $format = null, array $context = []): bool
     {
-        return \is_object($data) && 'Docker\\API\\Model\\SwarmSpecEncryptionConfig' === $data::class;
+        return \is_object($data) && \Docker\API\Model\SwarmSpecEncryptionConfig::class === $data::class;
     }
 
-    public function denormalize($data, $class, $format = null, array $context = [])
+    public function denormalize(mixed $data, string $type, ?string $format = null, array $context = []): mixed
     {
-        if (isset($data['$ref'])) {
+        $object = new \Docker\API\Model\SwarmSpecEncryptionConfig();
+        if (null === $data || false === \is_array($data)) {
+            return $object;
+        }
+        if (isset($data['$ref']) && !isset($data['type']) && !isset($data['properties']) && !isset($data['allOf'])) {
             return new Reference($data['$ref'], $context['document-origin']);
         }
         if (isset($data['$recursiveRef'])) {
             return new Reference($data['$recursiveRef'], $context['document-origin']);
         }
-        $object = new \Docker\API\Model\SwarmSpecEncryptionConfig();
-        if (null === $data || false === \is_array($data)) {
-            return $object;
+        if (\array_key_exists('AutoLockManagers', $data) && \is_int($data['AutoLockManagers'])) {
+            $data['AutoLockManagers'] = (bool) $data['AutoLockManagers'];
         }
         if (\array_key_exists('AutoLockManagers', $data) && null !== $data['AutoLockManagers']) {
             $object->setAutoLockManagers($data['AutoLockManagers']);
             unset($data['AutoLockManagers']);
         } elseif (\array_key_exists('AutoLockManagers', $data) && null === $data['AutoLockManagers']) {
             $object->setAutoLockManagers(null);
+            unset($data['AutoLockManagers']);
         }
         foreach ($data as $key => $value) {
             if (preg_match('/.*/', (string) $key)) {
@@ -58,26 +62,23 @@ class SwarmSpecEncryptionConfigNormalizer implements DenormalizerInterface, Norm
         return $object;
     }
 
-    /**
-     * @return array|string|int|float|bool|\ArrayObject|null
-     */
-    public function normalize($object, $format = null, array $context = [])
+    public function normalize(mixed $data, ?string $format = null, array $context = []): array|string|int|float|bool|\ArrayObject|null
     {
-        $data = [];
-        if ($object->isInitialized('autoLockManagers') && null !== $object->getAutoLockManagers()) {
-            $data['AutoLockManagers'] = $object->getAutoLockManagers();
+        $dataArray = [];
+        if ($data->isInitialized('autoLockManagers') && null !== $data->getAutoLockManagers()) {
+            $dataArray['AutoLockManagers'] = $data->getAutoLockManagers();
         }
-        foreach ($object as $key => $value) {
+        foreach ($data->additionalPropertyEntries() as $key => $value) {
             if (preg_match('/.*/', (string) $key)) {
-                $data[$key] = $value;
+                $dataArray[$key] = $value;
             }
         }
 
-        return $data;
+        return $dataArray;
     }
 
-    public function getSupportedTypes(string $format = null): array
+    public function getSupportedTypes(?string $format = null): array
     {
-        return ['Docker\\API\\Model\\SwarmSpecEncryptionConfig' => false];
+        return [\Docker\API\Model\SwarmSpecEncryptionConfig::class => false];
     }
 }

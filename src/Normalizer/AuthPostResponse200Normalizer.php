@@ -21,39 +21,41 @@ class AuthPostResponse200Normalizer implements DenormalizerInterface, Normalizer
     use NormalizerAwareTrait;
     use ValidatorTrait;
 
-    public function supportsDenormalization($data, $type, $format = null, array $context = []): bool
+    public function supportsDenormalization(mixed $data, string $type, ?string $format = null, array $context = []): bool
     {
-        return 'Docker\\API\\Model\\AuthPostResponse200' === $type;
+        return \Docker\API\Model\AuthPostResponse200::class === $type;
     }
 
-    public function supportsNormalization($data, $format = null, array $context = []): bool
+    public function supportsNormalization(mixed $data, ?string $format = null, array $context = []): bool
     {
-        return \is_object($data) && 'Docker\\API\\Model\\AuthPostResponse200' === $data::class;
+        return \is_object($data) && \Docker\API\Model\AuthPostResponse200::class === $data::class;
     }
 
-    public function denormalize($data, $class, $format = null, array $context = [])
+    public function denormalize(mixed $data, string $type, ?string $format = null, array $context = []): mixed
     {
-        if (isset($data['$ref'])) {
+        $object = new \Docker\API\Model\AuthPostResponse200();
+        if (null === $data || false === \is_array($data)) {
+            return $object;
+        }
+        if (isset($data['$ref']) && !isset($data['type']) && !isset($data['properties']) && !isset($data['allOf'])) {
             return new Reference($data['$ref'], $context['document-origin']);
         }
         if (isset($data['$recursiveRef'])) {
             return new Reference($data['$recursiveRef'], $context['document-origin']);
-        }
-        $object = new \Docker\API\Model\AuthPostResponse200();
-        if (null === $data || false === \is_array($data)) {
-            return $object;
         }
         if (\array_key_exists('Status', $data) && null !== $data['Status']) {
             $object->setStatus($data['Status']);
             unset($data['Status']);
         } elseif (\array_key_exists('Status', $data) && null === $data['Status']) {
             $object->setStatus(null);
+            unset($data['Status']);
         }
         if (\array_key_exists('IdentityToken', $data) && null !== $data['IdentityToken']) {
             $object->setIdentityToken($data['IdentityToken']);
             unset($data['IdentityToken']);
         } elseif (\array_key_exists('IdentityToken', $data) && null === $data['IdentityToken']) {
             $object->setIdentityToken(null);
+            unset($data['IdentityToken']);
         }
         foreach ($data as $key => $value) {
             if (preg_match('/.*/', (string) $key)) {
@@ -64,27 +66,24 @@ class AuthPostResponse200Normalizer implements DenormalizerInterface, Normalizer
         return $object;
     }
 
-    /**
-     * @return array|string|int|float|bool|\ArrayObject|null
-     */
-    public function normalize($object, $format = null, array $context = [])
+    public function normalize(mixed $data, ?string $format = null, array $context = []): array|string|int|float|bool|\ArrayObject|null
     {
-        $data = [];
-        $data['Status'] = $object->getStatus();
-        if ($object->isInitialized('identityToken') && null !== $object->getIdentityToken()) {
-            $data['IdentityToken'] = $object->getIdentityToken();
+        $dataArray = [];
+        $dataArray['Status'] = $data->getStatus();
+        if ($data->isInitialized('identityToken') && null !== $data->getIdentityToken()) {
+            $dataArray['IdentityToken'] = $data->getIdentityToken();
         }
-        foreach ($object as $key => $value) {
+        foreach ($data->additionalPropertyEntries() as $key => $value) {
             if (preg_match('/.*/', (string) $key)) {
-                $data[$key] = $value;
+                $dataArray[$key] = $value;
             }
         }
 
-        return $data;
+        return $dataArray;
     }
 
-    public function getSupportedTypes(string $format = null): array
+    public function getSupportedTypes(?string $format = null): array
     {
-        return ['Docker\\API\\Model\\AuthPostResponse200' => false];
+        return [\Docker\API\Model\AuthPostResponse200::class => false];
     }
 }

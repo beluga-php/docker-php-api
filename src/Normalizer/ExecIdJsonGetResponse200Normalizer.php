@@ -21,93 +21,119 @@ class ExecIdJsonGetResponse200Normalizer implements DenormalizerInterface, Norma
     use NormalizerAwareTrait;
     use ValidatorTrait;
 
-    public function supportsDenormalization($data, $type, $format = null, array $context = []): bool
+    public function supportsDenormalization(mixed $data, string $type, ?string $format = null, array $context = []): bool
     {
-        return 'Docker\\API\\Model\\ExecIdJsonGetResponse200' === $type;
+        return \Docker\API\Model\ExecIdJsonGetResponse200::class === $type;
     }
 
-    public function supportsNormalization($data, $format = null, array $context = []): bool
+    public function supportsNormalization(mixed $data, ?string $format = null, array $context = []): bool
     {
-        return \is_object($data) && 'Docker\\API\\Model\\ExecIdJsonGetResponse200' === $data::class;
+        return \is_object($data) && \Docker\API\Model\ExecIdJsonGetResponse200::class === $data::class;
     }
 
-    public function denormalize($data, $class, $format = null, array $context = [])
+    public function denormalize(mixed $data, string $type, ?string $format = null, array $context = []): mixed
     {
-        if (isset($data['$ref'])) {
+        $object = new \Docker\API\Model\ExecIdJsonGetResponse200();
+        if (null === $data || false === \is_array($data)) {
+            return $object;
+        }
+        if (isset($data['$ref']) && !isset($data['type']) && !isset($data['properties']) && !isset($data['allOf'])) {
             return new Reference($data['$ref'], $context['document-origin']);
         }
         if (isset($data['$recursiveRef'])) {
             return new Reference($data['$recursiveRef'], $context['document-origin']);
         }
-        $object = new \Docker\API\Model\ExecIdJsonGetResponse200();
-        if (null === $data || false === \is_array($data)) {
-            return $object;
+        if (\array_key_exists('CanRemove', $data) && \is_int($data['CanRemove'])) {
+            $data['CanRemove'] = (bool) $data['CanRemove'];
+        }
+        if (\array_key_exists('Running', $data) && \is_int($data['Running'])) {
+            $data['Running'] = (bool) $data['Running'];
+        }
+        if (\array_key_exists('OpenStdin', $data) && \is_int($data['OpenStdin'])) {
+            $data['OpenStdin'] = (bool) $data['OpenStdin'];
+        }
+        if (\array_key_exists('OpenStderr', $data) && \is_int($data['OpenStderr'])) {
+            $data['OpenStderr'] = (bool) $data['OpenStderr'];
+        }
+        if (\array_key_exists('OpenStdout', $data) && \is_int($data['OpenStdout'])) {
+            $data['OpenStdout'] = (bool) $data['OpenStdout'];
         }
         if (\array_key_exists('CanRemove', $data) && null !== $data['CanRemove']) {
             $object->setCanRemove($data['CanRemove']);
             unset($data['CanRemove']);
         } elseif (\array_key_exists('CanRemove', $data) && null === $data['CanRemove']) {
             $object->setCanRemove(null);
+            unset($data['CanRemove']);
         }
         if (\array_key_exists('DetachKeys', $data) && null !== $data['DetachKeys']) {
             $object->setDetachKeys($data['DetachKeys']);
             unset($data['DetachKeys']);
         } elseif (\array_key_exists('DetachKeys', $data) && null === $data['DetachKeys']) {
             $object->setDetachKeys(null);
+            unset($data['DetachKeys']);
         }
         if (\array_key_exists('ID', $data) && null !== $data['ID']) {
             $object->setID($data['ID']);
             unset($data['ID']);
         } elseif (\array_key_exists('ID', $data) && null === $data['ID']) {
             $object->setID(null);
+            unset($data['ID']);
         }
         if (\array_key_exists('Running', $data) && null !== $data['Running']) {
             $object->setRunning($data['Running']);
             unset($data['Running']);
         } elseif (\array_key_exists('Running', $data) && null === $data['Running']) {
             $object->setRunning(null);
+            unset($data['Running']);
         }
         if (\array_key_exists('ExitCode', $data) && null !== $data['ExitCode']) {
             $object->setExitCode($data['ExitCode']);
             unset($data['ExitCode']);
         } elseif (\array_key_exists('ExitCode', $data) && null === $data['ExitCode']) {
             $object->setExitCode(null);
+            unset($data['ExitCode']);
         }
         if (\array_key_exists('ProcessConfig', $data) && null !== $data['ProcessConfig']) {
-            $object->setProcessConfig($this->denormalizer->denormalize($data['ProcessConfig'], 'Docker\\API\\Model\\ProcessConfig', 'json', $context));
+            $object->setProcessConfig($this->denormalizer->denormalize($data['ProcessConfig'], \Docker\API\Model\ProcessConfig::class, 'json', $context));
             unset($data['ProcessConfig']);
         } elseif (\array_key_exists('ProcessConfig', $data) && null === $data['ProcessConfig']) {
             $object->setProcessConfig(null);
+            unset($data['ProcessConfig']);
         }
         if (\array_key_exists('OpenStdin', $data) && null !== $data['OpenStdin']) {
             $object->setOpenStdin($data['OpenStdin']);
             unset($data['OpenStdin']);
         } elseif (\array_key_exists('OpenStdin', $data) && null === $data['OpenStdin']) {
             $object->setOpenStdin(null);
+            unset($data['OpenStdin']);
         }
         if (\array_key_exists('OpenStderr', $data) && null !== $data['OpenStderr']) {
             $object->setOpenStderr($data['OpenStderr']);
             unset($data['OpenStderr']);
         } elseif (\array_key_exists('OpenStderr', $data) && null === $data['OpenStderr']) {
             $object->setOpenStderr(null);
+            unset($data['OpenStderr']);
         }
         if (\array_key_exists('OpenStdout', $data) && null !== $data['OpenStdout']) {
             $object->setOpenStdout($data['OpenStdout']);
             unset($data['OpenStdout']);
         } elseif (\array_key_exists('OpenStdout', $data) && null === $data['OpenStdout']) {
             $object->setOpenStdout(null);
+            unset($data['OpenStdout']);
         }
         if (\array_key_exists('ContainerID', $data) && null !== $data['ContainerID']) {
             $object->setContainerID($data['ContainerID']);
             unset($data['ContainerID']);
         } elseif (\array_key_exists('ContainerID', $data) && null === $data['ContainerID']) {
             $object->setContainerID(null);
+            unset($data['ContainerID']);
         }
         if (\array_key_exists('Pid', $data) && null !== $data['Pid']) {
             $object->setPid($data['Pid']);
             unset($data['Pid']);
         } elseif (\array_key_exists('Pid', $data) && null === $data['Pid']) {
             $object->setPid(null);
+            unset($data['Pid']);
         }
         foreach ($data as $key => $value) {
             if (preg_match('/.*/', (string) $key)) {
@@ -118,56 +144,53 @@ class ExecIdJsonGetResponse200Normalizer implements DenormalizerInterface, Norma
         return $object;
     }
 
-    /**
-     * @return array|string|int|float|bool|\ArrayObject|null
-     */
-    public function normalize($object, $format = null, array $context = [])
+    public function normalize(mixed $data, ?string $format = null, array $context = []): array|string|int|float|bool|\ArrayObject|null
     {
-        $data = [];
-        if ($object->isInitialized('canRemove') && null !== $object->getCanRemove()) {
-            $data['CanRemove'] = $object->getCanRemove();
+        $dataArray = [];
+        if ($data->isInitialized('canRemove') && null !== $data->getCanRemove()) {
+            $dataArray['CanRemove'] = $data->getCanRemove();
         }
-        if ($object->isInitialized('detachKeys') && null !== $object->getDetachKeys()) {
-            $data['DetachKeys'] = $object->getDetachKeys();
+        if ($data->isInitialized('detachKeys') && null !== $data->getDetachKeys()) {
+            $dataArray['DetachKeys'] = $data->getDetachKeys();
         }
-        if ($object->isInitialized('iD') && null !== $object->getID()) {
-            $data['ID'] = $object->getID();
+        if ($data->isInitialized('iD') && null !== $data->getID()) {
+            $dataArray['ID'] = $data->getID();
         }
-        if ($object->isInitialized('running') && null !== $object->getRunning()) {
-            $data['Running'] = $object->getRunning();
+        if ($data->isInitialized('running') && null !== $data->getRunning()) {
+            $dataArray['Running'] = $data->getRunning();
         }
-        if ($object->isInitialized('exitCode') && null !== $object->getExitCode()) {
-            $data['ExitCode'] = $object->getExitCode();
+        if ($data->isInitialized('exitCode') && null !== $data->getExitCode()) {
+            $dataArray['ExitCode'] = $data->getExitCode();
         }
-        if ($object->isInitialized('processConfig') && null !== $object->getProcessConfig()) {
-            $data['ProcessConfig'] = null === $object->getProcessConfig() ? null : new \ArrayObject($this->normalizer->normalize($object->getProcessConfig(), 'json', $context), \ArrayObject::ARRAY_AS_PROPS);
+        if ($data->isInitialized('processConfig') && null !== $data->getProcessConfig()) {
+            $dataArray['ProcessConfig'] = null === $data->getProcessConfig() ? null : new \Docker\API\Runtime\JsonObject($this->normalizer->normalize($data->getProcessConfig(), 'json', $context));
         }
-        if ($object->isInitialized('openStdin') && null !== $object->getOpenStdin()) {
-            $data['OpenStdin'] = $object->getOpenStdin();
+        if ($data->isInitialized('openStdin') && null !== $data->getOpenStdin()) {
+            $dataArray['OpenStdin'] = $data->getOpenStdin();
         }
-        if ($object->isInitialized('openStderr') && null !== $object->getOpenStderr()) {
-            $data['OpenStderr'] = $object->getOpenStderr();
+        if ($data->isInitialized('openStderr') && null !== $data->getOpenStderr()) {
+            $dataArray['OpenStderr'] = $data->getOpenStderr();
         }
-        if ($object->isInitialized('openStdout') && null !== $object->getOpenStdout()) {
-            $data['OpenStdout'] = $object->getOpenStdout();
+        if ($data->isInitialized('openStdout') && null !== $data->getOpenStdout()) {
+            $dataArray['OpenStdout'] = $data->getOpenStdout();
         }
-        if ($object->isInitialized('containerID') && null !== $object->getContainerID()) {
-            $data['ContainerID'] = $object->getContainerID();
+        if ($data->isInitialized('containerID') && null !== $data->getContainerID()) {
+            $dataArray['ContainerID'] = $data->getContainerID();
         }
-        if ($object->isInitialized('pid') && null !== $object->getPid()) {
-            $data['Pid'] = $object->getPid();
+        if ($data->isInitialized('pid') && null !== $data->getPid()) {
+            $dataArray['Pid'] = $data->getPid();
         }
-        foreach ($object as $key => $value) {
+        foreach ($data->additionalPropertyEntries() as $key => $value) {
             if (preg_match('/.*/', (string) $key)) {
-                $data[$key] = $value;
+                $dataArray[$key] = $value;
             }
         }
 
-        return $data;
+        return $dataArray;
     }
 
-    public function getSupportedTypes(string $format = null): array
+    public function getSupportedTypes(?string $format = null): array
     {
-        return ['Docker\\API\\Model\\ExecIdJsonGetResponse200' => false];
+        return [\Docker\API\Model\ExecIdJsonGetResponse200::class => false];
     }
 }

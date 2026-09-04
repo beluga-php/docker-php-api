@@ -21,60 +21,65 @@ class TaskNormalizer implements DenormalizerInterface, NormalizerInterface, Deno
     use NormalizerAwareTrait;
     use ValidatorTrait;
 
-    public function supportsDenormalization($data, $type, $format = null, array $context = []): bool
+    public function supportsDenormalization(mixed $data, string $type, ?string $format = null, array $context = []): bool
     {
-        return 'Docker\\API\\Model\\Task' === $type;
+        return \Docker\API\Model\Task::class === $type;
     }
 
-    public function supportsNormalization($data, $format = null, array $context = []): bool
+    public function supportsNormalization(mixed $data, ?string $format = null, array $context = []): bool
     {
-        return \is_object($data) && 'Docker\\API\\Model\\Task' === $data::class;
+        return \is_object($data) && \Docker\API\Model\Task::class === $data::class;
     }
 
-    public function denormalize($data, $class, $format = null, array $context = [])
+    public function denormalize(mixed $data, string $type, ?string $format = null, array $context = []): mixed
     {
-        if (isset($data['$ref'])) {
+        $object = new \Docker\API\Model\Task();
+        if (null === $data || false === \is_array($data)) {
+            return $object;
+        }
+        if (isset($data['$ref']) && !isset($data['type']) && !isset($data['properties']) && !isset($data['allOf'])) {
             return new Reference($data['$ref'], $context['document-origin']);
         }
         if (isset($data['$recursiveRef'])) {
             return new Reference($data['$recursiveRef'], $context['document-origin']);
-        }
-        $object = new \Docker\API\Model\Task();
-        if (null === $data || false === \is_array($data)) {
-            return $object;
         }
         if (\array_key_exists('ID', $data) && null !== $data['ID']) {
             $object->setID($data['ID']);
             unset($data['ID']);
         } elseif (\array_key_exists('ID', $data) && null === $data['ID']) {
             $object->setID(null);
+            unset($data['ID']);
         }
         if (\array_key_exists('Version', $data) && null !== $data['Version']) {
-            $object->setVersion($this->denormalizer->denormalize($data['Version'], 'Docker\\API\\Model\\ObjectVersion', 'json', $context));
+            $object->setVersion($this->denormalizer->denormalize($data['Version'], \Docker\API\Model\ObjectVersion::class, 'json', $context));
             unset($data['Version']);
         } elseif (\array_key_exists('Version', $data) && null === $data['Version']) {
             $object->setVersion(null);
+            unset($data['Version']);
         }
         if (\array_key_exists('CreatedAt', $data) && null !== $data['CreatedAt']) {
             $object->setCreatedAt($data['CreatedAt']);
             unset($data['CreatedAt']);
         } elseif (\array_key_exists('CreatedAt', $data) && null === $data['CreatedAt']) {
             $object->setCreatedAt(null);
+            unset($data['CreatedAt']);
         }
         if (\array_key_exists('UpdatedAt', $data) && null !== $data['UpdatedAt']) {
             $object->setUpdatedAt($data['UpdatedAt']);
             unset($data['UpdatedAt']);
         } elseif (\array_key_exists('UpdatedAt', $data) && null === $data['UpdatedAt']) {
             $object->setUpdatedAt(null);
+            unset($data['UpdatedAt']);
         }
         if (\array_key_exists('Name', $data) && null !== $data['Name']) {
             $object->setName($data['Name']);
             unset($data['Name']);
         } elseif (\array_key_exists('Name', $data) && null === $data['Name']) {
             $object->setName(null);
+            unset($data['Name']);
         }
         if (\array_key_exists('Labels', $data) && null !== $data['Labels']) {
-            $values = new \ArrayObject([], \ArrayObject::ARRAY_AS_PROPS);
+            $values = new \Docker\API\Runtime\JsonObject();
             foreach ($data['Labels'] as $key => $value) {
                 $values[$key] = $value;
             }
@@ -82,58 +87,67 @@ class TaskNormalizer implements DenormalizerInterface, NormalizerInterface, Deno
             unset($data['Labels']);
         } elseif (\array_key_exists('Labels', $data) && null === $data['Labels']) {
             $object->setLabels(null);
+            unset($data['Labels']);
         }
         if (\array_key_exists('Spec', $data) && null !== $data['Spec']) {
-            $object->setSpec($this->denormalizer->denormalize($data['Spec'], 'Docker\\API\\Model\\TaskSpec', 'json', $context));
+            $object->setSpec($this->denormalizer->denormalize($data['Spec'], \Docker\API\Model\TaskSpec::class, 'json', $context));
             unset($data['Spec']);
         } elseif (\array_key_exists('Spec', $data) && null === $data['Spec']) {
             $object->setSpec(null);
+            unset($data['Spec']);
         }
         if (\array_key_exists('ServiceID', $data) && null !== $data['ServiceID']) {
             $object->setServiceID($data['ServiceID']);
             unset($data['ServiceID']);
         } elseif (\array_key_exists('ServiceID', $data) && null === $data['ServiceID']) {
             $object->setServiceID(null);
+            unset($data['ServiceID']);
         }
         if (\array_key_exists('Slot', $data) && null !== $data['Slot']) {
             $object->setSlot($data['Slot']);
             unset($data['Slot']);
         } elseif (\array_key_exists('Slot', $data) && null === $data['Slot']) {
             $object->setSlot(null);
+            unset($data['Slot']);
         }
         if (\array_key_exists('NodeID', $data) && null !== $data['NodeID']) {
             $object->setNodeID($data['NodeID']);
             unset($data['NodeID']);
         } elseif (\array_key_exists('NodeID', $data) && null === $data['NodeID']) {
             $object->setNodeID(null);
+            unset($data['NodeID']);
         }
         if (\array_key_exists('AssignedGenericResources', $data) && null !== $data['AssignedGenericResources']) {
             $values_1 = [];
             foreach ($data['AssignedGenericResources'] as $value_1) {
-                $values_1[] = $this->denormalizer->denormalize($value_1, 'Docker\\API\\Model\\GenericResourcesItem', 'json', $context);
+                $values_1[] = $this->denormalizer->denormalize($value_1, \Docker\API\Model\GenericResourcesItem::class, 'json', $context);
             }
             $object->setAssignedGenericResources($values_1);
             unset($data['AssignedGenericResources']);
         } elseif (\array_key_exists('AssignedGenericResources', $data) && null === $data['AssignedGenericResources']) {
             $object->setAssignedGenericResources(null);
+            unset($data['AssignedGenericResources']);
         }
         if (\array_key_exists('Status', $data) && null !== $data['Status']) {
-            $object->setStatus($this->denormalizer->denormalize($data['Status'], 'Docker\\API\\Model\\TaskStatus', 'json', $context));
+            $object->setStatus($this->denormalizer->denormalize($data['Status'], \Docker\API\Model\TaskStatus::class, 'json', $context));
             unset($data['Status']);
         } elseif (\array_key_exists('Status', $data) && null === $data['Status']) {
             $object->setStatus(null);
+            unset($data['Status']);
         }
         if (\array_key_exists('DesiredState', $data) && null !== $data['DesiredState']) {
             $object->setDesiredState($data['DesiredState']);
             unset($data['DesiredState']);
         } elseif (\array_key_exists('DesiredState', $data) && null === $data['DesiredState']) {
             $object->setDesiredState(null);
+            unset($data['DesiredState']);
         }
         if (\array_key_exists('JobIteration', $data) && null !== $data['JobIteration']) {
-            $object->setJobIteration($this->denormalizer->denormalize($data['JobIteration'], 'Docker\\API\\Model\\ObjectVersion', 'json', $context));
+            $object->setJobIteration($this->denormalizer->denormalize($data['JobIteration'], \Docker\API\Model\ObjectVersion::class, 'json', $context));
             unset($data['JobIteration']);
         } elseif (\array_key_exists('JobIteration', $data) && null === $data['JobIteration']) {
             $object->setJobIteration(null);
+            unset($data['JobIteration']);
         }
         foreach ($data as $key_1 => $value_2) {
             if (preg_match('/.*/', (string) $key_1)) {
@@ -144,73 +158,70 @@ class TaskNormalizer implements DenormalizerInterface, NormalizerInterface, Deno
         return $object;
     }
 
-    /**
-     * @return array|string|int|float|bool|\ArrayObject|null
-     */
-    public function normalize($object, $format = null, array $context = [])
+    public function normalize(mixed $data, ?string $format = null, array $context = []): array|string|int|float|bool|\ArrayObject|null
     {
-        $data = [];
-        if ($object->isInitialized('iD') && null !== $object->getID()) {
-            $data['ID'] = $object->getID();
+        $dataArray = [];
+        if ($data->isInitialized('iD') && null !== $data->getID()) {
+            $dataArray['ID'] = $data->getID();
         }
-        if ($object->isInitialized('version') && null !== $object->getVersion()) {
-            $data['Version'] = null === $object->getVersion() ? null : new \ArrayObject($this->normalizer->normalize($object->getVersion(), 'json', $context), \ArrayObject::ARRAY_AS_PROPS);
+        if ($data->isInitialized('version') && null !== $data->getVersion()) {
+            $dataArray['Version'] = null === $data->getVersion() ? null : new \Docker\API\Runtime\JsonObject($this->normalizer->normalize($data->getVersion(), 'json', $context));
         }
-        if ($object->isInitialized('createdAt') && null !== $object->getCreatedAt()) {
-            $data['CreatedAt'] = $object->getCreatedAt();
+        if ($data->isInitialized('createdAt') && null !== $data->getCreatedAt()) {
+            $dataArray['CreatedAt'] = $data->getCreatedAt();
         }
-        if ($object->isInitialized('updatedAt') && null !== $object->getUpdatedAt()) {
-            $data['UpdatedAt'] = $object->getUpdatedAt();
+        if ($data->isInitialized('updatedAt') && null !== $data->getUpdatedAt()) {
+            $dataArray['UpdatedAt'] = $data->getUpdatedAt();
         }
-        if ($object->isInitialized('name') && null !== $object->getName()) {
-            $data['Name'] = $object->getName();
+        if ($data->isInitialized('name') && null !== $data->getName()) {
+            $dataArray['Name'] = $data->getName();
         }
-        if ($object->isInitialized('labels') && null !== $object->getLabels()) {
-            $values = new \ArrayObject([], \ArrayObject::ARRAY_AS_PROPS);
-            foreach ($object->getLabels() as $key => $value) {
+        if ($data->isInitialized('labels') && null !== $data->getLabels()) {
+            $values = new \Docker\API\Runtime\JsonObject();
+            foreach ($data->getLabels() as $key => $value) {
                 $values[$key] = $value;
             }
-            $data['Labels'] = $values;
+            $dataArray['Labels'] = $values;
         }
-        if ($object->isInitialized('spec') && null !== $object->getSpec()) {
-            $data['Spec'] = null === $object->getSpec() ? null : new \ArrayObject($this->normalizer->normalize($object->getSpec(), 'json', $context), \ArrayObject::ARRAY_AS_PROPS);
+        if ($data->isInitialized('spec') && null !== $data->getSpec()) {
+            $dataArray['Spec'] = null === $data->getSpec() ? null : new \Docker\API\Runtime\JsonObject($this->normalizer->normalize($data->getSpec(), 'json', $context));
         }
-        if ($object->isInitialized('serviceID') && null !== $object->getServiceID()) {
-            $data['ServiceID'] = $object->getServiceID();
+        if ($data->isInitialized('serviceID') && null !== $data->getServiceID()) {
+            $dataArray['ServiceID'] = $data->getServiceID();
         }
-        if ($object->isInitialized('slot') && null !== $object->getSlot()) {
-            $data['Slot'] = $object->getSlot();
+        if ($data->isInitialized('slot') && null !== $data->getSlot()) {
+            $dataArray['Slot'] = $data->getSlot();
         }
-        if ($object->isInitialized('nodeID') && null !== $object->getNodeID()) {
-            $data['NodeID'] = $object->getNodeID();
+        if ($data->isInitialized('nodeID') && null !== $data->getNodeID()) {
+            $dataArray['NodeID'] = $data->getNodeID();
         }
-        if ($object->isInitialized('assignedGenericResources') && null !== $object->getAssignedGenericResources()) {
+        if ($data->isInitialized('assignedGenericResources') && null !== $data->getAssignedGenericResources()) {
             $values_1 = [];
-            foreach ($object->getAssignedGenericResources() as $value_1) {
-                $values_1[] = null === $value_1 ? null : new \ArrayObject($this->normalizer->normalize($value_1, 'json', $context), \ArrayObject::ARRAY_AS_PROPS);
+            foreach ($data->getAssignedGenericResources() as $value_1) {
+                $values_1[] = null === $value_1 ? null : new \Docker\API\Runtime\JsonObject($this->normalizer->normalize($value_1, 'json', $context));
             }
-            $data['AssignedGenericResources'] = $values_1;
+            $dataArray['AssignedGenericResources'] = $values_1;
         }
-        if ($object->isInitialized('status') && null !== $object->getStatus()) {
-            $data['Status'] = null === $object->getStatus() ? null : new \ArrayObject($this->normalizer->normalize($object->getStatus(), 'json', $context), \ArrayObject::ARRAY_AS_PROPS);
+        if ($data->isInitialized('status') && null !== $data->getStatus()) {
+            $dataArray['Status'] = null === $data->getStatus() ? null : new \Docker\API\Runtime\JsonObject($this->normalizer->normalize($data->getStatus(), 'json', $context));
         }
-        if ($object->isInitialized('desiredState') && null !== $object->getDesiredState()) {
-            $data['DesiredState'] = $object->getDesiredState();
+        if ($data->isInitialized('desiredState') && null !== $data->getDesiredState()) {
+            $dataArray['DesiredState'] = $data->getDesiredState();
         }
-        if ($object->isInitialized('jobIteration') && null !== $object->getJobIteration()) {
-            $data['JobIteration'] = null === $object->getJobIteration() ? null : new \ArrayObject($this->normalizer->normalize($object->getJobIteration(), 'json', $context), \ArrayObject::ARRAY_AS_PROPS);
+        if ($data->isInitialized('jobIteration') && null !== $data->getJobIteration()) {
+            $dataArray['JobIteration'] = null === $data->getJobIteration() ? null : new \Docker\API\Runtime\JsonObject($this->normalizer->normalize($data->getJobIteration(), 'json', $context));
         }
-        foreach ($object as $key_1 => $value_2) {
+        foreach ($data->additionalPropertyEntries() as $key_1 => $value_2) {
             if (preg_match('/.*/', (string) $key_1)) {
-                $data[$key_1] = $value_2;
+                $dataArray[$key_1] = $value_2;
             }
         }
 
-        return $data;
+        return $dataArray;
     }
 
-    public function getSupportedTypes(string $format = null): array
+    public function getSupportedTypes(?string $format = null): array
     {
-        return ['Docker\\API\\Model\\Task' => false];
+        return [\Docker\API\Model\Task::class => false];
     }
 }

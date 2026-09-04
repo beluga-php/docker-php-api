@@ -21,45 +21,48 @@ class OCIPlatformNormalizer implements DenormalizerInterface, NormalizerInterfac
     use NormalizerAwareTrait;
     use ValidatorTrait;
 
-    public function supportsDenormalization($data, $type, $format = null, array $context = []): bool
+    public function supportsDenormalization(mixed $data, string $type, ?string $format = null, array $context = []): bool
     {
-        return 'Docker\\API\\Model\\OCIPlatform' === $type;
+        return \Docker\API\Model\OCIPlatform::class === $type;
     }
 
-    public function supportsNormalization($data, $format = null, array $context = []): bool
+    public function supportsNormalization(mixed $data, ?string $format = null, array $context = []): bool
     {
-        return \is_object($data) && 'Docker\\API\\Model\\OCIPlatform' === $data::class;
+        return \is_object($data) && \Docker\API\Model\OCIPlatform::class === $data::class;
     }
 
-    public function denormalize($data, $class, $format = null, array $context = [])
+    public function denormalize(mixed $data, string $type, ?string $format = null, array $context = []): mixed
     {
-        if (isset($data['$ref'])) {
+        $object = new \Docker\API\Model\OCIPlatform();
+        if (null === $data || false === \is_array($data)) {
+            return $object;
+        }
+        if (isset($data['$ref']) && !isset($data['type']) && !isset($data['properties']) && !isset($data['allOf'])) {
             return new Reference($data['$ref'], $context['document-origin']);
         }
         if (isset($data['$recursiveRef'])) {
             return new Reference($data['$recursiveRef'], $context['document-origin']);
-        }
-        $object = new \Docker\API\Model\OCIPlatform();
-        if (null === $data || false === \is_array($data)) {
-            return $object;
         }
         if (\array_key_exists('architecture', $data) && null !== $data['architecture']) {
             $object->setArchitecture($data['architecture']);
             unset($data['architecture']);
         } elseif (\array_key_exists('architecture', $data) && null === $data['architecture']) {
             $object->setArchitecture(null);
+            unset($data['architecture']);
         }
         if (\array_key_exists('os', $data) && null !== $data['os']) {
             $object->setOs($data['os']);
             unset($data['os']);
         } elseif (\array_key_exists('os', $data) && null === $data['os']) {
             $object->setOs(null);
+            unset($data['os']);
         }
         if (\array_key_exists('os.version', $data) && null !== $data['os.version']) {
             $object->setOsVersion($data['os.version']);
             unset($data['os.version']);
         } elseif (\array_key_exists('os.version', $data) && null === $data['os.version']) {
             $object->setOsVersion(null);
+            unset($data['os.version']);
         }
         if (\array_key_exists('os.features', $data) && null !== $data['os.features']) {
             $values = [];
@@ -70,12 +73,14 @@ class OCIPlatformNormalizer implements DenormalizerInterface, NormalizerInterfac
             unset($data['os.features']);
         } elseif (\array_key_exists('os.features', $data) && null === $data['os.features']) {
             $object->setOsFeatures(null);
+            unset($data['os.features']);
         }
         if (\array_key_exists('variant', $data) && null !== $data['variant']) {
             $object->setVariant($data['variant']);
             unset($data['variant']);
         } elseif (\array_key_exists('variant', $data) && null === $data['variant']) {
             $object->setVariant(null);
+            unset($data['variant']);
         }
         foreach ($data as $key => $value_1) {
             if (preg_match('/.*/', (string) $key)) {
@@ -86,42 +91,39 @@ class OCIPlatformNormalizer implements DenormalizerInterface, NormalizerInterfac
         return $object;
     }
 
-    /**
-     * @return array|string|int|float|bool|\ArrayObject|null
-     */
-    public function normalize($object, $format = null, array $context = [])
+    public function normalize(mixed $data, ?string $format = null, array $context = []): array|string|int|float|bool|\ArrayObject|null
     {
-        $data = [];
-        if ($object->isInitialized('architecture') && null !== $object->getArchitecture()) {
-            $data['architecture'] = $object->getArchitecture();
+        $dataArray = [];
+        if ($data->isInitialized('architecture') && null !== $data->getArchitecture()) {
+            $dataArray['architecture'] = $data->getArchitecture();
         }
-        if ($object->isInitialized('os') && null !== $object->getOs()) {
-            $data['os'] = $object->getOs();
+        if ($data->isInitialized('os') && null !== $data->getOs()) {
+            $dataArray['os'] = $data->getOs();
         }
-        if ($object->isInitialized('osVersion') && null !== $object->getOsVersion()) {
-            $data['os.version'] = $object->getOsVersion();
+        if ($data->isInitialized('osVersion') && null !== $data->getOsVersion()) {
+            $dataArray['os.version'] = $data->getOsVersion();
         }
-        if ($object->isInitialized('osFeatures') && null !== $object->getOsFeatures()) {
+        if ($data->isInitialized('osFeatures') && null !== $data->getOsFeatures()) {
             $values = [];
-            foreach ($object->getOsFeatures() as $value) {
+            foreach ($data->getOsFeatures() as $value) {
                 $values[] = $value;
             }
-            $data['os.features'] = $values;
+            $dataArray['os.features'] = $values;
         }
-        if ($object->isInitialized('variant') && null !== $object->getVariant()) {
-            $data['variant'] = $object->getVariant();
+        if ($data->isInitialized('variant') && null !== $data->getVariant()) {
+            $dataArray['variant'] = $data->getVariant();
         }
-        foreach ($object as $key => $value_1) {
+        foreach ($data->additionalPropertyEntries() as $key => $value_1) {
             if (preg_match('/.*/', (string) $key)) {
-                $data[$key] = $value_1;
+                $dataArray[$key] = $value_1;
             }
         }
 
-        return $data;
+        return $dataArray;
     }
 
-    public function getSupportedTypes(string $format = null): array
+    public function getSupportedTypes(?string $format = null): array
     {
-        return ['Docker\\API\\Model\\OCIPlatform' => false];
+        return [\Docker\API\Model\OCIPlatform::class => false];
     }
 }

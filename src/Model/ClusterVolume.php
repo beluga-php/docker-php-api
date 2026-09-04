@@ -4,8 +4,12 @@ declare(strict_types=1);
 
 namespace Docker\API\Model;
 
-class ClusterVolume extends \ArrayObject
+use Docker\API\Runtime\AdditionalAndPatternProperties;
+use Docker\API\Runtime\AdditionalPropertiesInterface;
+
+class ClusterVolume implements AdditionalPropertiesInterface
 {
+    use AdditionalAndPatternProperties;
     /**
      * @var array
      */
@@ -62,7 +66,7 @@ class ClusterVolume extends \ArrayObject
      * The status of the volume as it pertains to its publishing and use on
      * specific nodes.
      *
-     * @var ClusterVolumePublishStatusItem[]|null
+     * @var list<ClusterVolumePublishStatusItem>|null
      */
     protected $publishStatus;
 
@@ -194,7 +198,7 @@ class ClusterVolume extends \ArrayObject
      * The status of the volume as it pertains to its publishing and use on
      * specific nodes.
      *
-     * @return ClusterVolumePublishStatusItem[]|null
+     * @return list<ClusterVolumePublishStatusItem>|null
      */
     public function getPublishStatus(): ?array
     {
@@ -205,7 +209,7 @@ class ClusterVolume extends \ArrayObject
      * The status of the volume as it pertains to its publishing and use on
      * specific nodes.
      *
-     * @param ClusterVolumePublishStatusItem[]|null $publishStatus
+     * @param list<ClusterVolumePublishStatusItem>|null $publishStatus
      */
     public function setPublishStatus(?array $publishStatus): self
     {
@@ -213,5 +217,10 @@ class ClusterVolume extends \ArrayObject
         $this->publishStatus = $publishStatus;
 
         return $this;
+    }
+
+    public function definedProperties(): array
+    {
+        return ['iD' => ['ID', 'getID', 'setID'], 'version' => ['Version', 'getVersion', 'setVersion'], 'createdAt' => ['CreatedAt', 'getCreatedAt', 'setCreatedAt'], 'updatedAt' => ['UpdatedAt', 'getUpdatedAt', 'setUpdatedAt'], 'spec' => ['Spec', 'getSpec', 'setSpec'], 'info' => ['Info', 'getInfo', 'setInfo'], 'publishStatus' => ['PublishStatus', 'getPublishStatus', 'setPublishStatus']];
     }
 }

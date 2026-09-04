@@ -4,8 +4,12 @@ declare(strict_types=1);
 
 namespace Docker\API\Model;
 
-class ExecIdJsonGetResponse200 extends \ArrayObject
+use Docker\API\Runtime\AdditionalAndPatternProperties;
+use Docker\API\Runtime\AdditionalPropertiesInterface;
+
+class ExecIdJsonGetResponse200 implements AdditionalPropertiesInterface
 {
+    use AdditionalAndPatternProperties;
     /**
      * @var array
      */
@@ -209,5 +213,10 @@ class ExecIdJsonGetResponse200 extends \ArrayObject
         $this->pid = $pid;
 
         return $this;
+    }
+
+    public function definedProperties(): array
+    {
+        return ['canRemove' => ['CanRemove', 'getCanRemove', 'setCanRemove'], 'detachKeys' => ['DetachKeys', 'getDetachKeys', 'setDetachKeys'], 'iD' => ['ID', 'getID', 'setID'], 'running' => ['Running', 'getRunning', 'setRunning'], 'exitCode' => ['ExitCode', 'getExitCode', 'setExitCode'], 'processConfig' => ['ProcessConfig', 'getProcessConfig', 'setProcessConfig'], 'openStdin' => ['OpenStdin', 'getOpenStdin', 'setOpenStdin'], 'openStderr' => ['OpenStderr', 'getOpenStderr', 'setOpenStderr'], 'openStdout' => ['OpenStdout', 'getOpenStdout', 'setOpenStdout'], 'containerID' => ['ContainerID', 'getContainerID', 'setContainerID'], 'pid' => ['Pid', 'getPid', 'setPid']];
     }
 }

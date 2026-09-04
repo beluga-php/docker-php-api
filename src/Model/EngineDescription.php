@@ -4,8 +4,12 @@ declare(strict_types=1);
 
 namespace Docker\API\Model;
 
-class EngineDescription extends \ArrayObject
+use Docker\API\Runtime\AdditionalAndPatternProperties;
+use Docker\API\Runtime\AdditionalPropertiesInterface;
+
+class EngineDescription implements AdditionalPropertiesInterface
 {
+    use AdditionalAndPatternProperties;
     /**
      * @var array
      */
@@ -24,7 +28,7 @@ class EngineDescription extends \ArrayObject
      */
     protected $labels;
     /**
-     * @var EngineDescriptionPluginsItem[]|null
+     * @var list<EngineDescriptionPluginsItem>|null
      */
     protected $plugins;
 
@@ -61,7 +65,7 @@ class EngineDescription extends \ArrayObject
     }
 
     /**
-     * @return EngineDescriptionPluginsItem[]|null
+     * @return list<EngineDescriptionPluginsItem>|null
      */
     public function getPlugins(): ?array
     {
@@ -69,7 +73,7 @@ class EngineDescription extends \ArrayObject
     }
 
     /**
-     * @param EngineDescriptionPluginsItem[]|null $plugins
+     * @param list<EngineDescriptionPluginsItem>|null $plugins
      */
     public function setPlugins(?array $plugins): self
     {
@@ -77,5 +81,10 @@ class EngineDescription extends \ArrayObject
         $this->plugins = $plugins;
 
         return $this;
+    }
+
+    public function definedProperties(): array
+    {
+        return ['engineVersion' => ['EngineVersion', 'getEngineVersion', 'setEngineVersion'], 'labels' => ['Labels', 'getLabels', 'setLabels'], 'plugins' => ['Plugins', 'getPlugins', 'setPlugins']];
     }
 }

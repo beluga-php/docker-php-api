@@ -21,75 +21,86 @@ class MountNormalizer implements DenormalizerInterface, NormalizerInterface, Den
     use NormalizerAwareTrait;
     use ValidatorTrait;
 
-    public function supportsDenormalization($data, $type, $format = null, array $context = []): bool
+    public function supportsDenormalization(mixed $data, string $type, ?string $format = null, array $context = []): bool
     {
-        return 'Docker\\API\\Model\\Mount' === $type;
+        return \Docker\API\Model\Mount::class === $type;
     }
 
-    public function supportsNormalization($data, $format = null, array $context = []): bool
+    public function supportsNormalization(mixed $data, ?string $format = null, array $context = []): bool
     {
-        return \is_object($data) && 'Docker\\API\\Model\\Mount' === $data::class;
+        return \is_object($data) && \Docker\API\Model\Mount::class === $data::class;
     }
 
-    public function denormalize($data, $class, $format = null, array $context = [])
+    public function denormalize(mixed $data, string $type, ?string $format = null, array $context = []): mixed
     {
-        if (isset($data['$ref'])) {
+        $object = new \Docker\API\Model\Mount();
+        if (null === $data || false === \is_array($data)) {
+            return $object;
+        }
+        if (isset($data['$ref']) && !isset($data['type']) && !isset($data['properties']) && !isset($data['allOf'])) {
             return new Reference($data['$ref'], $context['document-origin']);
         }
         if (isset($data['$recursiveRef'])) {
             return new Reference($data['$recursiveRef'], $context['document-origin']);
         }
-        $object = new \Docker\API\Model\Mount();
-        if (null === $data || false === \is_array($data)) {
-            return $object;
+        if (\array_key_exists('ReadOnly', $data) && \is_int($data['ReadOnly'])) {
+            $data['ReadOnly'] = (bool) $data['ReadOnly'];
         }
         if (\array_key_exists('Target', $data) && null !== $data['Target']) {
             $object->setTarget($data['Target']);
             unset($data['Target']);
         } elseif (\array_key_exists('Target', $data) && null === $data['Target']) {
             $object->setTarget(null);
+            unset($data['Target']);
         }
         if (\array_key_exists('Source', $data) && null !== $data['Source']) {
             $object->setSource($data['Source']);
             unset($data['Source']);
         } elseif (\array_key_exists('Source', $data) && null === $data['Source']) {
             $object->setSource(null);
+            unset($data['Source']);
         }
         if (\array_key_exists('Type', $data) && null !== $data['Type']) {
             $object->setType($data['Type']);
             unset($data['Type']);
         } elseif (\array_key_exists('Type', $data) && null === $data['Type']) {
             $object->setType(null);
+            unset($data['Type']);
         }
         if (\array_key_exists('ReadOnly', $data) && null !== $data['ReadOnly']) {
             $object->setReadOnly($data['ReadOnly']);
             unset($data['ReadOnly']);
         } elseif (\array_key_exists('ReadOnly', $data) && null === $data['ReadOnly']) {
             $object->setReadOnly(null);
+            unset($data['ReadOnly']);
         }
         if (\array_key_exists('Consistency', $data) && null !== $data['Consistency']) {
             $object->setConsistency($data['Consistency']);
             unset($data['Consistency']);
         } elseif (\array_key_exists('Consistency', $data) && null === $data['Consistency']) {
             $object->setConsistency(null);
+            unset($data['Consistency']);
         }
         if (\array_key_exists('BindOptions', $data) && null !== $data['BindOptions']) {
-            $object->setBindOptions($this->denormalizer->denormalize($data['BindOptions'], 'Docker\\API\\Model\\MountBindOptions', 'json', $context));
+            $object->setBindOptions($this->denormalizer->denormalize($data['BindOptions'], \Docker\API\Model\MountBindOptions::class, 'json', $context));
             unset($data['BindOptions']);
         } elseif (\array_key_exists('BindOptions', $data) && null === $data['BindOptions']) {
             $object->setBindOptions(null);
+            unset($data['BindOptions']);
         }
         if (\array_key_exists('VolumeOptions', $data) && null !== $data['VolumeOptions']) {
-            $object->setVolumeOptions($this->denormalizer->denormalize($data['VolumeOptions'], 'Docker\\API\\Model\\MountVolumeOptions', 'json', $context));
+            $object->setVolumeOptions($this->denormalizer->denormalize($data['VolumeOptions'], \Docker\API\Model\MountVolumeOptions::class, 'json', $context));
             unset($data['VolumeOptions']);
         } elseif (\array_key_exists('VolumeOptions', $data) && null === $data['VolumeOptions']) {
             $object->setVolumeOptions(null);
+            unset($data['VolumeOptions']);
         }
         if (\array_key_exists('TmpfsOptions', $data) && null !== $data['TmpfsOptions']) {
-            $object->setTmpfsOptions($this->denormalizer->denormalize($data['TmpfsOptions'], 'Docker\\API\\Model\\MountTmpfsOptions', 'json', $context));
+            $object->setTmpfsOptions($this->denormalizer->denormalize($data['TmpfsOptions'], \Docker\API\Model\MountTmpfsOptions::class, 'json', $context));
             unset($data['TmpfsOptions']);
         } elseif (\array_key_exists('TmpfsOptions', $data) && null === $data['TmpfsOptions']) {
             $object->setTmpfsOptions(null);
+            unset($data['TmpfsOptions']);
         }
         foreach ($data as $key => $value) {
             if (preg_match('/.*/', (string) $key)) {
@@ -100,47 +111,44 @@ class MountNormalizer implements DenormalizerInterface, NormalizerInterface, Den
         return $object;
     }
 
-    /**
-     * @return array|string|int|float|bool|\ArrayObject|null
-     */
-    public function normalize($object, $format = null, array $context = [])
+    public function normalize(mixed $data, ?string $format = null, array $context = []): array|string|int|float|bool|\ArrayObject|null
     {
-        $data = [];
-        if ($object->isInitialized('target') && null !== $object->getTarget()) {
-            $data['Target'] = $object->getTarget();
+        $dataArray = [];
+        if ($data->isInitialized('target') && null !== $data->getTarget()) {
+            $dataArray['Target'] = $data->getTarget();
         }
-        if ($object->isInitialized('source') && null !== $object->getSource()) {
-            $data['Source'] = $object->getSource();
+        if ($data->isInitialized('source') && null !== $data->getSource()) {
+            $dataArray['Source'] = $data->getSource();
         }
-        if ($object->isInitialized('type') && null !== $object->getType()) {
-            $data['Type'] = $object->getType();
+        if ($data->isInitialized('type') && null !== $data->getType()) {
+            $dataArray['Type'] = $data->getType();
         }
-        if ($object->isInitialized('readOnly') && null !== $object->getReadOnly()) {
-            $data['ReadOnly'] = $object->getReadOnly();
+        if ($data->isInitialized('readOnly') && null !== $data->getReadOnly()) {
+            $dataArray['ReadOnly'] = $data->getReadOnly();
         }
-        if ($object->isInitialized('consistency') && null !== $object->getConsistency()) {
-            $data['Consistency'] = $object->getConsistency();
+        if ($data->isInitialized('consistency') && null !== $data->getConsistency()) {
+            $dataArray['Consistency'] = $data->getConsistency();
         }
-        if ($object->isInitialized('bindOptions') && null !== $object->getBindOptions()) {
-            $data['BindOptions'] = null === $object->getBindOptions() ? null : new \ArrayObject($this->normalizer->normalize($object->getBindOptions(), 'json', $context), \ArrayObject::ARRAY_AS_PROPS);
+        if ($data->isInitialized('bindOptions') && null !== $data->getBindOptions()) {
+            $dataArray['BindOptions'] = null === $data->getBindOptions() ? null : new \Docker\API\Runtime\JsonObject($this->normalizer->normalize($data->getBindOptions(), 'json', $context));
         }
-        if ($object->isInitialized('volumeOptions') && null !== $object->getVolumeOptions()) {
-            $data['VolumeOptions'] = null === $object->getVolumeOptions() ? null : new \ArrayObject($this->normalizer->normalize($object->getVolumeOptions(), 'json', $context), \ArrayObject::ARRAY_AS_PROPS);
+        if ($data->isInitialized('volumeOptions') && null !== $data->getVolumeOptions()) {
+            $dataArray['VolumeOptions'] = null === $data->getVolumeOptions() ? null : new \Docker\API\Runtime\JsonObject($this->normalizer->normalize($data->getVolumeOptions(), 'json', $context));
         }
-        if ($object->isInitialized('tmpfsOptions') && null !== $object->getTmpfsOptions()) {
-            $data['TmpfsOptions'] = null === $object->getTmpfsOptions() ? null : new \ArrayObject($this->normalizer->normalize($object->getTmpfsOptions(), 'json', $context), \ArrayObject::ARRAY_AS_PROPS);
+        if ($data->isInitialized('tmpfsOptions') && null !== $data->getTmpfsOptions()) {
+            $dataArray['TmpfsOptions'] = null === $data->getTmpfsOptions() ? null : new \Docker\API\Runtime\JsonObject($this->normalizer->normalize($data->getTmpfsOptions(), 'json', $context));
         }
-        foreach ($object as $key => $value) {
+        foreach ($data->additionalPropertyEntries() as $key => $value) {
             if (preg_match('/.*/', (string) $key)) {
-                $data[$key] = $value;
+                $dataArray[$key] = $value;
             }
         }
 
-        return $data;
+        return $dataArray;
     }
 
-    public function getSupportedTypes(string $format = null): array
+    public function getSupportedTypes(?string $format = null): array
     {
-        return ['Docker\\API\\Model\\Mount' => false];
+        return [\Docker\API\Model\Mount::class => false];
     }
 }

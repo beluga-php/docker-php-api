@@ -4,8 +4,12 @@ declare(strict_types=1);
 
 namespace Docker\API\Model;
 
-class MountTmpfsOptions extends \ArrayObject
+use Docker\API\Runtime\AdditionalAndPatternProperties;
+use Docker\API\Runtime\AdditionalPropertiesInterface;
+
+class MountTmpfsOptions implements AdditionalPropertiesInterface
 {
+    use AdditionalAndPatternProperties;
     /**
      * @var array
      */
@@ -64,5 +68,10 @@ class MountTmpfsOptions extends \ArrayObject
         $this->mode = $mode;
 
         return $this;
+    }
+
+    public function definedProperties(): array
+    {
+        return ['sizeBytes' => ['SizeBytes', 'getSizeBytes', 'setSizeBytes'], 'mode' => ['Mode', 'getMode', 'setMode']];
     }
 }

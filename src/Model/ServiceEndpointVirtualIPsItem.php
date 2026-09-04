@@ -4,8 +4,12 @@ declare(strict_types=1);
 
 namespace Docker\API\Model;
 
-class ServiceEndpointVirtualIPsItem extends \ArrayObject
+use Docker\API\Runtime\AdditionalAndPatternProperties;
+use Docker\API\Runtime\AdditionalPropertiesInterface;
+
+class ServiceEndpointVirtualIPsItem implements AdditionalPropertiesInterface
 {
+    use AdditionalAndPatternProperties;
     /**
      * @var array
      */
@@ -48,5 +52,10 @@ class ServiceEndpointVirtualIPsItem extends \ArrayObject
         $this->addr = $addr;
 
         return $this;
+    }
+
+    public function definedProperties(): array
+    {
+        return ['networkID' => ['NetworkID', 'getNetworkID', 'setNetworkID'], 'addr' => ['Addr', 'getAddr', 'setAddr']];
     }
 }

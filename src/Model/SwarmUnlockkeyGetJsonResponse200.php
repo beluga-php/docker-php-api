@@ -4,8 +4,12 @@ declare(strict_types=1);
 
 namespace Docker\API\Model;
 
-class SwarmUnlockkeyGetJsonResponse200 extends \ArrayObject
+use Docker\API\Runtime\AdditionalAndPatternProperties;
+use Docker\API\Runtime\AdditionalPropertiesInterface;
+
+class SwarmUnlockkeyGetJsonResponse200 implements AdditionalPropertiesInterface
 {
+    use AdditionalAndPatternProperties;
     /**
      * @var array
      */
@@ -39,5 +43,10 @@ class SwarmUnlockkeyGetJsonResponse200 extends \ArrayObject
         $this->unlockKey = $unlockKey;
 
         return $this;
+    }
+
+    public function definedProperties(): array
+    {
+        return ['unlockKey' => ['UnlockKey', 'getUnlockKey', 'setUnlockKey']];
     }
 }

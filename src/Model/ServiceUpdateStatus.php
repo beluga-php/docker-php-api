@@ -4,8 +4,12 @@ declare(strict_types=1);
 
 namespace Docker\API\Model;
 
-class ServiceUpdateStatus extends \ArrayObject
+use Docker\API\Runtime\AdditionalAndPatternProperties;
+use Docker\API\Runtime\AdditionalPropertiesInterface;
+
+class ServiceUpdateStatus implements AdditionalPropertiesInterface
 {
+    use AdditionalAndPatternProperties;
     /**
      * @var array
      */
@@ -82,5 +86,10 @@ class ServiceUpdateStatus extends \ArrayObject
         $this->message = $message;
 
         return $this;
+    }
+
+    public function definedProperties(): array
+    {
+        return ['state' => ['State', 'getState', 'setState'], 'startedAt' => ['StartedAt', 'getStartedAt', 'setStartedAt'], 'completedAt' => ['CompletedAt', 'getCompletedAt', 'setCompletedAt'], 'message' => ['Message', 'getMessage', 'setMessage']];
     }
 }

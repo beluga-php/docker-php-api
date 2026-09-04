@@ -4,8 +4,12 @@ declare(strict_types=1);
 
 namespace Docker\API\Model;
 
-class ServiceEndpoint extends \ArrayObject
+use Docker\API\Runtime\AdditionalAndPatternProperties;
+use Docker\API\Runtime\AdditionalPropertiesInterface;
+
+class ServiceEndpoint implements AdditionalPropertiesInterface
 {
+    use AdditionalAndPatternProperties;
     /**
      * @var array
      */
@@ -22,11 +26,11 @@ class ServiceEndpoint extends \ArrayObject
      */
     protected $spec;
     /**
-     * @var EndpointPortConfig[]|null
+     * @var list<EndpointPortConfig>|null
      */
     protected $ports;
     /**
-     * @var ServiceEndpointVirtualIPsItem[]|null
+     * @var list<ServiceEndpointVirtualIPsItem>|null
      */
     protected $virtualIPs;
 
@@ -50,7 +54,7 @@ class ServiceEndpoint extends \ArrayObject
     }
 
     /**
-     * @return EndpointPortConfig[]|null
+     * @return list<EndpointPortConfig>|null
      */
     public function getPorts(): ?array
     {
@@ -58,7 +62,7 @@ class ServiceEndpoint extends \ArrayObject
     }
 
     /**
-     * @param EndpointPortConfig[]|null $ports
+     * @param list<EndpointPortConfig>|null $ports
      */
     public function setPorts(?array $ports): self
     {
@@ -69,7 +73,7 @@ class ServiceEndpoint extends \ArrayObject
     }
 
     /**
-     * @return ServiceEndpointVirtualIPsItem[]|null
+     * @return list<ServiceEndpointVirtualIPsItem>|null
      */
     public function getVirtualIPs(): ?array
     {
@@ -77,7 +81,7 @@ class ServiceEndpoint extends \ArrayObject
     }
 
     /**
-     * @param ServiceEndpointVirtualIPsItem[]|null $virtualIPs
+     * @param list<ServiceEndpointVirtualIPsItem>|null $virtualIPs
      */
     public function setVirtualIPs(?array $virtualIPs): self
     {
@@ -85,5 +89,10 @@ class ServiceEndpoint extends \ArrayObject
         $this->virtualIPs = $virtualIPs;
 
         return $this;
+    }
+
+    public function definedProperties(): array
+    {
+        return ['spec' => ['Spec', 'getSpec', 'setSpec'], 'ports' => ['Ports', 'getPorts', 'setPorts'], 'virtualIPs' => ['VirtualIPs', 'getVirtualIPs', 'setVirtualIPs']];
     }
 }

@@ -4,8 +4,12 @@ declare(strict_types=1);
 
 namespace Docker\API\Model;
 
-class Health extends \ArrayObject
+use Docker\API\Runtime\AdditionalAndPatternProperties;
+use Docker\API\Runtime\AdditionalPropertiesInterface;
+
+class Health implements AdditionalPropertiesInterface
 {
+    use AdditionalAndPatternProperties;
     /**
      * @var array
      */
@@ -35,7 +39,7 @@ class Health extends \ArrayObject
     /**
      * Log contains the last few results (oldest first).
      *
-     * @var HealthcheckResult[]|null
+     * @var list<HealthcheckResult>|null
      */
     protected $log;
 
@@ -90,7 +94,7 @@ class Health extends \ArrayObject
     /**
      * Log contains the last few results (oldest first).
      *
-     * @return HealthcheckResult[]|null
+     * @return list<HealthcheckResult>|null
      */
     public function getLog(): ?array
     {
@@ -100,7 +104,7 @@ class Health extends \ArrayObject
     /**
      * Log contains the last few results (oldest first).
      *
-     * @param HealthcheckResult[]|null $log
+     * @param list<HealthcheckResult>|null $log
      */
     public function setLog(?array $log): self
     {
@@ -108,5 +112,10 @@ class Health extends \ArrayObject
         $this->log = $log;
 
         return $this;
+    }
+
+    public function definedProperties(): array
+    {
+        return ['status' => ['Status', 'getStatus', 'setStatus'], 'failingStreak' => ['FailingStreak', 'getFailingStreak', 'setFailingStreak'], 'log' => ['Log', 'getLog', 'setLog']];
     }
 }

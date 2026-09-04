@@ -21,48 +21,51 @@ class IPAMConfigNormalizer implements DenormalizerInterface, NormalizerInterface
     use NormalizerAwareTrait;
     use ValidatorTrait;
 
-    public function supportsDenormalization($data, $type, $format = null, array $context = []): bool
+    public function supportsDenormalization(mixed $data, string $type, ?string $format = null, array $context = []): bool
     {
-        return 'Docker\\API\\Model\\IPAMConfig' === $type;
+        return \Docker\API\Model\IPAMConfig::class === $type;
     }
 
-    public function supportsNormalization($data, $format = null, array $context = []): bool
+    public function supportsNormalization(mixed $data, ?string $format = null, array $context = []): bool
     {
-        return \is_object($data) && 'Docker\\API\\Model\\IPAMConfig' === $data::class;
+        return \is_object($data) && \Docker\API\Model\IPAMConfig::class === $data::class;
     }
 
-    public function denormalize($data, $class, $format = null, array $context = [])
+    public function denormalize(mixed $data, string $type, ?string $format = null, array $context = []): mixed
     {
-        if (isset($data['$ref'])) {
+        $object = new \Docker\API\Model\IPAMConfig();
+        if (null === $data || false === \is_array($data)) {
+            return $object;
+        }
+        if (isset($data['$ref']) && !isset($data['type']) && !isset($data['properties']) && !isset($data['allOf'])) {
             return new Reference($data['$ref'], $context['document-origin']);
         }
         if (isset($data['$recursiveRef'])) {
             return new Reference($data['$recursiveRef'], $context['document-origin']);
-        }
-        $object = new \Docker\API\Model\IPAMConfig();
-        if (null === $data || false === \is_array($data)) {
-            return $object;
         }
         if (\array_key_exists('Subnet', $data) && null !== $data['Subnet']) {
             $object->setSubnet($data['Subnet']);
             unset($data['Subnet']);
         } elseif (\array_key_exists('Subnet', $data) && null === $data['Subnet']) {
             $object->setSubnet(null);
+            unset($data['Subnet']);
         }
         if (\array_key_exists('IPRange', $data) && null !== $data['IPRange']) {
             $object->setIPRange($data['IPRange']);
             unset($data['IPRange']);
         } elseif (\array_key_exists('IPRange', $data) && null === $data['IPRange']) {
             $object->setIPRange(null);
+            unset($data['IPRange']);
         }
         if (\array_key_exists('Gateway', $data) && null !== $data['Gateway']) {
             $object->setGateway($data['Gateway']);
             unset($data['Gateway']);
         } elseif (\array_key_exists('Gateway', $data) && null === $data['Gateway']) {
             $object->setGateway(null);
+            unset($data['Gateway']);
         }
         if (\array_key_exists('AuxiliaryAddresses', $data) && null !== $data['AuxiliaryAddresses']) {
-            $values = new \ArrayObject([], \ArrayObject::ARRAY_AS_PROPS);
+            $values = new \Docker\API\Runtime\JsonObject();
             foreach ($data['AuxiliaryAddresses'] as $key => $value) {
                 $values[$key] = $value;
             }
@@ -70,6 +73,7 @@ class IPAMConfigNormalizer implements DenormalizerInterface, NormalizerInterface
             unset($data['AuxiliaryAddresses']);
         } elseif (\array_key_exists('AuxiliaryAddresses', $data) && null === $data['AuxiliaryAddresses']) {
             $object->setAuxiliaryAddresses(null);
+            unset($data['AuxiliaryAddresses']);
         }
         foreach ($data as $key_1 => $value_1) {
             if (preg_match('/.*/', (string) $key_1)) {
@@ -80,39 +84,36 @@ class IPAMConfigNormalizer implements DenormalizerInterface, NormalizerInterface
         return $object;
     }
 
-    /**
-     * @return array|string|int|float|bool|\ArrayObject|null
-     */
-    public function normalize($object, $format = null, array $context = [])
+    public function normalize(mixed $data, ?string $format = null, array $context = []): array|string|int|float|bool|\ArrayObject|null
     {
-        $data = [];
-        if ($object->isInitialized('subnet') && null !== $object->getSubnet()) {
-            $data['Subnet'] = $object->getSubnet();
+        $dataArray = [];
+        if ($data->isInitialized('subnet') && null !== $data->getSubnet()) {
+            $dataArray['Subnet'] = $data->getSubnet();
         }
-        if ($object->isInitialized('iPRange') && null !== $object->getIPRange()) {
-            $data['IPRange'] = $object->getIPRange();
+        if ($data->isInitialized('iPRange') && null !== $data->getIPRange()) {
+            $dataArray['IPRange'] = $data->getIPRange();
         }
-        if ($object->isInitialized('gateway') && null !== $object->getGateway()) {
-            $data['Gateway'] = $object->getGateway();
+        if ($data->isInitialized('gateway') && null !== $data->getGateway()) {
+            $dataArray['Gateway'] = $data->getGateway();
         }
-        if ($object->isInitialized('auxiliaryAddresses') && null !== $object->getAuxiliaryAddresses()) {
-            $values = new \ArrayObject([], \ArrayObject::ARRAY_AS_PROPS);
-            foreach ($object->getAuxiliaryAddresses() as $key => $value) {
+        if ($data->isInitialized('auxiliaryAddresses') && null !== $data->getAuxiliaryAddresses()) {
+            $values = new \Docker\API\Runtime\JsonObject();
+            foreach ($data->getAuxiliaryAddresses() as $key => $value) {
                 $values[$key] = $value;
             }
-            $data['AuxiliaryAddresses'] = $values;
+            $dataArray['AuxiliaryAddresses'] = $values;
         }
-        foreach ($object as $key_1 => $value_1) {
+        foreach ($data->additionalPropertyEntries() as $key_1 => $value_1) {
             if (preg_match('/.*/', (string) $key_1)) {
-                $data[$key_1] = $value_1;
+                $dataArray[$key_1] = $value_1;
             }
         }
 
-        return $data;
+        return $dataArray;
     }
 
-    public function getSupportedTypes(string $format = null): array
+    public function getSupportedTypes(?string $format = null): array
     {
-        return ['Docker\\API\\Model\\IPAMConfig' => false];
+        return [\Docker\API\Model\IPAMConfig::class => false];
     }
 }

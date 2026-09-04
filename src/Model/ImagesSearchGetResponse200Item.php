@@ -4,8 +4,12 @@ declare(strict_types=1);
 
 namespace Docker\API\Model;
 
-class ImagesSearchGetResponse200Item extends \ArrayObject
+use Docker\API\Runtime\AdditionalAndPatternProperties;
+use Docker\API\Runtime\AdditionalPropertiesInterface;
+
+class ImagesSearchGetResponse200Item implements AdditionalPropertiesInterface
 {
+    use AdditionalAndPatternProperties;
     /**
      * @var array
      */
@@ -99,5 +103,10 @@ class ImagesSearchGetResponse200Item extends \ArrayObject
         $this->starCount = $starCount;
 
         return $this;
+    }
+
+    public function definedProperties(): array
+    {
+        return ['description' => ['description', 'getDescription', 'setDescription'], 'isOfficial' => ['is_official', 'getIsOfficial', 'setIsOfficial'], 'isAutomated' => ['is_automated', 'getIsAutomated', 'setIsAutomated'], 'name' => ['name', 'getName', 'setName'], 'starCount' => ['star_count', 'getStarCount', 'setStarCount']];
     }
 }

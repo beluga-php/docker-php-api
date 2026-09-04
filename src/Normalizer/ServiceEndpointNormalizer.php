@@ -21,53 +21,56 @@ class ServiceEndpointNormalizer implements DenormalizerInterface, NormalizerInte
     use NormalizerAwareTrait;
     use ValidatorTrait;
 
-    public function supportsDenormalization($data, $type, $format = null, array $context = []): bool
+    public function supportsDenormalization(mixed $data, string $type, ?string $format = null, array $context = []): bool
     {
-        return 'Docker\\API\\Model\\ServiceEndpoint' === $type;
+        return \Docker\API\Model\ServiceEndpoint::class === $type;
     }
 
-    public function supportsNormalization($data, $format = null, array $context = []): bool
+    public function supportsNormalization(mixed $data, ?string $format = null, array $context = []): bool
     {
-        return \is_object($data) && 'Docker\\API\\Model\\ServiceEndpoint' === $data::class;
+        return \is_object($data) && \Docker\API\Model\ServiceEndpoint::class === $data::class;
     }
 
-    public function denormalize($data, $class, $format = null, array $context = [])
+    public function denormalize(mixed $data, string $type, ?string $format = null, array $context = []): mixed
     {
-        if (isset($data['$ref'])) {
+        $object = new \Docker\API\Model\ServiceEndpoint();
+        if (null === $data || false === \is_array($data)) {
+            return $object;
+        }
+        if (isset($data['$ref']) && !isset($data['type']) && !isset($data['properties']) && !isset($data['allOf'])) {
             return new Reference($data['$ref'], $context['document-origin']);
         }
         if (isset($data['$recursiveRef'])) {
             return new Reference($data['$recursiveRef'], $context['document-origin']);
         }
-        $object = new \Docker\API\Model\ServiceEndpoint();
-        if (null === $data || false === \is_array($data)) {
-            return $object;
-        }
         if (\array_key_exists('Spec', $data) && null !== $data['Spec']) {
-            $object->setSpec($this->denormalizer->denormalize($data['Spec'], 'Docker\\API\\Model\\EndpointSpec', 'json', $context));
+            $object->setSpec($this->denormalizer->denormalize($data['Spec'], \Docker\API\Model\EndpointSpec::class, 'json', $context));
             unset($data['Spec']);
         } elseif (\array_key_exists('Spec', $data) && null === $data['Spec']) {
             $object->setSpec(null);
+            unset($data['Spec']);
         }
         if (\array_key_exists('Ports', $data) && null !== $data['Ports']) {
             $values = [];
             foreach ($data['Ports'] as $value) {
-                $values[] = $this->denormalizer->denormalize($value, 'Docker\\API\\Model\\EndpointPortConfig', 'json', $context);
+                $values[] = $this->denormalizer->denormalize($value, \Docker\API\Model\EndpointPortConfig::class, 'json', $context);
             }
             $object->setPorts($values);
             unset($data['Ports']);
         } elseif (\array_key_exists('Ports', $data) && null === $data['Ports']) {
             $object->setPorts(null);
+            unset($data['Ports']);
         }
         if (\array_key_exists('VirtualIPs', $data) && null !== $data['VirtualIPs']) {
             $values_1 = [];
             foreach ($data['VirtualIPs'] as $value_1) {
-                $values_1[] = $this->denormalizer->denormalize($value_1, 'Docker\\API\\Model\\ServiceEndpointVirtualIPsItem', 'json', $context);
+                $values_1[] = $this->denormalizer->denormalize($value_1, \Docker\API\Model\ServiceEndpointVirtualIPsItem::class, 'json', $context);
             }
             $object->setVirtualIPs($values_1);
             unset($data['VirtualIPs']);
         } elseif (\array_key_exists('VirtualIPs', $data) && null === $data['VirtualIPs']) {
             $object->setVirtualIPs(null);
+            unset($data['VirtualIPs']);
         }
         foreach ($data as $key => $value_2) {
             if (preg_match('/.*/', (string) $key)) {
@@ -78,40 +81,37 @@ class ServiceEndpointNormalizer implements DenormalizerInterface, NormalizerInte
         return $object;
     }
 
-    /**
-     * @return array|string|int|float|bool|\ArrayObject|null
-     */
-    public function normalize($object, $format = null, array $context = [])
+    public function normalize(mixed $data, ?string $format = null, array $context = []): array|string|int|float|bool|\ArrayObject|null
     {
-        $data = [];
-        if ($object->isInitialized('spec') && null !== $object->getSpec()) {
-            $data['Spec'] = null === $object->getSpec() ? null : new \ArrayObject($this->normalizer->normalize($object->getSpec(), 'json', $context), \ArrayObject::ARRAY_AS_PROPS);
+        $dataArray = [];
+        if ($data->isInitialized('spec') && null !== $data->getSpec()) {
+            $dataArray['Spec'] = null === $data->getSpec() ? null : new \Docker\API\Runtime\JsonObject($this->normalizer->normalize($data->getSpec(), 'json', $context));
         }
-        if ($object->isInitialized('ports') && null !== $object->getPorts()) {
+        if ($data->isInitialized('ports') && null !== $data->getPorts()) {
             $values = [];
-            foreach ($object->getPorts() as $value) {
-                $values[] = null === $value ? null : new \ArrayObject($this->normalizer->normalize($value, 'json', $context), \ArrayObject::ARRAY_AS_PROPS);
+            foreach ($data->getPorts() as $value) {
+                $values[] = null === $value ? null : new \Docker\API\Runtime\JsonObject($this->normalizer->normalize($value, 'json', $context));
             }
-            $data['Ports'] = $values;
+            $dataArray['Ports'] = $values;
         }
-        if ($object->isInitialized('virtualIPs') && null !== $object->getVirtualIPs()) {
+        if ($data->isInitialized('virtualIPs') && null !== $data->getVirtualIPs()) {
             $values_1 = [];
-            foreach ($object->getVirtualIPs() as $value_1) {
-                $values_1[] = null === $value_1 ? null : new \ArrayObject($this->normalizer->normalize($value_1, 'json', $context), \ArrayObject::ARRAY_AS_PROPS);
+            foreach ($data->getVirtualIPs() as $value_1) {
+                $values_1[] = null === $value_1 ? null : new \Docker\API\Runtime\JsonObject($this->normalizer->normalize($value_1, 'json', $context));
             }
-            $data['VirtualIPs'] = $values_1;
+            $dataArray['VirtualIPs'] = $values_1;
         }
-        foreach ($object as $key => $value_2) {
+        foreach ($data->additionalPropertyEntries() as $key => $value_2) {
             if (preg_match('/.*/', (string) $key)) {
-                $data[$key] = $value_2;
+                $dataArray[$key] = $value_2;
             }
         }
 
-        return $data;
+        return $dataArray;
     }
 
-    public function getSupportedTypes(string $format = null): array
+    public function getSupportedTypes(?string $format = null): array
     {
-        return ['Docker\\API\\Model\\ServiceEndpoint' => false];
+        return [\Docker\API\Model\ServiceEndpoint::class => false];
     }
 }

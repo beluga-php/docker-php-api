@@ -21,49 +21,52 @@ class PluginConfigInterfaceNormalizer implements DenormalizerInterface, Normaliz
     use NormalizerAwareTrait;
     use ValidatorTrait;
 
-    public function supportsDenormalization($data, $type, $format = null, array $context = []): bool
+    public function supportsDenormalization(mixed $data, string $type, ?string $format = null, array $context = []): bool
     {
-        return 'Docker\\API\\Model\\PluginConfigInterface' === $type;
+        return \Docker\API\Model\PluginConfigInterface::class === $type;
     }
 
-    public function supportsNormalization($data, $format = null, array $context = []): bool
+    public function supportsNormalization(mixed $data, ?string $format = null, array $context = []): bool
     {
-        return \is_object($data) && 'Docker\\API\\Model\\PluginConfigInterface' === $data::class;
+        return \is_object($data) && \Docker\API\Model\PluginConfigInterface::class === $data::class;
     }
 
-    public function denormalize($data, $class, $format = null, array $context = [])
+    public function denormalize(mixed $data, string $type, ?string $format = null, array $context = []): mixed
     {
-        if (isset($data['$ref'])) {
+        $object = new \Docker\API\Model\PluginConfigInterface();
+        if (null === $data || false === \is_array($data)) {
+            return $object;
+        }
+        if (isset($data['$ref']) && !isset($data['type']) && !isset($data['properties']) && !isset($data['allOf'])) {
             return new Reference($data['$ref'], $context['document-origin']);
         }
         if (isset($data['$recursiveRef'])) {
             return new Reference($data['$recursiveRef'], $context['document-origin']);
         }
-        $object = new \Docker\API\Model\PluginConfigInterface();
-        if (null === $data || false === \is_array($data)) {
-            return $object;
-        }
         if (\array_key_exists('Types', $data) && null !== $data['Types']) {
             $values = [];
             foreach ($data['Types'] as $value) {
-                $values[] = $this->denormalizer->denormalize($value, 'Docker\\API\\Model\\PluginInterfaceType', 'json', $context);
+                $values[] = $this->denormalizer->denormalize($value, \Docker\API\Model\PluginInterfaceType::class, 'json', $context);
             }
             $object->setTypes($values);
             unset($data['Types']);
         } elseif (\array_key_exists('Types', $data) && null === $data['Types']) {
             $object->setTypes(null);
+            unset($data['Types']);
         }
         if (\array_key_exists('Socket', $data) && null !== $data['Socket']) {
             $object->setSocket($data['Socket']);
             unset($data['Socket']);
         } elseif (\array_key_exists('Socket', $data) && null === $data['Socket']) {
             $object->setSocket(null);
+            unset($data['Socket']);
         }
         if (\array_key_exists('ProtocolScheme', $data) && null !== $data['ProtocolScheme']) {
             $object->setProtocolScheme($data['ProtocolScheme']);
             unset($data['ProtocolScheme']);
         } elseif (\array_key_exists('ProtocolScheme', $data) && null === $data['ProtocolScheme']) {
             $object->setProtocolScheme(null);
+            unset($data['ProtocolScheme']);
         }
         foreach ($data as $key => $value_1) {
             if (preg_match('/.*/', (string) $key)) {
@@ -74,32 +77,29 @@ class PluginConfigInterfaceNormalizer implements DenormalizerInterface, Normaliz
         return $object;
     }
 
-    /**
-     * @return array|string|int|float|bool|\ArrayObject|null
-     */
-    public function normalize($object, $format = null, array $context = [])
+    public function normalize(mixed $data, ?string $format = null, array $context = []): array|string|int|float|bool|\ArrayObject|null
     {
-        $data = [];
+        $dataArray = [];
         $values = [];
-        foreach ($object->getTypes() as $value) {
-            $values[] = null === $value ? null : new \ArrayObject($this->normalizer->normalize($value, 'json', $context), \ArrayObject::ARRAY_AS_PROPS);
+        foreach ($data->getTypes() as $value) {
+            $values[] = null === $value ? null : new \Docker\API\Runtime\JsonObject($this->normalizer->normalize($value, 'json', $context));
         }
-        $data['Types'] = $values;
-        $data['Socket'] = $object->getSocket();
-        if ($object->isInitialized('protocolScheme') && null !== $object->getProtocolScheme()) {
-            $data['ProtocolScheme'] = $object->getProtocolScheme();
+        $dataArray['Types'] = $values;
+        $dataArray['Socket'] = $data->getSocket();
+        if ($data->isInitialized('protocolScheme') && null !== $data->getProtocolScheme()) {
+            $dataArray['ProtocolScheme'] = $data->getProtocolScheme();
         }
-        foreach ($object as $key => $value_1) {
+        foreach ($data->additionalPropertyEntries() as $key => $value_1) {
             if (preg_match('/.*/', (string) $key)) {
-                $data[$key] = $value_1;
+                $dataArray[$key] = $value_1;
             }
         }
 
-        return $data;
+        return $dataArray;
     }
 
-    public function getSupportedTypes(string $format = null): array
+    public function getSupportedTypes(?string $format = null): array
     {
-        return ['Docker\\API\\Model\\PluginConfigInterface' => false];
+        return [\Docker\API\Model\PluginConfigInterface::class => false];
     }
 }

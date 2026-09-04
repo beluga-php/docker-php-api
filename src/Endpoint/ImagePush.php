@@ -19,21 +19,16 @@ class ImagePush extends \Docker\API\Runtime\Client\BaseEndpoint implements \Dock
      *
      * The push is cancelled if the HTTP connection is closed.
      *
-     * @param string $name            image name or ID
-     * @param array  $queryParameters {
-     *
-     * @var string $tag The tag to associate with the image on the registry.
-     *             }
-     *
-     * @param array $headerParameters {
-     *
-     * @var string $X-Registry-Auth A base64url-encoded auth configuration.
+     * @param string $name image name or ID
+     * @param array{
+     *    "tag"?: string, //The tag to associate with the image on the registry.
+     * } $queryParameters
+     * @param array{
+     *    "X-Registry-Auth": string, //A base64url-encoded auth configuration.
      *
      * Refer to the [authentication section](#section/Authentication) for
      * details.
-     *
-     * }
-     *
+     * } $headerParameters
      * @param array $accept Accept content header application/json|text/plain
      */
     public function __construct(string $name, array $queryParameters = [], array $headerParameters = [], array $accept = [])
@@ -51,7 +46,7 @@ class ImagePush extends \Docker\API\Runtime\Client\BaseEndpoint implements \Dock
 
     public function getUri(): string
     {
-        return str_replace(['{name}'], [$this->name], '/images/{name}/push');
+        return str_replace(['{name}'], [rawurlencode($this->name)], '/images/{name}/push');
     }
 
     public function getBody(\Symfony\Component\Serializer\SerializerInterface $serializer, $streamFactory = null): array
@@ -96,17 +91,17 @@ class ImagePush extends \Docker\API\Runtime\Client\BaseEndpoint implements \Dock
      *
      * @return null
      */
-    protected function transformResponseBody(\Psr\Http\Message\ResponseInterface $response, \Symfony\Component\Serializer\SerializerInterface $serializer, string $contentType = null)
+    protected function transformResponseBody(\Psr\Http\Message\ResponseInterface $response, \Symfony\Component\Serializer\SerializerInterface $serializer, ?string $contentType = null)
     {
         $status = $response->getStatusCode();
         $body = (string) $response->getBody();
         if (200 === $status) {
         }
-        if ((null === $contentType) === false && (404 === $status && false !== mb_strpos($contentType, 'application/json'))) {
-            throw new \Docker\API\Exception\ImagePushNotFoundException($serializer->deserialize($body, 'Docker\\API\\Model\\ErrorResponse', 'json'), $response);
+        if ((null === $contentType) === false && (404 === $status && false !== stripos(strtolower($contentType), 'application/json'))) {
+            throw new \Docker\API\Exception\ImagePushNotFoundException($serializer->deserialize($body, 'Docker\API\Model\ErrorResponse', 'json'), $response);
         }
-        if ((null === $contentType) === false && (500 === $status && false !== mb_strpos($contentType, 'application/json'))) {
-            throw new \Docker\API\Exception\ImagePushInternalServerErrorException($serializer->deserialize($body, 'Docker\\API\\Model\\ErrorResponse', 'json'), $response);
+        if ((null === $contentType) === false && (500 === $status && false !== stripos(strtolower($contentType), 'application/json'))) {
+            throw new \Docker\API\Exception\ImagePushInternalServerErrorException($serializer->deserialize($body, 'Docker\API\Model\ErrorResponse', 'json'), $response);
         }
     }
 

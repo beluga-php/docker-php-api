@@ -21,33 +21,34 @@ class RuntimeNormalizer implements DenormalizerInterface, NormalizerInterface, D
     use NormalizerAwareTrait;
     use ValidatorTrait;
 
-    public function supportsDenormalization($data, $type, $format = null, array $context = []): bool
+    public function supportsDenormalization(mixed $data, string $type, ?string $format = null, array $context = []): bool
     {
-        return 'Docker\\API\\Model\\Runtime' === $type;
+        return \Docker\API\Model\Runtime::class === $type;
     }
 
-    public function supportsNormalization($data, $format = null, array $context = []): bool
+    public function supportsNormalization(mixed $data, ?string $format = null, array $context = []): bool
     {
-        return \is_object($data) && 'Docker\\API\\Model\\Runtime' === $data::class;
+        return \is_object($data) && \Docker\API\Model\Runtime::class === $data::class;
     }
 
-    public function denormalize($data, $class, $format = null, array $context = [])
+    public function denormalize(mixed $data, string $type, ?string $format = null, array $context = []): mixed
     {
-        if (isset($data['$ref'])) {
+        $object = new \Docker\API\Model\Runtime();
+        if (null === $data || false === \is_array($data)) {
+            return $object;
+        }
+        if (isset($data['$ref']) && !isset($data['type']) && !isset($data['properties']) && !isset($data['allOf'])) {
             return new Reference($data['$ref'], $context['document-origin']);
         }
         if (isset($data['$recursiveRef'])) {
             return new Reference($data['$recursiveRef'], $context['document-origin']);
-        }
-        $object = new \Docker\API\Model\Runtime();
-        if (null === $data || false === \is_array($data)) {
-            return $object;
         }
         if (\array_key_exists('path', $data) && null !== $data['path']) {
             $object->setPath($data['path']);
             unset($data['path']);
         } elseif (\array_key_exists('path', $data) && null === $data['path']) {
             $object->setPath(null);
+            unset($data['path']);
         }
         if (\array_key_exists('runtimeArgs', $data) && null !== $data['runtimeArgs']) {
             $values = [];
@@ -58,6 +59,7 @@ class RuntimeNormalizer implements DenormalizerInterface, NormalizerInterface, D
             unset($data['runtimeArgs']);
         } elseif (\array_key_exists('runtimeArgs', $data) && null === $data['runtimeArgs']) {
             $object->setRuntimeArgs(null);
+            unset($data['runtimeArgs']);
         }
         foreach ($data as $key => $value_1) {
             if (preg_match('/.*/', (string) $key)) {
@@ -68,33 +70,30 @@ class RuntimeNormalizer implements DenormalizerInterface, NormalizerInterface, D
         return $object;
     }
 
-    /**
-     * @return array|string|int|float|bool|\ArrayObject|null
-     */
-    public function normalize($object, $format = null, array $context = [])
+    public function normalize(mixed $data, ?string $format = null, array $context = []): array|string|int|float|bool|\ArrayObject|null
     {
-        $data = [];
-        if ($object->isInitialized('path') && null !== $object->getPath()) {
-            $data['path'] = $object->getPath();
+        $dataArray = [];
+        if ($data->isInitialized('path') && null !== $data->getPath()) {
+            $dataArray['path'] = $data->getPath();
         }
-        if ($object->isInitialized('runtimeArgs') && null !== $object->getRuntimeArgs()) {
+        if ($data->isInitialized('runtimeArgs') && null !== $data->getRuntimeArgs()) {
             $values = [];
-            foreach ($object->getRuntimeArgs() as $value) {
+            foreach ($data->getRuntimeArgs() as $value) {
                 $values[] = $value;
             }
-            $data['runtimeArgs'] = $values;
+            $dataArray['runtimeArgs'] = $values;
         }
-        foreach ($object as $key => $value_1) {
+        foreach ($data->additionalPropertyEntries() as $key => $value_1) {
             if (preg_match('/.*/', (string) $key)) {
-                $data[$key] = $value_1;
+                $dataArray[$key] = $value_1;
             }
         }
 
-        return $data;
+        return $dataArray;
     }
 
-    public function getSupportedTypes(string $format = null): array
+    public function getSupportedTypes(?string $format = null): array
     {
-        return ['Docker\\API\\Model\\Runtime' => false];
+        return [\Docker\API\Model\Runtime::class => false];
     }
 }

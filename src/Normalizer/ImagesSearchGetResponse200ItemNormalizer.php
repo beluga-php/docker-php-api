@@ -21,57 +21,68 @@ class ImagesSearchGetResponse200ItemNormalizer implements DenormalizerInterface,
     use NormalizerAwareTrait;
     use ValidatorTrait;
 
-    public function supportsDenormalization($data, $type, $format = null, array $context = []): bool
+    public function supportsDenormalization(mixed $data, string $type, ?string $format = null, array $context = []): bool
     {
-        return 'Docker\\API\\Model\\ImagesSearchGetResponse200Item' === $type;
+        return \Docker\API\Model\ImagesSearchGetResponse200Item::class === $type;
     }
 
-    public function supportsNormalization($data, $format = null, array $context = []): bool
+    public function supportsNormalization(mixed $data, ?string $format = null, array $context = []): bool
     {
-        return \is_object($data) && 'Docker\\API\\Model\\ImagesSearchGetResponse200Item' === $data::class;
+        return \is_object($data) && \Docker\API\Model\ImagesSearchGetResponse200Item::class === $data::class;
     }
 
-    public function denormalize($data, $class, $format = null, array $context = [])
+    public function denormalize(mixed $data, string $type, ?string $format = null, array $context = []): mixed
     {
-        if (isset($data['$ref'])) {
+        $object = new \Docker\API\Model\ImagesSearchGetResponse200Item();
+        if (null === $data || false === \is_array($data)) {
+            return $object;
+        }
+        if (isset($data['$ref']) && !isset($data['type']) && !isset($data['properties']) && !isset($data['allOf'])) {
             return new Reference($data['$ref'], $context['document-origin']);
         }
         if (isset($data['$recursiveRef'])) {
             return new Reference($data['$recursiveRef'], $context['document-origin']);
         }
-        $object = new \Docker\API\Model\ImagesSearchGetResponse200Item();
-        if (null === $data || false === \is_array($data)) {
-            return $object;
+        if (\array_key_exists('is_official', $data) && \is_int($data['is_official'])) {
+            $data['is_official'] = (bool) $data['is_official'];
+        }
+        if (\array_key_exists('is_automated', $data) && \is_int($data['is_automated'])) {
+            $data['is_automated'] = (bool) $data['is_automated'];
         }
         if (\array_key_exists('description', $data) && null !== $data['description']) {
             $object->setDescription($data['description']);
             unset($data['description']);
         } elseif (\array_key_exists('description', $data) && null === $data['description']) {
             $object->setDescription(null);
+            unset($data['description']);
         }
         if (\array_key_exists('is_official', $data) && null !== $data['is_official']) {
             $object->setIsOfficial($data['is_official']);
             unset($data['is_official']);
         } elseif (\array_key_exists('is_official', $data) && null === $data['is_official']) {
             $object->setIsOfficial(null);
+            unset($data['is_official']);
         }
         if (\array_key_exists('is_automated', $data) && null !== $data['is_automated']) {
             $object->setIsAutomated($data['is_automated']);
             unset($data['is_automated']);
         } elseif (\array_key_exists('is_automated', $data) && null === $data['is_automated']) {
             $object->setIsAutomated(null);
+            unset($data['is_automated']);
         }
         if (\array_key_exists('name', $data) && null !== $data['name']) {
             $object->setName($data['name']);
             unset($data['name']);
         } elseif (\array_key_exists('name', $data) && null === $data['name']) {
             $object->setName(null);
+            unset($data['name']);
         }
         if (\array_key_exists('star_count', $data) && null !== $data['star_count']) {
             $object->setStarCount($data['star_count']);
             unset($data['star_count']);
         } elseif (\array_key_exists('star_count', $data) && null === $data['star_count']) {
             $object->setStarCount(null);
+            unset($data['star_count']);
         }
         foreach ($data as $key => $value) {
             if (preg_match('/.*/', (string) $key)) {
@@ -82,38 +93,35 @@ class ImagesSearchGetResponse200ItemNormalizer implements DenormalizerInterface,
         return $object;
     }
 
-    /**
-     * @return array|string|int|float|bool|\ArrayObject|null
-     */
-    public function normalize($object, $format = null, array $context = [])
+    public function normalize(mixed $data, ?string $format = null, array $context = []): array|string|int|float|bool|\ArrayObject|null
     {
-        $data = [];
-        if ($object->isInitialized('description') && null !== $object->getDescription()) {
-            $data['description'] = $object->getDescription();
+        $dataArray = [];
+        if ($data->isInitialized('description') && null !== $data->getDescription()) {
+            $dataArray['description'] = $data->getDescription();
         }
-        if ($object->isInitialized('isOfficial') && null !== $object->getIsOfficial()) {
-            $data['is_official'] = $object->getIsOfficial();
+        if ($data->isInitialized('isOfficial') && null !== $data->getIsOfficial()) {
+            $dataArray['is_official'] = $data->getIsOfficial();
         }
-        if ($object->isInitialized('isAutomated') && null !== $object->getIsAutomated()) {
-            $data['is_automated'] = $object->getIsAutomated();
+        if ($data->isInitialized('isAutomated') && null !== $data->getIsAutomated()) {
+            $dataArray['is_automated'] = $data->getIsAutomated();
         }
-        if ($object->isInitialized('name') && null !== $object->getName()) {
-            $data['name'] = $object->getName();
+        if ($data->isInitialized('name') && null !== $data->getName()) {
+            $dataArray['name'] = $data->getName();
         }
-        if ($object->isInitialized('starCount') && null !== $object->getStarCount()) {
-            $data['star_count'] = $object->getStarCount();
+        if ($data->isInitialized('starCount') && null !== $data->getStarCount()) {
+            $dataArray['star_count'] = $data->getStarCount();
         }
-        foreach ($object as $key => $value) {
+        foreach ($data->additionalPropertyEntries() as $key => $value) {
             if (preg_match('/.*/', (string) $key)) {
-                $data[$key] = $value;
+                $dataArray[$key] = $value;
             }
         }
 
-        return $data;
+        return $dataArray;
     }
 
-    public function getSupportedTypes(string $format = null): array
+    public function getSupportedTypes(?string $format = null): array
     {
-        return ['Docker\\API\\Model\\ImagesSearchGetResponse200Item' => false];
+        return [\Docker\API\Model\ImagesSearchGetResponse200Item::class => false];
     }
 }

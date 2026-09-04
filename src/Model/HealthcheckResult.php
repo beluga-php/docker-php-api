@@ -4,8 +4,12 @@ declare(strict_types=1);
 
 namespace Docker\API\Model;
 
-class HealthcheckResult extends \ArrayObject
+use Docker\API\Runtime\AdditionalAndPatternProperties;
+use Docker\API\Runtime\AdditionalPropertiesInterface;
+
+class HealthcheckResult implements AdditionalPropertiesInterface
 {
+    use AdditionalAndPatternProperties;
     /**
      * @var array
      */
@@ -30,7 +34,7 @@ class HealthcheckResult extends \ArrayObject
      */
     protected $end;
     /**
-     * ExitCode meanings:.
+     * ExitCode meanings:
      *
      * - `0` healthy
      * - `1` unhealthy
@@ -90,7 +94,7 @@ class HealthcheckResult extends \ArrayObject
     }
 
     /**
-     * ExitCode meanings:.
+     * ExitCode meanings:
      *
      * - `0` healthy
      * - `1` unhealthy
@@ -103,7 +107,7 @@ class HealthcheckResult extends \ArrayObject
     }
 
     /**
-     * ExitCode meanings:.
+     * ExitCode meanings:
      *
      * - `0` healthy
      * - `1` unhealthy
@@ -135,5 +139,10 @@ class HealthcheckResult extends \ArrayObject
         $this->output = $output;
 
         return $this;
+    }
+
+    public function definedProperties(): array
+    {
+        return ['start' => ['Start', 'getStart', 'setStart'], 'end' => ['End', 'getEnd', 'setEnd'], 'exitCode' => ['ExitCode', 'getExitCode', 'setExitCode'], 'output' => ['Output', 'getOutput', 'setOutput']];
     }
 }

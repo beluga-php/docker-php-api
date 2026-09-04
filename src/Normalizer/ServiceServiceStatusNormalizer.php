@@ -21,45 +21,48 @@ class ServiceServiceStatusNormalizer implements DenormalizerInterface, Normalize
     use NormalizerAwareTrait;
     use ValidatorTrait;
 
-    public function supportsDenormalization($data, $type, $format = null, array $context = []): bool
+    public function supportsDenormalization(mixed $data, string $type, ?string $format = null, array $context = []): bool
     {
-        return 'Docker\\API\\Model\\ServiceServiceStatus' === $type;
+        return \Docker\API\Model\ServiceServiceStatus::class === $type;
     }
 
-    public function supportsNormalization($data, $format = null, array $context = []): bool
+    public function supportsNormalization(mixed $data, ?string $format = null, array $context = []): bool
     {
-        return \is_object($data) && 'Docker\\API\\Model\\ServiceServiceStatus' === $data::class;
+        return \is_object($data) && \Docker\API\Model\ServiceServiceStatus::class === $data::class;
     }
 
-    public function denormalize($data, $class, $format = null, array $context = [])
+    public function denormalize(mixed $data, string $type, ?string $format = null, array $context = []): mixed
     {
-        if (isset($data['$ref'])) {
+        $object = new \Docker\API\Model\ServiceServiceStatus();
+        if (null === $data || false === \is_array($data)) {
+            return $object;
+        }
+        if (isset($data['$ref']) && !isset($data['type']) && !isset($data['properties']) && !isset($data['allOf'])) {
             return new Reference($data['$ref'], $context['document-origin']);
         }
         if (isset($data['$recursiveRef'])) {
             return new Reference($data['$recursiveRef'], $context['document-origin']);
-        }
-        $object = new \Docker\API\Model\ServiceServiceStatus();
-        if (null === $data || false === \is_array($data)) {
-            return $object;
         }
         if (\array_key_exists('RunningTasks', $data) && null !== $data['RunningTasks']) {
             $object->setRunningTasks($data['RunningTasks']);
             unset($data['RunningTasks']);
         } elseif (\array_key_exists('RunningTasks', $data) && null === $data['RunningTasks']) {
             $object->setRunningTasks(null);
+            unset($data['RunningTasks']);
         }
         if (\array_key_exists('DesiredTasks', $data) && null !== $data['DesiredTasks']) {
             $object->setDesiredTasks($data['DesiredTasks']);
             unset($data['DesiredTasks']);
         } elseif (\array_key_exists('DesiredTasks', $data) && null === $data['DesiredTasks']) {
             $object->setDesiredTasks(null);
+            unset($data['DesiredTasks']);
         }
         if (\array_key_exists('CompletedTasks', $data) && null !== $data['CompletedTasks']) {
             $object->setCompletedTasks($data['CompletedTasks']);
             unset($data['CompletedTasks']);
         } elseif (\array_key_exists('CompletedTasks', $data) && null === $data['CompletedTasks']) {
             $object->setCompletedTasks(null);
+            unset($data['CompletedTasks']);
         }
         foreach ($data as $key => $value) {
             if (preg_match('/.*/', (string) $key)) {
@@ -70,32 +73,29 @@ class ServiceServiceStatusNormalizer implements DenormalizerInterface, Normalize
         return $object;
     }
 
-    /**
-     * @return array|string|int|float|bool|\ArrayObject|null
-     */
-    public function normalize($object, $format = null, array $context = [])
+    public function normalize(mixed $data, ?string $format = null, array $context = []): array|string|int|float|bool|\ArrayObject|null
     {
-        $data = [];
-        if ($object->isInitialized('runningTasks') && null !== $object->getRunningTasks()) {
-            $data['RunningTasks'] = $object->getRunningTasks();
+        $dataArray = [];
+        if ($data->isInitialized('runningTasks') && null !== $data->getRunningTasks()) {
+            $dataArray['RunningTasks'] = $data->getRunningTasks();
         }
-        if ($object->isInitialized('desiredTasks') && null !== $object->getDesiredTasks()) {
-            $data['DesiredTasks'] = $object->getDesiredTasks();
+        if ($data->isInitialized('desiredTasks') && null !== $data->getDesiredTasks()) {
+            $dataArray['DesiredTasks'] = $data->getDesiredTasks();
         }
-        if ($object->isInitialized('completedTasks') && null !== $object->getCompletedTasks()) {
-            $data['CompletedTasks'] = $object->getCompletedTasks();
+        if ($data->isInitialized('completedTasks') && null !== $data->getCompletedTasks()) {
+            $dataArray['CompletedTasks'] = $data->getCompletedTasks();
         }
-        foreach ($object as $key => $value) {
+        foreach ($data->additionalPropertyEntries() as $key => $value) {
             if (preg_match('/.*/', (string) $key)) {
-                $data[$key] = $value;
+                $dataArray[$key] = $value;
             }
         }
 
-        return $data;
+        return $dataArray;
     }
 
-    public function getSupportedTypes(string $format = null): array
+    public function getSupportedTypes(?string $format = null): array
     {
-        return ['Docker\\API\\Model\\ServiceServiceStatus' => false];
+        return [\Docker\API\Model\ServiceServiceStatus::class => false];
     }
 }

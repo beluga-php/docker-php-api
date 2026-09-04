@@ -4,8 +4,12 @@ declare(strict_types=1);
 
 namespace Docker\API\Model;
 
-class ObjectVersion extends \ArrayObject
+use Docker\API\Runtime\AdditionalAndPatternProperties;
+use Docker\API\Runtime\AdditionalPropertiesInterface;
+
+class ObjectVersion implements AdditionalPropertiesInterface
 {
+    use AdditionalAndPatternProperties;
     /**
      * @var array
      */
@@ -31,5 +35,10 @@ class ObjectVersion extends \ArrayObject
         $this->index = $index;
 
         return $this;
+    }
+
+    public function definedProperties(): array
+    {
+        return ['index' => ['Index', 'getIndex', 'setIndex']];
     }
 }

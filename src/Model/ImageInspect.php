@@ -4,8 +4,12 @@ declare(strict_types=1);
 
 namespace Docker\API\Model;
 
-class ImageInspect extends \ArrayObject
+use Docker\API\Runtime\AdditionalAndPatternProperties;
+use Docker\API\Runtime\AdditionalPropertiesInterface;
+
+class ImageInspect implements AdditionalPropertiesInterface
 {
+    use AdditionalAndPatternProperties;
     /**
      * @var array
      */
@@ -36,7 +40,7 @@ class ImageInspect extends \ArrayObject
      * empty if no tags reference the image, in which case the image is
      * "untagged", in which case it can still be referenced by its ID.
      *
-     * @var string[]|null
+     * @var list<string>|null
      */
     protected $repoTags;
     /**
@@ -48,7 +52,7 @@ class ImageInspect extends \ArrayObject
      * from a registry, or if the image was pushed to a registry, which is when
      * the manifest is generated and its digest calculated.
      *
-     * @var string[]|null
+     * @var list<string>|null
      */
     protected $repoDigests;
     /**
@@ -230,7 +234,7 @@ class ImageInspect extends \ArrayObject
      * empty if no tags reference the image, in which case the image is
      * "untagged", in which case it can still be referenced by its ID.
      *
-     * @return string[]|null
+     * @return list<string>|null
      */
     public function getRepoTags(): ?array
     {
@@ -245,7 +249,7 @@ class ImageInspect extends \ArrayObject
      * empty if no tags reference the image, in which case the image is
      * "untagged", in which case it can still be referenced by its ID.
      *
-     * @param string[]|null $repoTags
+     * @param list<string>|null $repoTags
      */
     public function setRepoTags(?array $repoTags): self
     {
@@ -264,7 +268,7 @@ class ImageInspect extends \ArrayObject
      * from a registry, or if the image was pushed to a registry, which is when
      * the manifest is generated and its digest calculated.
      *
-     * @return string[]|null
+     * @return list<string>|null
      */
     public function getRepoDigests(): ?array
     {
@@ -280,7 +284,7 @@ class ImageInspect extends \ArrayObject
      * from a registry, or if the image was pushed to a registry, which is when
      * the manifest is generated and its digest calculated.
      *
-     * @param string[]|null $repoDigests
+     * @param list<string>|null $repoDigests
      */
     public function setRepoDigests(?array $repoDigests): self
     {
@@ -681,5 +685,10 @@ class ImageInspect extends \ArrayObject
         $this->metadata = $metadata;
 
         return $this;
+    }
+
+    public function definedProperties(): array
+    {
+        return ['id' => ['Id', 'getId', 'setId'], 'repoTags' => ['RepoTags', 'getRepoTags', 'setRepoTags'], 'repoDigests' => ['RepoDigests', 'getRepoDigests', 'setRepoDigests'], 'parent' => ['Parent', 'getParent', 'setParent'], 'comment' => ['Comment', 'getComment', 'setComment'], 'created' => ['Created', 'getCreated', 'setCreated'], 'container' => ['Container', 'getContainer', 'setContainer'], 'containerConfig' => ['ContainerConfig', 'getContainerConfig', 'setContainerConfig'], 'dockerVersion' => ['DockerVersion', 'getDockerVersion', 'setDockerVersion'], 'author' => ['Author', 'getAuthor', 'setAuthor'], 'config' => ['Config', 'getConfig', 'setConfig'], 'architecture' => ['Architecture', 'getArchitecture', 'setArchitecture'], 'variant' => ['Variant', 'getVariant', 'setVariant'], 'os' => ['Os', 'getOs', 'setOs'], 'osVersion' => ['OsVersion', 'getOsVersion', 'setOsVersion'], 'size' => ['Size', 'getSize', 'setSize'], 'virtualSize' => ['VirtualSize', 'getVirtualSize', 'setVirtualSize'], 'graphDriver' => ['GraphDriver', 'getGraphDriver', 'setGraphDriver'], 'rootFS' => ['RootFS', 'getRootFS', 'setRootFS'], 'metadata' => ['Metadata', 'getMetadata', 'setMetadata']];
     }
 }

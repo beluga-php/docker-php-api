@@ -21,39 +21,41 @@ class DeviceRequestNormalizer implements DenormalizerInterface, NormalizerInterf
     use NormalizerAwareTrait;
     use ValidatorTrait;
 
-    public function supportsDenormalization($data, $type, $format = null, array $context = []): bool
+    public function supportsDenormalization(mixed $data, string $type, ?string $format = null, array $context = []): bool
     {
-        return 'Docker\\API\\Model\\DeviceRequest' === $type;
+        return \Docker\API\Model\DeviceRequest::class === $type;
     }
 
-    public function supportsNormalization($data, $format = null, array $context = []): bool
+    public function supportsNormalization(mixed $data, ?string $format = null, array $context = []): bool
     {
-        return \is_object($data) && 'Docker\\API\\Model\\DeviceRequest' === $data::class;
+        return \is_object($data) && \Docker\API\Model\DeviceRequest::class === $data::class;
     }
 
-    public function denormalize($data, $class, $format = null, array $context = [])
+    public function denormalize(mixed $data, string $type, ?string $format = null, array $context = []): mixed
     {
-        if (isset($data['$ref'])) {
+        $object = new \Docker\API\Model\DeviceRequest();
+        if (null === $data || false === \is_array($data)) {
+            return $object;
+        }
+        if (isset($data['$ref']) && !isset($data['type']) && !isset($data['properties']) && !isset($data['allOf'])) {
             return new Reference($data['$ref'], $context['document-origin']);
         }
         if (isset($data['$recursiveRef'])) {
             return new Reference($data['$recursiveRef'], $context['document-origin']);
-        }
-        $object = new \Docker\API\Model\DeviceRequest();
-        if (null === $data || false === \is_array($data)) {
-            return $object;
         }
         if (\array_key_exists('Driver', $data) && null !== $data['Driver']) {
             $object->setDriver($data['Driver']);
             unset($data['Driver']);
         } elseif (\array_key_exists('Driver', $data) && null === $data['Driver']) {
             $object->setDriver(null);
+            unset($data['Driver']);
         }
         if (\array_key_exists('Count', $data) && null !== $data['Count']) {
             $object->setCount($data['Count']);
             unset($data['Count']);
         } elseif (\array_key_exists('Count', $data) && null === $data['Count']) {
             $object->setCount(null);
+            unset($data['Count']);
         }
         if (\array_key_exists('DeviceIDs', $data) && null !== $data['DeviceIDs']) {
             $values = [];
@@ -64,6 +66,7 @@ class DeviceRequestNormalizer implements DenormalizerInterface, NormalizerInterf
             unset($data['DeviceIDs']);
         } elseif (\array_key_exists('DeviceIDs', $data) && null === $data['DeviceIDs']) {
             $object->setDeviceIDs(null);
+            unset($data['DeviceIDs']);
         }
         if (\array_key_exists('Capabilities', $data) && null !== $data['Capabilities']) {
             $values_1 = [];
@@ -78,9 +81,10 @@ class DeviceRequestNormalizer implements DenormalizerInterface, NormalizerInterf
             unset($data['Capabilities']);
         } elseif (\array_key_exists('Capabilities', $data) && null === $data['Capabilities']) {
             $object->setCapabilities(null);
+            unset($data['Capabilities']);
         }
         if (\array_key_exists('Options', $data) && null !== $data['Options']) {
-            $values_3 = new \ArrayObject([], \ArrayObject::ARRAY_AS_PROPS);
+            $values_3 = new \Docker\API\Runtime\JsonObject();
             foreach ($data['Options'] as $key => $value_3) {
                 $values_3[$key] = $value_3;
             }
@@ -88,6 +92,7 @@ class DeviceRequestNormalizer implements DenormalizerInterface, NormalizerInterf
             unset($data['Options']);
         } elseif (\array_key_exists('Options', $data) && null === $data['Options']) {
             $object->setOptions(null);
+            unset($data['Options']);
         }
         foreach ($data as $key_1 => $value_4) {
             if (preg_match('/.*/', (string) $key_1)) {
@@ -98,54 +103,51 @@ class DeviceRequestNormalizer implements DenormalizerInterface, NormalizerInterf
         return $object;
     }
 
-    /**
-     * @return array|string|int|float|bool|\ArrayObject|null
-     */
-    public function normalize($object, $format = null, array $context = [])
+    public function normalize(mixed $data, ?string $format = null, array $context = []): array|string|int|float|bool|\ArrayObject|null
     {
-        $data = [];
-        if ($object->isInitialized('driver') && null !== $object->getDriver()) {
-            $data['Driver'] = $object->getDriver();
+        $dataArray = [];
+        if ($data->isInitialized('driver') && null !== $data->getDriver()) {
+            $dataArray['Driver'] = $data->getDriver();
         }
-        if ($object->isInitialized('count') && null !== $object->getCount()) {
-            $data['Count'] = $object->getCount();
+        if ($data->isInitialized('count') && null !== $data->getCount()) {
+            $dataArray['Count'] = $data->getCount();
         }
-        if ($object->isInitialized('deviceIDs') && null !== $object->getDeviceIDs()) {
+        if ($data->isInitialized('deviceIDs') && null !== $data->getDeviceIDs()) {
             $values = [];
-            foreach ($object->getDeviceIDs() as $value) {
+            foreach ($data->getDeviceIDs() as $value) {
                 $values[] = $value;
             }
-            $data['DeviceIDs'] = $values;
+            $dataArray['DeviceIDs'] = $values;
         }
-        if ($object->isInitialized('capabilities') && null !== $object->getCapabilities()) {
+        if ($data->isInitialized('capabilities') && null !== $data->getCapabilities()) {
             $values_1 = [];
-            foreach ($object->getCapabilities() as $value_1) {
+            foreach ($data->getCapabilities() as $value_1) {
                 $values_2 = [];
                 foreach ($value_1 as $value_2) {
                     $values_2[] = $value_2;
                 }
                 $values_1[] = $values_2;
             }
-            $data['Capabilities'] = $values_1;
+            $dataArray['Capabilities'] = $values_1;
         }
-        if ($object->isInitialized('options') && null !== $object->getOptions()) {
-            $values_3 = new \ArrayObject([], \ArrayObject::ARRAY_AS_PROPS);
-            foreach ($object->getOptions() as $key => $value_3) {
+        if ($data->isInitialized('options') && null !== $data->getOptions()) {
+            $values_3 = new \Docker\API\Runtime\JsonObject();
+            foreach ($data->getOptions() as $key => $value_3) {
                 $values_3[$key] = $value_3;
             }
-            $data['Options'] = $values_3;
+            $dataArray['Options'] = $values_3;
         }
-        foreach ($object as $key_1 => $value_4) {
+        foreach ($data->additionalPropertyEntries() as $key_1 => $value_4) {
             if (preg_match('/.*/', (string) $key_1)) {
-                $data[$key_1] = $value_4;
+                $dataArray[$key_1] = $value_4;
             }
         }
 
-        return $data;
+        return $dataArray;
     }
 
-    public function getSupportedTypes(string $format = null): array
+    public function getSupportedTypes(?string $format = null): array
     {
-        return ['Docker\\API\\Model\\DeviceRequest' => false];
+        return [\Docker\API\Model\DeviceRequest::class => false];
     }
 }

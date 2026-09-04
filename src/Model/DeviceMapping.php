@@ -4,8 +4,12 @@ declare(strict_types=1);
 
 namespace Docker\API\Model;
 
-class DeviceMapping extends \ArrayObject
+use Docker\API\Runtime\AdditionalAndPatternProperties;
+use Docker\API\Runtime\AdditionalPropertiesInterface;
+
+class DeviceMapping implements AdditionalPropertiesInterface
 {
+    use AdditionalAndPatternProperties;
     /**
      * @var array
      */
@@ -65,5 +69,10 @@ class DeviceMapping extends \ArrayObject
         $this->cgroupPermissions = $cgroupPermissions;
 
         return $this;
+    }
+
+    public function definedProperties(): array
+    {
+        return ['pathOnHost' => ['PathOnHost', 'getPathOnHost', 'setPathOnHost'], 'pathInContainer' => ['PathInContainer', 'getPathInContainer', 'setPathInContainer'], 'cgroupPermissions' => ['CgroupPermissions', 'getCgroupPermissions', 'setCgroupPermissions']];
     }
 }

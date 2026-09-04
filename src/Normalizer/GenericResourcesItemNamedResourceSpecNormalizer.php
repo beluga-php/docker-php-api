@@ -21,39 +21,41 @@ class GenericResourcesItemNamedResourceSpecNormalizer implements DenormalizerInt
     use NormalizerAwareTrait;
     use ValidatorTrait;
 
-    public function supportsDenormalization($data, $type, $format = null, array $context = []): bool
+    public function supportsDenormalization(mixed $data, string $type, ?string $format = null, array $context = []): bool
     {
-        return 'Docker\\API\\Model\\GenericResourcesItemNamedResourceSpec' === $type;
+        return \Docker\API\Model\GenericResourcesItemNamedResourceSpec::class === $type;
     }
 
-    public function supportsNormalization($data, $format = null, array $context = []): bool
+    public function supportsNormalization(mixed $data, ?string $format = null, array $context = []): bool
     {
-        return \is_object($data) && 'Docker\\API\\Model\\GenericResourcesItemNamedResourceSpec' === $data::class;
+        return \is_object($data) && \Docker\API\Model\GenericResourcesItemNamedResourceSpec::class === $data::class;
     }
 
-    public function denormalize($data, $class, $format = null, array $context = [])
+    public function denormalize(mixed $data, string $type, ?string $format = null, array $context = []): mixed
     {
-        if (isset($data['$ref'])) {
+        $object = new \Docker\API\Model\GenericResourcesItemNamedResourceSpec();
+        if (null === $data || false === \is_array($data)) {
+            return $object;
+        }
+        if (isset($data['$ref']) && !isset($data['type']) && !isset($data['properties']) && !isset($data['allOf'])) {
             return new Reference($data['$ref'], $context['document-origin']);
         }
         if (isset($data['$recursiveRef'])) {
             return new Reference($data['$recursiveRef'], $context['document-origin']);
-        }
-        $object = new \Docker\API\Model\GenericResourcesItemNamedResourceSpec();
-        if (null === $data || false === \is_array($data)) {
-            return $object;
         }
         if (\array_key_exists('Kind', $data) && null !== $data['Kind']) {
             $object->setKind($data['Kind']);
             unset($data['Kind']);
         } elseif (\array_key_exists('Kind', $data) && null === $data['Kind']) {
             $object->setKind(null);
+            unset($data['Kind']);
         }
         if (\array_key_exists('Value', $data) && null !== $data['Value']) {
             $object->setValue($data['Value']);
             unset($data['Value']);
         } elseif (\array_key_exists('Value', $data) && null === $data['Value']) {
             $object->setValue(null);
+            unset($data['Value']);
         }
         foreach ($data as $key => $value) {
             if (preg_match('/.*/', (string) $key)) {
@@ -64,29 +66,26 @@ class GenericResourcesItemNamedResourceSpecNormalizer implements DenormalizerInt
         return $object;
     }
 
-    /**
-     * @return array|string|int|float|bool|\ArrayObject|null
-     */
-    public function normalize($object, $format = null, array $context = [])
+    public function normalize(mixed $data, ?string $format = null, array $context = []): array|string|int|float|bool|\ArrayObject|null
     {
-        $data = [];
-        if ($object->isInitialized('kind') && null !== $object->getKind()) {
-            $data['Kind'] = $object->getKind();
+        $dataArray = [];
+        if ($data->isInitialized('kind') && null !== $data->getKind()) {
+            $dataArray['Kind'] = $data->getKind();
         }
-        if ($object->isInitialized('value') && null !== $object->getValue()) {
-            $data['Value'] = $object->getValue();
+        if ($data->isInitialized('value') && null !== $data->getValue()) {
+            $dataArray['Value'] = $data->getValue();
         }
-        foreach ($object as $key => $value) {
+        foreach ($data->additionalPropertyEntries() as $key => $value) {
             if (preg_match('/.*/', (string) $key)) {
-                $data[$key] = $value;
+                $dataArray[$key] = $value;
             }
         }
 
-        return $data;
+        return $dataArray;
     }
 
-    public function getSupportedTypes(string $format = null): array
+    public function getSupportedTypes(?string $format = null): array
     {
-        return ['Docker\\API\\Model\\GenericResourcesItemNamedResourceSpec' => false];
+        return [\Docker\API\Model\GenericResourcesItemNamedResourceSpec::class => false];
     }
 }

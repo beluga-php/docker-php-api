@@ -4,8 +4,12 @@ declare(strict_types=1);
 
 namespace Docker\API\Model;
 
-class ImageDeleteResponseItem extends \ArrayObject
+use Docker\API\Runtime\AdditionalAndPatternProperties;
+use Docker\API\Runtime\AdditionalPropertiesInterface;
+
+class ImageDeleteResponseItem implements AdditionalPropertiesInterface
 {
+    use AdditionalAndPatternProperties;
     /**
      * @var array
      */
@@ -64,5 +68,10 @@ class ImageDeleteResponseItem extends \ArrayObject
         $this->deleted = $deleted;
 
         return $this;
+    }
+
+    public function definedProperties(): array
+    {
+        return ['untagged' => ['Untagged', 'getUntagged', 'setUntagged'], 'deleted' => ['Deleted', 'getDeleted', 'setDeleted']];
     }
 }

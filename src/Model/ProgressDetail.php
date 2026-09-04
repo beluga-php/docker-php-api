@@ -4,8 +4,12 @@ declare(strict_types=1);
 
 namespace Docker\API\Model;
 
-class ProgressDetail extends \ArrayObject
+use Docker\API\Runtime\AdditionalAndPatternProperties;
+use Docker\API\Runtime\AdditionalPropertiesInterface;
+
+class ProgressDetail implements AdditionalPropertiesInterface
 {
+    use AdditionalAndPatternProperties;
     /**
      * @var array
      */
@@ -48,5 +52,10 @@ class ProgressDetail extends \ArrayObject
         $this->total = $total;
 
         return $this;
+    }
+
+    public function definedProperties(): array
+    {
+        return ['current' => ['current', 'getCurrent', 'setCurrent'], 'total' => ['total', 'getTotal', 'setTotal']];
     }
 }
