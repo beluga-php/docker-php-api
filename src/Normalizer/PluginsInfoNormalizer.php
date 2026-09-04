@@ -33,15 +33,15 @@ class PluginsInfoNormalizer implements DenormalizerInterface, NormalizerInterfac
 
     public function denormalize(mixed $data, string $type, ?string $format = null, array $context = []): mixed
     {
-        if (isset($data['$ref'])) {
+        $object = new \Docker\API\Model\PluginsInfo();
+        if (null === $data || false === \is_array($data)) {
+            return $object;
+        }
+        if (isset($data['$ref']) && !isset($data['type']) && !isset($data['properties']) && !isset($data['allOf'])) {
             return new Reference($data['$ref'], $context['document-origin']);
         }
         if (isset($data['$recursiveRef'])) {
             return new Reference($data['$recursiveRef'], $context['document-origin']);
-        }
-        $object = new \Docker\API\Model\PluginsInfo();
-        if (null === $data || false === \is_array($data)) {
-            return $object;
         }
         if (\array_key_exists('Volume', $data) && null !== $data['Volume']) {
             $values = [];
@@ -52,6 +52,7 @@ class PluginsInfoNormalizer implements DenormalizerInterface, NormalizerInterfac
             unset($data['Volume']);
         } elseif (\array_key_exists('Volume', $data) && null === $data['Volume']) {
             $object->setVolume(null);
+            unset($data['Volume']);
         }
         if (\array_key_exists('Network', $data) && null !== $data['Network']) {
             $values_1 = [];
@@ -62,6 +63,7 @@ class PluginsInfoNormalizer implements DenormalizerInterface, NormalizerInterfac
             unset($data['Network']);
         } elseif (\array_key_exists('Network', $data) && null === $data['Network']) {
             $object->setNetwork(null);
+            unset($data['Network']);
         }
         if (\array_key_exists('Authorization', $data) && null !== $data['Authorization']) {
             $values_2 = [];
@@ -72,6 +74,7 @@ class PluginsInfoNormalizer implements DenormalizerInterface, NormalizerInterfac
             unset($data['Authorization']);
         } elseif (\array_key_exists('Authorization', $data) && null === $data['Authorization']) {
             $object->setAuthorization(null);
+            unset($data['Authorization']);
         }
         if (\array_key_exists('Log', $data) && null !== $data['Log']) {
             $values_3 = [];
@@ -82,6 +85,7 @@ class PluginsInfoNormalizer implements DenormalizerInterface, NormalizerInterfac
             unset($data['Log']);
         } elseif (\array_key_exists('Log', $data) && null === $data['Log']) {
             $object->setLog(null);
+            unset($data['Log']);
         }
         foreach ($data as $key => $value_4) {
             if (preg_match('/.*/', (string) $key)) {
@@ -123,7 +127,7 @@ class PluginsInfoNormalizer implements DenormalizerInterface, NormalizerInterfac
             }
             $dataArray['Log'] = $values_3;
         }
-        foreach ($data as $key => $value_4) {
+        foreach ($data->additionalPropertyEntries() as $key => $value_4) {
             if (preg_match('/.*/', (string) $key)) {
                 $dataArray[$key] = $value_4;
             }

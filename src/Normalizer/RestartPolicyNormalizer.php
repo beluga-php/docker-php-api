@@ -33,27 +33,29 @@ class RestartPolicyNormalizer implements DenormalizerInterface, NormalizerInterf
 
     public function denormalize(mixed $data, string $type, ?string $format = null, array $context = []): mixed
     {
-        if (isset($data['$ref'])) {
+        $object = new \Docker\API\Model\RestartPolicy();
+        if (null === $data || false === \is_array($data)) {
+            return $object;
+        }
+        if (isset($data['$ref']) && !isset($data['type']) && !isset($data['properties']) && !isset($data['allOf'])) {
             return new Reference($data['$ref'], $context['document-origin']);
         }
         if (isset($data['$recursiveRef'])) {
             return new Reference($data['$recursiveRef'], $context['document-origin']);
-        }
-        $object = new \Docker\API\Model\RestartPolicy();
-        if (null === $data || false === \is_array($data)) {
-            return $object;
         }
         if (\array_key_exists('Name', $data) && null !== $data['Name']) {
             $object->setName($data['Name']);
             unset($data['Name']);
         } elseif (\array_key_exists('Name', $data) && null === $data['Name']) {
             $object->setName(null);
+            unset($data['Name']);
         }
         if (\array_key_exists('MaximumRetryCount', $data) && null !== $data['MaximumRetryCount']) {
             $object->setMaximumRetryCount($data['MaximumRetryCount']);
             unset($data['MaximumRetryCount']);
         } elseif (\array_key_exists('MaximumRetryCount', $data) && null === $data['MaximumRetryCount']) {
             $object->setMaximumRetryCount(null);
+            unset($data['MaximumRetryCount']);
         }
         foreach ($data as $key => $value) {
             if (preg_match('/.*/', (string) $key)) {
@@ -73,7 +75,7 @@ class RestartPolicyNormalizer implements DenormalizerInterface, NormalizerInterf
         if ($data->isInitialized('maximumRetryCount') && null !== $data->getMaximumRetryCount()) {
             $dataArray['MaximumRetryCount'] = $data->getMaximumRetryCount();
         }
-        foreach ($data as $key => $value) {
+        foreach ($data->additionalPropertyEntries() as $key => $value) {
             if (preg_match('/.*/', (string) $key)) {
                 $dataArray[$key] = $value;
             }

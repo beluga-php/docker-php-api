@@ -33,36 +33,39 @@ class ManagerStatusNormalizer implements DenormalizerInterface, NormalizerInterf
 
     public function denormalize(mixed $data, string $type, ?string $format = null, array $context = []): mixed
     {
-        if (isset($data['$ref'])) {
+        $object = new \Docker\API\Model\ManagerStatus();
+        if (null === $data || false === \is_array($data)) {
+            return $object;
+        }
+        if (isset($data['$ref']) && !isset($data['type']) && !isset($data['properties']) && !isset($data['allOf'])) {
             return new Reference($data['$ref'], $context['document-origin']);
         }
         if (isset($data['$recursiveRef'])) {
             return new Reference($data['$recursiveRef'], $context['document-origin']);
         }
-        $object = new \Docker\API\Model\ManagerStatus();
         if (\array_key_exists('Leader', $data) && \is_int($data['Leader'])) {
             $data['Leader'] = (bool) $data['Leader'];
-        }
-        if (null === $data || false === \is_array($data)) {
-            return $object;
         }
         if (\array_key_exists('Leader', $data) && null !== $data['Leader']) {
             $object->setLeader($data['Leader']);
             unset($data['Leader']);
         } elseif (\array_key_exists('Leader', $data) && null === $data['Leader']) {
             $object->setLeader(null);
+            unset($data['Leader']);
         }
         if (\array_key_exists('Reachability', $data) && null !== $data['Reachability']) {
             $object->setReachability($data['Reachability']);
             unset($data['Reachability']);
         } elseif (\array_key_exists('Reachability', $data) && null === $data['Reachability']) {
             $object->setReachability(null);
+            unset($data['Reachability']);
         }
         if (\array_key_exists('Addr', $data) && null !== $data['Addr']) {
             $object->setAddr($data['Addr']);
             unset($data['Addr']);
         } elseif (\array_key_exists('Addr', $data) && null === $data['Addr']) {
             $object->setAddr(null);
+            unset($data['Addr']);
         }
         foreach ($data as $key => $value) {
             if (preg_match('/.*/', (string) $key)) {
@@ -85,7 +88,7 @@ class ManagerStatusNormalizer implements DenormalizerInterface, NormalizerInterf
         if ($data->isInitialized('addr') && null !== $data->getAddr()) {
             $dataArray['Addr'] = $data->getAddr();
         }
-        foreach ($data as $key => $value) {
+        foreach ($data->additionalPropertyEntries() as $key => $value) {
             if (preg_match('/.*/', (string) $key)) {
                 $dataArray[$key] = $value;
             }

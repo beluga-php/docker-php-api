@@ -4,8 +4,12 @@ declare(strict_types=1);
 
 namespace Docker\API\Model;
 
-class SwarmSpecCAConfig extends \ArrayObject
+use Docker\API\Runtime\AdditionalAndPatternProperties;
+use Docker\API\Runtime\AdditionalPropertiesInterface;
+
+class SwarmSpecCAConfig implements AdditionalPropertiesInterface
 {
+    use AdditionalAndPatternProperties;
     /**
      * @var array
      */
@@ -158,5 +162,10 @@ class SwarmSpecCAConfig extends \ArrayObject
         $this->forceRotate = $forceRotate;
 
         return $this;
+    }
+
+    public function definedProperties(): array
+    {
+        return ['nodeCertExpiry' => ['NodeCertExpiry', 'getNodeCertExpiry', 'setNodeCertExpiry'], 'externalCAs' => ['ExternalCAs', 'getExternalCAs', 'setExternalCAs'], 'signingCACert' => ['SigningCACert', 'getSigningCACert', 'setSigningCACert'], 'signingCAKey' => ['SigningCAKey', 'getSigningCAKey', 'setSigningCAKey'], 'forceRotate' => ['ForceRotate', 'getForceRotate', 'setForceRotate']];
     }
 }

@@ -33,13 +33,16 @@ class NetworkNormalizer implements DenormalizerInterface, NormalizerInterface, D
 
     public function denormalize(mixed $data, string $type, ?string $format = null, array $context = []): mixed
     {
-        if (isset($data['$ref'])) {
+        $object = new \Docker\API\Model\Network();
+        if (null === $data || false === \is_array($data)) {
+            return $object;
+        }
+        if (isset($data['$ref']) && !isset($data['type']) && !isset($data['properties']) && !isset($data['allOf'])) {
             return new Reference($data['$ref'], $context['document-origin']);
         }
         if (isset($data['$recursiveRef'])) {
             return new Reference($data['$recursiveRef'], $context['document-origin']);
         }
-        $object = new \Docker\API\Model\Network();
         if (\array_key_exists('EnableIPv6', $data) && \is_int($data['EnableIPv6'])) {
             $data['EnableIPv6'] = (bool) $data['EnableIPv6'];
         }
@@ -52,71 +55,95 @@ class NetworkNormalizer implements DenormalizerInterface, NormalizerInterface, D
         if (\array_key_exists('Ingress', $data) && \is_int($data['Ingress'])) {
             $data['Ingress'] = (bool) $data['Ingress'];
         }
-        if (null === $data || false === \is_array($data)) {
-            return $object;
+        if (\array_key_exists('ConfigOnly', $data) && \is_int($data['ConfigOnly'])) {
+            $data['ConfigOnly'] = (bool) $data['ConfigOnly'];
         }
         if (\array_key_exists('Name', $data) && null !== $data['Name']) {
             $object->setName($data['Name']);
             unset($data['Name']);
         } elseif (\array_key_exists('Name', $data) && null === $data['Name']) {
             $object->setName(null);
+            unset($data['Name']);
         }
         if (\array_key_exists('Id', $data) && null !== $data['Id']) {
             $object->setId($data['Id']);
             unset($data['Id']);
         } elseif (\array_key_exists('Id', $data) && null === $data['Id']) {
             $object->setId(null);
+            unset($data['Id']);
         }
         if (\array_key_exists('Created', $data) && null !== $data['Created']) {
             $object->setCreated($data['Created']);
             unset($data['Created']);
         } elseif (\array_key_exists('Created', $data) && null === $data['Created']) {
             $object->setCreated(null);
+            unset($data['Created']);
         }
         if (\array_key_exists('Scope', $data) && null !== $data['Scope']) {
             $object->setScope($data['Scope']);
             unset($data['Scope']);
         } elseif (\array_key_exists('Scope', $data) && null === $data['Scope']) {
             $object->setScope(null);
+            unset($data['Scope']);
         }
         if (\array_key_exists('Driver', $data) && null !== $data['Driver']) {
             $object->setDriver($data['Driver']);
             unset($data['Driver']);
         } elseif (\array_key_exists('Driver', $data) && null === $data['Driver']) {
             $object->setDriver(null);
+            unset($data['Driver']);
         }
         if (\array_key_exists('EnableIPv6', $data) && null !== $data['EnableIPv6']) {
             $object->setEnableIPv6($data['EnableIPv6']);
             unset($data['EnableIPv6']);
         } elseif (\array_key_exists('EnableIPv6', $data) && null === $data['EnableIPv6']) {
             $object->setEnableIPv6(null);
+            unset($data['EnableIPv6']);
         }
         if (\array_key_exists('IPAM', $data) && null !== $data['IPAM']) {
             $object->setIPAM($this->denormalizer->denormalize($data['IPAM'], \Docker\API\Model\IPAM::class, 'json', $context));
             unset($data['IPAM']);
         } elseif (\array_key_exists('IPAM', $data) && null === $data['IPAM']) {
             $object->setIPAM(null);
+            unset($data['IPAM']);
         }
         if (\array_key_exists('Internal', $data) && null !== $data['Internal']) {
             $object->setInternal($data['Internal']);
             unset($data['Internal']);
         } elseif (\array_key_exists('Internal', $data) && null === $data['Internal']) {
             $object->setInternal(null);
+            unset($data['Internal']);
         }
         if (\array_key_exists('Attachable', $data) && null !== $data['Attachable']) {
             $object->setAttachable($data['Attachable']);
             unset($data['Attachable']);
         } elseif (\array_key_exists('Attachable', $data) && null === $data['Attachable']) {
             $object->setAttachable(null);
+            unset($data['Attachable']);
         }
         if (\array_key_exists('Ingress', $data) && null !== $data['Ingress']) {
             $object->setIngress($data['Ingress']);
             unset($data['Ingress']);
         } elseif (\array_key_exists('Ingress', $data) && null === $data['Ingress']) {
             $object->setIngress(null);
+            unset($data['Ingress']);
+        }
+        if (\array_key_exists('ConfigFrom', $data) && null !== $data['ConfigFrom']) {
+            $object->setConfigFrom($this->denormalizer->denormalize($data['ConfigFrom'], \Docker\API\Model\ConfigReference::class, 'json', $context));
+            unset($data['ConfigFrom']);
+        } elseif (\array_key_exists('ConfigFrom', $data) && null === $data['ConfigFrom']) {
+            $object->setConfigFrom(null);
+            unset($data['ConfigFrom']);
+        }
+        if (\array_key_exists('ConfigOnly', $data) && null !== $data['ConfigOnly']) {
+            $object->setConfigOnly($data['ConfigOnly']);
+            unset($data['ConfigOnly']);
+        } elseif (\array_key_exists('ConfigOnly', $data) && null === $data['ConfigOnly']) {
+            $object->setConfigOnly(null);
+            unset($data['ConfigOnly']);
         }
         if (\array_key_exists('Containers', $data) && null !== $data['Containers']) {
-            $values = new \ArrayObject([], \ArrayObject::ARRAY_AS_PROPS);
+            $values = new \Docker\API\Runtime\JsonObject();
             foreach ($data['Containers'] as $key => $value) {
                 $values[$key] = $this->denormalizer->denormalize($value, \Docker\API\Model\NetworkContainer::class, 'json', $context);
             }
@@ -124,9 +151,10 @@ class NetworkNormalizer implements DenormalizerInterface, NormalizerInterface, D
             unset($data['Containers']);
         } elseif (\array_key_exists('Containers', $data) && null === $data['Containers']) {
             $object->setContainers(null);
+            unset($data['Containers']);
         }
         if (\array_key_exists('Options', $data) && null !== $data['Options']) {
-            $values_1 = new \ArrayObject([], \ArrayObject::ARRAY_AS_PROPS);
+            $values_1 = new \Docker\API\Runtime\JsonObject();
             foreach ($data['Options'] as $key_1 => $value_1) {
                 $values_1[$key_1] = $value_1;
             }
@@ -134,9 +162,10 @@ class NetworkNormalizer implements DenormalizerInterface, NormalizerInterface, D
             unset($data['Options']);
         } elseif (\array_key_exists('Options', $data) && null === $data['Options']) {
             $object->setOptions(null);
+            unset($data['Options']);
         }
         if (\array_key_exists('Labels', $data) && null !== $data['Labels']) {
-            $values_2 = new \ArrayObject([], \ArrayObject::ARRAY_AS_PROPS);
+            $values_2 = new \Docker\API\Runtime\JsonObject();
             foreach ($data['Labels'] as $key_2 => $value_2) {
                 $values_2[$key_2] = $value_2;
             }
@@ -144,10 +173,22 @@ class NetworkNormalizer implements DenormalizerInterface, NormalizerInterface, D
             unset($data['Labels']);
         } elseif (\array_key_exists('Labels', $data) && null === $data['Labels']) {
             $object->setLabels(null);
+            unset($data['Labels']);
         }
-        foreach ($data as $key_3 => $value_3) {
+        if (\array_key_exists('Peers', $data) && null !== $data['Peers']) {
+            $values_3 = [];
+            foreach ($data['Peers'] as $value_3) {
+                $values_3[] = $this->denormalizer->denormalize($value_3, \Docker\API\Model\PeerInfo::class, 'json', $context);
+            }
+            $object->setPeers($values_3);
+            unset($data['Peers']);
+        } elseif (\array_key_exists('Peers', $data) && null === $data['Peers']) {
+            $object->setPeers(null);
+            unset($data['Peers']);
+        }
+        foreach ($data as $key_3 => $value_4) {
             if (preg_match('/.*/', (string) $key_3)) {
-                $object[$key_3] = $value_3;
+                $object[$key_3] = $value_4;
             }
         }
 
@@ -176,7 +217,7 @@ class NetworkNormalizer implements DenormalizerInterface, NormalizerInterface, D
             $dataArray['EnableIPv6'] = $data->getEnableIPv6();
         }
         if ($data->isInitialized('iPAM') && null !== $data->getIPAM()) {
-            $dataArray['IPAM'] = $this->normalizer->normalize($data->getIPAM(), 'json', $context);
+            $dataArray['IPAM'] = null === $data->getIPAM() ? null : new \Docker\API\Runtime\JsonObject($this->normalizer->normalize($data->getIPAM(), 'json', $context));
         }
         if ($data->isInitialized('internal') && null !== $data->getInternal()) {
             $dataArray['Internal'] = $data->getInternal();
@@ -187,30 +228,43 @@ class NetworkNormalizer implements DenormalizerInterface, NormalizerInterface, D
         if ($data->isInitialized('ingress') && null !== $data->getIngress()) {
             $dataArray['Ingress'] = $data->getIngress();
         }
+        if ($data->isInitialized('configFrom') && null !== $data->getConfigFrom()) {
+            $dataArray['ConfigFrom'] = null === $data->getConfigFrom() ? null : new \Docker\API\Runtime\JsonObject($this->normalizer->normalize($data->getConfigFrom(), 'json', $context));
+        }
+        if ($data->isInitialized('configOnly') && null !== $data->getConfigOnly()) {
+            $dataArray['ConfigOnly'] = $data->getConfigOnly();
+        }
         if ($data->isInitialized('containers') && null !== $data->getContainers()) {
-            $values = [];
+            $values = new \Docker\API\Runtime\JsonObject();
             foreach ($data->getContainers() as $key => $value) {
-                $values[$key] = $this->normalizer->normalize($value, 'json', $context);
+                $values[$key] = null === $value ? null : new \Docker\API\Runtime\JsonObject($this->normalizer->normalize($value, 'json', $context));
             }
             $dataArray['Containers'] = $values;
         }
         if ($data->isInitialized('options') && null !== $data->getOptions()) {
-            $values_1 = [];
+            $values_1 = new \Docker\API\Runtime\JsonObject();
             foreach ($data->getOptions() as $key_1 => $value_1) {
                 $values_1[$key_1] = $value_1;
             }
             $dataArray['Options'] = $values_1;
         }
         if ($data->isInitialized('labels') && null !== $data->getLabels()) {
-            $values_2 = [];
+            $values_2 = new \Docker\API\Runtime\JsonObject();
             foreach ($data->getLabels() as $key_2 => $value_2) {
                 $values_2[$key_2] = $value_2;
             }
             $dataArray['Labels'] = $values_2;
         }
-        foreach ($data as $key_3 => $value_3) {
+        if ($data->isInitialized('peers') && null !== $data->getPeers()) {
+            $values_3 = [];
+            foreach ($data->getPeers() as $value_3) {
+                $values_3[] = null === $value_3 ? null : new \Docker\API\Runtime\JsonObject($this->normalizer->normalize($value_3, 'json', $context));
+            }
+            $dataArray['Peers'] = $values_3;
+        }
+        foreach ($data->additionalPropertyEntries() as $key_3 => $value_4) {
             if (preg_match('/.*/', (string) $key_3)) {
-                $dataArray[$key_3] = $value_3;
+                $dataArray[$key_3] = $value_4;
             }
         }
 

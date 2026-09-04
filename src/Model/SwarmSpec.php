@@ -4,8 +4,12 @@ declare(strict_types=1);
 
 namespace Docker\API\Model;
 
-class SwarmSpec extends \ArrayObject
+use Docker\API\Runtime\AdditionalAndPatternProperties;
+use Docker\API\Runtime\AdditionalPropertiesInterface;
+
+class SwarmSpec implements AdditionalPropertiesInterface
 {
+    use AdditionalAndPatternProperties;
     /**
      * @var array
      */
@@ -218,5 +222,10 @@ class SwarmSpec extends \ArrayObject
         $this->taskDefaults = $taskDefaults;
 
         return $this;
+    }
+
+    public function definedProperties(): array
+    {
+        return ['name' => ['Name', 'getName', 'setName'], 'labels' => ['Labels', 'getLabels', 'setLabels'], 'orchestration' => ['Orchestration', 'getOrchestration', 'setOrchestration'], 'raft' => ['Raft', 'getRaft', 'setRaft'], 'dispatcher' => ['Dispatcher', 'getDispatcher', 'setDispatcher'], 'cAConfig' => ['CAConfig', 'getCAConfig', 'setCAConfig'], 'encryptionConfig' => ['EncryptionConfig', 'getEncryptionConfig', 'setEncryptionConfig'], 'taskDefaults' => ['TaskDefaults', 'getTaskDefaults', 'setTaskDefaults']];
     }
 }

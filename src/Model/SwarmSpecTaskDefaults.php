@@ -4,8 +4,12 @@ declare(strict_types=1);
 
 namespace Docker\API\Model;
 
-class SwarmSpecTaskDefaults extends \ArrayObject
+use Docker\API\Runtime\AdditionalAndPatternProperties;
+use Docker\API\Runtime\AdditionalPropertiesInterface;
+
+class SwarmSpecTaskDefaults implements AdditionalPropertiesInterface
 {
+    use AdditionalAndPatternProperties;
     /**
      * @var array
      */
@@ -51,5 +55,10 @@ class SwarmSpecTaskDefaults extends \ArrayObject
         $this->logDriver = $logDriver;
 
         return $this;
+    }
+
+    public function definedProperties(): array
+    {
+        return ['logDriver' => ['LogDriver', 'getLogDriver', 'setLogDriver']];
     }
 }

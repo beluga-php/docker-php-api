@@ -33,15 +33,15 @@ class ContainersIdTopGetJsonResponse200Normalizer implements DenormalizerInterfa
 
     public function denormalize(mixed $data, string $type, ?string $format = null, array $context = []): mixed
     {
-        if (isset($data['$ref'])) {
+        $object = new \Docker\API\Model\ContainersIdTopGetJsonResponse200();
+        if (null === $data || false === \is_array($data)) {
+            return $object;
+        }
+        if (isset($data['$ref']) && !isset($data['type']) && !isset($data['properties']) && !isset($data['allOf'])) {
             return new Reference($data['$ref'], $context['document-origin']);
         }
         if (isset($data['$recursiveRef'])) {
             return new Reference($data['$recursiveRef'], $context['document-origin']);
-        }
-        $object = new \Docker\API\Model\ContainersIdTopGetJsonResponse200();
-        if (null === $data || false === \is_array($data)) {
-            return $object;
         }
         if (\array_key_exists('Titles', $data) && null !== $data['Titles']) {
             $values = [];
@@ -52,6 +52,7 @@ class ContainersIdTopGetJsonResponse200Normalizer implements DenormalizerInterfa
             unset($data['Titles']);
         } elseif (\array_key_exists('Titles', $data) && null === $data['Titles']) {
             $object->setTitles(null);
+            unset($data['Titles']);
         }
         if (\array_key_exists('Processes', $data) && null !== $data['Processes']) {
             $values_1 = [];
@@ -66,6 +67,7 @@ class ContainersIdTopGetJsonResponse200Normalizer implements DenormalizerInterfa
             unset($data['Processes']);
         } elseif (\array_key_exists('Processes', $data) && null === $data['Processes']) {
             $object->setProcesses(null);
+            unset($data['Processes']);
         }
         foreach ($data as $key => $value_3) {
             if (preg_match('/.*/', (string) $key)) {
@@ -97,7 +99,7 @@ class ContainersIdTopGetJsonResponse200Normalizer implements DenormalizerInterfa
             }
             $dataArray['Processes'] = $values_1;
         }
-        foreach ($data as $key => $value_3) {
+        foreach ($data->additionalPropertyEntries() as $key => $value_3) {
             if (preg_match('/.*/', (string) $key)) {
                 $dataArray[$key] = $value_3;
             }

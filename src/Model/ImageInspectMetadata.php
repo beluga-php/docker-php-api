@@ -4,8 +4,12 @@ declare(strict_types=1);
 
 namespace Docker\API\Model;
 
-class ImageInspectMetadata extends \ArrayObject
+use Docker\API\Runtime\AdditionalAndPatternProperties;
+use Docker\API\Runtime\AdditionalPropertiesInterface;
+
+class ImageInspectMetadata implements AdditionalPropertiesInterface
 {
+    use AdditionalAndPatternProperties;
     /**
      * @var array
      */
@@ -51,5 +55,10 @@ class ImageInspectMetadata extends \ArrayObject
         $this->lastTagTime = $lastTagTime;
 
         return $this;
+    }
+
+    public function definedProperties(): array
+    {
+        return ['lastTagTime' => ['LastTagTime', 'getLastTagTime', 'setLastTagTime']];
     }
 }

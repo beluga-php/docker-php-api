@@ -4,8 +4,12 @@ declare(strict_types=1);
 
 namespace Docker\API\Model;
 
-class TaskSpecContainerSpecConfigsItem extends \ArrayObject
+use Docker\API\Runtime\AdditionalAndPatternProperties;
+use Docker\API\Runtime\AdditionalPropertiesInterface;
+
+class TaskSpecContainerSpecConfigsItem implements AdditionalPropertiesInterface
 {
+    use AdditionalAndPatternProperties;
     /**
      * @var array
      */
@@ -34,7 +38,7 @@ class TaskSpecContainerSpecConfigsItem extends \ArrayObject
      * > **Note**: `Configs.File` and `Configs.Runtime` are mutually
      * > exclusive
      *
-     * @var TaskSpecContainerSpecConfigsItemRuntime|null
+     * @var array<string, mixed>|null
      */
     protected $runtime;
     /**
@@ -88,8 +92,10 @@ class TaskSpecContainerSpecConfigsItem extends \ArrayObject
      *
      * > **Note**: `Configs.File` and `Configs.Runtime` are mutually
      * > exclusive
+     *
+     * @return array<string, mixed>|null
      */
-    public function getRuntime(): ?TaskSpecContainerSpecConfigsItemRuntime
+    public function getRuntime(): ?iterable
     {
         return $this->runtime;
     }
@@ -102,8 +108,10 @@ class TaskSpecContainerSpecConfigsItem extends \ArrayObject
      *
      * > **Note**: `Configs.File` and `Configs.Runtime` are mutually
      * > exclusive
+     *
+     * @param array<string, mixed>|null $runtime
      */
-    public function setRuntime(?TaskSpecContainerSpecConfigsItemRuntime $runtime): self
+    public function setRuntime(?iterable $runtime): self
     {
         $this->initialized['runtime'] = true;
         $this->runtime = $runtime;
@@ -153,5 +161,10 @@ class TaskSpecContainerSpecConfigsItem extends \ArrayObject
         $this->configName = $configName;
 
         return $this;
+    }
+
+    public function definedProperties(): array
+    {
+        return ['file' => ['File', 'getFile', 'setFile'], 'runtime' => ['Runtime', 'getRuntime', 'setRuntime'], 'configID' => ['ConfigID', 'getConfigID', 'setConfigID'], 'configName' => ['ConfigName', 'getConfigName', 'setConfigName']];
     }
 }

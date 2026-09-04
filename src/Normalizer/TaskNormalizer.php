@@ -33,48 +33,53 @@ class TaskNormalizer implements DenormalizerInterface, NormalizerInterface, Deno
 
     public function denormalize(mixed $data, string $type, ?string $format = null, array $context = []): mixed
     {
-        if (isset($data['$ref'])) {
+        $object = new \Docker\API\Model\Task();
+        if (null === $data || false === \is_array($data)) {
+            return $object;
+        }
+        if (isset($data['$ref']) && !isset($data['type']) && !isset($data['properties']) && !isset($data['allOf'])) {
             return new Reference($data['$ref'], $context['document-origin']);
         }
         if (isset($data['$recursiveRef'])) {
             return new Reference($data['$recursiveRef'], $context['document-origin']);
-        }
-        $object = new \Docker\API\Model\Task();
-        if (null === $data || false === \is_array($data)) {
-            return $object;
         }
         if (\array_key_exists('ID', $data) && null !== $data['ID']) {
             $object->setID($data['ID']);
             unset($data['ID']);
         } elseif (\array_key_exists('ID', $data) && null === $data['ID']) {
             $object->setID(null);
+            unset($data['ID']);
         }
         if (\array_key_exists('Version', $data) && null !== $data['Version']) {
             $object->setVersion($this->denormalizer->denormalize($data['Version'], \Docker\API\Model\ObjectVersion::class, 'json', $context));
             unset($data['Version']);
         } elseif (\array_key_exists('Version', $data) && null === $data['Version']) {
             $object->setVersion(null);
+            unset($data['Version']);
         }
         if (\array_key_exists('CreatedAt', $data) && null !== $data['CreatedAt']) {
             $object->setCreatedAt($data['CreatedAt']);
             unset($data['CreatedAt']);
         } elseif (\array_key_exists('CreatedAt', $data) && null === $data['CreatedAt']) {
             $object->setCreatedAt(null);
+            unset($data['CreatedAt']);
         }
         if (\array_key_exists('UpdatedAt', $data) && null !== $data['UpdatedAt']) {
             $object->setUpdatedAt($data['UpdatedAt']);
             unset($data['UpdatedAt']);
         } elseif (\array_key_exists('UpdatedAt', $data) && null === $data['UpdatedAt']) {
             $object->setUpdatedAt(null);
+            unset($data['UpdatedAt']);
         }
         if (\array_key_exists('Name', $data) && null !== $data['Name']) {
             $object->setName($data['Name']);
             unset($data['Name']);
         } elseif (\array_key_exists('Name', $data) && null === $data['Name']) {
             $object->setName(null);
+            unset($data['Name']);
         }
         if (\array_key_exists('Labels', $data) && null !== $data['Labels']) {
-            $values = new \ArrayObject([], \ArrayObject::ARRAY_AS_PROPS);
+            $values = new \Docker\API\Runtime\JsonObject();
             foreach ($data['Labels'] as $key => $value) {
                 $values[$key] = $value;
             }
@@ -82,30 +87,35 @@ class TaskNormalizer implements DenormalizerInterface, NormalizerInterface, Deno
             unset($data['Labels']);
         } elseif (\array_key_exists('Labels', $data) && null === $data['Labels']) {
             $object->setLabels(null);
+            unset($data['Labels']);
         }
         if (\array_key_exists('Spec', $data) && null !== $data['Spec']) {
             $object->setSpec($this->denormalizer->denormalize($data['Spec'], \Docker\API\Model\TaskSpec::class, 'json', $context));
             unset($data['Spec']);
         } elseif (\array_key_exists('Spec', $data) && null === $data['Spec']) {
             $object->setSpec(null);
+            unset($data['Spec']);
         }
         if (\array_key_exists('ServiceID', $data) && null !== $data['ServiceID']) {
             $object->setServiceID($data['ServiceID']);
             unset($data['ServiceID']);
         } elseif (\array_key_exists('ServiceID', $data) && null === $data['ServiceID']) {
             $object->setServiceID(null);
+            unset($data['ServiceID']);
         }
         if (\array_key_exists('Slot', $data) && null !== $data['Slot']) {
             $object->setSlot($data['Slot']);
             unset($data['Slot']);
         } elseif (\array_key_exists('Slot', $data) && null === $data['Slot']) {
             $object->setSlot(null);
+            unset($data['Slot']);
         }
         if (\array_key_exists('NodeID', $data) && null !== $data['NodeID']) {
             $object->setNodeID($data['NodeID']);
             unset($data['NodeID']);
         } elseif (\array_key_exists('NodeID', $data) && null === $data['NodeID']) {
             $object->setNodeID(null);
+            unset($data['NodeID']);
         }
         if (\array_key_exists('AssignedGenericResources', $data) && null !== $data['AssignedGenericResources']) {
             $values_1 = [];
@@ -116,28 +126,43 @@ class TaskNormalizer implements DenormalizerInterface, NormalizerInterface, Deno
             unset($data['AssignedGenericResources']);
         } elseif (\array_key_exists('AssignedGenericResources', $data) && null === $data['AssignedGenericResources']) {
             $object->setAssignedGenericResources(null);
+            unset($data['AssignedGenericResources']);
         }
         if (\array_key_exists('Status', $data) && null !== $data['Status']) {
             $object->setStatus($this->denormalizer->denormalize($data['Status'], \Docker\API\Model\TaskStatus::class, 'json', $context));
             unset($data['Status']);
         } elseif (\array_key_exists('Status', $data) && null === $data['Status']) {
             $object->setStatus(null);
+            unset($data['Status']);
         }
         if (\array_key_exists('DesiredState', $data) && null !== $data['DesiredState']) {
             $object->setDesiredState($data['DesiredState']);
             unset($data['DesiredState']);
         } elseif (\array_key_exists('DesiredState', $data) && null === $data['DesiredState']) {
             $object->setDesiredState(null);
+            unset($data['DesiredState']);
         }
         if (\array_key_exists('JobIteration', $data) && null !== $data['JobIteration']) {
             $object->setJobIteration($this->denormalizer->denormalize($data['JobIteration'], \Docker\API\Model\ObjectVersion::class, 'json', $context));
             unset($data['JobIteration']);
         } elseif (\array_key_exists('JobIteration', $data) && null === $data['JobIteration']) {
             $object->setJobIteration(null);
+            unset($data['JobIteration']);
         }
-        foreach ($data as $key_1 => $value_2) {
+        if (\array_key_exists('NetworksAttachments', $data) && null !== $data['NetworksAttachments']) {
+            $values_2 = [];
+            foreach ($data['NetworksAttachments'] as $value_2) {
+                $values_2[] = $this->denormalizer->denormalize($value_2, \Docker\API\Model\NetworkAttachment::class, 'json', $context);
+            }
+            $object->setNetworksAttachments($values_2);
+            unset($data['NetworksAttachments']);
+        } elseif (\array_key_exists('NetworksAttachments', $data) && null === $data['NetworksAttachments']) {
+            $object->setNetworksAttachments(null);
+            unset($data['NetworksAttachments']);
+        }
+        foreach ($data as $key_1 => $value_3) {
             if (preg_match('/.*/', (string) $key_1)) {
-                $object[$key_1] = $value_2;
+                $object[$key_1] = $value_3;
             }
         }
 
@@ -151,7 +176,7 @@ class TaskNormalizer implements DenormalizerInterface, NormalizerInterface, Deno
             $dataArray['ID'] = $data->getID();
         }
         if ($data->isInitialized('version') && null !== $data->getVersion()) {
-            $dataArray['Version'] = $this->normalizer->normalize($data->getVersion(), 'json', $context);
+            $dataArray['Version'] = null === $data->getVersion() ? null : new \Docker\API\Runtime\JsonObject($this->normalizer->normalize($data->getVersion(), 'json', $context));
         }
         if ($data->isInitialized('createdAt') && null !== $data->getCreatedAt()) {
             $dataArray['CreatedAt'] = $data->getCreatedAt();
@@ -163,14 +188,14 @@ class TaskNormalizer implements DenormalizerInterface, NormalizerInterface, Deno
             $dataArray['Name'] = $data->getName();
         }
         if ($data->isInitialized('labels') && null !== $data->getLabels()) {
-            $values = [];
+            $values = new \Docker\API\Runtime\JsonObject();
             foreach ($data->getLabels() as $key => $value) {
                 $values[$key] = $value;
             }
             $dataArray['Labels'] = $values;
         }
         if ($data->isInitialized('spec') && null !== $data->getSpec()) {
-            $dataArray['Spec'] = $this->normalizer->normalize($data->getSpec(), 'json', $context);
+            $dataArray['Spec'] = null === $data->getSpec() ? null : new \Docker\API\Runtime\JsonObject($this->normalizer->normalize($data->getSpec(), 'json', $context));
         }
         if ($data->isInitialized('serviceID') && null !== $data->getServiceID()) {
             $dataArray['ServiceID'] = $data->getServiceID();
@@ -184,22 +209,29 @@ class TaskNormalizer implements DenormalizerInterface, NormalizerInterface, Deno
         if ($data->isInitialized('assignedGenericResources') && null !== $data->getAssignedGenericResources()) {
             $values_1 = [];
             foreach ($data->getAssignedGenericResources() as $value_1) {
-                $values_1[] = $this->normalizer->normalize($value_1, 'json', $context);
+                $values_1[] = null === $value_1 ? null : new \Docker\API\Runtime\JsonObject($this->normalizer->normalize($value_1, 'json', $context));
             }
             $dataArray['AssignedGenericResources'] = $values_1;
         }
         if ($data->isInitialized('status') && null !== $data->getStatus()) {
-            $dataArray['Status'] = $this->normalizer->normalize($data->getStatus(), 'json', $context);
+            $dataArray['Status'] = null === $data->getStatus() ? null : new \Docker\API\Runtime\JsonObject($this->normalizer->normalize($data->getStatus(), 'json', $context));
         }
         if ($data->isInitialized('desiredState') && null !== $data->getDesiredState()) {
             $dataArray['DesiredState'] = $data->getDesiredState();
         }
         if ($data->isInitialized('jobIteration') && null !== $data->getJobIteration()) {
-            $dataArray['JobIteration'] = $this->normalizer->normalize($data->getJobIteration(), 'json', $context);
+            $dataArray['JobIteration'] = null === $data->getJobIteration() ? null : new \Docker\API\Runtime\JsonObject($this->normalizer->normalize($data->getJobIteration(), 'json', $context));
         }
-        foreach ($data as $key_1 => $value_2) {
+        if ($data->isInitialized('networksAttachments') && null !== $data->getNetworksAttachments()) {
+            $values_2 = [];
+            foreach ($data->getNetworksAttachments() as $value_2) {
+                $values_2[] = null === $value_2 ? null : new \Docker\API\Runtime\JsonObject($this->normalizer->normalize($value_2, 'json', $context));
+            }
+            $dataArray['NetworksAttachments'] = $values_2;
+        }
+        foreach ($data->additionalPropertyEntries() as $key_1 => $value_3) {
             if (preg_match('/.*/', (string) $key_1)) {
-                $dataArray[$key_1] = $value_2;
+                $dataArray[$key_1] = $value_3;
             }
         }
 

@@ -33,33 +33,28 @@ class BuildCacheNormalizer implements DenormalizerInterface, NormalizerInterface
 
     public function denormalize(mixed $data, string $type, ?string $format = null, array $context = []): mixed
     {
-        if (isset($data['$ref'])) {
+        $object = new \Docker\API\Model\BuildCache();
+        if (null === $data || false === \is_array($data)) {
+            return $object;
+        }
+        if (isset($data['$ref']) && !isset($data['type']) && !isset($data['properties']) && !isset($data['allOf'])) {
             return new Reference($data['$ref'], $context['document-origin']);
         }
         if (isset($data['$recursiveRef'])) {
             return new Reference($data['$recursiveRef'], $context['document-origin']);
         }
-        $object = new \Docker\API\Model\BuildCache();
         if (\array_key_exists('InUse', $data) && \is_int($data['InUse'])) {
             $data['InUse'] = (bool) $data['InUse'];
         }
         if (\array_key_exists('Shared', $data) && \is_int($data['Shared'])) {
             $data['Shared'] = (bool) $data['Shared'];
         }
-        if (null === $data || false === \is_array($data)) {
-            return $object;
-        }
         if (\array_key_exists('ID', $data) && null !== $data['ID']) {
             $object->setID($data['ID']);
             unset($data['ID']);
         } elseif (\array_key_exists('ID', $data) && null === $data['ID']) {
             $object->setID(null);
-        }
-        if (\array_key_exists('Parent', $data) && null !== $data['Parent']) {
-            $object->setParent($data['Parent']);
-            unset($data['Parent']);
-        } elseif (\array_key_exists('Parent', $data) && null === $data['Parent']) {
-            $object->setParent(null);
+            unset($data['ID']);
         }
         if (\array_key_exists('Parents', $data) && null !== $data['Parents']) {
             $values = [];
@@ -70,54 +65,63 @@ class BuildCacheNormalizer implements DenormalizerInterface, NormalizerInterface
             unset($data['Parents']);
         } elseif (\array_key_exists('Parents', $data) && null === $data['Parents']) {
             $object->setParents(null);
+            unset($data['Parents']);
         }
         if (\array_key_exists('Type', $data) && null !== $data['Type']) {
             $object->setType($data['Type']);
             unset($data['Type']);
         } elseif (\array_key_exists('Type', $data) && null === $data['Type']) {
             $object->setType(null);
+            unset($data['Type']);
         }
         if (\array_key_exists('Description', $data) && null !== $data['Description']) {
             $object->setDescription($data['Description']);
             unset($data['Description']);
         } elseif (\array_key_exists('Description', $data) && null === $data['Description']) {
             $object->setDescription(null);
+            unset($data['Description']);
         }
         if (\array_key_exists('InUse', $data) && null !== $data['InUse']) {
             $object->setInUse($data['InUse']);
             unset($data['InUse']);
         } elseif (\array_key_exists('InUse', $data) && null === $data['InUse']) {
             $object->setInUse(null);
+            unset($data['InUse']);
         }
         if (\array_key_exists('Shared', $data) && null !== $data['Shared']) {
             $object->setShared($data['Shared']);
             unset($data['Shared']);
         } elseif (\array_key_exists('Shared', $data) && null === $data['Shared']) {
             $object->setShared(null);
+            unset($data['Shared']);
         }
         if (\array_key_exists('Size', $data) && null !== $data['Size']) {
             $object->setSize($data['Size']);
             unset($data['Size']);
         } elseif (\array_key_exists('Size', $data) && null === $data['Size']) {
             $object->setSize(null);
+            unset($data['Size']);
         }
         if (\array_key_exists('CreatedAt', $data) && null !== $data['CreatedAt']) {
             $object->setCreatedAt($data['CreatedAt']);
             unset($data['CreatedAt']);
         } elseif (\array_key_exists('CreatedAt', $data) && null === $data['CreatedAt']) {
             $object->setCreatedAt(null);
+            unset($data['CreatedAt']);
         }
         if (\array_key_exists('LastUsedAt', $data) && null !== $data['LastUsedAt']) {
             $object->setLastUsedAt($data['LastUsedAt']);
             unset($data['LastUsedAt']);
         } elseif (\array_key_exists('LastUsedAt', $data) && null === $data['LastUsedAt']) {
             $object->setLastUsedAt(null);
+            unset($data['LastUsedAt']);
         }
         if (\array_key_exists('UsageCount', $data) && null !== $data['UsageCount']) {
             $object->setUsageCount($data['UsageCount']);
             unset($data['UsageCount']);
         } elseif (\array_key_exists('UsageCount', $data) && null === $data['UsageCount']) {
             $object->setUsageCount(null);
+            unset($data['UsageCount']);
         }
         foreach ($data as $key => $value_1) {
             if (preg_match('/.*/', (string) $key)) {
@@ -133,9 +137,6 @@ class BuildCacheNormalizer implements DenormalizerInterface, NormalizerInterface
         $dataArray = [];
         if ($data->isInitialized('iD') && null !== $data->getID()) {
             $dataArray['ID'] = $data->getID();
-        }
-        if ($data->isInitialized('parent') && null !== $data->getParent()) {
-            $dataArray['Parent'] = $data->getParent();
         }
         if ($data->isInitialized('parents') && null !== $data->getParents()) {
             $values = [];
@@ -168,7 +169,7 @@ class BuildCacheNormalizer implements DenormalizerInterface, NormalizerInterface
         if ($data->isInitialized('usageCount') && null !== $data->getUsageCount()) {
             $dataArray['UsageCount'] = $data->getUsageCount();
         }
-        foreach ($data as $key => $value_1) {
+        foreach ($data->additionalPropertyEntries() as $key => $value_1) {
             if (preg_match('/.*/', (string) $key)) {
                 $dataArray[$key] = $value_1;
             }

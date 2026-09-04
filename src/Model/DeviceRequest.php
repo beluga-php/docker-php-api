@@ -4,8 +4,12 @@ declare(strict_types=1);
 
 namespace Docker\API\Model;
 
-class DeviceRequest extends \ArrayObject
+use Docker\API\Runtime\AdditionalAndPatternProperties;
+use Docker\API\Runtime\AdditionalPropertiesInterface;
+
+class DeviceRequest implements AdditionalPropertiesInterface
 {
+    use AdditionalAndPatternProperties;
     /**
      * @var array
      */
@@ -132,5 +136,10 @@ class DeviceRequest extends \ArrayObject
         $this->options = $options;
 
         return $this;
+    }
+
+    public function definedProperties(): array
+    {
+        return ['driver' => ['Driver', 'getDriver', 'setDriver'], 'count' => ['Count', 'getCount', 'setCount'], 'deviceIDs' => ['DeviceIDs', 'getDeviceIDs', 'setDeviceIDs'], 'capabilities' => ['Capabilities', 'getCapabilities', 'setCapabilities'], 'options' => ['Options', 'getOptions', 'setOptions']];
     }
 }

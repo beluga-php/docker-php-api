@@ -4,8 +4,12 @@ declare(strict_types=1);
 
 namespace Docker\API\Model;
 
-class SwarmJoinPostBody extends \ArrayObject
+use Docker\API\Runtime\AdditionalAndPatternProperties;
+use Docker\API\Runtime\AdditionalPropertiesInterface;
+
+class SwarmJoinPostBody implements AdditionalPropertiesInterface
 {
+    use AdditionalAndPatternProperties;
     /**
      * @var array
      */
@@ -18,7 +22,9 @@ class SwarmJoinPostBody extends \ArrayObject
     /**
      * Listen address used for inter-manager communication if the node
      * gets promoted to manager, as well as determining the networking
-     * interface used for the VXLAN Tunnel Endpoint (VTEP).
+     * interface used for the VXLAN Tunnel Endpoint (VTEP). This is
+     * required for joining a swarm. If the port number is omitted,
+     * the default swarm listening port is used.
      *
      * @var string|null
      */
@@ -65,7 +71,9 @@ class SwarmJoinPostBody extends \ArrayObject
     /**
      * Listen address used for inter-manager communication if the node
      * gets promoted to manager, as well as determining the networking
-     * interface used for the VXLAN Tunnel Endpoint (VTEP).
+     * interface used for the VXLAN Tunnel Endpoint (VTEP). This is
+     * required for joining a swarm. If the port number is omitted,
+     * the default swarm listening port is used.
      */
     public function getListenAddr(): ?string
     {
@@ -75,7 +83,9 @@ class SwarmJoinPostBody extends \ArrayObject
     /**
      * Listen address used for inter-manager communication if the node
      * gets promoted to manager, as well as determining the networking
-     * interface used for the VXLAN Tunnel Endpoint (VTEP).
+     * interface used for the VXLAN Tunnel Endpoint (VTEP). This is
+     * required for joining a swarm. If the port number is omitted,
+     * the default swarm listening port is used.
      */
     public function setListenAddr(?string $listenAddr): self
     {
@@ -191,5 +201,10 @@ class SwarmJoinPostBody extends \ArrayObject
         $this->joinToken = $joinToken;
 
         return $this;
+    }
+
+    public function definedProperties(): array
+    {
+        return ['listenAddr' => ['ListenAddr', 'getListenAddr', 'setListenAddr'], 'advertiseAddr' => ['AdvertiseAddr', 'getAdvertiseAddr', 'setAdvertiseAddr'], 'dataPathAddr' => ['DataPathAddr', 'getDataPathAddr', 'setDataPathAddr'], 'remoteAddrs' => ['RemoteAddrs', 'getRemoteAddrs', 'setRemoteAddrs'], 'joinToken' => ['JoinToken', 'getJoinToken', 'setJoinToken']];
     }
 }

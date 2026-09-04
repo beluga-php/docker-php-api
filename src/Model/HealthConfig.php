@@ -4,8 +4,12 @@ declare(strict_types=1);
 
 namespace Docker\API\Model;
 
-class HealthConfig extends \ArrayObject
+use Docker\API\Runtime\AdditionalAndPatternProperties;
+use Docker\API\Runtime\AdditionalPropertiesInterface;
+
+class HealthConfig implements AdditionalPropertiesInterface
 {
+    use AdditionalAndPatternProperties;
     /**
      * @var array
      */
@@ -23,6 +27,12 @@ class HealthConfig extends \ArrayObject
      * - `["CMD", args...]` exec arguments directly
      * - `["CMD-SHELL", command]` run command with system's default shell
      *
+     * A non-zero exit code indicates a failed healthcheck:
+     * - `0` healthy
+     * - `1` unhealthy
+     * - `2` reserved (treated as unhealthy)
+     * - other values: error running probe
+     *
      * @var list<string>|null
      */
     protected $test;
@@ -36,6 +46,10 @@ class HealthConfig extends \ArrayObject
     /**
      * The time to wait before considering the check to have hung. It should
      * be 0 or at least 1000000 (1 ms). 0 means inherit.
+     *
+     * If the health check command does not complete within this timeout,
+     * the check is considered failed and the health check process is
+     * forcibly terminated without a graceful shutdown.
      *
      * @var int|null
      */
@@ -71,6 +85,12 @@ class HealthConfig extends \ArrayObject
      * - `["CMD", args...]` exec arguments directly
      * - `["CMD-SHELL", command]` run command with system's default shell
      *
+     * A non-zero exit code indicates a failed healthcheck:
+     * - `0` healthy
+     * - `1` unhealthy
+     * - `2` reserved (treated as unhealthy)
+     * - other values: error running probe
+     *
      * @return list<string>|null
      */
     public function getTest(): ?array
@@ -85,6 +105,12 @@ class HealthConfig extends \ArrayObject
      * - `["NONE"]` disable healthcheck
      * - `["CMD", args...]` exec arguments directly
      * - `["CMD-SHELL", command]` run command with system's default shell
+     *
+     * A non-zero exit code indicates a failed healthcheck:
+     * - `0` healthy
+     * - `1` unhealthy
+     * - `2` reserved (treated as unhealthy)
+     * - other values: error running probe
      *
      * @param list<string>|null $test
      */
@@ -120,6 +146,10 @@ class HealthConfig extends \ArrayObject
     /**
      * The time to wait before considering the check to have hung. It should
      * be 0 or at least 1000000 (1 ms). 0 means inherit.
+     *
+     * If the health check command does not complete within this timeout,
+     * the check is considered failed and the health check process is
+     * forcibly terminated without a graceful shutdown.
      */
     public function getTimeout(): ?int
     {
@@ -129,6 +159,10 @@ class HealthConfig extends \ArrayObject
     /**
      * The time to wait before considering the check to have hung. It should
      * be 0 or at least 1000000 (1 ms). 0 means inherit.
+     *
+     * If the health check command does not complete within this timeout,
+     * the check is considered failed and the health check process is
+     * forcibly terminated without a graceful shutdown.
      */
     public function setTimeout(?int $timeout): self
     {
@@ -201,5 +235,10 @@ class HealthConfig extends \ArrayObject
         $this->startInterval = $startInterval;
 
         return $this;
+    }
+
+    public function definedProperties(): array
+    {
+        return ['test' => ['Test', 'getTest', 'setTest'], 'interval' => ['Interval', 'getInterval', 'setInterval'], 'timeout' => ['Timeout', 'getTimeout', 'setTimeout'], 'retries' => ['Retries', 'getRetries', 'setRetries'], 'startPeriod' => ['StartPeriod', 'getStartPeriod', 'setStartPeriod'], 'startInterval' => ['StartInterval', 'getStartInterval', 'setStartInterval']];
     }
 }

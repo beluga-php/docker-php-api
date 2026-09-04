@@ -20,6 +20,8 @@ class JaneObjectNormalizer implements DenormalizerInterface, NormalizerInterface
     use NormalizerAwareTrait;
     use ValidatorTrait;
     protected $normalizers = [
+        \Docker\API\Model\ImageHistoryResponseItem::class => ImageHistoryResponseItemNormalizer::class,
+
         \Docker\API\Model\Port::class => PortNormalizer::class,
 
         \Docker\API\Model\MountPoint::class => MountPointNormalizer::class,
@@ -70,9 +72,7 @@ class JaneObjectNormalizer implements DenormalizerInterface, NormalizerInterface
 
         \Docker\API\Model\ContainerConfig::class => ContainerConfigNormalizer::class,
 
-        \Docker\API\Model\ContainerConfigExposedPortsItem::class => ContainerConfigExposedPortsItemNormalizer::class,
-
-        \Docker\API\Model\ContainerConfigVolumesItem::class => ContainerConfigVolumesItemNormalizer::class,
+        \Docker\API\Model\ImageConfig::class => ImageConfigNormalizer::class,
 
         \Docker\API\Model\NetworkingConfig::class => NetworkingConfigNormalizer::class,
 
@@ -100,8 +100,6 @@ class JaneObjectNormalizer implements DenormalizerInterface, NormalizerInterface
 
         \Docker\API\Model\Volume::class => VolumeNormalizer::class,
 
-        \Docker\API\Model\VolumeStatusItem::class => VolumeStatusItemNormalizer::class,
-
         \Docker\API\Model\VolumeUsageData::class => VolumeUsageDataNormalizer::class,
 
         \Docker\API\Model\VolumeCreateOptions::class => VolumeCreateOptionsNormalizer::class,
@@ -110,11 +108,15 @@ class JaneObjectNormalizer implements DenormalizerInterface, NormalizerInterface
 
         \Docker\API\Model\Network::class => NetworkNormalizer::class,
 
+        \Docker\API\Model\ConfigReference::class => ConfigReferenceNormalizer::class,
+
         \Docker\API\Model\IPAM::class => IPAMNormalizer::class,
 
         \Docker\API\Model\IPAMConfig::class => IPAMConfigNormalizer::class,
 
         \Docker\API\Model\NetworkContainer::class => NetworkContainerNormalizer::class,
+
+        \Docker\API\Model\PeerInfo::class => PeerInfoNormalizer::class,
 
         \Docker\API\Model\BuildInfo::class => BuildInfoNormalizer::class,
 
@@ -236,8 +238,6 @@ class JaneObjectNormalizer implements DenormalizerInterface, NormalizerInterface
 
         \Docker\API\Model\TaskSpecContainerSpecConfigsItemFile::class => TaskSpecContainerSpecConfigsItemFileNormalizer::class,
 
-        \Docker\API\Model\TaskSpecContainerSpecConfigsItemRuntime::class => TaskSpecContainerSpecConfigsItemRuntimeNormalizer::class,
-
         \Docker\API\Model\TaskSpecContainerSpecUlimitsItem::class => TaskSpecContainerSpecUlimitsItemNormalizer::class,
 
         \Docker\API\Model\TaskSpecNetworkAttachmentSpec::class => TaskSpecNetworkAttachmentSpecNormalizer::class,
@@ -260,6 +260,8 @@ class JaneObjectNormalizer implements DenormalizerInterface, NormalizerInterface
 
         \Docker\API\Model\TaskStatus::class => TaskStatusNormalizer::class,
 
+        \Docker\API\Model\NetworkAttachment::class => NetworkAttachmentNormalizer::class,
+
         \Docker\API\Model\Task::class => TaskNormalizer::class,
 
         \Docker\API\Model\ServiceSpec::class => ServiceSpecNormalizer::class,
@@ -268,11 +270,7 @@ class JaneObjectNormalizer implements DenormalizerInterface, NormalizerInterface
 
         \Docker\API\Model\ServiceSpecModeReplicated::class => ServiceSpecModeReplicatedNormalizer::class,
 
-        \Docker\API\Model\ServiceSpecModeGlobal::class => ServiceSpecModeGlobalNormalizer::class,
-
         \Docker\API\Model\ServiceSpecModeReplicatedJob::class => ServiceSpecModeReplicatedJobNormalizer::class,
-
-        \Docker\API\Model\ServiceSpecModeGlobalJob::class => ServiceSpecModeGlobalJobNormalizer::class,
 
         \Docker\API\Model\ServiceSpecUpdateConfig::class => ServiceSpecUpdateConfigNormalizer::class,
 
@@ -330,8 +328,6 @@ class JaneObjectNormalizer implements DenormalizerInterface, NormalizerInterface
 
         \Docker\API\Model\SystemVersionComponentsItem::class => SystemVersionComponentsItemNormalizer::class,
 
-        \Docker\API\Model\SystemVersionComponentsItemDetails::class => SystemVersionComponentsItemDetailsNormalizer::class,
-
         \Docker\API\Model\SystemInfo::class => SystemInfoNormalizer::class,
 
         \Docker\API\Model\SystemInfoDefaultAddressPoolsItem::class => SystemInfoDefaultAddressPoolsItemNormalizer::class,
@@ -372,13 +368,13 @@ class JaneObjectNormalizer implements DenormalizerInterface, NormalizerInterface
 
         \Docker\API\Model\ClusterVolumeSpecAccessMode::class => ClusterVolumeSpecAccessModeNormalizer::class,
 
-        \Docker\API\Model\ClusterVolumeSpecAccessModeMountVolume::class => ClusterVolumeSpecAccessModeMountVolumeNormalizer::class,
-
         \Docker\API\Model\ClusterVolumeSpecAccessModeSecretsItem::class => ClusterVolumeSpecAccessModeSecretsItemNormalizer::class,
 
         \Docker\API\Model\ClusterVolumeSpecAccessModeAccessibilityRequirements::class => ClusterVolumeSpecAccessModeAccessibilityRequirementsNormalizer::class,
 
         \Docker\API\Model\ClusterVolumeSpecAccessModeCapacityRange::class => ClusterVolumeSpecAccessModeCapacityRangeNormalizer::class,
+
+        \Docker\API\Model\Topology::class => TopologyNormalizer::class,
 
         \Docker\API\Model\ContainersCreatePostBody::class => ContainersCreatePostBodyNormalizer::class,
 
@@ -395,8 +391,6 @@ class JaneObjectNormalizer implements DenormalizerInterface, NormalizerInterface
         \Docker\API\Model\ContainersPrunePostResponse200::class => ContainersPrunePostResponse200Normalizer::class,
 
         \Docker\API\Model\BuildPrunePostResponse200::class => BuildPrunePostResponse200Normalizer::class,
-
-        \Docker\API\Model\ImagesNameHistoryGetResponse200Item::class => ImagesNameHistoryGetResponse200ItemNormalizer::class,
 
         \Docker\API\Model\ImagesSearchGetResponse200Item::class => ImagesSearchGetResponse200ItemNormalizer::class,
 
@@ -493,221 +487,6 @@ class JaneObjectNormalizer implements DenormalizerInterface, NormalizerInterface
 
     public function getSupportedTypes(?string $format = null): array
     {
-        return [
-            \Docker\API\Model\Port::class => false,
-            \Docker\API\Model\MountPoint::class => false,
-            \Docker\API\Model\DeviceMapping::class => false,
-            \Docker\API\Model\DeviceRequest::class => false,
-            \Docker\API\Model\ThrottleDevice::class => false,
-            \Docker\API\Model\Mount::class => false,
-            \Docker\API\Model\MountBindOptions::class => false,
-            \Docker\API\Model\MountVolumeOptions::class => false,
-            \Docker\API\Model\MountVolumeOptionsDriverConfig::class => false,
-            \Docker\API\Model\MountTmpfsOptions::class => false,
-            \Docker\API\Model\RestartPolicy::class => false,
-            \Docker\API\Model\Resources::class => false,
-            \Docker\API\Model\ResourcesBlkioWeightDeviceItem::class => false,
-            \Docker\API\Model\ResourcesUlimitsItem::class => false,
-            \Docker\API\Model\Limit::class => false,
-            \Docker\API\Model\ResourceObject::class => false,
-            \Docker\API\Model\GenericResourcesItem::class => false,
-            \Docker\API\Model\GenericResourcesItemNamedResourceSpec::class => false,
-            \Docker\API\Model\GenericResourcesItemDiscreteResourceSpec::class => false,
-            \Docker\API\Model\HealthConfig::class => false,
-            \Docker\API\Model\Health::class => false,
-            \Docker\API\Model\HealthcheckResult::class => false,
-            \Docker\API\Model\HostConfig::class => false,
-            \Docker\API\Model\HostConfigLogConfig::class => false,
-            \Docker\API\Model\ContainerConfig::class => false,
-            \Docker\API\Model\ContainerConfigExposedPortsItem::class => false,
-            \Docker\API\Model\ContainerConfigVolumesItem::class => false,
-            \Docker\API\Model\NetworkingConfig::class => false,
-            \Docker\API\Model\NetworkSettings::class => false,
-            \Docker\API\Model\Address::class => false,
-            \Docker\API\Model\PortBinding::class => false,
-            \Docker\API\Model\GraphDriverData::class => false,
-            \Docker\API\Model\FilesystemChange::class => false,
-            \Docker\API\Model\ImageInspect::class => false,
-            \Docker\API\Model\ImageInspectRootFS::class => false,
-            \Docker\API\Model\ImageInspectMetadata::class => false,
-            \Docker\API\Model\ImageSummary::class => false,
-            \Docker\API\Model\AuthConfig::class => false,
-            \Docker\API\Model\ProcessConfig::class => false,
-            \Docker\API\Model\Volume::class => false,
-            \Docker\API\Model\VolumeStatusItem::class => false,
-            \Docker\API\Model\VolumeUsageData::class => false,
-            \Docker\API\Model\VolumeCreateOptions::class => false,
-            \Docker\API\Model\VolumeListResponse::class => false,
-            \Docker\API\Model\Network::class => false,
-            \Docker\API\Model\IPAM::class => false,
-            \Docker\API\Model\IPAMConfig::class => false,
-            \Docker\API\Model\NetworkContainer::class => false,
-            \Docker\API\Model\BuildInfo::class => false,
-            \Docker\API\Model\BuildCache::class => false,
-            \Docker\API\Model\ImageID::class => false,
-            \Docker\API\Model\CreateImageInfo::class => false,
-            \Docker\API\Model\PushImageInfo::class => false,
-            \Docker\API\Model\ErrorDetail::class => false,
-            \Docker\API\Model\ProgressDetail::class => false,
-            \Docker\API\Model\ErrorResponse::class => false,
-            \Docker\API\Model\IdResponse::class => false,
-            \Docker\API\Model\EndpointSettings::class => false,
-            \Docker\API\Model\EndpointIPAMConfig::class => false,
-            \Docker\API\Model\PluginMount::class => false,
-            \Docker\API\Model\PluginDevice::class => false,
-            \Docker\API\Model\PluginEnv::class => false,
-            \Docker\API\Model\PluginInterfaceType::class => false,
-            \Docker\API\Model\PluginPrivilege::class => false,
-            \Docker\API\Model\Plugin::class => false,
-            \Docker\API\Model\PluginSettings::class => false,
-            \Docker\API\Model\PluginConfig::class => false,
-            \Docker\API\Model\PluginConfigInterface::class => false,
-            \Docker\API\Model\PluginConfigUser::class => false,
-            \Docker\API\Model\PluginConfigNetwork::class => false,
-            \Docker\API\Model\PluginConfigLinux::class => false,
-            \Docker\API\Model\PluginConfigArgs::class => false,
-            \Docker\API\Model\PluginConfigRootfs::class => false,
-            \Docker\API\Model\ObjectVersion::class => false,
-            \Docker\API\Model\NodeSpec::class => false,
-            \Docker\API\Model\Node::class => false,
-            \Docker\API\Model\NodeDescription::class => false,
-            \Docker\API\Model\Platform::class => false,
-            \Docker\API\Model\EngineDescription::class => false,
-            \Docker\API\Model\EngineDescriptionPluginsItem::class => false,
-            \Docker\API\Model\TLSInfo::class => false,
-            \Docker\API\Model\NodeStatus::class => false,
-            \Docker\API\Model\ManagerStatus::class => false,
-            \Docker\API\Model\SwarmSpec::class => false,
-            \Docker\API\Model\SwarmSpecOrchestration::class => false,
-            \Docker\API\Model\SwarmSpecRaft::class => false,
-            \Docker\API\Model\SwarmSpecDispatcher::class => false,
-            \Docker\API\Model\SwarmSpecCAConfig::class => false,
-            \Docker\API\Model\SwarmSpecCAConfigExternalCAsItem::class => false,
-            \Docker\API\Model\SwarmSpecEncryptionConfig::class => false,
-            \Docker\API\Model\SwarmSpecTaskDefaults::class => false,
-            \Docker\API\Model\SwarmSpecTaskDefaultsLogDriver::class => false,
-            \Docker\API\Model\ClusterInfo::class => false,
-            \Docker\API\Model\JoinTokens::class => false,
-            \Docker\API\Model\Swarm::class => false,
-            \Docker\API\Model\TaskSpec::class => false,
-            \Docker\API\Model\TaskSpecPluginSpec::class => false,
-            \Docker\API\Model\TaskSpecContainerSpec::class => false,
-            \Docker\API\Model\TaskSpecContainerSpecPrivileges::class => false,
-            \Docker\API\Model\TaskSpecContainerSpecPrivilegesCredentialSpec::class => false,
-            \Docker\API\Model\TaskSpecContainerSpecPrivilegesSELinuxContext::class => false,
-            \Docker\API\Model\TaskSpecContainerSpecPrivilegesSeccomp::class => false,
-            \Docker\API\Model\TaskSpecContainerSpecPrivilegesAppArmor::class => false,
-            \Docker\API\Model\TaskSpecContainerSpecDNSConfig::class => false,
-            \Docker\API\Model\TaskSpecContainerSpecSecretsItem::class => false,
-            \Docker\API\Model\TaskSpecContainerSpecSecretsItemFile::class => false,
-            \Docker\API\Model\TaskSpecContainerSpecConfigsItem::class => false,
-            \Docker\API\Model\TaskSpecContainerSpecConfigsItemFile::class => false,
-            \Docker\API\Model\TaskSpecContainerSpecConfigsItemRuntime::class => false,
-            \Docker\API\Model\TaskSpecContainerSpecUlimitsItem::class => false,
-            \Docker\API\Model\TaskSpecNetworkAttachmentSpec::class => false,
-            \Docker\API\Model\TaskSpecResources::class => false,
-            \Docker\API\Model\TaskSpecRestartPolicy::class => false,
-            \Docker\API\Model\TaskSpecPlacement::class => false,
-            \Docker\API\Model\TaskSpecPlacementPreferencesItem::class => false,
-            \Docker\API\Model\TaskSpecPlacementPreferencesItemSpread::class => false,
-            \Docker\API\Model\TaskSpecLogDriver::class => false,
-            \Docker\API\Model\ContainerStatus::class => false,
-            \Docker\API\Model\PortStatus::class => false,
-            \Docker\API\Model\TaskStatus::class => false,
-            \Docker\API\Model\Task::class => false,
-            \Docker\API\Model\ServiceSpec::class => false,
-            \Docker\API\Model\ServiceSpecMode::class => false,
-            \Docker\API\Model\ServiceSpecModeReplicated::class => false,
-            \Docker\API\Model\ServiceSpecModeGlobal::class => false,
-            \Docker\API\Model\ServiceSpecModeReplicatedJob::class => false,
-            \Docker\API\Model\ServiceSpecModeGlobalJob::class => false,
-            \Docker\API\Model\ServiceSpecUpdateConfig::class => false,
-            \Docker\API\Model\ServiceSpecRollbackConfig::class => false,
-            \Docker\API\Model\EndpointPortConfig::class => false,
-            \Docker\API\Model\EndpointSpec::class => false,
-            \Docker\API\Model\Service::class => false,
-            \Docker\API\Model\ServiceEndpoint::class => false,
-            \Docker\API\Model\ServiceEndpointVirtualIPsItem::class => false,
-            \Docker\API\Model\ServiceUpdateStatus::class => false,
-            \Docker\API\Model\ServiceServiceStatus::class => false,
-            \Docker\API\Model\ServiceJobStatus::class => false,
-            \Docker\API\Model\ImageDeleteResponseItem::class => false,
-            \Docker\API\Model\ServiceCreateResponse::class => false,
-            \Docker\API\Model\ServiceUpdateResponse::class => false,
-            \Docker\API\Model\ContainerSummary::class => false,
-            \Docker\API\Model\ContainerSummaryHostConfig::class => false,
-            \Docker\API\Model\ContainerSummaryNetworkSettings::class => false,
-            \Docker\API\Model\Driver::class => false,
-            \Docker\API\Model\SecretSpec::class => false,
-            \Docker\API\Model\Secret::class => false,
-            \Docker\API\Model\ConfigSpec::class => false,
-            \Docker\API\Model\Config::class => false,
-            \Docker\API\Model\ContainerState::class => false,
-            \Docker\API\Model\ContainerCreateResponse::class => false,
-            \Docker\API\Model\ContainerWaitResponse::class => false,
-            \Docker\API\Model\ContainerWaitExitError::class => false,
-            \Docker\API\Model\SystemVersion::class => false,
-            \Docker\API\Model\SystemVersionPlatform::class => false,
-            \Docker\API\Model\SystemVersionComponentsItem::class => false,
-            \Docker\API\Model\SystemVersionComponentsItemDetails::class => false,
-            \Docker\API\Model\SystemInfo::class => false,
-            \Docker\API\Model\SystemInfoDefaultAddressPoolsItem::class => false,
-            \Docker\API\Model\PluginsInfo::class => false,
-            \Docker\API\Model\RegistryServiceConfig::class => false,
-            \Docker\API\Model\IndexInfo::class => false,
-            \Docker\API\Model\Runtime::class => false,
-            \Docker\API\Model\Commit::class => false,
-            \Docker\API\Model\SwarmInfo::class => false,
-            \Docker\API\Model\PeerNode::class => false,
-            \Docker\API\Model\NetworkAttachmentConfig::class => false,
-            \Docker\API\Model\EventActor::class => false,
-            \Docker\API\Model\EventMessage::class => false,
-            \Docker\API\Model\OCIDescriptor::class => false,
-            \Docker\API\Model\OCIPlatform::class => false,
-            \Docker\API\Model\DistributionInspect::class => false,
-            \Docker\API\Model\ClusterVolume::class => false,
-            \Docker\API\Model\ClusterVolumeInfo::class => false,
-            \Docker\API\Model\ClusterVolumePublishStatusItem::class => false,
-            \Docker\API\Model\ClusterVolumeSpec::class => false,
-            \Docker\API\Model\ClusterVolumeSpecAccessMode::class => false,
-            \Docker\API\Model\ClusterVolumeSpecAccessModeMountVolume::class => false,
-            \Docker\API\Model\ClusterVolumeSpecAccessModeSecretsItem::class => false,
-            \Docker\API\Model\ClusterVolumeSpecAccessModeAccessibilityRequirements::class => false,
-            \Docker\API\Model\ClusterVolumeSpecAccessModeCapacityRange::class => false,
-            \Docker\API\Model\ContainersCreatePostBody::class => false,
-            \Docker\API\Model\ContainersIdJsonGetResponse200::class => false,
-            \Docker\API\Model\ContainersIdTopGetJsonResponse200::class => false,
-            \Docker\API\Model\ContainersIdTopGetTextplainResponse200::class => false,
-            \Docker\API\Model\ContainersIdUpdatePostBody::class => false,
-            \Docker\API\Model\ContainersIdUpdatePostResponse200::class => false,
-            \Docker\API\Model\ContainersPrunePostResponse200::class => false,
-            \Docker\API\Model\BuildPrunePostResponse200::class => false,
-            \Docker\API\Model\ImagesNameHistoryGetResponse200Item::class => false,
-            \Docker\API\Model\ImagesSearchGetResponse200Item::class => false,
-            \Docker\API\Model\ImagesPrunePostResponse200::class => false,
-            \Docker\API\Model\AuthPostResponse200::class => false,
-            \Docker\API\Model\SystemDfGetJsonResponse200::class => false,
-            \Docker\API\Model\SystemDfGetTextplainResponse200::class => false,
-            \Docker\API\Model\ContainersIdExecPostBody::class => false,
-            \Docker\API\Model\ExecIdStartPostBody::class => false,
-            \Docker\API\Model\ExecIdJsonGetResponse200::class => false,
-            \Docker\API\Model\VolumesNamePutBody::class => false,
-            \Docker\API\Model\VolumesPrunePostResponse200::class => false,
-            \Docker\API\Model\NetworksCreatePostBody::class => false,
-            \Docker\API\Model\NetworksCreatePostResponse201::class => false,
-            \Docker\API\Model\NetworksIdConnectPostBody::class => false,
-            \Docker\API\Model\NetworksIdDisconnectPostBody::class => false,
-            \Docker\API\Model\NetworksPrunePostResponse200::class => false,
-            \Docker\API\Model\SwarmInitPostBody::class => false,
-            \Docker\API\Model\SwarmJoinPostBody::class => false,
-            \Docker\API\Model\SwarmUnlockkeyGetJsonResponse200::class => false,
-            \Docker\API\Model\SwarmUnlockkeyGetTextplainResponse200::class => false,
-            \Docker\API\Model\SwarmUnlockPostBody::class => false,
-            \Docker\API\Model\ServicesCreatePostBody::class => false,
-            \Docker\API\Model\ServicesIdUpdatePostBody::class => false,
-            \Docker\API\Model\SecretsCreatePostBody::class => false,
-            \Docker\API\Model\ConfigsCreatePostBody::class => false,
-            \Jane\Component\JsonSchemaRuntime\Reference::class => false,
-        ];
+        return array_combine(array_keys($this->normalizers), array_fill(0, \count($this->normalizers), false));
     }
 }

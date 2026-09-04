@@ -4,8 +4,12 @@ declare(strict_types=1);
 
 namespace Docker\API\Model;
 
-class EndpointSettings extends \ArrayObject
+use Docker\API\Runtime\AdditionalAndPatternProperties;
+use Docker\API\Runtime\AdditionalPropertiesInterface;
+
+class EndpointSettings implements AdditionalPropertiesInterface
 {
+    use AdditionalAndPatternProperties;
     /**
      * @var array
      */
@@ -395,5 +399,10 @@ class EndpointSettings extends \ArrayObject
         $this->dNSNames = $dNSNames;
 
         return $this;
+    }
+
+    public function definedProperties(): array
+    {
+        return ['iPAMConfig' => ['IPAMConfig', 'getIPAMConfig', 'setIPAMConfig'], 'links' => ['Links', 'getLinks', 'setLinks'], 'macAddress' => ['MacAddress', 'getMacAddress', 'setMacAddress'], 'aliases' => ['Aliases', 'getAliases', 'setAliases'], 'networkID' => ['NetworkID', 'getNetworkID', 'setNetworkID'], 'endpointID' => ['EndpointID', 'getEndpointID', 'setEndpointID'], 'gateway' => ['Gateway', 'getGateway', 'setGateway'], 'iPAddress' => ['IPAddress', 'getIPAddress', 'setIPAddress'], 'iPPrefixLen' => ['IPPrefixLen', 'getIPPrefixLen', 'setIPPrefixLen'], 'iPv6Gateway' => ['IPv6Gateway', 'getIPv6Gateway', 'setIPv6Gateway'], 'globalIPv6Address' => ['GlobalIPv6Address', 'getGlobalIPv6Address', 'setGlobalIPv6Address'], 'globalIPv6PrefixLen' => ['GlobalIPv6PrefixLen', 'getGlobalIPv6PrefixLen', 'setGlobalIPv6PrefixLen'], 'driverOpts' => ['DriverOpts', 'getDriverOpts', 'setDriverOpts'], 'dNSNames' => ['DNSNames', 'getDNSNames', 'setDNSNames']];
     }
 }

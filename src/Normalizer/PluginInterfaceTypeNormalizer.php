@@ -33,33 +33,36 @@ class PluginInterfaceTypeNormalizer implements DenormalizerInterface, Normalizer
 
     public function denormalize(mixed $data, string $type, ?string $format = null, array $context = []): mixed
     {
-        if (isset($data['$ref'])) {
+        $object = new \Docker\API\Model\PluginInterfaceType();
+        if (null === $data || false === \is_array($data)) {
+            return $object;
+        }
+        if (isset($data['$ref']) && !isset($data['type']) && !isset($data['properties']) && !isset($data['allOf'])) {
             return new Reference($data['$ref'], $context['document-origin']);
         }
         if (isset($data['$recursiveRef'])) {
             return new Reference($data['$recursiveRef'], $context['document-origin']);
-        }
-        $object = new \Docker\API\Model\PluginInterfaceType();
-        if (null === $data || false === \is_array($data)) {
-            return $object;
         }
         if (\array_key_exists('Prefix', $data) && null !== $data['Prefix']) {
             $object->setPrefix($data['Prefix']);
             unset($data['Prefix']);
         } elseif (\array_key_exists('Prefix', $data) && null === $data['Prefix']) {
             $object->setPrefix(null);
+            unset($data['Prefix']);
         }
         if (\array_key_exists('Capability', $data) && null !== $data['Capability']) {
             $object->setCapability($data['Capability']);
             unset($data['Capability']);
         } elseif (\array_key_exists('Capability', $data) && null === $data['Capability']) {
             $object->setCapability(null);
+            unset($data['Capability']);
         }
         if (\array_key_exists('Version', $data) && null !== $data['Version']) {
             $object->setVersion($data['Version']);
             unset($data['Version']);
         } elseif (\array_key_exists('Version', $data) && null === $data['Version']) {
             $object->setVersion(null);
+            unset($data['Version']);
         }
         foreach ($data as $key => $value) {
             if (preg_match('/.*/', (string) $key)) {
@@ -76,7 +79,7 @@ class PluginInterfaceTypeNormalizer implements DenormalizerInterface, Normalizer
         $dataArray['Prefix'] = $data->getPrefix();
         $dataArray['Capability'] = $data->getCapability();
         $dataArray['Version'] = $data->getVersion();
-        foreach ($data as $key => $value) {
+        foreach ($data->additionalPropertyEntries() as $key => $value) {
             if (preg_match('/.*/', (string) $key)) {
                 $dataArray[$key] = $value;
             }

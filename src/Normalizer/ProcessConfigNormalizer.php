@@ -33,45 +33,49 @@ class ProcessConfigNormalizer implements DenormalizerInterface, NormalizerInterf
 
     public function denormalize(mixed $data, string $type, ?string $format = null, array $context = []): mixed
     {
-        if (isset($data['$ref'])) {
+        $object = new \Docker\API\Model\ProcessConfig();
+        if (null === $data || false === \is_array($data)) {
+            return $object;
+        }
+        if (isset($data['$ref']) && !isset($data['type']) && !isset($data['properties']) && !isset($data['allOf'])) {
             return new Reference($data['$ref'], $context['document-origin']);
         }
         if (isset($data['$recursiveRef'])) {
             return new Reference($data['$recursiveRef'], $context['document-origin']);
         }
-        $object = new \Docker\API\Model\ProcessConfig();
         if (\array_key_exists('privileged', $data) && \is_int($data['privileged'])) {
             $data['privileged'] = (bool) $data['privileged'];
         }
         if (\array_key_exists('tty', $data) && \is_int($data['tty'])) {
             $data['tty'] = (bool) $data['tty'];
         }
-        if (null === $data || false === \is_array($data)) {
-            return $object;
-        }
         if (\array_key_exists('privileged', $data) && null !== $data['privileged']) {
             $object->setPrivileged($data['privileged']);
             unset($data['privileged']);
         } elseif (\array_key_exists('privileged', $data) && null === $data['privileged']) {
             $object->setPrivileged(null);
+            unset($data['privileged']);
         }
         if (\array_key_exists('user', $data) && null !== $data['user']) {
             $object->setUser($data['user']);
             unset($data['user']);
         } elseif (\array_key_exists('user', $data) && null === $data['user']) {
             $object->setUser(null);
+            unset($data['user']);
         }
         if (\array_key_exists('tty', $data) && null !== $data['tty']) {
             $object->setTty($data['tty']);
             unset($data['tty']);
         } elseif (\array_key_exists('tty', $data) && null === $data['tty']) {
             $object->setTty(null);
+            unset($data['tty']);
         }
         if (\array_key_exists('entrypoint', $data) && null !== $data['entrypoint']) {
             $object->setEntrypoint($data['entrypoint']);
             unset($data['entrypoint']);
         } elseif (\array_key_exists('entrypoint', $data) && null === $data['entrypoint']) {
             $object->setEntrypoint(null);
+            unset($data['entrypoint']);
         }
         if (\array_key_exists('arguments', $data) && null !== $data['arguments']) {
             $values = [];
@@ -82,6 +86,7 @@ class ProcessConfigNormalizer implements DenormalizerInterface, NormalizerInterf
             unset($data['arguments']);
         } elseif (\array_key_exists('arguments', $data) && null === $data['arguments']) {
             $object->setArguments(null);
+            unset($data['arguments']);
         }
         foreach ($data as $key => $value_1) {
             if (preg_match('/.*/', (string) $key)) {
@@ -114,7 +119,7 @@ class ProcessConfigNormalizer implements DenormalizerInterface, NormalizerInterf
             }
             $dataArray['arguments'] = $values;
         }
-        foreach ($data as $key => $value_1) {
+        foreach ($data->additionalPropertyEntries() as $key => $value_1) {
             if (preg_match('/.*/', (string) $key)) {
                 $dataArray[$key] = $value_1;
             }

@@ -33,27 +33,29 @@ class VolumeUsageDataNormalizer implements DenormalizerInterface, NormalizerInte
 
     public function denormalize(mixed $data, string $type, ?string $format = null, array $context = []): mixed
     {
-        if (isset($data['$ref'])) {
+        $object = new \Docker\API\Model\VolumeUsageData();
+        if (null === $data || false === \is_array($data)) {
+            return $object;
+        }
+        if (isset($data['$ref']) && !isset($data['type']) && !isset($data['properties']) && !isset($data['allOf'])) {
             return new Reference($data['$ref'], $context['document-origin']);
         }
         if (isset($data['$recursiveRef'])) {
             return new Reference($data['$recursiveRef'], $context['document-origin']);
-        }
-        $object = new \Docker\API\Model\VolumeUsageData();
-        if (null === $data || false === \is_array($data)) {
-            return $object;
         }
         if (\array_key_exists('Size', $data) && null !== $data['Size']) {
             $object->setSize($data['Size']);
             unset($data['Size']);
         } elseif (\array_key_exists('Size', $data) && null === $data['Size']) {
             $object->setSize(null);
+            unset($data['Size']);
         }
         if (\array_key_exists('RefCount', $data) && null !== $data['RefCount']) {
             $object->setRefCount($data['RefCount']);
             unset($data['RefCount']);
         } elseif (\array_key_exists('RefCount', $data) && null === $data['RefCount']) {
             $object->setRefCount(null);
+            unset($data['RefCount']);
         }
         foreach ($data as $key => $value) {
             if (preg_match('/.*/', (string) $key)) {
@@ -69,7 +71,7 @@ class VolumeUsageDataNormalizer implements DenormalizerInterface, NormalizerInte
         $dataArray = [];
         $dataArray['Size'] = $data->getSize();
         $dataArray['RefCount'] = $data->getRefCount();
-        foreach ($data as $key => $value) {
+        foreach ($data->additionalPropertyEntries() as $key => $value) {
             if (preg_match('/.*/', (string) $key)) {
                 $dataArray[$key] = $value;
             }

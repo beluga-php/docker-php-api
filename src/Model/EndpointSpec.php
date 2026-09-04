@@ -4,8 +4,12 @@ declare(strict_types=1);
 
 namespace Docker\API\Model;
 
-class EndpointSpec extends \ArrayObject
+use Docker\API\Runtime\AdditionalAndPatternProperties;
+use Docker\API\Runtime\AdditionalPropertiesInterface;
+
+class EndpointSpec implements AdditionalPropertiesInterface
 {
+    use AdditionalAndPatternProperties;
     /**
      * @var array
      */
@@ -71,5 +75,10 @@ class EndpointSpec extends \ArrayObject
         $this->ports = $ports;
 
         return $this;
+    }
+
+    public function definedProperties(): array
+    {
+        return ['mode' => ['Mode', 'getMode', 'setMode'], 'ports' => ['Ports', 'getPorts', 'setPorts']];
     }
 }

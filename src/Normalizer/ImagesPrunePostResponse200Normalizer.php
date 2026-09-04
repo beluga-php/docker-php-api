@@ -33,15 +33,15 @@ class ImagesPrunePostResponse200Normalizer implements DenormalizerInterface, Nor
 
     public function denormalize(mixed $data, string $type, ?string $format = null, array $context = []): mixed
     {
-        if (isset($data['$ref'])) {
+        $object = new \Docker\API\Model\ImagesPrunePostResponse200();
+        if (null === $data || false === \is_array($data)) {
+            return $object;
+        }
+        if (isset($data['$ref']) && !isset($data['type']) && !isset($data['properties']) && !isset($data['allOf'])) {
             return new Reference($data['$ref'], $context['document-origin']);
         }
         if (isset($data['$recursiveRef'])) {
             return new Reference($data['$recursiveRef'], $context['document-origin']);
-        }
-        $object = new \Docker\API\Model\ImagesPrunePostResponse200();
-        if (null === $data || false === \is_array($data)) {
-            return $object;
         }
         if (\array_key_exists('ImagesDeleted', $data) && null !== $data['ImagesDeleted']) {
             $values = [];
@@ -52,12 +52,14 @@ class ImagesPrunePostResponse200Normalizer implements DenormalizerInterface, Nor
             unset($data['ImagesDeleted']);
         } elseif (\array_key_exists('ImagesDeleted', $data) && null === $data['ImagesDeleted']) {
             $object->setImagesDeleted(null);
+            unset($data['ImagesDeleted']);
         }
         if (\array_key_exists('SpaceReclaimed', $data) && null !== $data['SpaceReclaimed']) {
             $object->setSpaceReclaimed($data['SpaceReclaimed']);
             unset($data['SpaceReclaimed']);
         } elseif (\array_key_exists('SpaceReclaimed', $data) && null === $data['SpaceReclaimed']) {
             $object->setSpaceReclaimed(null);
+            unset($data['SpaceReclaimed']);
         }
         foreach ($data as $key => $value_1) {
             if (preg_match('/.*/', (string) $key)) {
@@ -74,14 +76,14 @@ class ImagesPrunePostResponse200Normalizer implements DenormalizerInterface, Nor
         if ($data->isInitialized('imagesDeleted') && null !== $data->getImagesDeleted()) {
             $values = [];
             foreach ($data->getImagesDeleted() as $value) {
-                $values[] = $this->normalizer->normalize($value, 'json', $context);
+                $values[] = null === $value ? null : new \Docker\API\Runtime\JsonObject($this->normalizer->normalize($value, 'json', $context));
             }
             $dataArray['ImagesDeleted'] = $values;
         }
         if ($data->isInitialized('spaceReclaimed') && null !== $data->getSpaceReclaimed()) {
             $dataArray['SpaceReclaimed'] = $data->getSpaceReclaimed();
         }
-        foreach ($data as $key => $value_1) {
+        foreach ($data->additionalPropertyEntries() as $key => $value_1) {
             if (preg_match('/.*/', (string) $key)) {
                 $dataArray[$key] = $value_1;
             }

@@ -33,30 +33,32 @@ class ClusterVolumePublishStatusItemNormalizer implements DenormalizerInterface,
 
     public function denormalize(mixed $data, string $type, ?string $format = null, array $context = []): mixed
     {
-        if (isset($data['$ref'])) {
+        $object = new \Docker\API\Model\ClusterVolumePublishStatusItem();
+        if (null === $data || false === \is_array($data)) {
+            return $object;
+        }
+        if (isset($data['$ref']) && !isset($data['type']) && !isset($data['properties']) && !isset($data['allOf'])) {
             return new Reference($data['$ref'], $context['document-origin']);
         }
         if (isset($data['$recursiveRef'])) {
             return new Reference($data['$recursiveRef'], $context['document-origin']);
-        }
-        $object = new \Docker\API\Model\ClusterVolumePublishStatusItem();
-        if (null === $data || false === \is_array($data)) {
-            return $object;
         }
         if (\array_key_exists('NodeID', $data) && null !== $data['NodeID']) {
             $object->setNodeID($data['NodeID']);
             unset($data['NodeID']);
         } elseif (\array_key_exists('NodeID', $data) && null === $data['NodeID']) {
             $object->setNodeID(null);
+            unset($data['NodeID']);
         }
         if (\array_key_exists('State', $data) && null !== $data['State']) {
             $object->setState($data['State']);
             unset($data['State']);
         } elseif (\array_key_exists('State', $data) && null === $data['State']) {
             $object->setState(null);
+            unset($data['State']);
         }
         if (\array_key_exists('PublishContext', $data) && null !== $data['PublishContext']) {
-            $values = new \ArrayObject([], \ArrayObject::ARRAY_AS_PROPS);
+            $values = new \Docker\API\Runtime\JsonObject();
             foreach ($data['PublishContext'] as $key => $value) {
                 $values[$key] = $value;
             }
@@ -64,6 +66,7 @@ class ClusterVolumePublishStatusItemNormalizer implements DenormalizerInterface,
             unset($data['PublishContext']);
         } elseif (\array_key_exists('PublishContext', $data) && null === $data['PublishContext']) {
             $object->setPublishContext(null);
+            unset($data['PublishContext']);
         }
         foreach ($data as $key_1 => $value_1) {
             if (preg_match('/.*/', (string) $key_1)) {
@@ -84,13 +87,13 @@ class ClusterVolumePublishStatusItemNormalizer implements DenormalizerInterface,
             $dataArray['State'] = $data->getState();
         }
         if ($data->isInitialized('publishContext') && null !== $data->getPublishContext()) {
-            $values = [];
+            $values = new \Docker\API\Runtime\JsonObject();
             foreach ($data->getPublishContext() as $key => $value) {
                 $values[$key] = $value;
             }
             $dataArray['PublishContext'] = $values;
         }
-        foreach ($data as $key_1 => $value_1) {
+        foreach ($data->additionalPropertyEntries() as $key_1 => $value_1) {
             if (preg_match('/.*/', (string) $key_1)) {
                 $dataArray[$key_1] = $value_1;
             }

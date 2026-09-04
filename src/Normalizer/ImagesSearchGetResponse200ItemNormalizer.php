@@ -33,51 +33,56 @@ class ImagesSearchGetResponse200ItemNormalizer implements DenormalizerInterface,
 
     public function denormalize(mixed $data, string $type, ?string $format = null, array $context = []): mixed
     {
-        if (isset($data['$ref'])) {
+        $object = new \Docker\API\Model\ImagesSearchGetResponse200Item();
+        if (null === $data || false === \is_array($data)) {
+            return $object;
+        }
+        if (isset($data['$ref']) && !isset($data['type']) && !isset($data['properties']) && !isset($data['allOf'])) {
             return new Reference($data['$ref'], $context['document-origin']);
         }
         if (isset($data['$recursiveRef'])) {
             return new Reference($data['$recursiveRef'], $context['document-origin']);
         }
-        $object = new \Docker\API\Model\ImagesSearchGetResponse200Item();
         if (\array_key_exists('is_official', $data) && \is_int($data['is_official'])) {
             $data['is_official'] = (bool) $data['is_official'];
         }
         if (\array_key_exists('is_automated', $data) && \is_int($data['is_automated'])) {
             $data['is_automated'] = (bool) $data['is_automated'];
         }
-        if (null === $data || false === \is_array($data)) {
-            return $object;
-        }
         if (\array_key_exists('description', $data) && null !== $data['description']) {
             $object->setDescription($data['description']);
             unset($data['description']);
         } elseif (\array_key_exists('description', $data) && null === $data['description']) {
             $object->setDescription(null);
+            unset($data['description']);
         }
         if (\array_key_exists('is_official', $data) && null !== $data['is_official']) {
             $object->setIsOfficial($data['is_official']);
             unset($data['is_official']);
         } elseif (\array_key_exists('is_official', $data) && null === $data['is_official']) {
             $object->setIsOfficial(null);
+            unset($data['is_official']);
         }
         if (\array_key_exists('is_automated', $data) && null !== $data['is_automated']) {
             $object->setIsAutomated($data['is_automated']);
             unset($data['is_automated']);
         } elseif (\array_key_exists('is_automated', $data) && null === $data['is_automated']) {
             $object->setIsAutomated(null);
+            unset($data['is_automated']);
         }
         if (\array_key_exists('name', $data) && null !== $data['name']) {
             $object->setName($data['name']);
             unset($data['name']);
         } elseif (\array_key_exists('name', $data) && null === $data['name']) {
             $object->setName(null);
+            unset($data['name']);
         }
         if (\array_key_exists('star_count', $data) && null !== $data['star_count']) {
             $object->setStarCount($data['star_count']);
             unset($data['star_count']);
         } elseif (\array_key_exists('star_count', $data) && null === $data['star_count']) {
             $object->setStarCount(null);
+            unset($data['star_count']);
         }
         foreach ($data as $key => $value) {
             if (preg_match('/.*/', (string) $key)) {
@@ -106,7 +111,7 @@ class ImagesSearchGetResponse200ItemNormalizer implements DenormalizerInterface,
         if ($data->isInitialized('starCount') && null !== $data->getStarCount()) {
             $dataArray['star_count'] = $data->getStarCount();
         }
-        foreach ($data as $key => $value) {
+        foreach ($data->additionalPropertyEntries() as $key => $value) {
             if (preg_match('/.*/', (string) $key)) {
                 $dataArray[$key] = $value;
             }

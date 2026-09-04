@@ -33,39 +33,43 @@ class PortNormalizer implements DenormalizerInterface, NormalizerInterface, Deno
 
     public function denormalize(mixed $data, string $type, ?string $format = null, array $context = []): mixed
     {
-        if (isset($data['$ref'])) {
+        $object = new \Docker\API\Model\Port();
+        if (null === $data || false === \is_array($data)) {
+            return $object;
+        }
+        if (isset($data['$ref']) && !isset($data['type']) && !isset($data['properties']) && !isset($data['allOf'])) {
             return new Reference($data['$ref'], $context['document-origin']);
         }
         if (isset($data['$recursiveRef'])) {
             return new Reference($data['$recursiveRef'], $context['document-origin']);
-        }
-        $object = new \Docker\API\Model\Port();
-        if (null === $data || false === \is_array($data)) {
-            return $object;
         }
         if (\array_key_exists('IP', $data) && null !== $data['IP']) {
             $object->setIP($data['IP']);
             unset($data['IP']);
         } elseif (\array_key_exists('IP', $data) && null === $data['IP']) {
             $object->setIP(null);
+            unset($data['IP']);
         }
         if (\array_key_exists('PrivatePort', $data) && null !== $data['PrivatePort']) {
             $object->setPrivatePort($data['PrivatePort']);
             unset($data['PrivatePort']);
         } elseif (\array_key_exists('PrivatePort', $data) && null === $data['PrivatePort']) {
             $object->setPrivatePort(null);
+            unset($data['PrivatePort']);
         }
         if (\array_key_exists('PublicPort', $data) && null !== $data['PublicPort']) {
             $object->setPublicPort($data['PublicPort']);
             unset($data['PublicPort']);
         } elseif (\array_key_exists('PublicPort', $data) && null === $data['PublicPort']) {
             $object->setPublicPort(null);
+            unset($data['PublicPort']);
         }
         if (\array_key_exists('Type', $data) && null !== $data['Type']) {
             $object->setType($data['Type']);
             unset($data['Type']);
         } elseif (\array_key_exists('Type', $data) && null === $data['Type']) {
             $object->setType(null);
+            unset($data['Type']);
         }
         foreach ($data as $key => $value) {
             if (preg_match('/.*/', (string) $key)) {
@@ -87,7 +91,7 @@ class PortNormalizer implements DenormalizerInterface, NormalizerInterface, Deno
             $dataArray['PublicPort'] = $data->getPublicPort();
         }
         $dataArray['Type'] = $data->getType();
-        foreach ($data as $key => $value) {
+        foreach ($data->additionalPropertyEntries() as $key => $value) {
             if (preg_match('/.*/', (string) $key)) {
                 $dataArray[$key] = $value;
             }

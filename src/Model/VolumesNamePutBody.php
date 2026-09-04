@@ -4,8 +4,12 @@ declare(strict_types=1);
 
 namespace Docker\API\Model;
 
-class VolumesNamePutBody extends \ArrayObject
+use Docker\API\Runtime\AdditionalAndPatternProperties;
+use Docker\API\Runtime\AdditionalPropertiesInterface;
+
+class VolumesNamePutBody implements AdditionalPropertiesInterface
 {
+    use AdditionalAndPatternProperties;
     /**
      * @var array
      */
@@ -39,5 +43,10 @@ class VolumesNamePutBody extends \ArrayObject
         $this->spec = $spec;
 
         return $this;
+    }
+
+    public function definedProperties(): array
+    {
+        return ['spec' => ['Spec', 'getSpec', 'setSpec']];
     }
 }

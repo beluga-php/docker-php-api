@@ -4,8 +4,12 @@ declare(strict_types=1);
 
 namespace Docker\API\Model;
 
-class Task extends \ArrayObject
+use Docker\API\Runtime\AdditionalAndPatternProperties;
+use Docker\API\Runtime\AdditionalPropertiesInterface;
+
+class Task implements AdditionalPropertiesInterface
 {
+    use AdditionalAndPatternProperties;
     /**
      * @var array
      */
@@ -110,6 +114,13 @@ class Task extends \ArrayObject
      * @var ObjectVersion|null
      */
     protected $jobIteration;
+    /**
+     * The networks that this task is attached to, and the addresses the
+     * task was assigned on each of them.
+     *
+     * @var list<NetworkAttachment>|null
+     */
+    protected $networksAttachments;
 
     /**
      * The ID of the task.
@@ -397,5 +408,35 @@ class Task extends \ArrayObject
         $this->jobIteration = $jobIteration;
 
         return $this;
+    }
+
+    /**
+     * The networks that this task is attached to, and the addresses the
+     * task was assigned on each of them.
+     *
+     * @return list<NetworkAttachment>|null
+     */
+    public function getNetworksAttachments(): ?array
+    {
+        return $this->networksAttachments;
+    }
+
+    /**
+     * The networks that this task is attached to, and the addresses the
+     * task was assigned on each of them.
+     *
+     * @param list<NetworkAttachment>|null $networksAttachments
+     */
+    public function setNetworksAttachments(?array $networksAttachments): self
+    {
+        $this->initialized['networksAttachments'] = true;
+        $this->networksAttachments = $networksAttachments;
+
+        return $this;
+    }
+
+    public function definedProperties(): array
+    {
+        return ['iD' => ['ID', 'getID', 'setID'], 'version' => ['Version', 'getVersion', 'setVersion'], 'createdAt' => ['CreatedAt', 'getCreatedAt', 'setCreatedAt'], 'updatedAt' => ['UpdatedAt', 'getUpdatedAt', 'setUpdatedAt'], 'name' => ['Name', 'getName', 'setName'], 'labels' => ['Labels', 'getLabels', 'setLabels'], 'spec' => ['Spec', 'getSpec', 'setSpec'], 'serviceID' => ['ServiceID', 'getServiceID', 'setServiceID'], 'slot' => ['Slot', 'getSlot', 'setSlot'], 'nodeID' => ['NodeID', 'getNodeID', 'setNodeID'], 'assignedGenericResources' => ['AssignedGenericResources', 'getAssignedGenericResources', 'setAssignedGenericResources'], 'status' => ['Status', 'getStatus', 'setStatus'], 'desiredState' => ['DesiredState', 'getDesiredState', 'setDesiredState'], 'jobIteration' => ['JobIteration', 'getJobIteration', 'setJobIteration'], 'networksAttachments' => ['NetworksAttachments', 'getNetworksAttachments', 'setNetworksAttachments']];
     }
 }

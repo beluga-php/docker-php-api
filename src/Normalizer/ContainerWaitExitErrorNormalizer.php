@@ -33,21 +33,22 @@ class ContainerWaitExitErrorNormalizer implements DenormalizerInterface, Normali
 
     public function denormalize(mixed $data, string $type, ?string $format = null, array $context = []): mixed
     {
-        if (isset($data['$ref'])) {
+        $object = new \Docker\API\Model\ContainerWaitExitError();
+        if (null === $data || false === \is_array($data)) {
+            return $object;
+        }
+        if (isset($data['$ref']) && !isset($data['type']) && !isset($data['properties']) && !isset($data['allOf'])) {
             return new Reference($data['$ref'], $context['document-origin']);
         }
         if (isset($data['$recursiveRef'])) {
             return new Reference($data['$recursiveRef'], $context['document-origin']);
-        }
-        $object = new \Docker\API\Model\ContainerWaitExitError();
-        if (null === $data || false === \is_array($data)) {
-            return $object;
         }
         if (\array_key_exists('Message', $data) && null !== $data['Message']) {
             $object->setMessage($data['Message']);
             unset($data['Message']);
         } elseif (\array_key_exists('Message', $data) && null === $data['Message']) {
             $object->setMessage(null);
+            unset($data['Message']);
         }
         foreach ($data as $key => $value) {
             if (preg_match('/.*/', (string) $key)) {
@@ -64,7 +65,7 @@ class ContainerWaitExitErrorNormalizer implements DenormalizerInterface, Normali
         if ($data->isInitialized('message') && null !== $data->getMessage()) {
             $dataArray['Message'] = $data->getMessage();
         }
-        foreach ($data as $key => $value) {
+        foreach ($data->additionalPropertyEntries() as $key => $value) {
             if (preg_match('/.*/', (string) $key)) {
                 $dataArray[$key] = $value;
             }

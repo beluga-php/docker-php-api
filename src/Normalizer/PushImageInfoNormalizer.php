@@ -33,39 +33,43 @@ class PushImageInfoNormalizer implements DenormalizerInterface, NormalizerInterf
 
     public function denormalize(mixed $data, string $type, ?string $format = null, array $context = []): mixed
     {
-        if (isset($data['$ref'])) {
+        $object = new \Docker\API\Model\PushImageInfo();
+        if (null === $data || false === \is_array($data)) {
+            return $object;
+        }
+        if (isset($data['$ref']) && !isset($data['type']) && !isset($data['properties']) && !isset($data['allOf'])) {
             return new Reference($data['$ref'], $context['document-origin']);
         }
         if (isset($data['$recursiveRef'])) {
             return new Reference($data['$recursiveRef'], $context['document-origin']);
-        }
-        $object = new \Docker\API\Model\PushImageInfo();
-        if (null === $data || false === \is_array($data)) {
-            return $object;
         }
         if (\array_key_exists('error', $data) && null !== $data['error']) {
             $object->setError($data['error']);
             unset($data['error']);
         } elseif (\array_key_exists('error', $data) && null === $data['error']) {
             $object->setError(null);
+            unset($data['error']);
         }
         if (\array_key_exists('status', $data) && null !== $data['status']) {
             $object->setStatus($data['status']);
             unset($data['status']);
         } elseif (\array_key_exists('status', $data) && null === $data['status']) {
             $object->setStatus(null);
+            unset($data['status']);
         }
         if (\array_key_exists('progress', $data) && null !== $data['progress']) {
             $object->setProgress($data['progress']);
             unset($data['progress']);
         } elseif (\array_key_exists('progress', $data) && null === $data['progress']) {
             $object->setProgress(null);
+            unset($data['progress']);
         }
         if (\array_key_exists('progressDetail', $data) && null !== $data['progressDetail']) {
             $object->setProgressDetail($this->denormalizer->denormalize($data['progressDetail'], \Docker\API\Model\ProgressDetail::class, 'json', $context));
             unset($data['progressDetail']);
         } elseif (\array_key_exists('progressDetail', $data) && null === $data['progressDetail']) {
             $object->setProgressDetail(null);
+            unset($data['progressDetail']);
         }
         foreach ($data as $key => $value) {
             if (preg_match('/.*/', (string) $key)) {
@@ -89,9 +93,9 @@ class PushImageInfoNormalizer implements DenormalizerInterface, NormalizerInterf
             $dataArray['progress'] = $data->getProgress();
         }
         if ($data->isInitialized('progressDetail') && null !== $data->getProgressDetail()) {
-            $dataArray['progressDetail'] = $this->normalizer->normalize($data->getProgressDetail(), 'json', $context);
+            $dataArray['progressDetail'] = null === $data->getProgressDetail() ? null : new \Docker\API\Runtime\JsonObject($this->normalizer->normalize($data->getProgressDetail(), 'json', $context));
         }
-        foreach ($data as $key => $value) {
+        foreach ($data->additionalPropertyEntries() as $key => $value) {
             if (preg_match('/.*/', (string) $key)) {
                 $dataArray[$key] = $value;
             }

@@ -33,21 +33,22 @@ class ServiceEndpointNormalizer implements DenormalizerInterface, NormalizerInte
 
     public function denormalize(mixed $data, string $type, ?string $format = null, array $context = []): mixed
     {
-        if (isset($data['$ref'])) {
+        $object = new \Docker\API\Model\ServiceEndpoint();
+        if (null === $data || false === \is_array($data)) {
+            return $object;
+        }
+        if (isset($data['$ref']) && !isset($data['type']) && !isset($data['properties']) && !isset($data['allOf'])) {
             return new Reference($data['$ref'], $context['document-origin']);
         }
         if (isset($data['$recursiveRef'])) {
             return new Reference($data['$recursiveRef'], $context['document-origin']);
-        }
-        $object = new \Docker\API\Model\ServiceEndpoint();
-        if (null === $data || false === \is_array($data)) {
-            return $object;
         }
         if (\array_key_exists('Spec', $data) && null !== $data['Spec']) {
             $object->setSpec($this->denormalizer->denormalize($data['Spec'], \Docker\API\Model\EndpointSpec::class, 'json', $context));
             unset($data['Spec']);
         } elseif (\array_key_exists('Spec', $data) && null === $data['Spec']) {
             $object->setSpec(null);
+            unset($data['Spec']);
         }
         if (\array_key_exists('Ports', $data) && null !== $data['Ports']) {
             $values = [];
@@ -58,6 +59,7 @@ class ServiceEndpointNormalizer implements DenormalizerInterface, NormalizerInte
             unset($data['Ports']);
         } elseif (\array_key_exists('Ports', $data) && null === $data['Ports']) {
             $object->setPorts(null);
+            unset($data['Ports']);
         }
         if (\array_key_exists('VirtualIPs', $data) && null !== $data['VirtualIPs']) {
             $values_1 = [];
@@ -68,6 +70,7 @@ class ServiceEndpointNormalizer implements DenormalizerInterface, NormalizerInte
             unset($data['VirtualIPs']);
         } elseif (\array_key_exists('VirtualIPs', $data) && null === $data['VirtualIPs']) {
             $object->setVirtualIPs(null);
+            unset($data['VirtualIPs']);
         }
         foreach ($data as $key => $value_2) {
             if (preg_match('/.*/', (string) $key)) {
@@ -82,23 +85,23 @@ class ServiceEndpointNormalizer implements DenormalizerInterface, NormalizerInte
     {
         $dataArray = [];
         if ($data->isInitialized('spec') && null !== $data->getSpec()) {
-            $dataArray['Spec'] = $this->normalizer->normalize($data->getSpec(), 'json', $context);
+            $dataArray['Spec'] = null === $data->getSpec() ? null : new \Docker\API\Runtime\JsonObject($this->normalizer->normalize($data->getSpec(), 'json', $context));
         }
         if ($data->isInitialized('ports') && null !== $data->getPorts()) {
             $values = [];
             foreach ($data->getPorts() as $value) {
-                $values[] = $this->normalizer->normalize($value, 'json', $context);
+                $values[] = null === $value ? null : new \Docker\API\Runtime\JsonObject($this->normalizer->normalize($value, 'json', $context));
             }
             $dataArray['Ports'] = $values;
         }
         if ($data->isInitialized('virtualIPs') && null !== $data->getVirtualIPs()) {
             $values_1 = [];
             foreach ($data->getVirtualIPs() as $value_1) {
-                $values_1[] = $this->normalizer->normalize($value_1, 'json', $context);
+                $values_1[] = null === $value_1 ? null : new \Docker\API\Runtime\JsonObject($this->normalizer->normalize($value_1, 'json', $context));
             }
             $dataArray['VirtualIPs'] = $values_1;
         }
-        foreach ($data as $key => $value_2) {
+        foreach ($data->additionalPropertyEntries() as $key => $value_2) {
             if (preg_match('/.*/', (string) $key)) {
                 $dataArray[$key] = $value_2;
             }

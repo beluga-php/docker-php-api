@@ -33,27 +33,29 @@ class HealthNormalizer implements DenormalizerInterface, NormalizerInterface, De
 
     public function denormalize(mixed $data, string $type, ?string $format = null, array $context = []): mixed
     {
-        if (isset($data['$ref'])) {
+        $object = new \Docker\API\Model\Health();
+        if (null === $data || false === \is_array($data)) {
+            return $object;
+        }
+        if (isset($data['$ref']) && !isset($data['type']) && !isset($data['properties']) && !isset($data['allOf'])) {
             return new Reference($data['$ref'], $context['document-origin']);
         }
         if (isset($data['$recursiveRef'])) {
             return new Reference($data['$recursiveRef'], $context['document-origin']);
-        }
-        $object = new \Docker\API\Model\Health();
-        if (null === $data || false === \is_array($data)) {
-            return $object;
         }
         if (\array_key_exists('Status', $data) && null !== $data['Status']) {
             $object->setStatus($data['Status']);
             unset($data['Status']);
         } elseif (\array_key_exists('Status', $data) && null === $data['Status']) {
             $object->setStatus(null);
+            unset($data['Status']);
         }
         if (\array_key_exists('FailingStreak', $data) && null !== $data['FailingStreak']) {
             $object->setFailingStreak($data['FailingStreak']);
             unset($data['FailingStreak']);
         } elseif (\array_key_exists('FailingStreak', $data) && null === $data['FailingStreak']) {
             $object->setFailingStreak(null);
+            unset($data['FailingStreak']);
         }
         if (\array_key_exists('Log', $data) && null !== $data['Log']) {
             $values = [];
@@ -64,6 +66,7 @@ class HealthNormalizer implements DenormalizerInterface, NormalizerInterface, De
             unset($data['Log']);
         } elseif (\array_key_exists('Log', $data) && null === $data['Log']) {
             $object->setLog(null);
+            unset($data['Log']);
         }
         foreach ($data as $key => $value_1) {
             if (preg_match('/.*/', (string) $key)) {
@@ -86,11 +89,11 @@ class HealthNormalizer implements DenormalizerInterface, NormalizerInterface, De
         if ($data->isInitialized('log') && null !== $data->getLog()) {
             $values = [];
             foreach ($data->getLog() as $value) {
-                $values[] = $this->normalizer->normalize($value, 'json', $context);
+                $values[] = null === $value ? null : new \Docker\API\Runtime\JsonObject($this->normalizer->normalize($value, 'json', $context));
             }
             $dataArray['Log'] = $values;
         }
-        foreach ($data as $key => $value_1) {
+        foreach ($data->additionalPropertyEntries() as $key => $value_1) {
             if (preg_match('/.*/', (string) $key)) {
                 $dataArray[$key] = $value_1;
             }

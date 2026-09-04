@@ -33,65 +33,76 @@ class ClusterVolumeSpecAccessModeNormalizer implements DenormalizerInterface, No
 
     public function denormalize(mixed $data, string $type, ?string $format = null, array $context = []): mixed
     {
-        if (isset($data['$ref'])) {
+        $object = new \Docker\API\Model\ClusterVolumeSpecAccessMode();
+        if (null === $data || false === \is_array($data)) {
+            return $object;
+        }
+        if (isset($data['$ref']) && !isset($data['type']) && !isset($data['properties']) && !isset($data['allOf'])) {
             return new Reference($data['$ref'], $context['document-origin']);
         }
         if (isset($data['$recursiveRef'])) {
             return new Reference($data['$recursiveRef'], $context['document-origin']);
-        }
-        $object = new \Docker\API\Model\ClusterVolumeSpecAccessMode();
-        if (null === $data || false === \is_array($data)) {
-            return $object;
         }
         if (\array_key_exists('Scope', $data) && null !== $data['Scope']) {
             $object->setScope($data['Scope']);
             unset($data['Scope']);
         } elseif (\array_key_exists('Scope', $data) && null === $data['Scope']) {
             $object->setScope(null);
+            unset($data['Scope']);
         }
         if (\array_key_exists('Sharing', $data) && null !== $data['Sharing']) {
             $object->setSharing($data['Sharing']);
             unset($data['Sharing']);
         } elseif (\array_key_exists('Sharing', $data) && null === $data['Sharing']) {
             $object->setSharing(null);
+            unset($data['Sharing']);
         }
         if (\array_key_exists('MountVolume', $data) && null !== $data['MountVolume']) {
-            $object->setMountVolume($this->denormalizer->denormalize($data['MountVolume'], \Docker\API\Model\ClusterVolumeSpecAccessModeMountVolume::class, 'json', $context));
+            $values = new \Docker\API\Runtime\JsonObject();
+            foreach ($data['MountVolume'] as $key => $value) {
+                $values[$key] = $value;
+            }
+            $object->setMountVolume($values);
             unset($data['MountVolume']);
         } elseif (\array_key_exists('MountVolume', $data) && null === $data['MountVolume']) {
             $object->setMountVolume(null);
+            unset($data['MountVolume']);
         }
         if (\array_key_exists('Secrets', $data) && null !== $data['Secrets']) {
-            $values = [];
-            foreach ($data['Secrets'] as $value) {
-                $values[] = $this->denormalizer->denormalize($value, \Docker\API\Model\ClusterVolumeSpecAccessModeSecretsItem::class, 'json', $context);
+            $values_1 = [];
+            foreach ($data['Secrets'] as $value_1) {
+                $values_1[] = $this->denormalizer->denormalize($value_1, \Docker\API\Model\ClusterVolumeSpecAccessModeSecretsItem::class, 'json', $context);
             }
-            $object->setSecrets($values);
+            $object->setSecrets($values_1);
             unset($data['Secrets']);
         } elseif (\array_key_exists('Secrets', $data) && null === $data['Secrets']) {
             $object->setSecrets(null);
+            unset($data['Secrets']);
         }
         if (\array_key_exists('AccessibilityRequirements', $data) && null !== $data['AccessibilityRequirements']) {
             $object->setAccessibilityRequirements($this->denormalizer->denormalize($data['AccessibilityRequirements'], \Docker\API\Model\ClusterVolumeSpecAccessModeAccessibilityRequirements::class, 'json', $context));
             unset($data['AccessibilityRequirements']);
         } elseif (\array_key_exists('AccessibilityRequirements', $data) && null === $data['AccessibilityRequirements']) {
             $object->setAccessibilityRequirements(null);
+            unset($data['AccessibilityRequirements']);
         }
         if (\array_key_exists('CapacityRange', $data) && null !== $data['CapacityRange']) {
             $object->setCapacityRange($this->denormalizer->denormalize($data['CapacityRange'], \Docker\API\Model\ClusterVolumeSpecAccessModeCapacityRange::class, 'json', $context));
             unset($data['CapacityRange']);
         } elseif (\array_key_exists('CapacityRange', $data) && null === $data['CapacityRange']) {
             $object->setCapacityRange(null);
+            unset($data['CapacityRange']);
         }
         if (\array_key_exists('Availability', $data) && null !== $data['Availability']) {
             $object->setAvailability($data['Availability']);
             unset($data['Availability']);
         } elseif (\array_key_exists('Availability', $data) && null === $data['Availability']) {
             $object->setAvailability(null);
+            unset($data['Availability']);
         }
-        foreach ($data as $key => $value_1) {
-            if (preg_match('/.*/', (string) $key)) {
-                $object[$key] = $value_1;
+        foreach ($data as $key_1 => $value_2) {
+            if (preg_match('/.*/', (string) $key_1)) {
+                $object[$key_1] = $value_2;
             }
         }
 
@@ -108,27 +119,31 @@ class ClusterVolumeSpecAccessModeNormalizer implements DenormalizerInterface, No
             $dataArray['Sharing'] = $data->getSharing();
         }
         if ($data->isInitialized('mountVolume') && null !== $data->getMountVolume()) {
-            $dataArray['MountVolume'] = $this->normalizer->normalize($data->getMountVolume(), 'json', $context);
+            $values = new \Docker\API\Runtime\JsonObject();
+            foreach ($data->getMountVolume() as $key => $value) {
+                $values[$key] = $value;
+            }
+            $dataArray['MountVolume'] = $values;
         }
         if ($data->isInitialized('secrets') && null !== $data->getSecrets()) {
-            $values = [];
-            foreach ($data->getSecrets() as $value) {
-                $values[] = $this->normalizer->normalize($value, 'json', $context);
+            $values_1 = [];
+            foreach ($data->getSecrets() as $value_1) {
+                $values_1[] = null === $value_1 ? null : new \Docker\API\Runtime\JsonObject($this->normalizer->normalize($value_1, 'json', $context));
             }
-            $dataArray['Secrets'] = $values;
+            $dataArray['Secrets'] = $values_1;
         }
         if ($data->isInitialized('accessibilityRequirements') && null !== $data->getAccessibilityRequirements()) {
-            $dataArray['AccessibilityRequirements'] = $this->normalizer->normalize($data->getAccessibilityRequirements(), 'json', $context);
+            $dataArray['AccessibilityRequirements'] = null === $data->getAccessibilityRequirements() ? null : new \Docker\API\Runtime\JsonObject($this->normalizer->normalize($data->getAccessibilityRequirements(), 'json', $context));
         }
         if ($data->isInitialized('capacityRange') && null !== $data->getCapacityRange()) {
-            $dataArray['CapacityRange'] = $this->normalizer->normalize($data->getCapacityRange(), 'json', $context);
+            $dataArray['CapacityRange'] = null === $data->getCapacityRange() ? null : new \Docker\API\Runtime\JsonObject($this->normalizer->normalize($data->getCapacityRange(), 'json', $context));
         }
         if ($data->isInitialized('availability') && null !== $data->getAvailability()) {
             $dataArray['Availability'] = $data->getAvailability();
         }
-        foreach ($data as $key => $value_1) {
-            if (preg_match('/.*/', (string) $key)) {
-                $dataArray[$key] = $value_1;
+        foreach ($data->additionalPropertyEntries() as $key_1 => $value_2) {
+            if (preg_match('/.*/', (string) $key_1)) {
+                $dataArray[$key_1] = $value_2;
             }
         }
 

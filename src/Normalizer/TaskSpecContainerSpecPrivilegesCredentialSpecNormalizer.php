@@ -33,33 +33,36 @@ class TaskSpecContainerSpecPrivilegesCredentialSpecNormalizer implements Denorma
 
     public function denormalize(mixed $data, string $type, ?string $format = null, array $context = []): mixed
     {
-        if (isset($data['$ref'])) {
+        $object = new \Docker\API\Model\TaskSpecContainerSpecPrivilegesCredentialSpec();
+        if (null === $data || false === \is_array($data)) {
+            return $object;
+        }
+        if (isset($data['$ref']) && !isset($data['type']) && !isset($data['properties']) && !isset($data['allOf'])) {
             return new Reference($data['$ref'], $context['document-origin']);
         }
         if (isset($data['$recursiveRef'])) {
             return new Reference($data['$recursiveRef'], $context['document-origin']);
-        }
-        $object = new \Docker\API\Model\TaskSpecContainerSpecPrivilegesCredentialSpec();
-        if (null === $data || false === \is_array($data)) {
-            return $object;
         }
         if (\array_key_exists('Config', $data) && null !== $data['Config']) {
             $object->setConfig($data['Config']);
             unset($data['Config']);
         } elseif (\array_key_exists('Config', $data) && null === $data['Config']) {
             $object->setConfig(null);
+            unset($data['Config']);
         }
         if (\array_key_exists('File', $data) && null !== $data['File']) {
             $object->setFile($data['File']);
             unset($data['File']);
         } elseif (\array_key_exists('File', $data) && null === $data['File']) {
             $object->setFile(null);
+            unset($data['File']);
         }
         if (\array_key_exists('Registry', $data) && null !== $data['Registry']) {
             $object->setRegistry($data['Registry']);
             unset($data['Registry']);
         } elseif (\array_key_exists('Registry', $data) && null === $data['Registry']) {
             $object->setRegistry(null);
+            unset($data['Registry']);
         }
         foreach ($data as $key => $value) {
             if (preg_match('/.*/', (string) $key)) {
@@ -82,7 +85,7 @@ class TaskSpecContainerSpecPrivilegesCredentialSpecNormalizer implements Denorma
         if ($data->isInitialized('registry') && null !== $data->getRegistry()) {
             $dataArray['Registry'] = $data->getRegistry();
         }
-        foreach ($data as $key => $value) {
+        foreach ($data->additionalPropertyEntries() as $key => $value) {
             if (preg_match('/.*/', (string) $key)) {
                 $dataArray[$key] = $value;
             }

@@ -33,18 +33,18 @@ class NetworkingConfigNormalizer implements DenormalizerInterface, NormalizerInt
 
     public function denormalize(mixed $data, string $type, ?string $format = null, array $context = []): mixed
     {
-        if (isset($data['$ref'])) {
+        $object = new \Docker\API\Model\NetworkingConfig();
+        if (null === $data || false === \is_array($data)) {
+            return $object;
+        }
+        if (isset($data['$ref']) && !isset($data['type']) && !isset($data['properties']) && !isset($data['allOf'])) {
             return new Reference($data['$ref'], $context['document-origin']);
         }
         if (isset($data['$recursiveRef'])) {
             return new Reference($data['$recursiveRef'], $context['document-origin']);
         }
-        $object = new \Docker\API\Model\NetworkingConfig();
-        if (null === $data || false === \is_array($data)) {
-            return $object;
-        }
         if (\array_key_exists('EndpointsConfig', $data) && null !== $data['EndpointsConfig']) {
-            $values = new \ArrayObject([], \ArrayObject::ARRAY_AS_PROPS);
+            $values = new \Docker\API\Runtime\JsonObject();
             foreach ($data['EndpointsConfig'] as $key => $value) {
                 $values[$key] = $this->denormalizer->denormalize($value, \Docker\API\Model\EndpointSettings::class, 'json', $context);
             }
@@ -52,6 +52,7 @@ class NetworkingConfigNormalizer implements DenormalizerInterface, NormalizerInt
             unset($data['EndpointsConfig']);
         } elseif (\array_key_exists('EndpointsConfig', $data) && null === $data['EndpointsConfig']) {
             $object->setEndpointsConfig(null);
+            unset($data['EndpointsConfig']);
         }
         foreach ($data as $key_1 => $value_1) {
             if (preg_match('/.*/', (string) $key_1)) {
@@ -66,13 +67,13 @@ class NetworkingConfigNormalizer implements DenormalizerInterface, NormalizerInt
     {
         $dataArray = [];
         if ($data->isInitialized('endpointsConfig') && null !== $data->getEndpointsConfig()) {
-            $values = [];
+            $values = new \Docker\API\Runtime\JsonObject();
             foreach ($data->getEndpointsConfig() as $key => $value) {
-                $values[$key] = $this->normalizer->normalize($value, 'json', $context);
+                $values[$key] = null === $value ? null : new \Docker\API\Runtime\JsonObject($this->normalizer->normalize($value, 'json', $context));
             }
             $dataArray['EndpointsConfig'] = $values;
         }
-        foreach ($data as $key_1 => $value_1) {
+        foreach ($data->additionalPropertyEntries() as $key_1 => $value_1) {
             if (preg_match('/.*/', (string) $key_1)) {
                 $dataArray[$key_1] = $value_1;
             }

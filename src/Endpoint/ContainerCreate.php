@@ -9,11 +9,10 @@ class ContainerCreate extends \Docker\API\Runtime\Client\BaseEndpoint implements
     use \Docker\API\Runtime\Client\EndpointTrait;
 
     /**
-     * @param array $queryParameters {
-     *
-     * @var string $name Assign the specified name to the container. Must match
-     *             `/?[a-zA-Z0-9][a-zA-Z0-9_.-]+`.
-     * @var string $platform Platform in the format `os[/arch[/variant]]` used for image lookup.
+     * @param array{
+     *    "name"?: string, //Assign the specified name to the container. Must match
+     * `/?[a-zA-Z0-9][a-zA-Z0-9_.-]+`.
+     *    "platform"?: string, //Platform in the format `os[/arch[/variant]]` used for image lookup.
      *
      * When specified, the daemon checks if the requested image is present
      * in the local image cache with the given OS and Architecture, and
@@ -29,8 +28,7 @@ class ContainerCreate extends \Docker\API\Runtime\Client\BaseEndpoint implements
      * WARNING: The requested image's platform (linux/arm64/v8) does not
      * match the detected host platform (linux/amd64) and no
      * specific platform was requested
-     *
-     * }
+     * } $queryParameters
      */
     public function __construct(?\Docker\API\Model\ContainersCreatePostBody $requestBody = null, array $queryParameters = [])
     {
@@ -51,7 +49,7 @@ class ContainerCreate extends \Docker\API\Runtime\Client\BaseEndpoint implements
     public function getBody(\Symfony\Component\Serializer\SerializerInterface $serializer, $streamFactory = null): array
     {
         if ($this->body instanceof \Docker\API\Model\ContainersCreatePostBody) {
-            return [['Content-Type' => ['application/json']], $serializer->serialize($this->body, 'json')];
+            return [['Content-Type' => ['application/json']], \Docker\API\Runtime\Client\JsonPayload::encode($serializer, $this->body)];
         }
         if ($this->body instanceof \Docker\API\Model\ContainersCreatePostBody) {
             return [['Content-Type' => ['application/octet-stream']], $this->body];
@@ -70,7 +68,7 @@ class ContainerCreate extends \Docker\API\Runtime\Client\BaseEndpoint implements
         $optionsResolver = parent::getQueryOptionsResolver();
         $optionsResolver->setDefined(['name', 'platform']);
         $optionsResolver->setRequired([]);
-        $optionsResolver->setDefaults([]);
+        $optionsResolver->setDefaults(['platform' => '']);
         $optionsResolver->addAllowedTypes('name', ['string']);
         $optionsResolver->addAllowedTypes('platform', ['string']);
 
@@ -89,19 +87,19 @@ class ContainerCreate extends \Docker\API\Runtime\Client\BaseEndpoint implements
     {
         $status = $response->getStatusCode();
         $body = (string) $response->getBody();
-        if ((null === $contentType) === false && (201 === $status && false !== mb_strpos($contentType, 'application/json'))) {
+        if ((null === $contentType) === false && (201 === $status && false !== stripos(strtolower($contentType), 'application/json'))) {
             return $serializer->deserialize($body, 'Docker\API\Model\ContainerCreateResponse', 'json');
         }
-        if ((null === $contentType) === false && (400 === $status && false !== mb_strpos($contentType, 'application/json'))) {
+        if ((null === $contentType) === false && (400 === $status && false !== stripos(strtolower($contentType), 'application/json'))) {
             throw new \Docker\API\Exception\ContainerCreateBadRequestException($serializer->deserialize($body, 'Docker\API\Model\ErrorResponse', 'json'), $response);
         }
-        if ((null === $contentType) === false && (404 === $status && false !== mb_strpos($contentType, 'application/json'))) {
+        if ((null === $contentType) === false && (404 === $status && false !== stripos(strtolower($contentType), 'application/json'))) {
             throw new \Docker\API\Exception\ContainerCreateNotFoundException($serializer->deserialize($body, 'Docker\API\Model\ErrorResponse', 'json'), $response);
         }
-        if ((null === $contentType) === false && (409 === $status && false !== mb_strpos($contentType, 'application/json'))) {
+        if ((null === $contentType) === false && (409 === $status && false !== stripos(strtolower($contentType), 'application/json'))) {
             throw new \Docker\API\Exception\ContainerCreateConflictException($serializer->deserialize($body, 'Docker\API\Model\ErrorResponse', 'json'), $response);
         }
-        if ((null === $contentType) === false && (500 === $status && false !== mb_strpos($contentType, 'application/json'))) {
+        if ((null === $contentType) === false && (500 === $status && false !== stripos(strtolower($contentType), 'application/json'))) {
             throw new \Docker\API\Exception\ContainerCreateInternalServerErrorException($serializer->deserialize($body, 'Docker\API\Model\ErrorResponse', 'json'), $response);
         }
     }

@@ -11,15 +11,17 @@ class ImageTag extends \Docker\API\Runtime\Client\BaseEndpoint implements \Docke
     protected $accept;
 
     /**
-     * Tag an image so that it becomes part of a repository.
+     * Create a tag that refers to a source image.
      *
-     * @param string $name            image name or ID to tag
-     * @param array  $queryParameters {
+     * This creates an additional reference (tag) to the source image. The tag
+     * can include a different repository name and/or tag. If the repository
+     * or tag already exists, it will be overwritten.
      *
-     * @var string $repo The repository to tag in. For example, `someuser/someimage`.
-     * @var string $tag The name of the new tag.
-     *             }
-     *
+     * @param string $name image name or ID to tag
+     * @param array{
+     *    "repo"?: string, //The repository to tag in. For example, `someuser/someimage`.
+     *    "tag"?: string, //The name of the new tag.
+     * } $queryParameters
      * @param array $accept Accept content header application/json|text/plain
      */
     public function __construct(string $name, array $queryParameters = [], array $accept = [])
@@ -36,7 +38,7 @@ class ImageTag extends \Docker\API\Runtime\Client\BaseEndpoint implements \Docke
 
     public function getUri(): string
     {
-        return str_replace(['{name}'], [$this->name], '/images/{name}/tag');
+        return str_replace(['{name}'], [rawurlencode($this->name)], '/images/{name}/tag');
     }
 
     public function getBody(\Symfony\Component\Serializer\SerializerInterface $serializer, $streamFactory = null): array
@@ -78,17 +80,18 @@ class ImageTag extends \Docker\API\Runtime\Client\BaseEndpoint implements \Docke
         $status = $response->getStatusCode();
         $body = (string) $response->getBody();
         if (201 === $status) {
+            return null;
         }
-        if ((null === $contentType) === false && (400 === $status && false !== mb_strpos($contentType, 'application/json'))) {
+        if ((null === $contentType) === false && (400 === $status && false !== stripos(strtolower($contentType), 'application/json'))) {
             throw new \Docker\API\Exception\ImageTagBadRequestException($serializer->deserialize($body, 'Docker\API\Model\ErrorResponse', 'json'), $response);
         }
-        if ((null === $contentType) === false && (404 === $status && false !== mb_strpos($contentType, 'application/json'))) {
+        if ((null === $contentType) === false && (404 === $status && false !== stripos(strtolower($contentType), 'application/json'))) {
             throw new \Docker\API\Exception\ImageTagNotFoundException($serializer->deserialize($body, 'Docker\API\Model\ErrorResponse', 'json'), $response);
         }
-        if ((null === $contentType) === false && (409 === $status && false !== mb_strpos($contentType, 'application/json'))) {
+        if ((null === $contentType) === false && (409 === $status && false !== stripos(strtolower($contentType), 'application/json'))) {
             throw new \Docker\API\Exception\ImageTagConflictException($serializer->deserialize($body, 'Docker\API\Model\ErrorResponse', 'json'), $response);
         }
-        if ((null === $contentType) === false && (500 === $status && false !== mb_strpos($contentType, 'application/json'))) {
+        if ((null === $contentType) === false && (500 === $status && false !== stripos(strtolower($contentType), 'application/json'))) {
             throw new \Docker\API\Exception\ImageTagInternalServerErrorException($serializer->deserialize($body, 'Docker\API\Model\ErrorResponse', 'json'), $response);
         }
     }

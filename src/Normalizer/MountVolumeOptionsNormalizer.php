@@ -33,27 +33,28 @@ class MountVolumeOptionsNormalizer implements DenormalizerInterface, NormalizerI
 
     public function denormalize(mixed $data, string $type, ?string $format = null, array $context = []): mixed
     {
-        if (isset($data['$ref'])) {
+        $object = new \Docker\API\Model\MountVolumeOptions();
+        if (null === $data || false === \is_array($data)) {
+            return $object;
+        }
+        if (isset($data['$ref']) && !isset($data['type']) && !isset($data['properties']) && !isset($data['allOf'])) {
             return new Reference($data['$ref'], $context['document-origin']);
         }
         if (isset($data['$recursiveRef'])) {
             return new Reference($data['$recursiveRef'], $context['document-origin']);
         }
-        $object = new \Docker\API\Model\MountVolumeOptions();
         if (\array_key_exists('NoCopy', $data) && \is_int($data['NoCopy'])) {
             $data['NoCopy'] = (bool) $data['NoCopy'];
-        }
-        if (null === $data || false === \is_array($data)) {
-            return $object;
         }
         if (\array_key_exists('NoCopy', $data) && null !== $data['NoCopy']) {
             $object->setNoCopy($data['NoCopy']);
             unset($data['NoCopy']);
         } elseif (\array_key_exists('NoCopy', $data) && null === $data['NoCopy']) {
             $object->setNoCopy(null);
+            unset($data['NoCopy']);
         }
         if (\array_key_exists('Labels', $data) && null !== $data['Labels']) {
-            $values = new \ArrayObject([], \ArrayObject::ARRAY_AS_PROPS);
+            $values = new \Docker\API\Runtime\JsonObject();
             foreach ($data['Labels'] as $key => $value) {
                 $values[$key] = $value;
             }
@@ -61,18 +62,21 @@ class MountVolumeOptionsNormalizer implements DenormalizerInterface, NormalizerI
             unset($data['Labels']);
         } elseif (\array_key_exists('Labels', $data) && null === $data['Labels']) {
             $object->setLabels(null);
+            unset($data['Labels']);
         }
         if (\array_key_exists('DriverConfig', $data) && null !== $data['DriverConfig']) {
             $object->setDriverConfig($this->denormalizer->denormalize($data['DriverConfig'], \Docker\API\Model\MountVolumeOptionsDriverConfig::class, 'json', $context));
             unset($data['DriverConfig']);
         } elseif (\array_key_exists('DriverConfig', $data) && null === $data['DriverConfig']) {
             $object->setDriverConfig(null);
+            unset($data['DriverConfig']);
         }
         if (\array_key_exists('Subpath', $data) && null !== $data['Subpath']) {
             $object->setSubpath($data['Subpath']);
             unset($data['Subpath']);
         } elseif (\array_key_exists('Subpath', $data) && null === $data['Subpath']) {
             $object->setSubpath(null);
+            unset($data['Subpath']);
         }
         foreach ($data as $key_1 => $value_1) {
             if (preg_match('/.*/', (string) $key_1)) {
@@ -90,19 +94,19 @@ class MountVolumeOptionsNormalizer implements DenormalizerInterface, NormalizerI
             $dataArray['NoCopy'] = $data->getNoCopy();
         }
         if ($data->isInitialized('labels') && null !== $data->getLabels()) {
-            $values = [];
+            $values = new \Docker\API\Runtime\JsonObject();
             foreach ($data->getLabels() as $key => $value) {
                 $values[$key] = $value;
             }
             $dataArray['Labels'] = $values;
         }
         if ($data->isInitialized('driverConfig') && null !== $data->getDriverConfig()) {
-            $dataArray['DriverConfig'] = $this->normalizer->normalize($data->getDriverConfig(), 'json', $context);
+            $dataArray['DriverConfig'] = null === $data->getDriverConfig() ? null : new \Docker\API\Runtime\JsonObject($this->normalizer->normalize($data->getDriverConfig(), 'json', $context));
         }
         if ($data->isInitialized('subpath') && null !== $data->getSubpath()) {
             $dataArray['Subpath'] = $data->getSubpath();
         }
-        foreach ($data as $key_1 => $value_1) {
+        foreach ($data->additionalPropertyEntries() as $key_1 => $value_1) {
             if (preg_match('/.*/', (string) $key_1)) {
                 $dataArray[$key_1] = $value_1;
             }

@@ -33,27 +33,29 @@ class ContainerWaitResponseNormalizer implements DenormalizerInterface, Normaliz
 
     public function denormalize(mixed $data, string $type, ?string $format = null, array $context = []): mixed
     {
-        if (isset($data['$ref'])) {
+        $object = new \Docker\API\Model\ContainerWaitResponse();
+        if (null === $data || false === \is_array($data)) {
+            return $object;
+        }
+        if (isset($data['$ref']) && !isset($data['type']) && !isset($data['properties']) && !isset($data['allOf'])) {
             return new Reference($data['$ref'], $context['document-origin']);
         }
         if (isset($data['$recursiveRef'])) {
             return new Reference($data['$recursiveRef'], $context['document-origin']);
-        }
-        $object = new \Docker\API\Model\ContainerWaitResponse();
-        if (null === $data || false === \is_array($data)) {
-            return $object;
         }
         if (\array_key_exists('StatusCode', $data) && null !== $data['StatusCode']) {
             $object->setStatusCode($data['StatusCode']);
             unset($data['StatusCode']);
         } elseif (\array_key_exists('StatusCode', $data) && null === $data['StatusCode']) {
             $object->setStatusCode(null);
+            unset($data['StatusCode']);
         }
         if (\array_key_exists('Error', $data) && null !== $data['Error']) {
             $object->setError($this->denormalizer->denormalize($data['Error'], \Docker\API\Model\ContainerWaitExitError::class, 'json', $context));
             unset($data['Error']);
         } elseif (\array_key_exists('Error', $data) && null === $data['Error']) {
             $object->setError(null);
+            unset($data['Error']);
         }
         foreach ($data as $key => $value) {
             if (preg_match('/.*/', (string) $key)) {
@@ -69,9 +71,9 @@ class ContainerWaitResponseNormalizer implements DenormalizerInterface, Normaliz
         $dataArray = [];
         $dataArray['StatusCode'] = $data->getStatusCode();
         if ($data->isInitialized('error') && null !== $data->getError()) {
-            $dataArray['Error'] = $this->normalizer->normalize($data->getError(), 'json', $context);
+            $dataArray['Error'] = null === $data->getError() ? null : new \Docker\API\Runtime\JsonObject($this->normalizer->normalize($data->getError(), 'json', $context));
         }
-        foreach ($data as $key => $value) {
+        foreach ($data->additionalPropertyEntries() as $key => $value) {
             if (preg_match('/.*/', (string) $key)) {
                 $dataArray[$key] = $value;
             }

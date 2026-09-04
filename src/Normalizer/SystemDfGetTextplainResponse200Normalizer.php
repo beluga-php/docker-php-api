@@ -33,21 +33,22 @@ class SystemDfGetTextplainResponse200Normalizer implements DenormalizerInterface
 
     public function denormalize(mixed $data, string $type, ?string $format = null, array $context = []): mixed
     {
-        if (isset($data['$ref'])) {
+        $object = new \Docker\API\Model\SystemDfGetTextplainResponse200();
+        if (null === $data || false === \is_array($data)) {
+            return $object;
+        }
+        if (isset($data['$ref']) && !isset($data['type']) && !isset($data['properties']) && !isset($data['allOf'])) {
             return new Reference($data['$ref'], $context['document-origin']);
         }
         if (isset($data['$recursiveRef'])) {
             return new Reference($data['$recursiveRef'], $context['document-origin']);
-        }
-        $object = new \Docker\API\Model\SystemDfGetTextplainResponse200();
-        if (null === $data || false === \is_array($data)) {
-            return $object;
         }
         if (\array_key_exists('LayersSize', $data) && null !== $data['LayersSize']) {
             $object->setLayersSize($data['LayersSize']);
             unset($data['LayersSize']);
         } elseif (\array_key_exists('LayersSize', $data) && null === $data['LayersSize']) {
             $object->setLayersSize(null);
+            unset($data['LayersSize']);
         }
         if (\array_key_exists('Images', $data) && null !== $data['Images']) {
             $values = [];
@@ -58,6 +59,7 @@ class SystemDfGetTextplainResponse200Normalizer implements DenormalizerInterface
             unset($data['Images']);
         } elseif (\array_key_exists('Images', $data) && null === $data['Images']) {
             $object->setImages(null);
+            unset($data['Images']);
         }
         if (\array_key_exists('Containers', $data) && null !== $data['Containers']) {
             $values_1 = [];
@@ -68,6 +70,7 @@ class SystemDfGetTextplainResponse200Normalizer implements DenormalizerInterface
             unset($data['Containers']);
         } elseif (\array_key_exists('Containers', $data) && null === $data['Containers']) {
             $object->setContainers(null);
+            unset($data['Containers']);
         }
         if (\array_key_exists('Volumes', $data) && null !== $data['Volumes']) {
             $values_2 = [];
@@ -78,6 +81,7 @@ class SystemDfGetTextplainResponse200Normalizer implements DenormalizerInterface
             unset($data['Volumes']);
         } elseif (\array_key_exists('Volumes', $data) && null === $data['Volumes']) {
             $object->setVolumes(null);
+            unset($data['Volumes']);
         }
         if (\array_key_exists('BuildCache', $data) && null !== $data['BuildCache']) {
             $values_3 = [];
@@ -88,6 +92,7 @@ class SystemDfGetTextplainResponse200Normalizer implements DenormalizerInterface
             unset($data['BuildCache']);
         } elseif (\array_key_exists('BuildCache', $data) && null === $data['BuildCache']) {
             $object->setBuildCache(null);
+            unset($data['BuildCache']);
         }
         foreach ($data as $key => $value_4) {
             if (preg_match('/.*/', (string) $key)) {
@@ -107,32 +112,32 @@ class SystemDfGetTextplainResponse200Normalizer implements DenormalizerInterface
         if ($data->isInitialized('images') && null !== $data->getImages()) {
             $values = [];
             foreach ($data->getImages() as $value) {
-                $values[] = $this->normalizer->normalize($value, 'json', $context);
+                $values[] = null === $value ? null : new \Docker\API\Runtime\JsonObject($this->normalizer->normalize($value, 'json', $context));
             }
             $dataArray['Images'] = $values;
         }
         if ($data->isInitialized('containers') && null !== $data->getContainers()) {
             $values_1 = [];
             foreach ($data->getContainers() as $value_1) {
-                $values_1[] = $this->normalizer->normalize($value_1, 'json', $context);
+                $values_1[] = null === $value_1 ? null : new \Docker\API\Runtime\JsonObject($this->normalizer->normalize($value_1, 'json', $context));
             }
             $dataArray['Containers'] = $values_1;
         }
         if ($data->isInitialized('volumes') && null !== $data->getVolumes()) {
             $values_2 = [];
             foreach ($data->getVolumes() as $value_2) {
-                $values_2[] = $this->normalizer->normalize($value_2, 'json', $context);
+                $values_2[] = null === $value_2 ? null : new \Docker\API\Runtime\JsonObject($this->normalizer->normalize($value_2, 'json', $context));
             }
             $dataArray['Volumes'] = $values_2;
         }
         if ($data->isInitialized('buildCache') && null !== $data->getBuildCache()) {
             $values_3 = [];
             foreach ($data->getBuildCache() as $value_3) {
-                $values_3[] = $this->normalizer->normalize($value_3, 'json', $context);
+                $values_3[] = null === $value_3 ? null : new \Docker\API\Runtime\JsonObject($this->normalizer->normalize($value_3, 'json', $context));
             }
             $dataArray['BuildCache'] = $values_3;
         }
-        foreach ($data as $key => $value_4) {
+        foreach ($data->additionalPropertyEntries() as $key => $value_4) {
             if (preg_match('/.*/', (string) $key)) {
                 $dataArray[$key] = $value_4;
             }

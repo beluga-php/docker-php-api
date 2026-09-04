@@ -4,8 +4,12 @@ declare(strict_types=1);
 
 namespace Docker\API\Model;
 
-class TLSInfo extends \ArrayObject
+use Docker\API\Runtime\AdditionalAndPatternProperties;
+use Docker\API\Runtime\AdditionalPropertiesInterface;
+
+class TLSInfo implements AdditionalPropertiesInterface
 {
+    use AdditionalAndPatternProperties;
     /**
      * @var array
      */
@@ -92,5 +96,10 @@ class TLSInfo extends \ArrayObject
         $this->certIssuerPublicKey = $certIssuerPublicKey;
 
         return $this;
+    }
+
+    public function definedProperties(): array
+    {
+        return ['trustRoot' => ['TrustRoot', 'getTrustRoot', 'setTrustRoot'], 'certIssuerSubject' => ['CertIssuerSubject', 'getCertIssuerSubject', 'setCertIssuerSubject'], 'certIssuerPublicKey' => ['CertIssuerPublicKey', 'getCertIssuerPublicKey', 'setCertIssuerPublicKey']];
     }
 }

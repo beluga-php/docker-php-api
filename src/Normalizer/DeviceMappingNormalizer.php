@@ -33,33 +33,36 @@ class DeviceMappingNormalizer implements DenormalizerInterface, NormalizerInterf
 
     public function denormalize(mixed $data, string $type, ?string $format = null, array $context = []): mixed
     {
-        if (isset($data['$ref'])) {
+        $object = new \Docker\API\Model\DeviceMapping();
+        if (null === $data || false === \is_array($data)) {
+            return $object;
+        }
+        if (isset($data['$ref']) && !isset($data['type']) && !isset($data['properties']) && !isset($data['allOf'])) {
             return new Reference($data['$ref'], $context['document-origin']);
         }
         if (isset($data['$recursiveRef'])) {
             return new Reference($data['$recursiveRef'], $context['document-origin']);
-        }
-        $object = new \Docker\API\Model\DeviceMapping();
-        if (null === $data || false === \is_array($data)) {
-            return $object;
         }
         if (\array_key_exists('PathOnHost', $data) && null !== $data['PathOnHost']) {
             $object->setPathOnHost($data['PathOnHost']);
             unset($data['PathOnHost']);
         } elseif (\array_key_exists('PathOnHost', $data) && null === $data['PathOnHost']) {
             $object->setPathOnHost(null);
+            unset($data['PathOnHost']);
         }
         if (\array_key_exists('PathInContainer', $data) && null !== $data['PathInContainer']) {
             $object->setPathInContainer($data['PathInContainer']);
             unset($data['PathInContainer']);
         } elseif (\array_key_exists('PathInContainer', $data) && null === $data['PathInContainer']) {
             $object->setPathInContainer(null);
+            unset($data['PathInContainer']);
         }
         if (\array_key_exists('CgroupPermissions', $data) && null !== $data['CgroupPermissions']) {
             $object->setCgroupPermissions($data['CgroupPermissions']);
             unset($data['CgroupPermissions']);
         } elseif (\array_key_exists('CgroupPermissions', $data) && null === $data['CgroupPermissions']) {
             $object->setCgroupPermissions(null);
+            unset($data['CgroupPermissions']);
         }
         foreach ($data as $key => $value) {
             if (preg_match('/.*/', (string) $key)) {
@@ -82,7 +85,7 @@ class DeviceMappingNormalizer implements DenormalizerInterface, NormalizerInterf
         if ($data->isInitialized('cgroupPermissions') && null !== $data->getCgroupPermissions()) {
             $dataArray['CgroupPermissions'] = $data->getCgroupPermissions();
         }
-        foreach ($data as $key => $value) {
+        foreach ($data->additionalPropertyEntries() as $key => $value) {
             if (preg_match('/.*/', (string) $key)) {
                 $dataArray[$key] = $value;
             }

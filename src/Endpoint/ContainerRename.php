@@ -11,12 +11,10 @@ class ContainerRename extends \Docker\API\Runtime\Client\BaseEndpoint implements
     protected $accept;
 
     /**
-     * @param string $id              ID or name of the container
-     * @param array  $queryParameters {
-     *
-     * @var string $name New name for the container
-     *             }
-     *
+     * @param string $id ID or name of the container
+     * @param array{
+     *    "name": string, //New name for the container
+     * } $queryParameters
      * @param array $accept Accept content header application/json|text/plain
      */
     public function __construct(string $id, array $queryParameters = [], array $accept = [])
@@ -33,7 +31,7 @@ class ContainerRename extends \Docker\API\Runtime\Client\BaseEndpoint implements
 
     public function getUri(): string
     {
-        return str_replace(['{id}'], [$this->id], '/containers/{id}/rename');
+        return str_replace(['{id}'], [rawurlencode($this->id)], '/containers/{id}/rename');
     }
 
     public function getBody(\Symfony\Component\Serializer\SerializerInterface $serializer, $streamFactory = null): array
@@ -73,14 +71,15 @@ class ContainerRename extends \Docker\API\Runtime\Client\BaseEndpoint implements
         $status = $response->getStatusCode();
         $body = (string) $response->getBody();
         if (204 === $status) {
+            return null;
         }
-        if ((null === $contentType) === false && (404 === $status && false !== mb_strpos($contentType, 'application/json'))) {
+        if ((null === $contentType) === false && (404 === $status && false !== stripos(strtolower($contentType), 'application/json'))) {
             throw new \Docker\API\Exception\ContainerRenameNotFoundException($serializer->deserialize($body, 'Docker\API\Model\ErrorResponse', 'json'), $response);
         }
-        if ((null === $contentType) === false && (409 === $status && false !== mb_strpos($contentType, 'application/json'))) {
+        if ((null === $contentType) === false && (409 === $status && false !== stripos(strtolower($contentType), 'application/json'))) {
             throw new \Docker\API\Exception\ContainerRenameConflictException($serializer->deserialize($body, 'Docker\API\Model\ErrorResponse', 'json'), $response);
         }
-        if ((null === $contentType) === false && (500 === $status && false !== mb_strpos($contentType, 'application/json'))) {
+        if ((null === $contentType) === false && (500 === $status && false !== stripos(strtolower($contentType), 'application/json'))) {
             throw new \Docker\API\Exception\ContainerRenameInternalServerErrorException($serializer->deserialize($body, 'Docker\API\Model\ErrorResponse', 'json'), $response);
         }
     }

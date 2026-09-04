@@ -33,27 +33,29 @@ class ResourcesBlkioWeightDeviceItemNormalizer implements DenormalizerInterface,
 
     public function denormalize(mixed $data, string $type, ?string $format = null, array $context = []): mixed
     {
-        if (isset($data['$ref'])) {
+        $object = new \Docker\API\Model\ResourcesBlkioWeightDeviceItem();
+        if (null === $data || false === \is_array($data)) {
+            return $object;
+        }
+        if (isset($data['$ref']) && !isset($data['type']) && !isset($data['properties']) && !isset($data['allOf'])) {
             return new Reference($data['$ref'], $context['document-origin']);
         }
         if (isset($data['$recursiveRef'])) {
             return new Reference($data['$recursiveRef'], $context['document-origin']);
-        }
-        $object = new \Docker\API\Model\ResourcesBlkioWeightDeviceItem();
-        if (null === $data || false === \is_array($data)) {
-            return $object;
         }
         if (\array_key_exists('Path', $data) && null !== $data['Path']) {
             $object->setPath($data['Path']);
             unset($data['Path']);
         } elseif (\array_key_exists('Path', $data) && null === $data['Path']) {
             $object->setPath(null);
+            unset($data['Path']);
         }
         if (\array_key_exists('Weight', $data) && null !== $data['Weight']) {
             $object->setWeight($data['Weight']);
             unset($data['Weight']);
         } elseif (\array_key_exists('Weight', $data) && null === $data['Weight']) {
             $object->setWeight(null);
+            unset($data['Weight']);
         }
         foreach ($data as $key => $value) {
             if (preg_match('/.*/', (string) $key)) {
@@ -73,7 +75,7 @@ class ResourcesBlkioWeightDeviceItemNormalizer implements DenormalizerInterface,
         if ($data->isInitialized('weight') && null !== $data->getWeight()) {
             $dataArray['Weight'] = $data->getWeight();
         }
-        foreach ($data as $key => $value) {
+        foreach ($data->additionalPropertyEntries() as $key => $value) {
             if (preg_match('/.*/', (string) $key)) {
                 $dataArray[$key] = $value;
             }

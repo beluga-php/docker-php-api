@@ -33,15 +33,15 @@ class TaskSpecContainerSpecDNSConfigNormalizer implements DenormalizerInterface,
 
     public function denormalize(mixed $data, string $type, ?string $format = null, array $context = []): mixed
     {
-        if (isset($data['$ref'])) {
+        $object = new \Docker\API\Model\TaskSpecContainerSpecDNSConfig();
+        if (null === $data || false === \is_array($data)) {
+            return $object;
+        }
+        if (isset($data['$ref']) && !isset($data['type']) && !isset($data['properties']) && !isset($data['allOf'])) {
             return new Reference($data['$ref'], $context['document-origin']);
         }
         if (isset($data['$recursiveRef'])) {
             return new Reference($data['$recursiveRef'], $context['document-origin']);
-        }
-        $object = new \Docker\API\Model\TaskSpecContainerSpecDNSConfig();
-        if (null === $data || false === \is_array($data)) {
-            return $object;
         }
         if (\array_key_exists('Nameservers', $data) && null !== $data['Nameservers']) {
             $values = [];
@@ -52,6 +52,7 @@ class TaskSpecContainerSpecDNSConfigNormalizer implements DenormalizerInterface,
             unset($data['Nameservers']);
         } elseif (\array_key_exists('Nameservers', $data) && null === $data['Nameservers']) {
             $object->setNameservers(null);
+            unset($data['Nameservers']);
         }
         if (\array_key_exists('Search', $data) && null !== $data['Search']) {
             $values_1 = [];
@@ -62,6 +63,7 @@ class TaskSpecContainerSpecDNSConfigNormalizer implements DenormalizerInterface,
             unset($data['Search']);
         } elseif (\array_key_exists('Search', $data) && null === $data['Search']) {
             $object->setSearch(null);
+            unset($data['Search']);
         }
         if (\array_key_exists('Options', $data) && null !== $data['Options']) {
             $values_2 = [];
@@ -72,6 +74,7 @@ class TaskSpecContainerSpecDNSConfigNormalizer implements DenormalizerInterface,
             unset($data['Options']);
         } elseif (\array_key_exists('Options', $data) && null === $data['Options']) {
             $object->setOptions(null);
+            unset($data['Options']);
         }
         foreach ($data as $key => $value_3) {
             if (preg_match('/.*/', (string) $key)) {
@@ -106,7 +109,7 @@ class TaskSpecContainerSpecDNSConfigNormalizer implements DenormalizerInterface,
             }
             $dataArray['Options'] = $values_2;
         }
-        foreach ($data as $key => $value_3) {
+        foreach ($data->additionalPropertyEntries() as $key => $value_3) {
             if (preg_match('/.*/', (string) $key)) {
                 $dataArray[$key] = $value_3;
             }

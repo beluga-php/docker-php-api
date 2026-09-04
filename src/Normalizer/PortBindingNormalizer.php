@@ -33,27 +33,29 @@ class PortBindingNormalizer implements DenormalizerInterface, NormalizerInterfac
 
     public function denormalize(mixed $data, string $type, ?string $format = null, array $context = []): mixed
     {
-        if (isset($data['$ref'])) {
+        $object = new \Docker\API\Model\PortBinding();
+        if (null === $data || false === \is_array($data)) {
+            return $object;
+        }
+        if (isset($data['$ref']) && !isset($data['type']) && !isset($data['properties']) && !isset($data['allOf'])) {
             return new Reference($data['$ref'], $context['document-origin']);
         }
         if (isset($data['$recursiveRef'])) {
             return new Reference($data['$recursiveRef'], $context['document-origin']);
-        }
-        $object = new \Docker\API\Model\PortBinding();
-        if (null === $data || false === \is_array($data)) {
-            return $object;
         }
         if (\array_key_exists('HostIp', $data) && null !== $data['HostIp']) {
             $object->setHostIp($data['HostIp']);
             unset($data['HostIp']);
         } elseif (\array_key_exists('HostIp', $data) && null === $data['HostIp']) {
             $object->setHostIp(null);
+            unset($data['HostIp']);
         }
         if (\array_key_exists('HostPort', $data) && null !== $data['HostPort']) {
             $object->setHostPort($data['HostPort']);
             unset($data['HostPort']);
         } elseif (\array_key_exists('HostPort', $data) && null === $data['HostPort']) {
             $object->setHostPort(null);
+            unset($data['HostPort']);
         }
         foreach ($data as $key => $value) {
             if (preg_match('/.*/', (string) $key)) {
@@ -73,7 +75,7 @@ class PortBindingNormalizer implements DenormalizerInterface, NormalizerInterfac
         if ($data->isInitialized('hostPort') && null !== $data->getHostPort()) {
             $dataArray['HostPort'] = $data->getHostPort();
         }
-        foreach ($data as $key => $value) {
+        foreach ($data->additionalPropertyEntries() as $key => $value) {
             if (preg_match('/.*/', (string) $key)) {
                 $dataArray[$key] = $value;
             }

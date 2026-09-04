@@ -33,27 +33,29 @@ class ImageDeleteResponseItemNormalizer implements DenormalizerInterface, Normal
 
     public function denormalize(mixed $data, string $type, ?string $format = null, array $context = []): mixed
     {
-        if (isset($data['$ref'])) {
+        $object = new \Docker\API\Model\ImageDeleteResponseItem();
+        if (null === $data || false === \is_array($data)) {
+            return $object;
+        }
+        if (isset($data['$ref']) && !isset($data['type']) && !isset($data['properties']) && !isset($data['allOf'])) {
             return new Reference($data['$ref'], $context['document-origin']);
         }
         if (isset($data['$recursiveRef'])) {
             return new Reference($data['$recursiveRef'], $context['document-origin']);
-        }
-        $object = new \Docker\API\Model\ImageDeleteResponseItem();
-        if (null === $data || false === \is_array($data)) {
-            return $object;
         }
         if (\array_key_exists('Untagged', $data) && null !== $data['Untagged']) {
             $object->setUntagged($data['Untagged']);
             unset($data['Untagged']);
         } elseif (\array_key_exists('Untagged', $data) && null === $data['Untagged']) {
             $object->setUntagged(null);
+            unset($data['Untagged']);
         }
         if (\array_key_exists('Deleted', $data) && null !== $data['Deleted']) {
             $object->setDeleted($data['Deleted']);
             unset($data['Deleted']);
         } elseif (\array_key_exists('Deleted', $data) && null === $data['Deleted']) {
             $object->setDeleted(null);
+            unset($data['Deleted']);
         }
         foreach ($data as $key => $value) {
             if (preg_match('/.*/', (string) $key)) {
@@ -73,7 +75,7 @@ class ImageDeleteResponseItemNormalizer implements DenormalizerInterface, Normal
         if ($data->isInitialized('deleted') && null !== $data->getDeleted()) {
             $dataArray['Deleted'] = $data->getDeleted();
         }
-        foreach ($data as $key => $value) {
+        foreach ($data->additionalPropertyEntries() as $key => $value) {
             if (preg_match('/.*/', (string) $key)) {
                 $dataArray[$key] = $value;
             }

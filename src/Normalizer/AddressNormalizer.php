@@ -33,27 +33,29 @@ class AddressNormalizer implements DenormalizerInterface, NormalizerInterface, D
 
     public function denormalize(mixed $data, string $type, ?string $format = null, array $context = []): mixed
     {
-        if (isset($data['$ref'])) {
+        $object = new \Docker\API\Model\Address();
+        if (null === $data || false === \is_array($data)) {
+            return $object;
+        }
+        if (isset($data['$ref']) && !isset($data['type']) && !isset($data['properties']) && !isset($data['allOf'])) {
             return new Reference($data['$ref'], $context['document-origin']);
         }
         if (isset($data['$recursiveRef'])) {
             return new Reference($data['$recursiveRef'], $context['document-origin']);
-        }
-        $object = new \Docker\API\Model\Address();
-        if (null === $data || false === \is_array($data)) {
-            return $object;
         }
         if (\array_key_exists('Addr', $data) && null !== $data['Addr']) {
             $object->setAddr($data['Addr']);
             unset($data['Addr']);
         } elseif (\array_key_exists('Addr', $data) && null === $data['Addr']) {
             $object->setAddr(null);
+            unset($data['Addr']);
         }
         if (\array_key_exists('PrefixLen', $data) && null !== $data['PrefixLen']) {
             $object->setPrefixLen($data['PrefixLen']);
             unset($data['PrefixLen']);
         } elseif (\array_key_exists('PrefixLen', $data) && null === $data['PrefixLen']) {
             $object->setPrefixLen(null);
+            unset($data['PrefixLen']);
         }
         foreach ($data as $key => $value) {
             if (preg_match('/.*/', (string) $key)) {
@@ -73,7 +75,7 @@ class AddressNormalizer implements DenormalizerInterface, NormalizerInterface, D
         if ($data->isInitialized('prefixLen') && null !== $data->getPrefixLen()) {
             $dataArray['PrefixLen'] = $data->getPrefixLen();
         }
-        foreach ($data as $key => $value) {
+        foreach ($data->additionalPropertyEntries() as $key => $value) {
             if (preg_match('/.*/', (string) $key)) {
                 $dataArray[$key] = $value;
             }

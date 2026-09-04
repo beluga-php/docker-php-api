@@ -33,24 +33,25 @@ class TaskSpecLogDriverNormalizer implements DenormalizerInterface, NormalizerIn
 
     public function denormalize(mixed $data, string $type, ?string $format = null, array $context = []): mixed
     {
-        if (isset($data['$ref'])) {
+        $object = new \Docker\API\Model\TaskSpecLogDriver();
+        if (null === $data || false === \is_array($data)) {
+            return $object;
+        }
+        if (isset($data['$ref']) && !isset($data['type']) && !isset($data['properties']) && !isset($data['allOf'])) {
             return new Reference($data['$ref'], $context['document-origin']);
         }
         if (isset($data['$recursiveRef'])) {
             return new Reference($data['$recursiveRef'], $context['document-origin']);
-        }
-        $object = new \Docker\API\Model\TaskSpecLogDriver();
-        if (null === $data || false === \is_array($data)) {
-            return $object;
         }
         if (\array_key_exists('Name', $data) && null !== $data['Name']) {
             $object->setName($data['Name']);
             unset($data['Name']);
         } elseif (\array_key_exists('Name', $data) && null === $data['Name']) {
             $object->setName(null);
+            unset($data['Name']);
         }
         if (\array_key_exists('Options', $data) && null !== $data['Options']) {
-            $values = new \ArrayObject([], \ArrayObject::ARRAY_AS_PROPS);
+            $values = new \Docker\API\Runtime\JsonObject();
             foreach ($data['Options'] as $key => $value) {
                 $values[$key] = $value;
             }
@@ -58,6 +59,7 @@ class TaskSpecLogDriverNormalizer implements DenormalizerInterface, NormalizerIn
             unset($data['Options']);
         } elseif (\array_key_exists('Options', $data) && null === $data['Options']) {
             $object->setOptions(null);
+            unset($data['Options']);
         }
         foreach ($data as $key_1 => $value_1) {
             if (preg_match('/.*/', (string) $key_1)) {
@@ -75,13 +77,13 @@ class TaskSpecLogDriverNormalizer implements DenormalizerInterface, NormalizerIn
             $dataArray['Name'] = $data->getName();
         }
         if ($data->isInitialized('options') && null !== $data->getOptions()) {
-            $values = [];
+            $values = new \Docker\API\Runtime\JsonObject();
             foreach ($data->getOptions() as $key => $value) {
                 $values[$key] = $value;
             }
             $dataArray['Options'] = $values;
         }
-        foreach ($data as $key_1 => $value_1) {
+        foreach ($data->additionalPropertyEntries() as $key_1 => $value_1) {
             if (preg_match('/.*/', (string) $key_1)) {
                 $dataArray[$key_1] = $value_1;
             }

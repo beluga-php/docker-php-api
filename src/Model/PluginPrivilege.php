@@ -4,8 +4,12 @@ declare(strict_types=1);
 
 namespace Docker\API\Model;
 
-class PluginPrivilege extends \ArrayObject
+use Docker\API\Runtime\AdditionalAndPatternProperties;
+use Docker\API\Runtime\AdditionalPropertiesInterface;
+
+class PluginPrivilege implements AdditionalPropertiesInterface
 {
+    use AdditionalAndPatternProperties;
     /**
      * @var array
      */
@@ -71,5 +75,10 @@ class PluginPrivilege extends \ArrayObject
         $this->value = $value;
 
         return $this;
+    }
+
+    public function definedProperties(): array
+    {
+        return ['name' => ['Name', 'getName', 'setName'], 'description' => ['Description', 'getDescription', 'setDescription'], 'value' => ['Value', 'getValue', 'setValue']];
     }
 }

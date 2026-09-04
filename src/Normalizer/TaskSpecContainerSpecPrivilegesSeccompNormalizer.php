@@ -33,27 +33,29 @@ class TaskSpecContainerSpecPrivilegesSeccompNormalizer implements DenormalizerIn
 
     public function denormalize(mixed $data, string $type, ?string $format = null, array $context = []): mixed
     {
-        if (isset($data['$ref'])) {
+        $object = new \Docker\API\Model\TaskSpecContainerSpecPrivilegesSeccomp();
+        if (null === $data || false === \is_array($data)) {
+            return $object;
+        }
+        if (isset($data['$ref']) && !isset($data['type']) && !isset($data['properties']) && !isset($data['allOf'])) {
             return new Reference($data['$ref'], $context['document-origin']);
         }
         if (isset($data['$recursiveRef'])) {
             return new Reference($data['$recursiveRef'], $context['document-origin']);
-        }
-        $object = new \Docker\API\Model\TaskSpecContainerSpecPrivilegesSeccomp();
-        if (null === $data || false === \is_array($data)) {
-            return $object;
         }
         if (\array_key_exists('Mode', $data) && null !== $data['Mode']) {
             $object->setMode($data['Mode']);
             unset($data['Mode']);
         } elseif (\array_key_exists('Mode', $data) && null === $data['Mode']) {
             $object->setMode(null);
+            unset($data['Mode']);
         }
         if (\array_key_exists('Profile', $data) && null !== $data['Profile']) {
             $object->setProfile($data['Profile']);
             unset($data['Profile']);
         } elseif (\array_key_exists('Profile', $data) && null === $data['Profile']) {
             $object->setProfile(null);
+            unset($data['Profile']);
         }
         foreach ($data as $key => $value) {
             if (preg_match('/.*/', (string) $key)) {
@@ -73,7 +75,7 @@ class TaskSpecContainerSpecPrivilegesSeccompNormalizer implements DenormalizerIn
         if ($data->isInitialized('profile') && null !== $data->getProfile()) {
             $dataArray['Profile'] = $data->getProfile();
         }
-        foreach ($data as $key => $value) {
+        foreach ($data->additionalPropertyEntries() as $key => $value) {
             if (preg_match('/.*/', (string) $key)) {
                 $dataArray[$key] = $value;
             }

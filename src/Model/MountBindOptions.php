@@ -4,8 +4,12 @@ declare(strict_types=1);
 
 namespace Docker\API\Model;
 
-class MountBindOptions extends \ArrayObject
+use Docker\API\Runtime\AdditionalAndPatternProperties;
+use Docker\API\Runtime\AdditionalPropertiesInterface;
+
+class MountBindOptions implements AdditionalPropertiesInterface
 {
+    use AdditionalAndPatternProperties;
     /**
      * @var array
      */
@@ -37,7 +41,7 @@ class MountBindOptions extends \ArrayObject
      * Make the mount non-recursively read-only, but still leave the mount recursive
      * (unless NonRecursive is set to `true` in conjunction).
      *
-     * Addded in v1.44, before that version all read-only mounts were
+     * Added in v1.44, before that version all read-only mounts were
      * non-recursive by default. To match the previous behaviour this
      * will default to `true` for clients on versions prior to v1.44.
      *
@@ -112,7 +116,7 @@ class MountBindOptions extends \ArrayObject
      * Make the mount non-recursively read-only, but still leave the mount recursive
      * (unless NonRecursive is set to `true` in conjunction).
      *
-     * Addded in v1.44, before that version all read-only mounts were
+     * Added in v1.44, before that version all read-only mounts were
      * non-recursive by default. To match the previous behaviour this
      * will default to `true` for clients on versions prior to v1.44.
      */
@@ -125,7 +129,7 @@ class MountBindOptions extends \ArrayObject
      * Make the mount non-recursively read-only, but still leave the mount recursive
      * (unless NonRecursive is set to `true` in conjunction).
      *
-     * Addded in v1.44, before that version all read-only mounts were
+     * Added in v1.44, before that version all read-only mounts were
      * non-recursive by default. To match the previous behaviour this
      * will default to `true` for clients on versions prior to v1.44.
      */
@@ -154,5 +158,10 @@ class MountBindOptions extends \ArrayObject
         $this->readOnlyForceRecursive = $readOnlyForceRecursive;
 
         return $this;
+    }
+
+    public function definedProperties(): array
+    {
+        return ['propagation' => ['Propagation', 'getPropagation', 'setPropagation'], 'nonRecursive' => ['NonRecursive', 'getNonRecursive', 'setNonRecursive'], 'createMountpoint' => ['CreateMountpoint', 'getCreateMountpoint', 'setCreateMountpoint'], 'readOnlyNonRecursive' => ['ReadOnlyNonRecursive', 'getReadOnlyNonRecursive', 'setReadOnlyNonRecursive'], 'readOnlyForceRecursive' => ['ReadOnlyForceRecursive', 'getReadOnlyForceRecursive', 'setReadOnlyForceRecursive']];
     }
 }

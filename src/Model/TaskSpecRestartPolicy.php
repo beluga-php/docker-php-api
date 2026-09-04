@@ -4,8 +4,12 @@ declare(strict_types=1);
 
 namespace Docker\API\Model;
 
-class TaskSpecRestartPolicy extends \ArrayObject
+use Docker\API\Runtime\AdditionalAndPatternProperties;
+use Docker\API\Runtime\AdditionalPropertiesInterface;
+
+class TaskSpecRestartPolicy implements AdditionalPropertiesInterface
 {
+    use AdditionalAndPatternProperties;
     /**
      * @var array
      */
@@ -120,5 +124,10 @@ class TaskSpecRestartPolicy extends \ArrayObject
         $this->window = $window;
 
         return $this;
+    }
+
+    public function definedProperties(): array
+    {
+        return ['condition' => ['Condition', 'getCondition', 'setCondition'], 'delay' => ['Delay', 'getDelay', 'setDelay'], 'maxAttempts' => ['MaxAttempts', 'getMaxAttempts', 'setMaxAttempts'], 'window' => ['Window', 'getWindow', 'setWindow']];
     }
 }

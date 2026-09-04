@@ -33,27 +33,29 @@ class TaskSpecResourcesNormalizer implements DenormalizerInterface, NormalizerIn
 
     public function denormalize(mixed $data, string $type, ?string $format = null, array $context = []): mixed
     {
-        if (isset($data['$ref'])) {
+        $object = new \Docker\API\Model\TaskSpecResources();
+        if (null === $data || false === \is_array($data)) {
+            return $object;
+        }
+        if (isset($data['$ref']) && !isset($data['type']) && !isset($data['properties']) && !isset($data['allOf'])) {
             return new Reference($data['$ref'], $context['document-origin']);
         }
         if (isset($data['$recursiveRef'])) {
             return new Reference($data['$recursiveRef'], $context['document-origin']);
-        }
-        $object = new \Docker\API\Model\TaskSpecResources();
-        if (null === $data || false === \is_array($data)) {
-            return $object;
         }
         if (\array_key_exists('Limits', $data) && null !== $data['Limits']) {
             $object->setLimits($this->denormalizer->denormalize($data['Limits'], \Docker\API\Model\Limit::class, 'json', $context));
             unset($data['Limits']);
         } elseif (\array_key_exists('Limits', $data) && null === $data['Limits']) {
             $object->setLimits(null);
+            unset($data['Limits']);
         }
         if (\array_key_exists('Reservations', $data) && null !== $data['Reservations']) {
             $object->setReservations($this->denormalizer->denormalize($data['Reservations'], \Docker\API\Model\ResourceObject::class, 'json', $context));
             unset($data['Reservations']);
         } elseif (\array_key_exists('Reservations', $data) && null === $data['Reservations']) {
             $object->setReservations(null);
+            unset($data['Reservations']);
         }
         foreach ($data as $key => $value) {
             if (preg_match('/.*/', (string) $key)) {
@@ -68,12 +70,12 @@ class TaskSpecResourcesNormalizer implements DenormalizerInterface, NormalizerIn
     {
         $dataArray = [];
         if ($data->isInitialized('limits') && null !== $data->getLimits()) {
-            $dataArray['Limits'] = $this->normalizer->normalize($data->getLimits(), 'json', $context);
+            $dataArray['Limits'] = null === $data->getLimits() ? null : new \Docker\API\Runtime\JsonObject($this->normalizer->normalize($data->getLimits(), 'json', $context));
         }
         if ($data->isInitialized('reservations') && null !== $data->getReservations()) {
-            $dataArray['Reservations'] = $this->normalizer->normalize($data->getReservations(), 'json', $context);
+            $dataArray['Reservations'] = null === $data->getReservations() ? null : new \Docker\API\Runtime\JsonObject($this->normalizer->normalize($data->getReservations(), 'json', $context));
         }
-        foreach ($data as $key => $value) {
+        foreach ($data->additionalPropertyEntries() as $key => $value) {
             if (preg_match('/.*/', (string) $key)) {
                 $dataArray[$key] = $value;
             }

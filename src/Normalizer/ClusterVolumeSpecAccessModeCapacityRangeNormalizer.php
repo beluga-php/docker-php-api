@@ -33,27 +33,29 @@ class ClusterVolumeSpecAccessModeCapacityRangeNormalizer implements Denormalizer
 
     public function denormalize(mixed $data, string $type, ?string $format = null, array $context = []): mixed
     {
-        if (isset($data['$ref'])) {
+        $object = new \Docker\API\Model\ClusterVolumeSpecAccessModeCapacityRange();
+        if (null === $data || false === \is_array($data)) {
+            return $object;
+        }
+        if (isset($data['$ref']) && !isset($data['type']) && !isset($data['properties']) && !isset($data['allOf'])) {
             return new Reference($data['$ref'], $context['document-origin']);
         }
         if (isset($data['$recursiveRef'])) {
             return new Reference($data['$recursiveRef'], $context['document-origin']);
-        }
-        $object = new \Docker\API\Model\ClusterVolumeSpecAccessModeCapacityRange();
-        if (null === $data || false === \is_array($data)) {
-            return $object;
         }
         if (\array_key_exists('RequiredBytes', $data) && null !== $data['RequiredBytes']) {
             $object->setRequiredBytes($data['RequiredBytes']);
             unset($data['RequiredBytes']);
         } elseif (\array_key_exists('RequiredBytes', $data) && null === $data['RequiredBytes']) {
             $object->setRequiredBytes(null);
+            unset($data['RequiredBytes']);
         }
         if (\array_key_exists('LimitBytes', $data) && null !== $data['LimitBytes']) {
             $object->setLimitBytes($data['LimitBytes']);
             unset($data['LimitBytes']);
         } elseif (\array_key_exists('LimitBytes', $data) && null === $data['LimitBytes']) {
             $object->setLimitBytes(null);
+            unset($data['LimitBytes']);
         }
         foreach ($data as $key => $value) {
             if (preg_match('/.*/', (string) $key)) {
@@ -73,7 +75,7 @@ class ClusterVolumeSpecAccessModeCapacityRangeNormalizer implements Denormalizer
         if ($data->isInitialized('limitBytes') && null !== $data->getLimitBytes()) {
             $dataArray['LimitBytes'] = $data->getLimitBytes();
         }
-        foreach ($data as $key => $value) {
+        foreach ($data->additionalPropertyEntries() as $key => $value) {
             if (preg_match('/.*/', (string) $key)) {
                 $dataArray[$key] = $value;
             }

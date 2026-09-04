@@ -4,8 +4,12 @@ declare(strict_types=1);
 
 namespace Docker\API\Model;
 
-class ContainersIdTopGetJsonResponse200 extends \ArrayObject
+use Docker\API\Runtime\AdditionalAndPatternProperties;
+use Docker\API\Runtime\AdditionalPropertiesInterface;
+
+class ContainersIdTopGetJsonResponse200 implements AdditionalPropertiesInterface
 {
+    use AdditionalAndPatternProperties;
     /**
      * @var array
      */
@@ -75,5 +79,10 @@ class ContainersIdTopGetJsonResponse200 extends \ArrayObject
         $this->processes = $processes;
 
         return $this;
+    }
+
+    public function definedProperties(): array
+    {
+        return ['titles' => ['Titles', 'getTitles', 'setTitles'], 'processes' => ['Processes', 'getProcesses', 'setProcesses']];
     }
 }

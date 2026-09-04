@@ -33,15 +33,15 @@ class PluginSettingsNormalizer implements DenormalizerInterface, NormalizerInter
 
     public function denormalize(mixed $data, string $type, ?string $format = null, array $context = []): mixed
     {
-        if (isset($data['$ref'])) {
+        $object = new \Docker\API\Model\PluginSettings();
+        if (null === $data || false === \is_array($data)) {
+            return $object;
+        }
+        if (isset($data['$ref']) && !isset($data['type']) && !isset($data['properties']) && !isset($data['allOf'])) {
             return new Reference($data['$ref'], $context['document-origin']);
         }
         if (isset($data['$recursiveRef'])) {
             return new Reference($data['$recursiveRef'], $context['document-origin']);
-        }
-        $object = new \Docker\API\Model\PluginSettings();
-        if (null === $data || false === \is_array($data)) {
-            return $object;
         }
         if (\array_key_exists('Mounts', $data) && null !== $data['Mounts']) {
             $values = [];
@@ -52,6 +52,7 @@ class PluginSettingsNormalizer implements DenormalizerInterface, NormalizerInter
             unset($data['Mounts']);
         } elseif (\array_key_exists('Mounts', $data) && null === $data['Mounts']) {
             $object->setMounts(null);
+            unset($data['Mounts']);
         }
         if (\array_key_exists('Env', $data) && null !== $data['Env']) {
             $values_1 = [];
@@ -62,6 +63,7 @@ class PluginSettingsNormalizer implements DenormalizerInterface, NormalizerInter
             unset($data['Env']);
         } elseif (\array_key_exists('Env', $data) && null === $data['Env']) {
             $object->setEnv(null);
+            unset($data['Env']);
         }
         if (\array_key_exists('Args', $data) && null !== $data['Args']) {
             $values_2 = [];
@@ -72,6 +74,7 @@ class PluginSettingsNormalizer implements DenormalizerInterface, NormalizerInter
             unset($data['Args']);
         } elseif (\array_key_exists('Args', $data) && null === $data['Args']) {
             $object->setArgs(null);
+            unset($data['Args']);
         }
         if (\array_key_exists('Devices', $data) && null !== $data['Devices']) {
             $values_3 = [];
@@ -82,6 +85,7 @@ class PluginSettingsNormalizer implements DenormalizerInterface, NormalizerInter
             unset($data['Devices']);
         } elseif (\array_key_exists('Devices', $data) && null === $data['Devices']) {
             $object->setDevices(null);
+            unset($data['Devices']);
         }
         foreach ($data as $key => $value_4) {
             if (preg_match('/.*/', (string) $key)) {
@@ -97,7 +101,7 @@ class PluginSettingsNormalizer implements DenormalizerInterface, NormalizerInter
         $dataArray = [];
         $values = [];
         foreach ($data->getMounts() as $value) {
-            $values[] = $this->normalizer->normalize($value, 'json', $context);
+            $values[] = null === $value ? null : new \Docker\API\Runtime\JsonObject($this->normalizer->normalize($value, 'json', $context));
         }
         $dataArray['Mounts'] = $values;
         $values_1 = [];
@@ -112,10 +116,10 @@ class PluginSettingsNormalizer implements DenormalizerInterface, NormalizerInter
         $dataArray['Args'] = $values_2;
         $values_3 = [];
         foreach ($data->getDevices() as $value_3) {
-            $values_3[] = $this->normalizer->normalize($value_3, 'json', $context);
+            $values_3[] = null === $value_3 ? null : new \Docker\API\Runtime\JsonObject($this->normalizer->normalize($value_3, 'json', $context));
         }
         $dataArray['Devices'] = $values_3;
-        foreach ($data as $key => $value_4) {
+        foreach ($data->additionalPropertyEntries() as $key => $value_4) {
             if (preg_match('/.*/', (string) $key)) {
                 $dataArray[$key] = $value_4;
             }

@@ -14,7 +14,7 @@ use Symfony\Component\Serializer\Normalizer\NormalizerAwareInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerAwareTrait;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
-class ImagesNameHistoryGetResponse200ItemNormalizer implements DenormalizerInterface, NormalizerInterface, DenormalizerAwareInterface, NormalizerAwareInterface
+class ImageHistoryResponseItemNormalizer implements DenormalizerInterface, NormalizerInterface, DenormalizerAwareInterface, NormalizerAwareInterface
 {
     use CheckArray;
     use DenormalizerAwareTrait;
@@ -23,43 +23,46 @@ class ImagesNameHistoryGetResponse200ItemNormalizer implements DenormalizerInter
 
     public function supportsDenormalization(mixed $data, string $type, ?string $format = null, array $context = []): bool
     {
-        return \Docker\API\Model\ImagesNameHistoryGetResponse200Item::class === $type;
+        return \Docker\API\Model\ImageHistoryResponseItem::class === $type;
     }
 
     public function supportsNormalization(mixed $data, ?string $format = null, array $context = []): bool
     {
-        return \is_object($data) && \Docker\API\Model\ImagesNameHistoryGetResponse200Item::class === $data::class;
+        return \is_object($data) && \Docker\API\Model\ImageHistoryResponseItem::class === $data::class;
     }
 
     public function denormalize(mixed $data, string $type, ?string $format = null, array $context = []): mixed
     {
-        if (isset($data['$ref'])) {
+        $object = new \Docker\API\Model\ImageHistoryResponseItem();
+        if (null === $data || false === \is_array($data)) {
+            return $object;
+        }
+        if (isset($data['$ref']) && !isset($data['type']) && !isset($data['properties']) && !isset($data['allOf'])) {
             return new Reference($data['$ref'], $context['document-origin']);
         }
         if (isset($data['$recursiveRef'])) {
             return new Reference($data['$recursiveRef'], $context['document-origin']);
-        }
-        $object = new \Docker\API\Model\ImagesNameHistoryGetResponse200Item();
-        if (null === $data || false === \is_array($data)) {
-            return $object;
         }
         if (\array_key_exists('Id', $data) && null !== $data['Id']) {
             $object->setId($data['Id']);
             unset($data['Id']);
         } elseif (\array_key_exists('Id', $data) && null === $data['Id']) {
             $object->setId(null);
+            unset($data['Id']);
         }
         if (\array_key_exists('Created', $data) && null !== $data['Created']) {
             $object->setCreated($data['Created']);
             unset($data['Created']);
         } elseif (\array_key_exists('Created', $data) && null === $data['Created']) {
             $object->setCreated(null);
+            unset($data['Created']);
         }
         if (\array_key_exists('CreatedBy', $data) && null !== $data['CreatedBy']) {
             $object->setCreatedBy($data['CreatedBy']);
             unset($data['CreatedBy']);
         } elseif (\array_key_exists('CreatedBy', $data) && null === $data['CreatedBy']) {
             $object->setCreatedBy(null);
+            unset($data['CreatedBy']);
         }
         if (\array_key_exists('Tags', $data) && null !== $data['Tags']) {
             $values = [];
@@ -70,18 +73,21 @@ class ImagesNameHistoryGetResponse200ItemNormalizer implements DenormalizerInter
             unset($data['Tags']);
         } elseif (\array_key_exists('Tags', $data) && null === $data['Tags']) {
             $object->setTags(null);
+            unset($data['Tags']);
         }
         if (\array_key_exists('Size', $data) && null !== $data['Size']) {
             $object->setSize($data['Size']);
             unset($data['Size']);
         } elseif (\array_key_exists('Size', $data) && null === $data['Size']) {
             $object->setSize(null);
+            unset($data['Size']);
         }
         if (\array_key_exists('Comment', $data) && null !== $data['Comment']) {
             $object->setComment($data['Comment']);
             unset($data['Comment']);
         } elseif (\array_key_exists('Comment', $data) && null === $data['Comment']) {
             $object->setComment(null);
+            unset($data['Comment']);
         }
         foreach ($data as $key => $value_1) {
             if (preg_match('/.*/', (string) $key)) {
@@ -105,7 +111,7 @@ class ImagesNameHistoryGetResponse200ItemNormalizer implements DenormalizerInter
         $dataArray['Tags'] = $values;
         $dataArray['Size'] = $data->getSize();
         $dataArray['Comment'] = $data->getComment();
-        foreach ($data as $key => $value_1) {
+        foreach ($data->additionalPropertyEntries() as $key => $value_1) {
             if (preg_match('/.*/', (string) $key)) {
                 $dataArray[$key] = $value_1;
             }
@@ -116,6 +122,6 @@ class ImagesNameHistoryGetResponse200ItemNormalizer implements DenormalizerInter
 
     public function getSupportedTypes(?string $format = null): array
     {
-        return [\Docker\API\Model\ImagesNameHistoryGetResponse200Item::class => false];
+        return [\Docker\API\Model\ImageHistoryResponseItem::class => false];
     }
 }

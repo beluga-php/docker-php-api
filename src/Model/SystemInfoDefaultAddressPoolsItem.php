@@ -4,8 +4,12 @@ declare(strict_types=1);
 
 namespace Docker\API\Model;
 
-class SystemInfoDefaultAddressPoolsItem extends \ArrayObject
+use Docker\API\Runtime\AdditionalAndPatternProperties;
+use Docker\API\Runtime\AdditionalPropertiesInterface;
+
+class SystemInfoDefaultAddressPoolsItem implements AdditionalPropertiesInterface
 {
+    use AdditionalAndPatternProperties;
     /**
      * @var array
      */
@@ -64,5 +68,10 @@ class SystemInfoDefaultAddressPoolsItem extends \ArrayObject
         $this->size = $size;
 
         return $this;
+    }
+
+    public function definedProperties(): array
+    {
+        return ['base' => ['Base', 'getBase', 'setBase'], 'size' => ['Size', 'getSize', 'setSize']];
     }
 }

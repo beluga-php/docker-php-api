@@ -33,21 +33,22 @@ class ContainerSummaryHostConfigNormalizer implements DenormalizerInterface, Nor
 
     public function denormalize(mixed $data, string $type, ?string $format = null, array $context = []): mixed
     {
-        if (isset($data['$ref'])) {
+        $object = new \Docker\API\Model\ContainerSummaryHostConfig();
+        if (null === $data || false === \is_array($data)) {
+            return $object;
+        }
+        if (isset($data['$ref']) && !isset($data['type']) && !isset($data['properties']) && !isset($data['allOf'])) {
             return new Reference($data['$ref'], $context['document-origin']);
         }
         if (isset($data['$recursiveRef'])) {
             return new Reference($data['$recursiveRef'], $context['document-origin']);
-        }
-        $object = new \Docker\API\Model\ContainerSummaryHostConfig();
-        if (null === $data || false === \is_array($data)) {
-            return $object;
         }
         if (\array_key_exists('NetworkMode', $data) && null !== $data['NetworkMode']) {
             $object->setNetworkMode($data['NetworkMode']);
             unset($data['NetworkMode']);
         } elseif (\array_key_exists('NetworkMode', $data) && null === $data['NetworkMode']) {
             $object->setNetworkMode(null);
+            unset($data['NetworkMode']);
         }
         foreach ($data as $key => $value) {
             if (preg_match('/.*/', (string) $key)) {
@@ -64,7 +65,7 @@ class ContainerSummaryHostConfigNormalizer implements DenormalizerInterface, Nor
         if ($data->isInitialized('networkMode') && null !== $data->getNetworkMode()) {
             $dataArray['NetworkMode'] = $data->getNetworkMode();
         }
-        foreach ($data as $key => $value) {
+        foreach ($data->additionalPropertyEntries() as $key => $value) {
             if (preg_match('/.*/', (string) $key)) {
                 $dataArray[$key] = $value;
             }

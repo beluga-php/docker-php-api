@@ -33,27 +33,29 @@ class EndpointIPAMConfigNormalizer implements DenormalizerInterface, NormalizerI
 
     public function denormalize(mixed $data, string $type, ?string $format = null, array $context = []): mixed
     {
-        if (isset($data['$ref'])) {
+        $object = new \Docker\API\Model\EndpointIPAMConfig();
+        if (null === $data || false === \is_array($data)) {
+            return $object;
+        }
+        if (isset($data['$ref']) && !isset($data['type']) && !isset($data['properties']) && !isset($data['allOf'])) {
             return new Reference($data['$ref'], $context['document-origin']);
         }
         if (isset($data['$recursiveRef'])) {
             return new Reference($data['$recursiveRef'], $context['document-origin']);
-        }
-        $object = new \Docker\API\Model\EndpointIPAMConfig();
-        if (null === $data || false === \is_array($data)) {
-            return $object;
         }
         if (\array_key_exists('IPv4Address', $data) && null !== $data['IPv4Address']) {
             $object->setIPv4Address($data['IPv4Address']);
             unset($data['IPv4Address']);
         } elseif (\array_key_exists('IPv4Address', $data) && null === $data['IPv4Address']) {
             $object->setIPv4Address(null);
+            unset($data['IPv4Address']);
         }
         if (\array_key_exists('IPv6Address', $data) && null !== $data['IPv6Address']) {
             $object->setIPv6Address($data['IPv6Address']);
             unset($data['IPv6Address']);
         } elseif (\array_key_exists('IPv6Address', $data) && null === $data['IPv6Address']) {
             $object->setIPv6Address(null);
+            unset($data['IPv6Address']);
         }
         if (\array_key_exists('LinkLocalIPs', $data) && null !== $data['LinkLocalIPs']) {
             $values = [];
@@ -64,6 +66,7 @@ class EndpointIPAMConfigNormalizer implements DenormalizerInterface, NormalizerI
             unset($data['LinkLocalIPs']);
         } elseif (\array_key_exists('LinkLocalIPs', $data) && null === $data['LinkLocalIPs']) {
             $object->setLinkLocalIPs(null);
+            unset($data['LinkLocalIPs']);
         }
         foreach ($data as $key => $value_1) {
             if (preg_match('/.*/', (string) $key)) {
@@ -90,7 +93,7 @@ class EndpointIPAMConfigNormalizer implements DenormalizerInterface, NormalizerI
             }
             $dataArray['LinkLocalIPs'] = $values;
         }
-        foreach ($data as $key => $value_1) {
+        foreach ($data->additionalPropertyEntries() as $key => $value_1) {
             if (preg_match('/.*/', (string) $key)) {
                 $dataArray[$key] = $value_1;
             }

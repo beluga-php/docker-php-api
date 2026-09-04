@@ -4,8 +4,12 @@ declare(strict_types=1);
 
 namespace Docker\API\Model;
 
-class EventMessage extends \ArrayObject
+use Docker\API\Runtime\AdditionalAndPatternProperties;
+use Docker\API\Runtime\AdditionalPropertiesInterface;
+
+class EventMessage implements AdditionalPropertiesInterface
 {
+    use AdditionalAndPatternProperties;
     /**
      * @var array
      */
@@ -170,5 +174,10 @@ class EventMessage extends \ArrayObject
         $this->timeNano = $timeNano;
 
         return $this;
+    }
+
+    public function definedProperties(): array
+    {
+        return ['type' => ['Type', 'getType', 'setType'], 'action' => ['Action', 'getAction', 'setAction'], 'actor' => ['Actor', 'getActor', 'setActor'], 'scope' => ['scope', 'getScope', 'setScope'], 'time' => ['time', 'getTime', 'setTime'], 'timeNano' => ['timeNano', 'getTimeNano', 'setTimeNano']];
     }
 }

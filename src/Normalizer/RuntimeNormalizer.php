@@ -33,21 +33,22 @@ class RuntimeNormalizer implements DenormalizerInterface, NormalizerInterface, D
 
     public function denormalize(mixed $data, string $type, ?string $format = null, array $context = []): mixed
     {
-        if (isset($data['$ref'])) {
+        $object = new \Docker\API\Model\Runtime();
+        if (null === $data || false === \is_array($data)) {
+            return $object;
+        }
+        if (isset($data['$ref']) && !isset($data['type']) && !isset($data['properties']) && !isset($data['allOf'])) {
             return new Reference($data['$ref'], $context['document-origin']);
         }
         if (isset($data['$recursiveRef'])) {
             return new Reference($data['$recursiveRef'], $context['document-origin']);
-        }
-        $object = new \Docker\API\Model\Runtime();
-        if (null === $data || false === \is_array($data)) {
-            return $object;
         }
         if (\array_key_exists('path', $data) && null !== $data['path']) {
             $object->setPath($data['path']);
             unset($data['path']);
         } elseif (\array_key_exists('path', $data) && null === $data['path']) {
             $object->setPath(null);
+            unset($data['path']);
         }
         if (\array_key_exists('runtimeArgs', $data) && null !== $data['runtimeArgs']) {
             $values = [];
@@ -58,9 +59,10 @@ class RuntimeNormalizer implements DenormalizerInterface, NormalizerInterface, D
             unset($data['runtimeArgs']);
         } elseif (\array_key_exists('runtimeArgs', $data) && null === $data['runtimeArgs']) {
             $object->setRuntimeArgs(null);
+            unset($data['runtimeArgs']);
         }
         if (\array_key_exists('status', $data) && null !== $data['status']) {
-            $values_1 = new \ArrayObject([], \ArrayObject::ARRAY_AS_PROPS);
+            $values_1 = new \Docker\API\Runtime\JsonObject();
             foreach ($data['status'] as $key => $value_1) {
                 $values_1[$key] = $value_1;
             }
@@ -68,6 +70,7 @@ class RuntimeNormalizer implements DenormalizerInterface, NormalizerInterface, D
             unset($data['status']);
         } elseif (\array_key_exists('status', $data) && null === $data['status']) {
             $object->setStatus(null);
+            unset($data['status']);
         }
         foreach ($data as $key_1 => $value_2) {
             if (preg_match('/.*/', (string) $key_1)) {
@@ -92,13 +95,13 @@ class RuntimeNormalizer implements DenormalizerInterface, NormalizerInterface, D
             $dataArray['runtimeArgs'] = $values;
         }
         if ($data->isInitialized('status') && null !== $data->getStatus()) {
-            $values_1 = [];
+            $values_1 = new \Docker\API\Runtime\JsonObject();
             foreach ($data->getStatus() as $key => $value_1) {
                 $values_1[$key] = $value_1;
             }
             $dataArray['status'] = $values_1;
         }
-        foreach ($data as $key_1 => $value_2) {
+        foreach ($data->additionalPropertyEntries() as $key_1 => $value_2) {
             if (preg_match('/.*/', (string) $key_1)) {
                 $dataArray[$key_1] = $value_2;
             }

@@ -4,8 +4,12 @@ declare(strict_types=1);
 
 namespace Docker\API\Model;
 
-class ResourceObject extends \ArrayObject
+use Docker\API\Runtime\AdditionalAndPatternProperties;
+use Docker\API\Runtime\AdditionalPropertiesInterface;
+
+class ResourceObject implements AdditionalPropertiesInterface
 {
+    use AdditionalAndPatternProperties;
     /**
      * @var array
      */
@@ -80,5 +84,10 @@ class ResourceObject extends \ArrayObject
         $this->genericResources = $genericResources;
 
         return $this;
+    }
+
+    public function definedProperties(): array
+    {
+        return ['nanoCPUs' => ['NanoCPUs', 'getNanoCPUs', 'setNanoCPUs'], 'memoryBytes' => ['MemoryBytes', 'getMemoryBytes', 'setMemoryBytes'], 'genericResources' => ['GenericResources', 'getGenericResources', 'setGenericResources']];
     }
 }

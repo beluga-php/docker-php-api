@@ -11,20 +11,19 @@ class ImageCreate extends \Docker\API\Runtime\Client\BaseEndpoint implements \Do
     /**
      * Pull or import an image.
      *
-     * @param array $queryParameters {
-     *
-     * @var string $fromImage Name of the image to pull. The name may include a tag or digest. This parameter may only be used when pulling an image. The pull is cancelled if the HTTP connection is closed.
-     * @var string $fromSrc Source to import. The value may be a URL from which the image can be retrieved or `-` to read the image from the request body. This parameter may only be used when importing an image.
-     * @var string $repo Repository name given to an image when it is imported. The repo may include a tag. This parameter may only be used when importing an image.
-     * @var string $tag Tag or digest. If empty when pulling an image, this causes all tags for the given image to be pulled.
-     * @var string $message set commit message for imported image
-     * @var array  $changes Apply `Dockerfile` instructions to the image that is created,
-     *             for example: `changes=ENV DEBUG=true`.
-     *             Note that `ENV DEBUG=true` should be URI component encoded.
+     * @param array{
+     *    "fromImage"?: string, //Name of the image to pull. The name may include a tag or digest. This parameter may only be used when pulling an image. The pull is cancelled if the HTTP connection is closed.
+     *    "fromSrc"?: string, //Source to import. The value may be a URL from which the image can be retrieved or `-` to read the image from the request body. This parameter may only be used when importing an image.
+     *    "repo"?: string, //Repository name given to an image when it is imported. The repo may include a tag. This parameter may only be used when importing an image.
+     *    "tag"?: string, //Tag or digest. If empty when pulling an image, this causes all tags for the given image to be pulled.
+     *    "message"?: string, //Set commit message for imported image.
+     *    "changes"?: array, //Apply `Dockerfile` instructions to the image that is created,
+     * for example: `changes=ENV DEBUG=true`.
+     * Note that `ENV DEBUG=true` should be URI component encoded.
      *
      * Supported `Dockerfile` instructions:
      * `CMD`|`ENTRYPOINT`|`ENV`|`EXPOSE`|`ONBUILD`|`USER`|`VOLUME`|`WORKDIR`
-     * @var string $platform Platform in the format os[/arch[/variant]].
+     *    "platform"?: string, //Platform in the format os[/arch[/variant]].
      *
      * When used in combination with the `fromImage` option, the daemon checks
      * if the given image is present in the local image cache with the given
@@ -39,17 +38,13 @@ class ImageCreate extends \Docker\API\Runtime\Client\BaseEndpoint implements \Do
      * this option sets the platform information for the imported image. If
      * the option is not set, the host's native OS and Architecture are used
      * for the imported image.
-     *
-     * }
-     *
-     * @param array $headerParameters {
-     *
-     * @var string $X-Registry-Auth A base64url-encoded auth configuration.
+     * } $queryParameters
+     * @param array{
+     *    "X-Registry-Auth"?: string, //A base64url-encoded auth configuration.
      *
      * Refer to the [authentication section](#section/Authentication) for
      * details.
-     *
-     * }
+     * } $headerParameters
      */
     public function __construct(?string $requestBody = null, array $queryParameters = [], array $headerParameters = [])
     {
@@ -90,7 +85,7 @@ class ImageCreate extends \Docker\API\Runtime\Client\BaseEndpoint implements \Do
         $optionsResolver = parent::getQueryOptionsResolver();
         $optionsResolver->setDefined(['fromImage', 'fromSrc', 'repo', 'tag', 'message', 'changes', 'platform']);
         $optionsResolver->setRequired([]);
-        $optionsResolver->setDefaults([]);
+        $optionsResolver->setDefaults(['platform' => '']);
         $optionsResolver->addAllowedTypes('fromImage', ['string']);
         $optionsResolver->addAllowedTypes('fromSrc', ['string']);
         $optionsResolver->addAllowedTypes('repo', ['string']);
@@ -113,6 +108,11 @@ class ImageCreate extends \Docker\API\Runtime\Client\BaseEndpoint implements \Do
         return $optionsResolver;
     }
 
+    protected function getQueryStyles(): array
+    {
+        return ['changes' => ['style' => 'form', 'explode' => false]];
+    }
+
     /**
      * @throws \Docker\API\Exception\ImageCreateNotFoundException
      * @throws \Docker\API\Exception\ImageCreateInternalServerErrorException
@@ -124,11 +124,12 @@ class ImageCreate extends \Docker\API\Runtime\Client\BaseEndpoint implements \Do
         $status = $response->getStatusCode();
         $body = (string) $response->getBody();
         if (200 === $status) {
+            return null;
         }
-        if ((null === $contentType) === false && (404 === $status && false !== mb_strpos($contentType, 'application/json'))) {
+        if ((null === $contentType) === false && (404 === $status && false !== stripos(strtolower($contentType), 'application/json'))) {
             throw new \Docker\API\Exception\ImageCreateNotFoundException($serializer->deserialize($body, 'Docker\API\Model\ErrorResponse', 'json'), $response);
         }
-        if ((null === $contentType) === false && (500 === $status && false !== mb_strpos($contentType, 'application/json'))) {
+        if ((null === $contentType) === false && (500 === $status && false !== stripos(strtolower($contentType), 'application/json'))) {
             throw new \Docker\API\Exception\ImageCreateInternalServerErrorException($serializer->deserialize($body, 'Docker\API\Model\ErrorResponse', 'json'), $response);
         }
     }

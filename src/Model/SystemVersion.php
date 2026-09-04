@@ -4,8 +4,12 @@ declare(strict_types=1);
 
 namespace Docker\API\Model;
 
-class SystemVersion extends \ArrayObject
+use Docker\API\Runtime\AdditionalAndPatternProperties;
+use Docker\API\Runtime\AdditionalPropertiesInterface;
+
+class SystemVersion implements AdditionalPropertiesInterface
 {
+    use AdditionalAndPatternProperties;
     /**
      * @var array
      */
@@ -63,7 +67,9 @@ class SystemVersion extends \ArrayObject
      */
     protected $os;
     /**
-     * The architecture that the daemon is running on.
+     * Architecture of the daemon, as returned by the Go runtime (`GOARCH`).
+     *
+     * A full list of possible values can be found in the [Go documentation](https://go.dev/doc/install/source#environment).
      *
      * @var string|null
      */
@@ -244,7 +250,9 @@ class SystemVersion extends \ArrayObject
     }
 
     /**
-     * The architecture that the daemon is running on.
+     * Architecture of the daemon, as returned by the Go runtime (`GOARCH`).
+     *
+     * A full list of possible values can be found in the [Go documentation](https://go.dev/doc/install/source#environment).
      */
     public function getArch(): ?string
     {
@@ -252,7 +260,9 @@ class SystemVersion extends \ArrayObject
     }
 
     /**
-     * The architecture that the daemon is running on.
+     * Architecture of the daemon, as returned by the Go runtime (`GOARCH`).
+     *
+     * A full list of possible values can be found in the [Go documentation](https://go.dev/doc/install/source#environment).
      */
     public function setArch(?string $arch): self
     {
@@ -325,5 +335,10 @@ class SystemVersion extends \ArrayObject
         $this->buildTime = $buildTime;
 
         return $this;
+    }
+
+    public function definedProperties(): array
+    {
+        return ['platform' => ['Platform', 'getPlatform', 'setPlatform'], 'components' => ['Components', 'getComponents', 'setComponents'], 'version' => ['Version', 'getVersion', 'setVersion'], 'apiVersion' => ['ApiVersion', 'getApiVersion', 'setApiVersion'], 'minAPIVersion' => ['MinAPIVersion', 'getMinAPIVersion', 'setMinAPIVersion'], 'gitCommit' => ['GitCommit', 'getGitCommit', 'setGitCommit'], 'goVersion' => ['GoVersion', 'getGoVersion', 'setGoVersion'], 'os' => ['Os', 'getOs', 'setOs'], 'arch' => ['Arch', 'getArch', 'setArch'], 'kernelVersion' => ['KernelVersion', 'getKernelVersion', 'setKernelVersion'], 'experimental' => ['Experimental', 'getExperimental', 'setExperimental'], 'buildTime' => ['BuildTime', 'getBuildTime', 'setBuildTime']];
     }
 }

@@ -33,30 +33,32 @@ class SwarmSpecCAConfigExternalCAsItemNormalizer implements DenormalizerInterfac
 
     public function denormalize(mixed $data, string $type, ?string $format = null, array $context = []): mixed
     {
-        if (isset($data['$ref'])) {
+        $object = new \Docker\API\Model\SwarmSpecCAConfigExternalCAsItem();
+        if (null === $data || false === \is_array($data)) {
+            return $object;
+        }
+        if (isset($data['$ref']) && !isset($data['type']) && !isset($data['properties']) && !isset($data['allOf'])) {
             return new Reference($data['$ref'], $context['document-origin']);
         }
         if (isset($data['$recursiveRef'])) {
             return new Reference($data['$recursiveRef'], $context['document-origin']);
-        }
-        $object = new \Docker\API\Model\SwarmSpecCAConfigExternalCAsItem();
-        if (null === $data || false === \is_array($data)) {
-            return $object;
         }
         if (\array_key_exists('Protocol', $data) && null !== $data['Protocol']) {
             $object->setProtocol($data['Protocol']);
             unset($data['Protocol']);
         } elseif (\array_key_exists('Protocol', $data) && null === $data['Protocol']) {
             $object->setProtocol(null);
+            unset($data['Protocol']);
         }
         if (\array_key_exists('URL', $data) && null !== $data['URL']) {
             $object->setURL($data['URL']);
             unset($data['URL']);
         } elseif (\array_key_exists('URL', $data) && null === $data['URL']) {
             $object->setURL(null);
+            unset($data['URL']);
         }
         if (\array_key_exists('Options', $data) && null !== $data['Options']) {
-            $values = new \ArrayObject([], \ArrayObject::ARRAY_AS_PROPS);
+            $values = new \Docker\API\Runtime\JsonObject();
             foreach ($data['Options'] as $key => $value) {
                 $values[$key] = $value;
             }
@@ -64,12 +66,14 @@ class SwarmSpecCAConfigExternalCAsItemNormalizer implements DenormalizerInterfac
             unset($data['Options']);
         } elseif (\array_key_exists('Options', $data) && null === $data['Options']) {
             $object->setOptions(null);
+            unset($data['Options']);
         }
         if (\array_key_exists('CACert', $data) && null !== $data['CACert']) {
             $object->setCACert($data['CACert']);
             unset($data['CACert']);
         } elseif (\array_key_exists('CACert', $data) && null === $data['CACert']) {
             $object->setCACert(null);
+            unset($data['CACert']);
         }
         foreach ($data as $key_1 => $value_1) {
             if (preg_match('/.*/', (string) $key_1)) {
@@ -90,7 +94,7 @@ class SwarmSpecCAConfigExternalCAsItemNormalizer implements DenormalizerInterfac
             $dataArray['URL'] = $data->getURL();
         }
         if ($data->isInitialized('options') && null !== $data->getOptions()) {
-            $values = [];
+            $values = new \Docker\API\Runtime\JsonObject();
             foreach ($data->getOptions() as $key => $value) {
                 $values[$key] = $value;
             }
@@ -99,7 +103,7 @@ class SwarmSpecCAConfigExternalCAsItemNormalizer implements DenormalizerInterfac
         if ($data->isInitialized('cACert') && null !== $data->getCACert()) {
             $dataArray['CACert'] = $data->getCACert();
         }
-        foreach ($data as $key_1 => $value_1) {
+        foreach ($data->additionalPropertyEntries() as $key_1 => $value_1) {
             if (preg_match('/.*/', (string) $key_1)) {
                 $dataArray[$key_1] = $value_1;
             }

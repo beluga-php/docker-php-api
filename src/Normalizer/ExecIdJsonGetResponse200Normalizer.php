@@ -33,13 +33,16 @@ class ExecIdJsonGetResponse200Normalizer implements DenormalizerInterface, Norma
 
     public function denormalize(mixed $data, string $type, ?string $format = null, array $context = []): mixed
     {
-        if (isset($data['$ref'])) {
+        $object = new \Docker\API\Model\ExecIdJsonGetResponse200();
+        if (null === $data || false === \is_array($data)) {
+            return $object;
+        }
+        if (isset($data['$ref']) && !isset($data['type']) && !isset($data['properties']) && !isset($data['allOf'])) {
             return new Reference($data['$ref'], $context['document-origin']);
         }
         if (isset($data['$recursiveRef'])) {
             return new Reference($data['$recursiveRef'], $context['document-origin']);
         }
-        $object = new \Docker\API\Model\ExecIdJsonGetResponse200();
         if (\array_key_exists('CanRemove', $data) && \is_int($data['CanRemove'])) {
             $data['CanRemove'] = (bool) $data['CanRemove'];
         }
@@ -55,74 +58,82 @@ class ExecIdJsonGetResponse200Normalizer implements DenormalizerInterface, Norma
         if (\array_key_exists('OpenStdout', $data) && \is_int($data['OpenStdout'])) {
             $data['OpenStdout'] = (bool) $data['OpenStdout'];
         }
-        if (null === $data || false === \is_array($data)) {
-            return $object;
-        }
         if (\array_key_exists('CanRemove', $data) && null !== $data['CanRemove']) {
             $object->setCanRemove($data['CanRemove']);
             unset($data['CanRemove']);
         } elseif (\array_key_exists('CanRemove', $data) && null === $data['CanRemove']) {
             $object->setCanRemove(null);
+            unset($data['CanRemove']);
         }
         if (\array_key_exists('DetachKeys', $data) && null !== $data['DetachKeys']) {
             $object->setDetachKeys($data['DetachKeys']);
             unset($data['DetachKeys']);
         } elseif (\array_key_exists('DetachKeys', $data) && null === $data['DetachKeys']) {
             $object->setDetachKeys(null);
+            unset($data['DetachKeys']);
         }
         if (\array_key_exists('ID', $data) && null !== $data['ID']) {
             $object->setID($data['ID']);
             unset($data['ID']);
         } elseif (\array_key_exists('ID', $data) && null === $data['ID']) {
             $object->setID(null);
+            unset($data['ID']);
         }
         if (\array_key_exists('Running', $data) && null !== $data['Running']) {
             $object->setRunning($data['Running']);
             unset($data['Running']);
         } elseif (\array_key_exists('Running', $data) && null === $data['Running']) {
             $object->setRunning(null);
+            unset($data['Running']);
         }
         if (\array_key_exists('ExitCode', $data) && null !== $data['ExitCode']) {
             $object->setExitCode($data['ExitCode']);
             unset($data['ExitCode']);
         } elseif (\array_key_exists('ExitCode', $data) && null === $data['ExitCode']) {
             $object->setExitCode(null);
+            unset($data['ExitCode']);
         }
         if (\array_key_exists('ProcessConfig', $data) && null !== $data['ProcessConfig']) {
             $object->setProcessConfig($this->denormalizer->denormalize($data['ProcessConfig'], \Docker\API\Model\ProcessConfig::class, 'json', $context));
             unset($data['ProcessConfig']);
         } elseif (\array_key_exists('ProcessConfig', $data) && null === $data['ProcessConfig']) {
             $object->setProcessConfig(null);
+            unset($data['ProcessConfig']);
         }
         if (\array_key_exists('OpenStdin', $data) && null !== $data['OpenStdin']) {
             $object->setOpenStdin($data['OpenStdin']);
             unset($data['OpenStdin']);
         } elseif (\array_key_exists('OpenStdin', $data) && null === $data['OpenStdin']) {
             $object->setOpenStdin(null);
+            unset($data['OpenStdin']);
         }
         if (\array_key_exists('OpenStderr', $data) && null !== $data['OpenStderr']) {
             $object->setOpenStderr($data['OpenStderr']);
             unset($data['OpenStderr']);
         } elseif (\array_key_exists('OpenStderr', $data) && null === $data['OpenStderr']) {
             $object->setOpenStderr(null);
+            unset($data['OpenStderr']);
         }
         if (\array_key_exists('OpenStdout', $data) && null !== $data['OpenStdout']) {
             $object->setOpenStdout($data['OpenStdout']);
             unset($data['OpenStdout']);
         } elseif (\array_key_exists('OpenStdout', $data) && null === $data['OpenStdout']) {
             $object->setOpenStdout(null);
+            unset($data['OpenStdout']);
         }
         if (\array_key_exists('ContainerID', $data) && null !== $data['ContainerID']) {
             $object->setContainerID($data['ContainerID']);
             unset($data['ContainerID']);
         } elseif (\array_key_exists('ContainerID', $data) && null === $data['ContainerID']) {
             $object->setContainerID(null);
+            unset($data['ContainerID']);
         }
         if (\array_key_exists('Pid', $data) && null !== $data['Pid']) {
             $object->setPid($data['Pid']);
             unset($data['Pid']);
         } elseif (\array_key_exists('Pid', $data) && null === $data['Pid']) {
             $object->setPid(null);
+            unset($data['Pid']);
         }
         foreach ($data as $key => $value) {
             if (preg_match('/.*/', (string) $key)) {
@@ -152,7 +163,7 @@ class ExecIdJsonGetResponse200Normalizer implements DenormalizerInterface, Norma
             $dataArray['ExitCode'] = $data->getExitCode();
         }
         if ($data->isInitialized('processConfig') && null !== $data->getProcessConfig()) {
-            $dataArray['ProcessConfig'] = $this->normalizer->normalize($data->getProcessConfig(), 'json', $context);
+            $dataArray['ProcessConfig'] = null === $data->getProcessConfig() ? null : new \Docker\API\Runtime\JsonObject($this->normalizer->normalize($data->getProcessConfig(), 'json', $context));
         }
         if ($data->isInitialized('openStdin') && null !== $data->getOpenStdin()) {
             $dataArray['OpenStdin'] = $data->getOpenStdin();
@@ -169,7 +180,7 @@ class ExecIdJsonGetResponse200Normalizer implements DenormalizerInterface, Norma
         if ($data->isInitialized('pid') && null !== $data->getPid()) {
             $dataArray['Pid'] = $data->getPid();
         }
-        foreach ($data as $key => $value) {
+        foreach ($data->additionalPropertyEntries() as $key => $value) {
             if (preg_match('/.*/', (string) $key)) {
                 $dataArray[$key] = $value;
             }

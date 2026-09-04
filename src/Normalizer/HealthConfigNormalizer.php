@@ -33,15 +33,15 @@ class HealthConfigNormalizer implements DenormalizerInterface, NormalizerInterfa
 
     public function denormalize(mixed $data, string $type, ?string $format = null, array $context = []): mixed
     {
-        if (isset($data['$ref'])) {
+        $object = new \Docker\API\Model\HealthConfig();
+        if (null === $data || false === \is_array($data)) {
+            return $object;
+        }
+        if (isset($data['$ref']) && !isset($data['type']) && !isset($data['properties']) && !isset($data['allOf'])) {
             return new Reference($data['$ref'], $context['document-origin']);
         }
         if (isset($data['$recursiveRef'])) {
             return new Reference($data['$recursiveRef'], $context['document-origin']);
-        }
-        $object = new \Docker\API\Model\HealthConfig();
-        if (null === $data || false === \is_array($data)) {
-            return $object;
         }
         if (\array_key_exists('Test', $data) && null !== $data['Test']) {
             $values = [];
@@ -52,36 +52,42 @@ class HealthConfigNormalizer implements DenormalizerInterface, NormalizerInterfa
             unset($data['Test']);
         } elseif (\array_key_exists('Test', $data) && null === $data['Test']) {
             $object->setTest(null);
+            unset($data['Test']);
         }
         if (\array_key_exists('Interval', $data) && null !== $data['Interval']) {
             $object->setInterval($data['Interval']);
             unset($data['Interval']);
         } elseif (\array_key_exists('Interval', $data) && null === $data['Interval']) {
             $object->setInterval(null);
+            unset($data['Interval']);
         }
         if (\array_key_exists('Timeout', $data) && null !== $data['Timeout']) {
             $object->setTimeout($data['Timeout']);
             unset($data['Timeout']);
         } elseif (\array_key_exists('Timeout', $data) && null === $data['Timeout']) {
             $object->setTimeout(null);
+            unset($data['Timeout']);
         }
         if (\array_key_exists('Retries', $data) && null !== $data['Retries']) {
             $object->setRetries($data['Retries']);
             unset($data['Retries']);
         } elseif (\array_key_exists('Retries', $data) && null === $data['Retries']) {
             $object->setRetries(null);
+            unset($data['Retries']);
         }
         if (\array_key_exists('StartPeriod', $data) && null !== $data['StartPeriod']) {
             $object->setStartPeriod($data['StartPeriod']);
             unset($data['StartPeriod']);
         } elseif (\array_key_exists('StartPeriod', $data) && null === $data['StartPeriod']) {
             $object->setStartPeriod(null);
+            unset($data['StartPeriod']);
         }
         if (\array_key_exists('StartInterval', $data) && null !== $data['StartInterval']) {
             $object->setStartInterval($data['StartInterval']);
             unset($data['StartInterval']);
         } elseif (\array_key_exists('StartInterval', $data) && null === $data['StartInterval']) {
             $object->setStartInterval(null);
+            unset($data['StartInterval']);
         }
         foreach ($data as $key => $value_1) {
             if (preg_match('/.*/', (string) $key)) {
@@ -117,7 +123,7 @@ class HealthConfigNormalizer implements DenormalizerInterface, NormalizerInterfa
         if ($data->isInitialized('startInterval') && null !== $data->getStartInterval()) {
             $dataArray['StartInterval'] = $data->getStartInterval();
         }
-        foreach ($data as $key => $value_1) {
+        foreach ($data->additionalPropertyEntries() as $key => $value_1) {
             if (preg_match('/.*/', (string) $key)) {
                 $dataArray[$key] = $value_1;
             }

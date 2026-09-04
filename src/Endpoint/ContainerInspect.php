@@ -12,11 +12,10 @@ class ContainerInspect extends \Docker\API\Runtime\Client\BaseEndpoint implement
     /**
      * Return low-level information about a container.
      *
-     * @param string $id              ID or name of the container
-     * @param array  $queryParameters {
-     *
-     * @var bool $size Return the size of container as fields `SizeRw` and `SizeRootFs`
-     *           }
+     * @param string $id ID or name of the container
+     * @param array{
+     *    "size"?: bool, //Return the size of container as fields `SizeRw` and `SizeRootFs`
+     * } $queryParameters
      */
     public function __construct(string $id, array $queryParameters = [])
     {
@@ -31,7 +30,7 @@ class ContainerInspect extends \Docker\API\Runtime\Client\BaseEndpoint implement
 
     public function getUri(): string
     {
-        return str_replace(['{id}'], [$this->id], '/containers/{id}/json');
+        return str_replace(['{id}'], [rawurlencode($this->id)], '/containers/{id}/json');
     }
 
     public function getBody(\Symfony\Component\Serializer\SerializerInterface $serializer, $streamFactory = null): array
@@ -65,13 +64,13 @@ class ContainerInspect extends \Docker\API\Runtime\Client\BaseEndpoint implement
     {
         $status = $response->getStatusCode();
         $body = (string) $response->getBody();
-        if ((null === $contentType) === false && (200 === $status && false !== mb_strpos($contentType, 'application/json'))) {
+        if ((null === $contentType) === false && (200 === $status && false !== stripos(strtolower($contentType), 'application/json'))) {
             return $serializer->deserialize($body, 'Docker\API\Model\ContainersIdJsonGetResponse200', 'json');
         }
-        if ((null === $contentType) === false && (404 === $status && false !== mb_strpos($contentType, 'application/json'))) {
+        if ((null === $contentType) === false && (404 === $status && false !== stripos(strtolower($contentType), 'application/json'))) {
             throw new \Docker\API\Exception\ContainerInspectNotFoundException($serializer->deserialize($body, 'Docker\API\Model\ErrorResponse', 'json'), $response);
         }
-        if ((null === $contentType) === false && (500 === $status && false !== mb_strpos($contentType, 'application/json'))) {
+        if ((null === $contentType) === false && (500 === $status && false !== stripos(strtolower($contentType), 'application/json'))) {
             throw new \Docker\API\Exception\ContainerInspectInternalServerErrorException($serializer->deserialize($body, 'Docker\API\Model\ErrorResponse', 'json'), $response);
         }
     }

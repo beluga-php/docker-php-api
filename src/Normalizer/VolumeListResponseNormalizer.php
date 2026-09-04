@@ -33,15 +33,15 @@ class VolumeListResponseNormalizer implements DenormalizerInterface, NormalizerI
 
     public function denormalize(mixed $data, string $type, ?string $format = null, array $context = []): mixed
     {
-        if (isset($data['$ref'])) {
+        $object = new \Docker\API\Model\VolumeListResponse();
+        if (null === $data || false === \is_array($data)) {
+            return $object;
+        }
+        if (isset($data['$ref']) && !isset($data['type']) && !isset($data['properties']) && !isset($data['allOf'])) {
             return new Reference($data['$ref'], $context['document-origin']);
         }
         if (isset($data['$recursiveRef'])) {
             return new Reference($data['$recursiveRef'], $context['document-origin']);
-        }
-        $object = new \Docker\API\Model\VolumeListResponse();
-        if (null === $data || false === \is_array($data)) {
-            return $object;
         }
         if (\array_key_exists('Volumes', $data) && null !== $data['Volumes']) {
             $values = [];
@@ -52,6 +52,7 @@ class VolumeListResponseNormalizer implements DenormalizerInterface, NormalizerI
             unset($data['Volumes']);
         } elseif (\array_key_exists('Volumes', $data) && null === $data['Volumes']) {
             $object->setVolumes(null);
+            unset($data['Volumes']);
         }
         if (\array_key_exists('Warnings', $data) && null !== $data['Warnings']) {
             $values_1 = [];
@@ -62,6 +63,7 @@ class VolumeListResponseNormalizer implements DenormalizerInterface, NormalizerI
             unset($data['Warnings']);
         } elseif (\array_key_exists('Warnings', $data) && null === $data['Warnings']) {
             $object->setWarnings(null);
+            unset($data['Warnings']);
         }
         foreach ($data as $key => $value_2) {
             if (preg_match('/.*/', (string) $key)) {
@@ -78,7 +80,7 @@ class VolumeListResponseNormalizer implements DenormalizerInterface, NormalizerI
         if ($data->isInitialized('volumes') && null !== $data->getVolumes()) {
             $values = [];
             foreach ($data->getVolumes() as $value) {
-                $values[] = $this->normalizer->normalize($value, 'json', $context);
+                $values[] = null === $value ? null : new \Docker\API\Runtime\JsonObject($this->normalizer->normalize($value, 'json', $context));
             }
             $dataArray['Volumes'] = $values;
         }
@@ -89,7 +91,7 @@ class VolumeListResponseNormalizer implements DenormalizerInterface, NormalizerI
             }
             $dataArray['Warnings'] = $values_1;
         }
-        foreach ($data as $key => $value_2) {
+        foreach ($data->additionalPropertyEntries() as $key => $value_2) {
             if (preg_match('/.*/', (string) $key)) {
                 $dataArray[$key] = $value_2;
             }

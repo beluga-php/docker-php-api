@@ -33,45 +33,50 @@ class NodeDescriptionNormalizer implements DenormalizerInterface, NormalizerInte
 
     public function denormalize(mixed $data, string $type, ?string $format = null, array $context = []): mixed
     {
-        if (isset($data['$ref'])) {
+        $object = new \Docker\API\Model\NodeDescription();
+        if (null === $data || false === \is_array($data)) {
+            return $object;
+        }
+        if (isset($data['$ref']) && !isset($data['type']) && !isset($data['properties']) && !isset($data['allOf'])) {
             return new Reference($data['$ref'], $context['document-origin']);
         }
         if (isset($data['$recursiveRef'])) {
             return new Reference($data['$recursiveRef'], $context['document-origin']);
-        }
-        $object = new \Docker\API\Model\NodeDescription();
-        if (null === $data || false === \is_array($data)) {
-            return $object;
         }
         if (\array_key_exists('Hostname', $data) && null !== $data['Hostname']) {
             $object->setHostname($data['Hostname']);
             unset($data['Hostname']);
         } elseif (\array_key_exists('Hostname', $data) && null === $data['Hostname']) {
             $object->setHostname(null);
+            unset($data['Hostname']);
         }
         if (\array_key_exists('Platform', $data) && null !== $data['Platform']) {
             $object->setPlatform($this->denormalizer->denormalize($data['Platform'], \Docker\API\Model\Platform::class, 'json', $context));
             unset($data['Platform']);
         } elseif (\array_key_exists('Platform', $data) && null === $data['Platform']) {
             $object->setPlatform(null);
+            unset($data['Platform']);
         }
         if (\array_key_exists('Resources', $data) && null !== $data['Resources']) {
             $object->setResources($this->denormalizer->denormalize($data['Resources'], \Docker\API\Model\ResourceObject::class, 'json', $context));
             unset($data['Resources']);
         } elseif (\array_key_exists('Resources', $data) && null === $data['Resources']) {
             $object->setResources(null);
+            unset($data['Resources']);
         }
         if (\array_key_exists('Engine', $data) && null !== $data['Engine']) {
             $object->setEngine($this->denormalizer->denormalize($data['Engine'], \Docker\API\Model\EngineDescription::class, 'json', $context));
             unset($data['Engine']);
         } elseif (\array_key_exists('Engine', $data) && null === $data['Engine']) {
             $object->setEngine(null);
+            unset($data['Engine']);
         }
         if (\array_key_exists('TLSInfo', $data) && null !== $data['TLSInfo']) {
             $object->setTLSInfo($this->denormalizer->denormalize($data['TLSInfo'], \Docker\API\Model\TLSInfo::class, 'json', $context));
             unset($data['TLSInfo']);
         } elseif (\array_key_exists('TLSInfo', $data) && null === $data['TLSInfo']) {
             $object->setTLSInfo(null);
+            unset($data['TLSInfo']);
         }
         foreach ($data as $key => $value) {
             if (preg_match('/.*/', (string) $key)) {
@@ -89,18 +94,18 @@ class NodeDescriptionNormalizer implements DenormalizerInterface, NormalizerInte
             $dataArray['Hostname'] = $data->getHostname();
         }
         if ($data->isInitialized('platform') && null !== $data->getPlatform()) {
-            $dataArray['Platform'] = $this->normalizer->normalize($data->getPlatform(), 'json', $context);
+            $dataArray['Platform'] = null === $data->getPlatform() ? null : new \Docker\API\Runtime\JsonObject($this->normalizer->normalize($data->getPlatform(), 'json', $context));
         }
         if ($data->isInitialized('resources') && null !== $data->getResources()) {
-            $dataArray['Resources'] = $this->normalizer->normalize($data->getResources(), 'json', $context);
+            $dataArray['Resources'] = null === $data->getResources() ? null : new \Docker\API\Runtime\JsonObject($this->normalizer->normalize($data->getResources(), 'json', $context));
         }
         if ($data->isInitialized('engine') && null !== $data->getEngine()) {
-            $dataArray['Engine'] = $this->normalizer->normalize($data->getEngine(), 'json', $context);
+            $dataArray['Engine'] = null === $data->getEngine() ? null : new \Docker\API\Runtime\JsonObject($this->normalizer->normalize($data->getEngine(), 'json', $context));
         }
         if ($data->isInitialized('tLSInfo') && null !== $data->getTLSInfo()) {
-            $dataArray['TLSInfo'] = $this->normalizer->normalize($data->getTLSInfo(), 'json', $context);
+            $dataArray['TLSInfo'] = null === $data->getTLSInfo() ? null : new \Docker\API\Runtime\JsonObject($this->normalizer->normalize($data->getTLSInfo(), 'json', $context));
         }
-        foreach ($data as $key => $value) {
+        foreach ($data->additionalPropertyEntries() as $key => $value) {
             if (preg_match('/.*/', (string) $key)) {
                 $dataArray[$key] = $value;
             }

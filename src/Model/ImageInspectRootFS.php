@@ -4,8 +4,12 @@ declare(strict_types=1);
 
 namespace Docker\API\Model;
 
-class ImageInspectRootFS extends \ArrayObject
+use Docker\API\Runtime\AdditionalAndPatternProperties;
+use Docker\API\Runtime\AdditionalPropertiesInterface;
+
+class ImageInspectRootFS implements AdditionalPropertiesInterface
 {
+    use AdditionalAndPatternProperties;
     /**
      * @var array
      */
@@ -54,5 +58,10 @@ class ImageInspectRootFS extends \ArrayObject
         $this->layers = $layers;
 
         return $this;
+    }
+
+    public function definedProperties(): array
+    {
+        return ['type' => ['Type', 'getType', 'setType'], 'layers' => ['Layers', 'getLayers', 'setLayers']];
     }
 }

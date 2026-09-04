@@ -33,21 +33,22 @@ class IPAMNormalizer implements DenormalizerInterface, NormalizerInterface, Deno
 
     public function denormalize(mixed $data, string $type, ?string $format = null, array $context = []): mixed
     {
-        if (isset($data['$ref'])) {
+        $object = new \Docker\API\Model\IPAM();
+        if (null === $data || false === \is_array($data)) {
+            return $object;
+        }
+        if (isset($data['$ref']) && !isset($data['type']) && !isset($data['properties']) && !isset($data['allOf'])) {
             return new Reference($data['$ref'], $context['document-origin']);
         }
         if (isset($data['$recursiveRef'])) {
             return new Reference($data['$recursiveRef'], $context['document-origin']);
-        }
-        $object = new \Docker\API\Model\IPAM();
-        if (null === $data || false === \is_array($data)) {
-            return $object;
         }
         if (\array_key_exists('Driver', $data) && null !== $data['Driver']) {
             $object->setDriver($data['Driver']);
             unset($data['Driver']);
         } elseif (\array_key_exists('Driver', $data) && null === $data['Driver']) {
             $object->setDriver(null);
+            unset($data['Driver']);
         }
         if (\array_key_exists('Config', $data) && null !== $data['Config']) {
             $values = [];
@@ -58,9 +59,10 @@ class IPAMNormalizer implements DenormalizerInterface, NormalizerInterface, Deno
             unset($data['Config']);
         } elseif (\array_key_exists('Config', $data) && null === $data['Config']) {
             $object->setConfig(null);
+            unset($data['Config']);
         }
         if (\array_key_exists('Options', $data) && null !== $data['Options']) {
-            $values_1 = new \ArrayObject([], \ArrayObject::ARRAY_AS_PROPS);
+            $values_1 = new \Docker\API\Runtime\JsonObject();
             foreach ($data['Options'] as $key => $value_1) {
                 $values_1[$key] = $value_1;
             }
@@ -68,6 +70,7 @@ class IPAMNormalizer implements DenormalizerInterface, NormalizerInterface, Deno
             unset($data['Options']);
         } elseif (\array_key_exists('Options', $data) && null === $data['Options']) {
             $object->setOptions(null);
+            unset($data['Options']);
         }
         foreach ($data as $key_1 => $value_2) {
             if (preg_match('/.*/', (string) $key_1)) {
@@ -87,18 +90,18 @@ class IPAMNormalizer implements DenormalizerInterface, NormalizerInterface, Deno
         if ($data->isInitialized('config') && null !== $data->getConfig()) {
             $values = [];
             foreach ($data->getConfig() as $value) {
-                $values[] = $this->normalizer->normalize($value, 'json', $context);
+                $values[] = null === $value ? null : new \Docker\API\Runtime\JsonObject($this->normalizer->normalize($value, 'json', $context));
             }
             $dataArray['Config'] = $values;
         }
         if ($data->isInitialized('options') && null !== $data->getOptions()) {
-            $values_1 = [];
+            $values_1 = new \Docker\API\Runtime\JsonObject();
             foreach ($data->getOptions() as $key => $value_1) {
                 $values_1[$key] = $value_1;
             }
             $dataArray['Options'] = $values_1;
         }
-        foreach ($data as $key_1 => $value_2) {
+        foreach ($data->additionalPropertyEntries() as $key_1 => $value_2) {
             if (preg_match('/.*/', (string) $key_1)) {
                 $dataArray[$key_1] = $value_2;
             }

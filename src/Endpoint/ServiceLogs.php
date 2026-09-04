@@ -14,23 +14,20 @@ class ServiceLogs extends \Docker\API\Runtime\Client\BaseEndpoint implements \Do
      * Get `stdout` and `stderr` logs from a service. See also
      * [`/containers/{id}/logs`](#operation/ContainerLogs).
      *
-     **Note**: This endpoint works only for services with the `local`,
+     * **Note**: This endpoint works only for services with the `local`,
      * `json-file` or `journald` logging drivers.
      *
-     * @param string $id              ID or name of the service
-     * @param array  $queryParameters {
-     *
-     * @var bool   $details show service context and extra details provided to logs
-     * @var bool   $follow keep connection after returning logs
-     * @var bool   $stdout Return logs from `stdout`
-     * @var bool   $stderr Return logs from `stderr`
-     * @var int    $since Only return logs since this time, as a UNIX timestamp
-     * @var bool   $timestamps Add timestamps to every log line
-     * @var string $tail Only return this number of log lines from the end of the logs.
-     *             Specify as an integer or `all` to output all log lines.
-     *
-     * }
-     *
+     * @param string $id ID or name of the service
+     * @param array{
+     *    "details"?: bool, //Show service context and extra details provided to logs.
+     *    "follow"?: bool, //Keep connection after returning logs.
+     *    "stdout"?: bool, //Return logs from `stdout`
+     *    "stderr"?: bool, //Return logs from `stderr`
+     *    "since"?: int, //Only return logs since this time, as a UNIX timestamp
+     *    "timestamps"?: bool, //Add timestamps to every log line
+     *    "tail"?: string, //Only return this number of log lines from the end of the logs.
+     * Specify as an integer or `all` to output all log lines.
+     * } $queryParameters
      * @param array $accept Accept content header application/vnd.docker.raw-stream|application/vnd.docker.multiplexed-stream|application/json
      */
     public function __construct(string $id, array $queryParameters = [], array $accept = [])
@@ -47,7 +44,7 @@ class ServiceLogs extends \Docker\API\Runtime\Client\BaseEndpoint implements \Do
 
     public function getUri(): string
     {
-        return str_replace(['{id}'], [$this->id], '/services/{id}/logs');
+        return str_replace(['{id}'], [rawurlencode($this->id)], '/services/{id}/logs');
     }
 
     public function getBody(\Symfony\Component\Serializer\SerializerInterface $serializer, $streamFactory = null): array
@@ -92,7 +89,7 @@ class ServiceLogs extends \Docker\API\Runtime\Client\BaseEndpoint implements \Do
         $body = (string) $response->getBody();
         if (200 === $status) {
         }
-        if ((null === $contentType) === false && (404 === $status && false !== mb_strpos($contentType, 'application/json'))) {
+        if ((null === $contentType) === false && (404 === $status && false !== stripos(strtolower($contentType), 'application/json'))) {
             throw new \Docker\API\Exception\ServiceLogsNotFoundException($response);
         }
         if (500 === $status) {

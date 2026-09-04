@@ -33,24 +33,25 @@ class EventActorNormalizer implements DenormalizerInterface, NormalizerInterface
 
     public function denormalize(mixed $data, string $type, ?string $format = null, array $context = []): mixed
     {
-        if (isset($data['$ref'])) {
+        $object = new \Docker\API\Model\EventActor();
+        if (null === $data || false === \is_array($data)) {
+            return $object;
+        }
+        if (isset($data['$ref']) && !isset($data['type']) && !isset($data['properties']) && !isset($data['allOf'])) {
             return new Reference($data['$ref'], $context['document-origin']);
         }
         if (isset($data['$recursiveRef'])) {
             return new Reference($data['$recursiveRef'], $context['document-origin']);
-        }
-        $object = new \Docker\API\Model\EventActor();
-        if (null === $data || false === \is_array($data)) {
-            return $object;
         }
         if (\array_key_exists('ID', $data) && null !== $data['ID']) {
             $object->setID($data['ID']);
             unset($data['ID']);
         } elseif (\array_key_exists('ID', $data) && null === $data['ID']) {
             $object->setID(null);
+            unset($data['ID']);
         }
         if (\array_key_exists('Attributes', $data) && null !== $data['Attributes']) {
-            $values = new \ArrayObject([], \ArrayObject::ARRAY_AS_PROPS);
+            $values = new \Docker\API\Runtime\JsonObject();
             foreach ($data['Attributes'] as $key => $value) {
                 $values[$key] = $value;
             }
@@ -58,6 +59,7 @@ class EventActorNormalizer implements DenormalizerInterface, NormalizerInterface
             unset($data['Attributes']);
         } elseif (\array_key_exists('Attributes', $data) && null === $data['Attributes']) {
             $object->setAttributes(null);
+            unset($data['Attributes']);
         }
         foreach ($data as $key_1 => $value_1) {
             if (preg_match('/.*/', (string) $key_1)) {
@@ -75,13 +77,13 @@ class EventActorNormalizer implements DenormalizerInterface, NormalizerInterface
             $dataArray['ID'] = $data->getID();
         }
         if ($data->isInitialized('attributes') && null !== $data->getAttributes()) {
-            $values = [];
+            $values = new \Docker\API\Runtime\JsonObject();
             foreach ($data->getAttributes() as $key => $value) {
                 $values[$key] = $value;
             }
             $dataArray['Attributes'] = $values;
         }
-        foreach ($data as $key_1 => $value_1) {
+        foreach ($data->additionalPropertyEntries() as $key_1 => $value_1) {
             if (preg_match('/.*/', (string) $key_1)) {
                 $dataArray[$key_1] = $value_1;
             }

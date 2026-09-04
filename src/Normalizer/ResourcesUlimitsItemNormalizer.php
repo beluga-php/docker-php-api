@@ -33,33 +33,36 @@ class ResourcesUlimitsItemNormalizer implements DenormalizerInterface, Normalize
 
     public function denormalize(mixed $data, string $type, ?string $format = null, array $context = []): mixed
     {
-        if (isset($data['$ref'])) {
+        $object = new \Docker\API\Model\ResourcesUlimitsItem();
+        if (null === $data || false === \is_array($data)) {
+            return $object;
+        }
+        if (isset($data['$ref']) && !isset($data['type']) && !isset($data['properties']) && !isset($data['allOf'])) {
             return new Reference($data['$ref'], $context['document-origin']);
         }
         if (isset($data['$recursiveRef'])) {
             return new Reference($data['$recursiveRef'], $context['document-origin']);
-        }
-        $object = new \Docker\API\Model\ResourcesUlimitsItem();
-        if (null === $data || false === \is_array($data)) {
-            return $object;
         }
         if (\array_key_exists('Name', $data) && null !== $data['Name']) {
             $object->setName($data['Name']);
             unset($data['Name']);
         } elseif (\array_key_exists('Name', $data) && null === $data['Name']) {
             $object->setName(null);
+            unset($data['Name']);
         }
         if (\array_key_exists('Soft', $data) && null !== $data['Soft']) {
             $object->setSoft($data['Soft']);
             unset($data['Soft']);
         } elseif (\array_key_exists('Soft', $data) && null === $data['Soft']) {
             $object->setSoft(null);
+            unset($data['Soft']);
         }
         if (\array_key_exists('Hard', $data) && null !== $data['Hard']) {
             $object->setHard($data['Hard']);
             unset($data['Hard']);
         } elseif (\array_key_exists('Hard', $data) && null === $data['Hard']) {
             $object->setHard(null);
+            unset($data['Hard']);
         }
         foreach ($data as $key => $value) {
             if (preg_match('/.*/', (string) $key)) {
@@ -82,7 +85,7 @@ class ResourcesUlimitsItemNormalizer implements DenormalizerInterface, Normalize
         if ($data->isInitialized('hard') && null !== $data->getHard()) {
             $dataArray['Hard'] = $data->getHard();
         }
-        foreach ($data as $key => $value) {
+        foreach ($data->additionalPropertyEntries() as $key => $value) {
             if (preg_match('/.*/', (string) $key)) {
                 $dataArray[$key] = $value;
             }

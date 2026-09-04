@@ -33,18 +33,18 @@ class PluginConfigLinuxNormalizer implements DenormalizerInterface, NormalizerIn
 
     public function denormalize(mixed $data, string $type, ?string $format = null, array $context = []): mixed
     {
-        if (isset($data['$ref'])) {
+        $object = new \Docker\API\Model\PluginConfigLinux();
+        if (null === $data || false === \is_array($data)) {
+            return $object;
+        }
+        if (isset($data['$ref']) && !isset($data['type']) && !isset($data['properties']) && !isset($data['allOf'])) {
             return new Reference($data['$ref'], $context['document-origin']);
         }
         if (isset($data['$recursiveRef'])) {
             return new Reference($data['$recursiveRef'], $context['document-origin']);
         }
-        $object = new \Docker\API\Model\PluginConfigLinux();
         if (\array_key_exists('AllowAllDevices', $data) && \is_int($data['AllowAllDevices'])) {
             $data['AllowAllDevices'] = (bool) $data['AllowAllDevices'];
-        }
-        if (null === $data || false === \is_array($data)) {
-            return $object;
         }
         if (\array_key_exists('Capabilities', $data) && null !== $data['Capabilities']) {
             $values = [];
@@ -55,12 +55,14 @@ class PluginConfigLinuxNormalizer implements DenormalizerInterface, NormalizerIn
             unset($data['Capabilities']);
         } elseif (\array_key_exists('Capabilities', $data) && null === $data['Capabilities']) {
             $object->setCapabilities(null);
+            unset($data['Capabilities']);
         }
         if (\array_key_exists('AllowAllDevices', $data) && null !== $data['AllowAllDevices']) {
             $object->setAllowAllDevices($data['AllowAllDevices']);
             unset($data['AllowAllDevices']);
         } elseif (\array_key_exists('AllowAllDevices', $data) && null === $data['AllowAllDevices']) {
             $object->setAllowAllDevices(null);
+            unset($data['AllowAllDevices']);
         }
         if (\array_key_exists('Devices', $data) && null !== $data['Devices']) {
             $values_1 = [];
@@ -71,6 +73,7 @@ class PluginConfigLinuxNormalizer implements DenormalizerInterface, NormalizerIn
             unset($data['Devices']);
         } elseif (\array_key_exists('Devices', $data) && null === $data['Devices']) {
             $object->setDevices(null);
+            unset($data['Devices']);
         }
         foreach ($data as $key => $value_2) {
             if (preg_match('/.*/', (string) $key)) {
@@ -92,10 +95,10 @@ class PluginConfigLinuxNormalizer implements DenormalizerInterface, NormalizerIn
         $dataArray['AllowAllDevices'] = $data->getAllowAllDevices();
         $values_1 = [];
         foreach ($data->getDevices() as $value_1) {
-            $values_1[] = $this->normalizer->normalize($value_1, 'json', $context);
+            $values_1[] = null === $value_1 ? null : new \Docker\API\Runtime\JsonObject($this->normalizer->normalize($value_1, 'json', $context));
         }
         $dataArray['Devices'] = $values_1;
-        foreach ($data as $key => $value_2) {
+        foreach ($data->additionalPropertyEntries() as $key => $value_2) {
             if (preg_match('/.*/', (string) $key)) {
                 $dataArray[$key] = $value_2;
             }

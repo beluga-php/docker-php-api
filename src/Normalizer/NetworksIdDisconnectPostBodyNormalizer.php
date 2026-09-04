@@ -33,30 +33,32 @@ class NetworksIdDisconnectPostBodyNormalizer implements DenormalizerInterface, N
 
     public function denormalize(mixed $data, string $type, ?string $format = null, array $context = []): mixed
     {
-        if (isset($data['$ref'])) {
+        $object = new \Docker\API\Model\NetworksIdDisconnectPostBody();
+        if (null === $data || false === \is_array($data)) {
+            return $object;
+        }
+        if (isset($data['$ref']) && !isset($data['type']) && !isset($data['properties']) && !isset($data['allOf'])) {
             return new Reference($data['$ref'], $context['document-origin']);
         }
         if (isset($data['$recursiveRef'])) {
             return new Reference($data['$recursiveRef'], $context['document-origin']);
         }
-        $object = new \Docker\API\Model\NetworksIdDisconnectPostBody();
         if (\array_key_exists('Force', $data) && \is_int($data['Force'])) {
             $data['Force'] = (bool) $data['Force'];
-        }
-        if (null === $data || false === \is_array($data)) {
-            return $object;
         }
         if (\array_key_exists('Container', $data) && null !== $data['Container']) {
             $object->setContainer($data['Container']);
             unset($data['Container']);
         } elseif (\array_key_exists('Container', $data) && null === $data['Container']) {
             $object->setContainer(null);
+            unset($data['Container']);
         }
         if (\array_key_exists('Force', $data) && null !== $data['Force']) {
             $object->setForce($data['Force']);
             unset($data['Force']);
         } elseif (\array_key_exists('Force', $data) && null === $data['Force']) {
             $object->setForce(null);
+            unset($data['Force']);
         }
         foreach ($data as $key => $value) {
             if (preg_match('/.*/', (string) $key)) {
@@ -76,7 +78,7 @@ class NetworksIdDisconnectPostBodyNormalizer implements DenormalizerInterface, N
         if ($data->isInitialized('force') && null !== $data->getForce()) {
             $dataArray['Force'] = $data->getForce();
         }
-        foreach ($data as $key => $value) {
+        foreach ($data->additionalPropertyEntries() as $key => $value) {
             if (preg_match('/.*/', (string) $key)) {
                 $dataArray[$key] = $value;
             }

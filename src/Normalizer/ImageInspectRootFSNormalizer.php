@@ -33,21 +33,22 @@ class ImageInspectRootFSNormalizer implements DenormalizerInterface, NormalizerI
 
     public function denormalize(mixed $data, string $type, ?string $format = null, array $context = []): mixed
     {
-        if (isset($data['$ref'])) {
+        $object = new \Docker\API\Model\ImageInspectRootFS();
+        if (null === $data || false === \is_array($data)) {
+            return $object;
+        }
+        if (isset($data['$ref']) && !isset($data['type']) && !isset($data['properties']) && !isset($data['allOf'])) {
             return new Reference($data['$ref'], $context['document-origin']);
         }
         if (isset($data['$recursiveRef'])) {
             return new Reference($data['$recursiveRef'], $context['document-origin']);
-        }
-        $object = new \Docker\API\Model\ImageInspectRootFS();
-        if (null === $data || false === \is_array($data)) {
-            return $object;
         }
         if (\array_key_exists('Type', $data) && null !== $data['Type']) {
             $object->setType($data['Type']);
             unset($data['Type']);
         } elseif (\array_key_exists('Type', $data) && null === $data['Type']) {
             $object->setType(null);
+            unset($data['Type']);
         }
         if (\array_key_exists('Layers', $data) && null !== $data['Layers']) {
             $values = [];
@@ -58,6 +59,7 @@ class ImageInspectRootFSNormalizer implements DenormalizerInterface, NormalizerI
             unset($data['Layers']);
         } elseif (\array_key_exists('Layers', $data) && null === $data['Layers']) {
             $object->setLayers(null);
+            unset($data['Layers']);
         }
         foreach ($data as $key => $value_1) {
             if (preg_match('/.*/', (string) $key)) {
@@ -79,7 +81,7 @@ class ImageInspectRootFSNormalizer implements DenormalizerInterface, NormalizerI
             }
             $dataArray['Layers'] = $values;
         }
-        foreach ($data as $key => $value_1) {
+        foreach ($data->additionalPropertyEntries() as $key => $value_1) {
             if (preg_match('/.*/', (string) $key)) {
                 $dataArray[$key] = $value_1;
             }

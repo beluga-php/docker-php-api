@@ -4,8 +4,12 @@ declare(strict_types=1);
 
 namespace Docker\API\Model;
 
-class PluginConfigInterface extends \ArrayObject
+use Docker\API\Runtime\AdditionalAndPatternProperties;
+use Docker\API\Runtime\AdditionalPropertiesInterface;
+
+class PluginConfigInterface implements AdditionalPropertiesInterface
 {
+    use AdditionalAndPatternProperties;
     /**
      * @var array
      */
@@ -79,5 +83,10 @@ class PluginConfigInterface extends \ArrayObject
         $this->protocolScheme = $protocolScheme;
 
         return $this;
+    }
+
+    public function definedProperties(): array
+    {
+        return ['types' => ['Types', 'getTypes', 'setTypes'], 'socket' => ['Socket', 'getSocket', 'setSocket'], 'protocolScheme' => ['ProtocolScheme', 'getProtocolScheme', 'setProtocolScheme']];
     }
 }

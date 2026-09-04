@@ -33,27 +33,29 @@ class EngineDescriptionPluginsItemNormalizer implements DenormalizerInterface, N
 
     public function denormalize(mixed $data, string $type, ?string $format = null, array $context = []): mixed
     {
-        if (isset($data['$ref'])) {
+        $object = new \Docker\API\Model\EngineDescriptionPluginsItem();
+        if (null === $data || false === \is_array($data)) {
+            return $object;
+        }
+        if (isset($data['$ref']) && !isset($data['type']) && !isset($data['properties']) && !isset($data['allOf'])) {
             return new Reference($data['$ref'], $context['document-origin']);
         }
         if (isset($data['$recursiveRef'])) {
             return new Reference($data['$recursiveRef'], $context['document-origin']);
-        }
-        $object = new \Docker\API\Model\EngineDescriptionPluginsItem();
-        if (null === $data || false === \is_array($data)) {
-            return $object;
         }
         if (\array_key_exists('Type', $data) && null !== $data['Type']) {
             $object->setType($data['Type']);
             unset($data['Type']);
         } elseif (\array_key_exists('Type', $data) && null === $data['Type']) {
             $object->setType(null);
+            unset($data['Type']);
         }
         if (\array_key_exists('Name', $data) && null !== $data['Name']) {
             $object->setName($data['Name']);
             unset($data['Name']);
         } elseif (\array_key_exists('Name', $data) && null === $data['Name']) {
             $object->setName(null);
+            unset($data['Name']);
         }
         foreach ($data as $key => $value) {
             if (preg_match('/.*/', (string) $key)) {
@@ -73,7 +75,7 @@ class EngineDescriptionPluginsItemNormalizer implements DenormalizerInterface, N
         if ($data->isInitialized('name') && null !== $data->getName()) {
             $dataArray['Name'] = $data->getName();
         }
-        foreach ($data as $key => $value) {
+        foreach ($data->additionalPropertyEntries() as $key => $value) {
             if (preg_match('/.*/', (string) $key)) {
                 $dataArray[$key] = $value;
             }

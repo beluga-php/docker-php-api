@@ -33,27 +33,29 @@ class ImageSummaryNormalizer implements DenormalizerInterface, NormalizerInterfa
 
     public function denormalize(mixed $data, string $type, ?string $format = null, array $context = []): mixed
     {
-        if (isset($data['$ref'])) {
+        $object = new \Docker\API\Model\ImageSummary();
+        if (null === $data || false === \is_array($data)) {
+            return $object;
+        }
+        if (isset($data['$ref']) && !isset($data['type']) && !isset($data['properties']) && !isset($data['allOf'])) {
             return new Reference($data['$ref'], $context['document-origin']);
         }
         if (isset($data['$recursiveRef'])) {
             return new Reference($data['$recursiveRef'], $context['document-origin']);
-        }
-        $object = new \Docker\API\Model\ImageSummary();
-        if (null === $data || false === \is_array($data)) {
-            return $object;
         }
         if (\array_key_exists('Id', $data) && null !== $data['Id']) {
             $object->setId($data['Id']);
             unset($data['Id']);
         } elseif (\array_key_exists('Id', $data) && null === $data['Id']) {
             $object->setId(null);
+            unset($data['Id']);
         }
         if (\array_key_exists('ParentId', $data) && null !== $data['ParentId']) {
             $object->setParentId($data['ParentId']);
             unset($data['ParentId']);
         } elseif (\array_key_exists('ParentId', $data) && null === $data['ParentId']) {
             $object->setParentId(null);
+            unset($data['ParentId']);
         }
         if (\array_key_exists('RepoTags', $data) && null !== $data['RepoTags']) {
             $values = [];
@@ -64,6 +66,7 @@ class ImageSummaryNormalizer implements DenormalizerInterface, NormalizerInterfa
             unset($data['RepoTags']);
         } elseif (\array_key_exists('RepoTags', $data) && null === $data['RepoTags']) {
             $object->setRepoTags(null);
+            unset($data['RepoTags']);
         }
         if (\array_key_exists('RepoDigests', $data) && null !== $data['RepoDigests']) {
             $values_1 = [];
@@ -74,33 +77,31 @@ class ImageSummaryNormalizer implements DenormalizerInterface, NormalizerInterfa
             unset($data['RepoDigests']);
         } elseif (\array_key_exists('RepoDigests', $data) && null === $data['RepoDigests']) {
             $object->setRepoDigests(null);
+            unset($data['RepoDigests']);
         }
         if (\array_key_exists('Created', $data) && null !== $data['Created']) {
             $object->setCreated($data['Created']);
             unset($data['Created']);
         } elseif (\array_key_exists('Created', $data) && null === $data['Created']) {
             $object->setCreated(null);
+            unset($data['Created']);
         }
         if (\array_key_exists('Size', $data) && null !== $data['Size']) {
             $object->setSize($data['Size']);
             unset($data['Size']);
         } elseif (\array_key_exists('Size', $data) && null === $data['Size']) {
             $object->setSize(null);
+            unset($data['Size']);
         }
         if (\array_key_exists('SharedSize', $data) && null !== $data['SharedSize']) {
             $object->setSharedSize($data['SharedSize']);
             unset($data['SharedSize']);
         } elseif (\array_key_exists('SharedSize', $data) && null === $data['SharedSize']) {
             $object->setSharedSize(null);
-        }
-        if (\array_key_exists('VirtualSize', $data) && null !== $data['VirtualSize']) {
-            $object->setVirtualSize($data['VirtualSize']);
-            unset($data['VirtualSize']);
-        } elseif (\array_key_exists('VirtualSize', $data) && null === $data['VirtualSize']) {
-            $object->setVirtualSize(null);
+            unset($data['SharedSize']);
         }
         if (\array_key_exists('Labels', $data) && null !== $data['Labels']) {
-            $values_2 = new \ArrayObject([], \ArrayObject::ARRAY_AS_PROPS);
+            $values_2 = new \Docker\API\Runtime\JsonObject();
             foreach ($data['Labels'] as $key => $value_2) {
                 $values_2[$key] = $value_2;
             }
@@ -108,12 +109,14 @@ class ImageSummaryNormalizer implements DenormalizerInterface, NormalizerInterfa
             unset($data['Labels']);
         } elseif (\array_key_exists('Labels', $data) && null === $data['Labels']) {
             $object->setLabels(null);
+            unset($data['Labels']);
         }
         if (\array_key_exists('Containers', $data) && null !== $data['Containers']) {
             $object->setContainers($data['Containers']);
             unset($data['Containers']);
         } elseif (\array_key_exists('Containers', $data) && null === $data['Containers']) {
             $object->setContainers(null);
+            unset($data['Containers']);
         }
         foreach ($data as $key_1 => $value_3) {
             if (preg_match('/.*/', (string) $key_1)) {
@@ -142,16 +145,13 @@ class ImageSummaryNormalizer implements DenormalizerInterface, NormalizerInterfa
         $dataArray['Created'] = $data->getCreated();
         $dataArray['Size'] = $data->getSize();
         $dataArray['SharedSize'] = $data->getSharedSize();
-        if ($data->isInitialized('virtualSize') && null !== $data->getVirtualSize()) {
-            $dataArray['VirtualSize'] = $data->getVirtualSize();
-        }
-        $values_2 = [];
+        $values_2 = new \Docker\API\Runtime\JsonObject();
         foreach ($data->getLabels() as $key => $value_2) {
             $values_2[$key] = $value_2;
         }
         $dataArray['Labels'] = $values_2;
         $dataArray['Containers'] = $data->getContainers();
-        foreach ($data as $key_1 => $value_3) {
+        foreach ($data->additionalPropertyEntries() as $key_1 => $value_3) {
             if (preg_match('/.*/', (string) $key_1)) {
                 $dataArray[$key_1] = $value_3;
             }

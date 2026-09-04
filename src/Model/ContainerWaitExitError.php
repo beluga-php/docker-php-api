@@ -4,8 +4,12 @@ declare(strict_types=1);
 
 namespace Docker\API\Model;
 
-class ContainerWaitExitError extends \ArrayObject
+use Docker\API\Runtime\AdditionalAndPatternProperties;
+use Docker\API\Runtime\AdditionalPropertiesInterface;
+
+class ContainerWaitExitError implements AdditionalPropertiesInterface
 {
+    use AdditionalAndPatternProperties;
     /**
      * @var array
      */
@@ -39,5 +43,10 @@ class ContainerWaitExitError extends \ArrayObject
         $this->message = $message;
 
         return $this;
+    }
+
+    public function definedProperties(): array
+    {
+        return ['message' => ['Message', 'getMessage', 'setMessage']];
     }
 }

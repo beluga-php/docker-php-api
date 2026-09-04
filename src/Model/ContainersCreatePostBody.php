@@ -4,8 +4,12 @@ declare(strict_types=1);
 
 namespace Docker\API\Model;
 
-class ContainersCreatePostBody extends \ArrayObject
+use Docker\API\Runtime\AdditionalAndPatternProperties;
+use Docker\API\Runtime\AdditionalPropertiesInterface;
+
+class ContainersCreatePostBody implements AdditionalPropertiesInterface
 {
+    use AdditionalAndPatternProperties;
     /**
      * @var array
      */
@@ -56,7 +60,7 @@ class ContainersCreatePostBody extends \ArrayObject
      *
      * `{"<port>/<tcp|udp|sctp>": {}}`
      *
-     * @var array<string, ContainerConfigExposedPortsItem>|null
+     * @var array<string, array<string, mixed>>|null
      */
     protected $exposedPorts;
     /**
@@ -93,6 +97,7 @@ class ContainersCreatePostBody extends \ArrayObject
     protected $cmd;
     /**
      * A test to perform to check that the container is healthy.
+     * Healthcheck commands should be side-effect free.
      *
      * @var HealthConfig|null
      */
@@ -114,7 +119,7 @@ class ContainersCreatePostBody extends \ArrayObject
      * An object mapping mount point paths inside the container to empty
      * objects.
      *
-     * @var array<string, ContainerConfigVolumesItem>|null
+     * @var array<string, array<string, mixed>>|null
      */
     protected $volumes;
     /**
@@ -166,7 +171,8 @@ class ContainersCreatePostBody extends \ArrayObject
      */
     protected $stopSignal;
     /**
-     * Timeout to stop a container in seconds.
+     * Timeout to stop a container in seconds. If omitted, the daemon-wide
+     * default is used.
      *
      * @var int|null
      */
@@ -312,7 +318,7 @@ class ContainersCreatePostBody extends \ArrayObject
      *
      * `{"<port>/<tcp|udp|sctp>": {}}`
      *
-     * @return array<string, ContainerConfigExposedPortsItem>|null
+     * @return array<string, array<string, mixed>>|null
      */
     public function getExposedPorts(): ?iterable
     {
@@ -324,7 +330,7 @@ class ContainersCreatePostBody extends \ArrayObject
      *
      * `{"<port>/<tcp|udp|sctp>": {}}`
      *
-     * @param array<string, ContainerConfigExposedPortsItem>|null $exposedPorts
+     * @param array<string, array<string, mixed>>|null $exposedPorts
      */
     public function setExposedPorts(?iterable $exposedPorts): self
     {
@@ -443,6 +449,7 @@ class ContainersCreatePostBody extends \ArrayObject
 
     /**
      * A test to perform to check that the container is healthy.
+     * Healthcheck commands should be side-effect free.
      */
     public function getHealthcheck(): ?HealthConfig
     {
@@ -451,6 +458,7 @@ class ContainersCreatePostBody extends \ArrayObject
 
     /**
      * A test to perform to check that the container is healthy.
+     * Healthcheck commands should be side-effect free.
      */
     public function setHealthcheck(?HealthConfig $healthcheck): self
     {
@@ -504,7 +512,7 @@ class ContainersCreatePostBody extends \ArrayObject
      * An object mapping mount point paths inside the container to empty
      * objects.
      *
-     * @return array<string, ContainerConfigVolumesItem>|null
+     * @return array<string, array<string, mixed>>|null
      */
     public function getVolumes(): ?iterable
     {
@@ -515,7 +523,7 @@ class ContainersCreatePostBody extends \ArrayObject
      * An object mapping mount point paths inside the container to empty
      * objects.
      *
-     * @param array<string, ContainerConfigVolumesItem>|null $volumes
+     * @param array<string, array<string, mixed>>|null $volumes
      */
     public function setVolumes(?iterable $volumes): self
     {
@@ -683,7 +691,8 @@ class ContainersCreatePostBody extends \ArrayObject
     }
 
     /**
-     * Timeout to stop a container in seconds.
+     * Timeout to stop a container in seconds. If omitted, the daemon-wide
+     * default is used.
      */
     public function getStopTimeout(): ?int
     {
@@ -691,7 +700,8 @@ class ContainersCreatePostBody extends \ArrayObject
     }
 
     /**
-     * Timeout to stop a container in seconds.
+     * Timeout to stop a container in seconds. If omitted, the daemon-wide
+     * default is used.
      */
     public function setStopTimeout(?int $stopTimeout): self
     {
@@ -766,5 +776,10 @@ class ContainersCreatePostBody extends \ArrayObject
         $this->networkingConfig = $networkingConfig;
 
         return $this;
+    }
+
+    public function definedProperties(): array
+    {
+        return ['hostname' => ['Hostname', 'getHostname', 'setHostname'], 'domainname' => ['Domainname', 'getDomainname', 'setDomainname'], 'user' => ['User', 'getUser', 'setUser'], 'attachStdin' => ['AttachStdin', 'getAttachStdin', 'setAttachStdin'], 'attachStdout' => ['AttachStdout', 'getAttachStdout', 'setAttachStdout'], 'attachStderr' => ['AttachStderr', 'getAttachStderr', 'setAttachStderr'], 'exposedPorts' => ['ExposedPorts', 'getExposedPorts', 'setExposedPorts'], 'tty' => ['Tty', 'getTty', 'setTty'], 'openStdin' => ['OpenStdin', 'getOpenStdin', 'setOpenStdin'], 'stdinOnce' => ['StdinOnce', 'getStdinOnce', 'setStdinOnce'], 'env' => ['Env', 'getEnv', 'setEnv'], 'cmd' => ['Cmd', 'getCmd', 'setCmd'], 'healthcheck' => ['Healthcheck', 'getHealthcheck', 'setHealthcheck'], 'argsEscaped' => ['ArgsEscaped', 'getArgsEscaped', 'setArgsEscaped'], 'image' => ['Image', 'getImage', 'setImage'], 'volumes' => ['Volumes', 'getVolumes', 'setVolumes'], 'workingDir' => ['WorkingDir', 'getWorkingDir', 'setWorkingDir'], 'entrypoint' => ['Entrypoint', 'getEntrypoint', 'setEntrypoint'], 'networkDisabled' => ['NetworkDisabled', 'getNetworkDisabled', 'setNetworkDisabled'], 'macAddress' => ['MacAddress', 'getMacAddress', 'setMacAddress'], 'onBuild' => ['OnBuild', 'getOnBuild', 'setOnBuild'], 'labels' => ['Labels', 'getLabels', 'setLabels'], 'stopSignal' => ['StopSignal', 'getStopSignal', 'setStopSignal'], 'stopTimeout' => ['StopTimeout', 'getStopTimeout', 'setStopTimeout'], 'shell' => ['Shell', 'getShell', 'setShell'], 'hostConfig' => ['HostConfig', 'getHostConfig', 'setHostConfig'], 'networkingConfig' => ['NetworkingConfig', 'getNetworkingConfig', 'setNetworkingConfig']];
     }
 }

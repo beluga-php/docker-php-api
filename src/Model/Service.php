@@ -4,8 +4,12 @@ declare(strict_types=1);
 
 namespace Docker\API\Model;
 
-class Service extends \ArrayObject
+use Docker\API\Runtime\AdditionalAndPatternProperties;
+use Docker\API\Runtime\AdditionalPropertiesInterface;
+
+class Service implements AdditionalPropertiesInterface
 {
+    use AdditionalAndPatternProperties;
     /**
      * @var array
      */
@@ -246,5 +250,10 @@ class Service extends \ArrayObject
         $this->jobStatus = $jobStatus;
 
         return $this;
+    }
+
+    public function definedProperties(): array
+    {
+        return ['iD' => ['ID', 'getID', 'setID'], 'version' => ['Version', 'getVersion', 'setVersion'], 'createdAt' => ['CreatedAt', 'getCreatedAt', 'setCreatedAt'], 'updatedAt' => ['UpdatedAt', 'getUpdatedAt', 'setUpdatedAt'], 'spec' => ['Spec', 'getSpec', 'setSpec'], 'endpoint' => ['Endpoint', 'getEndpoint', 'setEndpoint'], 'updateStatus' => ['UpdateStatus', 'getUpdateStatus', 'setUpdateStatus'], 'serviceStatus' => ['ServiceStatus', 'getServiceStatus', 'setServiceStatus'], 'jobStatus' => ['JobStatus', 'getJobStatus', 'setJobStatus']];
     }
 }

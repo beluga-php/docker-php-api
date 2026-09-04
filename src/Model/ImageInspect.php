@@ -4,8 +4,12 @@ declare(strict_types=1);
 
 namespace Docker\API\Model;
 
-class ImageInspect extends \ArrayObject
+use Docker\API\Runtime\AdditionalAndPatternProperties;
+use Docker\API\Runtime\AdditionalPropertiesInterface;
+
+class ImageInspect implements AdditionalPropertiesInterface
 {
+    use AdditionalAndPatternProperties;
     /**
      * @var array
      */
@@ -78,30 +82,6 @@ class ImageInspect extends \ArrayObject
      */
     protected $created;
     /**
-     * The ID of the container that was used to create the image.
-     *
-     * Depending on how the image was created, this field may be empty.
-     *
-     **Deprecated**: this field is kept for backward compatibility, but
-     * will be removed in API v1.45.
-     *
-     * @var string|null
-     */
-    protected $container;
-    /**
-     * Configuration for a container that is portable between hosts.
-     *
-     * When used as `ContainerConfig` field in an image, `ContainerConfig` is an
-     * optional field containing the configuration of the container that was last
-     * committed when creating the image.
-     *
-     * Previous versions of Docker builder used this field to store build cache,
-     * and it is not in active use anymore.
-     *
-     * @var ContainerConfig|null
-     */
-    protected $containerConfig;
-    /**
      * The version of Docker that was used to build the image.
      *
      * Depending on how the image was created, this field may be empty.
@@ -117,16 +97,10 @@ class ImageInspect extends \ArrayObject
      */
     protected $author;
     /**
-     * Configuration for a container that is portable between hosts.
+     * Configuration of the image. These fields are used as defaults
+     * when starting a container from the image.
      *
-     * When used as `ContainerConfig` field in an image, `ContainerConfig` is an
-     * optional field containing the configuration of the container that was last
-     * committed when creating the image.
-     *
-     * Previous versions of Docker builder used this field to store build cache,
-     * and it is not in active use anymore.
-     *
-     * @var ContainerConfig|null
+     * @var ImageConfig|null
      */
     protected $config;
     /**
@@ -160,14 +134,6 @@ class ImageInspect extends \ArrayObject
      * @var int|null
      */
     protected $size;
-    /**
-     * Total size of the image including all layers it is composed of.
-     *
-     * Deprecated: this field is omitted in API v1.44, but kept for backward compatibility. Use Size instead.
-     *
-     * @var int|null
-     */
-    protected $virtualSize;
     /**
      * Information about the storage driver used to store the container's and
      * image's filesystem.
@@ -364,68 +330,6 @@ class ImageInspect extends \ArrayObject
     }
 
     /**
-     * The ID of the container that was used to create the image.
-     *
-     * Depending on how the image was created, this field may be empty.
-     *
-     **Deprecated**: this field is kept for backward compatibility, but
-     * will be removed in API v1.45.
-     */
-    public function getContainer(): ?string
-    {
-        return $this->container;
-    }
-
-    /**
-     * The ID of the container that was used to create the image.
-     *
-     * Depending on how the image was created, this field may be empty.
-     *
-     **Deprecated**: this field is kept for backward compatibility, but
-     * will be removed in API v1.45.
-     */
-    public function setContainer(?string $container): self
-    {
-        $this->initialized['container'] = true;
-        $this->container = $container;
-
-        return $this;
-    }
-
-    /**
-     * Configuration for a container that is portable between hosts.
-     *
-     * When used as `ContainerConfig` field in an image, `ContainerConfig` is an
-     * optional field containing the configuration of the container that was last
-     * committed when creating the image.
-     *
-     * Previous versions of Docker builder used this field to store build cache,
-     * and it is not in active use anymore.
-     */
-    public function getContainerConfig(): ?ContainerConfig
-    {
-        return $this->containerConfig;
-    }
-
-    /**
-     * Configuration for a container that is portable between hosts.
-     *
-     * When used as `ContainerConfig` field in an image, `ContainerConfig` is an
-     * optional field containing the configuration of the container that was last
-     * committed when creating the image.
-     *
-     * Previous versions of Docker builder used this field to store build cache,
-     * and it is not in active use anymore.
-     */
-    public function setContainerConfig(?ContainerConfig $containerConfig): self
-    {
-        $this->initialized['containerConfig'] = true;
-        $this->containerConfig = $containerConfig;
-
-        return $this;
-    }
-
-    /**
      * The version of Docker that was used to build the image.
      *
      * Depending on how the image was created, this field may be empty.
@@ -470,31 +374,19 @@ class ImageInspect extends \ArrayObject
     }
 
     /**
-     * Configuration for a container that is portable between hosts.
-     *
-     * When used as `ContainerConfig` field in an image, `ContainerConfig` is an
-     * optional field containing the configuration of the container that was last
-     * committed when creating the image.
-     *
-     * Previous versions of Docker builder used this field to store build cache,
-     * and it is not in active use anymore.
+     * Configuration of the image. These fields are used as defaults
+     * when starting a container from the image.
      */
-    public function getConfig(): ?ContainerConfig
+    public function getConfig(): ?ImageConfig
     {
         return $this->config;
     }
 
     /**
-     * Configuration for a container that is portable between hosts.
-     *
-     * When used as `ContainerConfig` field in an image, `ContainerConfig` is an
-     * optional field containing the configuration of the container that was last
-     * committed when creating the image.
-     *
-     * Previous versions of Docker builder used this field to store build cache,
-     * and it is not in active use anymore.
+     * Configuration of the image. These fields are used as defaults
+     * when starting a container from the image.
      */
-    public function setConfig(?ContainerConfig $config): self
+    public function setConfig(?ImageConfig $config): self
     {
         $this->initialized['config'] = true;
         $this->config = $config;
@@ -600,29 +492,6 @@ class ImageInspect extends \ArrayObject
     }
 
     /**
-     * Total size of the image including all layers it is composed of.
-     *
-     * Deprecated: this field is omitted in API v1.44, but kept for backward compatibility. Use Size instead.
-     */
-    public function getVirtualSize(): ?int
-    {
-        return $this->virtualSize;
-    }
-
-    /**
-     * Total size of the image including all layers it is composed of.
-     *
-     * Deprecated: this field is omitted in API v1.44, but kept for backward compatibility. Use Size instead.
-     */
-    public function setVirtualSize(?int $virtualSize): self
-    {
-        $this->initialized['virtualSize'] = true;
-        $this->virtualSize = $virtualSize;
-
-        return $this;
-    }
-
-    /**
      * Information about the storage driver used to store the container's and
      * image's filesystem.
      */
@@ -681,5 +550,10 @@ class ImageInspect extends \ArrayObject
         $this->metadata = $metadata;
 
         return $this;
+    }
+
+    public function definedProperties(): array
+    {
+        return ['id' => ['Id', 'getId', 'setId'], 'repoTags' => ['RepoTags', 'getRepoTags', 'setRepoTags'], 'repoDigests' => ['RepoDigests', 'getRepoDigests', 'setRepoDigests'], 'parent' => ['Parent', 'getParent', 'setParent'], 'comment' => ['Comment', 'getComment', 'setComment'], 'created' => ['Created', 'getCreated', 'setCreated'], 'dockerVersion' => ['DockerVersion', 'getDockerVersion', 'setDockerVersion'], 'author' => ['Author', 'getAuthor', 'setAuthor'], 'config' => ['Config', 'getConfig', 'setConfig'], 'architecture' => ['Architecture', 'getArchitecture', 'setArchitecture'], 'variant' => ['Variant', 'getVariant', 'setVariant'], 'os' => ['Os', 'getOs', 'setOs'], 'osVersion' => ['OsVersion', 'getOsVersion', 'setOsVersion'], 'size' => ['Size', 'getSize', 'setSize'], 'graphDriver' => ['GraphDriver', 'getGraphDriver', 'setGraphDriver'], 'rootFS' => ['RootFS', 'getRootFS', 'setRootFS'], 'metadata' => ['Metadata', 'getMetadata', 'setMetadata']];
     }
 }

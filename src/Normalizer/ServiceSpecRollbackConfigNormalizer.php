@@ -33,54 +33,60 @@ class ServiceSpecRollbackConfigNormalizer implements DenormalizerInterface, Norm
 
     public function denormalize(mixed $data, string $type, ?string $format = null, array $context = []): mixed
     {
-        if (isset($data['$ref'])) {
+        $object = new \Docker\API\Model\ServiceSpecRollbackConfig();
+        if (null === $data || false === \is_array($data)) {
+            return $object;
+        }
+        if (isset($data['$ref']) && !isset($data['type']) && !isset($data['properties']) && !isset($data['allOf'])) {
             return new Reference($data['$ref'], $context['document-origin']);
         }
         if (isset($data['$recursiveRef'])) {
             return new Reference($data['$recursiveRef'], $context['document-origin']);
         }
-        $object = new \Docker\API\Model\ServiceSpecRollbackConfig();
         if (\array_key_exists('MaxFailureRatio', $data) && \is_int($data['MaxFailureRatio'])) {
             $data['MaxFailureRatio'] = (float) $data['MaxFailureRatio'];
-        }
-        if (null === $data || false === \is_array($data)) {
-            return $object;
         }
         if (\array_key_exists('Parallelism', $data) && null !== $data['Parallelism']) {
             $object->setParallelism($data['Parallelism']);
             unset($data['Parallelism']);
         } elseif (\array_key_exists('Parallelism', $data) && null === $data['Parallelism']) {
             $object->setParallelism(null);
+            unset($data['Parallelism']);
         }
         if (\array_key_exists('Delay', $data) && null !== $data['Delay']) {
             $object->setDelay($data['Delay']);
             unset($data['Delay']);
         } elseif (\array_key_exists('Delay', $data) && null === $data['Delay']) {
             $object->setDelay(null);
+            unset($data['Delay']);
         }
         if (\array_key_exists('FailureAction', $data) && null !== $data['FailureAction']) {
             $object->setFailureAction($data['FailureAction']);
             unset($data['FailureAction']);
         } elseif (\array_key_exists('FailureAction', $data) && null === $data['FailureAction']) {
             $object->setFailureAction(null);
+            unset($data['FailureAction']);
         }
         if (\array_key_exists('Monitor', $data) && null !== $data['Monitor']) {
             $object->setMonitor($data['Monitor']);
             unset($data['Monitor']);
         } elseif (\array_key_exists('Monitor', $data) && null === $data['Monitor']) {
             $object->setMonitor(null);
+            unset($data['Monitor']);
         }
         if (\array_key_exists('MaxFailureRatio', $data) && null !== $data['MaxFailureRatio']) {
             $object->setMaxFailureRatio($data['MaxFailureRatio']);
             unset($data['MaxFailureRatio']);
         } elseif (\array_key_exists('MaxFailureRatio', $data) && null === $data['MaxFailureRatio']) {
             $object->setMaxFailureRatio(null);
+            unset($data['MaxFailureRatio']);
         }
         if (\array_key_exists('Order', $data) && null !== $data['Order']) {
             $object->setOrder($data['Order']);
             unset($data['Order']);
         } elseif (\array_key_exists('Order', $data) && null === $data['Order']) {
             $object->setOrder(null);
+            unset($data['Order']);
         }
         foreach ($data as $key => $value) {
             if (preg_match('/.*/', (string) $key)) {
@@ -112,7 +118,7 @@ class ServiceSpecRollbackConfigNormalizer implements DenormalizerInterface, Norm
         if ($data->isInitialized('order') && null !== $data->getOrder()) {
             $dataArray['Order'] = $data->getOrder();
         }
-        foreach ($data as $key => $value) {
+        foreach ($data->additionalPropertyEntries() as $key => $value) {
             if (preg_match('/.*/', (string) $key)) {
                 $dataArray[$key] = $value;
             }

@@ -4,8 +4,12 @@ declare(strict_types=1);
 
 namespace Docker\API\Model;
 
-class ServiceCreateResponse extends \ArrayObject
+use Docker\API\Runtime\AdditionalAndPatternProperties;
+use Docker\API\Runtime\AdditionalPropertiesInterface;
+
+class ServiceCreateResponse implements AdditionalPropertiesInterface
 {
+    use AdditionalAndPatternProperties;
     /**
      * @var array
      */
@@ -74,5 +78,10 @@ class ServiceCreateResponse extends \ArrayObject
         $this->warnings = $warnings;
 
         return $this;
+    }
+
+    public function definedProperties(): array
+    {
+        return ['iD' => ['ID', 'getID', 'setID'], 'warnings' => ['Warnings', 'getWarnings', 'setWarnings']];
     }
 }

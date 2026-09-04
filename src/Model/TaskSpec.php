@@ -4,8 +4,12 @@ declare(strict_types=1);
 
 namespace Docker\API\Model;
 
-class TaskSpec extends \ArrayObject
+use Docker\API\Runtime\AdditionalAndPatternProperties;
+use Docker\API\Runtime\AdditionalPropertiesInterface;
+
+class TaskSpec implements AdditionalPropertiesInterface
 {
+    use AdditionalAndPatternProperties;
     /**
      * @var array
      */
@@ -341,5 +345,10 @@ class TaskSpec extends \ArrayObject
         $this->logDriver = $logDriver;
 
         return $this;
+    }
+
+    public function definedProperties(): array
+    {
+        return ['pluginSpec' => ['PluginSpec', 'getPluginSpec', 'setPluginSpec'], 'containerSpec' => ['ContainerSpec', 'getContainerSpec', 'setContainerSpec'], 'networkAttachmentSpec' => ['NetworkAttachmentSpec', 'getNetworkAttachmentSpec', 'setNetworkAttachmentSpec'], 'resources' => ['Resources', 'getResources', 'setResources'], 'restartPolicy' => ['RestartPolicy', 'getRestartPolicy', 'setRestartPolicy'], 'placement' => ['Placement', 'getPlacement', 'setPlacement'], 'forceUpdate' => ['ForceUpdate', 'getForceUpdate', 'setForceUpdate'], 'runtime' => ['Runtime', 'getRuntime', 'setRuntime'], 'networks' => ['Networks', 'getNetworks', 'setNetworks'], 'logDriver' => ['LogDriver', 'getLogDriver', 'setLogDriver']];
     }
 }

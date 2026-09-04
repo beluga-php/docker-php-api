@@ -4,8 +4,12 @@ declare(strict_types=1);
 
 namespace Docker\API\Model;
 
-class AuthConfig extends \ArrayObject
+use Docker\API\Runtime\AdditionalAndPatternProperties;
+use Docker\API\Runtime\AdditionalPropertiesInterface;
+
+class AuthConfig implements AdditionalPropertiesInterface
 {
+    use AdditionalAndPatternProperties;
     /**
      * @var array
      */
@@ -24,6 +28,10 @@ class AuthConfig extends \ArrayObject
      */
     protected $password;
     /**
+     * Email is an optional value associated with the username.
+     *
+     * > **Deprecated**: This field is deprecated since docker 1.11 (API v1.23) and will be removed in a future release.
+     *
      * @var string|null
      */
     protected $email;
@@ -58,11 +66,21 @@ class AuthConfig extends \ArrayObject
         return $this;
     }
 
+    /**
+     * Email is an optional value associated with the username.
+     *
+     * > **Deprecated**: This field is deprecated since docker 1.11 (API v1.23) and will be removed in a future release.
+     */
     public function getEmail(): ?string
     {
         return $this->email;
     }
 
+    /**
+     * Email is an optional value associated with the username.
+     *
+     * > **Deprecated**: This field is deprecated since docker 1.11 (API v1.23) and will be removed in a future release.
+     */
     public function setEmail(?string $email): self
     {
         $this->initialized['email'] = true;
@@ -82,5 +100,10 @@ class AuthConfig extends \ArrayObject
         $this->serveraddress = $serveraddress;
 
         return $this;
+    }
+
+    public function definedProperties(): array
+    {
+        return ['username' => ['username', 'getUsername', 'setUsername'], 'password' => ['password', 'getPassword', 'setPassword'], 'email' => ['email', 'getEmail', 'setEmail'], 'serveraddress' => ['serveraddress', 'getServeraddress', 'setServeraddress']];
     }
 }

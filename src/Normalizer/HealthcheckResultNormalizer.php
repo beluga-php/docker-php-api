@@ -33,39 +33,43 @@ class HealthcheckResultNormalizer implements DenormalizerInterface, NormalizerIn
 
     public function denormalize(mixed $data, string $type, ?string $format = null, array $context = []): mixed
     {
-        if (isset($data['$ref'])) {
+        $object = new \Docker\API\Model\HealthcheckResult();
+        if (null === $data || false === \is_array($data)) {
+            return $object;
+        }
+        if (isset($data['$ref']) && !isset($data['type']) && !isset($data['properties']) && !isset($data['allOf'])) {
             return new Reference($data['$ref'], $context['document-origin']);
         }
         if (isset($data['$recursiveRef'])) {
             return new Reference($data['$recursiveRef'], $context['document-origin']);
         }
-        $object = new \Docker\API\Model\HealthcheckResult();
-        if (null === $data || false === \is_array($data)) {
-            return $object;
-        }
         if (\array_key_exists('Start', $data) && null !== $data['Start']) {
-            $object->setStart(\DateTime::createFromFormat('Y-m-d\TH:i:s.uuP', $data['Start']));
+            $object->setStart('Z' === (new \DateTime($data['Start']))->getTimezone()->getName() ? (new \DateTime($data['Start']))->setTimezone(new \DateTimeZone('GMT')) : new \DateTime($data['Start']));
             unset($data['Start']);
         } elseif (\array_key_exists('Start', $data) && null === $data['Start']) {
             $object->setStart(null);
+            unset($data['Start']);
         }
         if (\array_key_exists('End', $data) && null !== $data['End']) {
             $object->setEnd($data['End']);
             unset($data['End']);
         } elseif (\array_key_exists('End', $data) && null === $data['End']) {
             $object->setEnd(null);
+            unset($data['End']);
         }
         if (\array_key_exists('ExitCode', $data) && null !== $data['ExitCode']) {
             $object->setExitCode($data['ExitCode']);
             unset($data['ExitCode']);
         } elseif (\array_key_exists('ExitCode', $data) && null === $data['ExitCode']) {
             $object->setExitCode(null);
+            unset($data['ExitCode']);
         }
         if (\array_key_exists('Output', $data) && null !== $data['Output']) {
             $object->setOutput($data['Output']);
             unset($data['Output']);
         } elseif (\array_key_exists('Output', $data) && null === $data['Output']) {
             $object->setOutput(null);
+            unset($data['Output']);
         }
         foreach ($data as $key => $value) {
             if (preg_match('/.*/', (string) $key)) {
@@ -80,7 +84,7 @@ class HealthcheckResultNormalizer implements DenormalizerInterface, NormalizerIn
     {
         $dataArray = [];
         if ($data->isInitialized('start') && null !== $data->getStart()) {
-            $dataArray['Start'] = $data->getStart()?->format('Y-m-d\TH:i:sP');
+            $dataArray['Start'] = $data->getStart()->format('Y-m-d\TH:i:sP');
         }
         if ($data->isInitialized('end') && null !== $data->getEnd()) {
             $dataArray['End'] = $data->getEnd();
@@ -91,7 +95,7 @@ class HealthcheckResultNormalizer implements DenormalizerInterface, NormalizerIn
         if ($data->isInitialized('output') && null !== $data->getOutput()) {
             $dataArray['Output'] = $data->getOutput();
         }
-        foreach ($data as $key => $value) {
+        foreach ($data->additionalPropertyEntries() as $key => $value) {
             if (preg_match('/.*/', (string) $key)) {
                 $dataArray[$key] = $value;
             }

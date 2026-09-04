@@ -33,15 +33,15 @@ class RegistryServiceConfigNormalizer implements DenormalizerInterface, Normaliz
 
     public function denormalize(mixed $data, string $type, ?string $format = null, array $context = []): mixed
     {
-        if (isset($data['$ref'])) {
+        $object = new \Docker\API\Model\RegistryServiceConfig();
+        if (null === $data || false === \is_array($data)) {
+            return $object;
+        }
+        if (isset($data['$ref']) && !isset($data['type']) && !isset($data['properties']) && !isset($data['allOf'])) {
             return new Reference($data['$ref'], $context['document-origin']);
         }
         if (isset($data['$recursiveRef'])) {
             return new Reference($data['$recursiveRef'], $context['document-origin']);
-        }
-        $object = new \Docker\API\Model\RegistryServiceConfig();
-        if (null === $data || false === \is_array($data)) {
-            return $object;
         }
         if (\array_key_exists('AllowNondistributableArtifactsCIDRs', $data) && null !== $data['AllowNondistributableArtifactsCIDRs']) {
             $values = [];
@@ -52,6 +52,7 @@ class RegistryServiceConfigNormalizer implements DenormalizerInterface, Normaliz
             unset($data['AllowNondistributableArtifactsCIDRs']);
         } elseif (\array_key_exists('AllowNondistributableArtifactsCIDRs', $data) && null === $data['AllowNondistributableArtifactsCIDRs']) {
             $object->setAllowNondistributableArtifactsCIDRs(null);
+            unset($data['AllowNondistributableArtifactsCIDRs']);
         }
         if (\array_key_exists('AllowNondistributableArtifactsHostnames', $data) && null !== $data['AllowNondistributableArtifactsHostnames']) {
             $values_1 = [];
@@ -62,6 +63,7 @@ class RegistryServiceConfigNormalizer implements DenormalizerInterface, Normaliz
             unset($data['AllowNondistributableArtifactsHostnames']);
         } elseif (\array_key_exists('AllowNondistributableArtifactsHostnames', $data) && null === $data['AllowNondistributableArtifactsHostnames']) {
             $object->setAllowNondistributableArtifactsHostnames(null);
+            unset($data['AllowNondistributableArtifactsHostnames']);
         }
         if (\array_key_exists('InsecureRegistryCIDRs', $data) && null !== $data['InsecureRegistryCIDRs']) {
             $values_2 = [];
@@ -72,9 +74,10 @@ class RegistryServiceConfigNormalizer implements DenormalizerInterface, Normaliz
             unset($data['InsecureRegistryCIDRs']);
         } elseif (\array_key_exists('InsecureRegistryCIDRs', $data) && null === $data['InsecureRegistryCIDRs']) {
             $object->setInsecureRegistryCIDRs(null);
+            unset($data['InsecureRegistryCIDRs']);
         }
         if (\array_key_exists('IndexConfigs', $data) && null !== $data['IndexConfigs']) {
-            $values_3 = new \ArrayObject([], \ArrayObject::ARRAY_AS_PROPS);
+            $values_3 = new \Docker\API\Runtime\JsonObject();
             foreach ($data['IndexConfigs'] as $key => $value_3) {
                 $values_3[$key] = $this->denormalizer->denormalize($value_3, \Docker\API\Model\IndexInfo::class, 'json', $context);
             }
@@ -82,6 +85,7 @@ class RegistryServiceConfigNormalizer implements DenormalizerInterface, Normaliz
             unset($data['IndexConfigs']);
         } elseif (\array_key_exists('IndexConfigs', $data) && null === $data['IndexConfigs']) {
             $object->setIndexConfigs(null);
+            unset($data['IndexConfigs']);
         }
         if (\array_key_exists('Mirrors', $data) && null !== $data['Mirrors']) {
             $values_4 = [];
@@ -92,6 +96,7 @@ class RegistryServiceConfigNormalizer implements DenormalizerInterface, Normaliz
             unset($data['Mirrors']);
         } elseif (\array_key_exists('Mirrors', $data) && null === $data['Mirrors']) {
             $object->setMirrors(null);
+            unset($data['Mirrors']);
         }
         foreach ($data as $key_1 => $value_5) {
             if (preg_match('/.*/', (string) $key_1)) {
@@ -127,9 +132,9 @@ class RegistryServiceConfigNormalizer implements DenormalizerInterface, Normaliz
             $dataArray['InsecureRegistryCIDRs'] = $values_2;
         }
         if ($data->isInitialized('indexConfigs') && null !== $data->getIndexConfigs()) {
-            $values_3 = [];
+            $values_3 = new \Docker\API\Runtime\JsonObject();
             foreach ($data->getIndexConfigs() as $key => $value_3) {
-                $values_3[$key] = $this->normalizer->normalize($value_3, 'json', $context);
+                $values_3[$key] = null === $value_3 ? null : new \Docker\API\Runtime\JsonObject($this->normalizer->normalize($value_3, 'json', $context));
             }
             $dataArray['IndexConfigs'] = $values_3;
         }
@@ -140,7 +145,7 @@ class RegistryServiceConfigNormalizer implements DenormalizerInterface, Normaliz
             }
             $dataArray['Mirrors'] = $values_4;
         }
-        foreach ($data as $key_1 => $value_5) {
+        foreach ($data->additionalPropertyEntries() as $key_1 => $value_5) {
             if (preg_match('/.*/', (string) $key_1)) {
                 $dataArray[$key_1] = $value_5;
             }

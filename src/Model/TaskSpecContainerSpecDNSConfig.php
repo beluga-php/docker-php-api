@@ -4,8 +4,12 @@ declare(strict_types=1);
 
 namespace Docker\API\Model;
 
-class TaskSpecContainerSpecDNSConfig extends \ArrayObject
+use Docker\API\Runtime\AdditionalAndPatternProperties;
+use Docker\API\Runtime\AdditionalPropertiesInterface;
+
+class TaskSpecContainerSpecDNSConfig implements AdditionalPropertiesInterface
 {
+    use AdditionalAndPatternProperties;
     /**
      * @var array
      */
@@ -104,5 +108,10 @@ class TaskSpecContainerSpecDNSConfig extends \ArrayObject
         $this->options = $options;
 
         return $this;
+    }
+
+    public function definedProperties(): array
+    {
+        return ['nameservers' => ['Nameservers', 'getNameservers', 'setNameservers'], 'search' => ['Search', 'getSearch', 'setSearch'], 'options' => ['Options', 'getOptions', 'setOptions']];
     }
 }

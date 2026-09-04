@@ -9,15 +9,13 @@ class ContainerPrune extends \Docker\API\Runtime\Client\BaseEndpoint implements 
     use \Docker\API\Runtime\Client\EndpointTrait;
 
     /**
-     * @param array $queryParameters {
-     *
-     * @var string $filters Filters to process on the prune list, encoded as JSON (a `map[string][]string`).
+     * @param array{
+     *    "filters"?: string, //Filters to process on the prune list, encoded as JSON (a `map[string][]string`).
      *
      * Available filters:
      * - `until=<timestamp>` Prune containers created before this timestamp. The `<timestamp>` can be Unix timestamps, date formatted timestamps, or Go duration strings (e.g. `10m`, `1h30m`) computed relative to the daemon machine’s time.
      * - `label` (`label=<key>`, `label=<key>=<value>`, `label!=<key>`, or `label!=<key>=<value>`) Prune containers with (or without, in case `label!=...` is used) the specified labels.
-     *
-     * }
+     * } $queryParameters
      */
     public function __construct(array $queryParameters = [])
     {
@@ -64,10 +62,10 @@ class ContainerPrune extends \Docker\API\Runtime\Client\BaseEndpoint implements 
     {
         $status = $response->getStatusCode();
         $body = (string) $response->getBody();
-        if ((null === $contentType) === false && (200 === $status && false !== mb_strpos($contentType, 'application/json'))) {
+        if ((null === $contentType) === false && (200 === $status && false !== stripos(strtolower($contentType), 'application/json'))) {
             return $serializer->deserialize($body, 'Docker\API\Model\ContainersPrunePostResponse200', 'json');
         }
-        if ((null === $contentType) === false && (500 === $status && false !== mb_strpos($contentType, 'application/json'))) {
+        if ((null === $contentType) === false && (500 === $status && false !== stripos(strtolower($contentType), 'application/json'))) {
             throw new \Docker\API\Exception\ContainerPruneInternalServerErrorException($serializer->deserialize($body, 'Docker\API\Model\ErrorResponse', 'json'), $response);
         }
     }

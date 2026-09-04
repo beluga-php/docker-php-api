@@ -9,16 +9,15 @@ class ImageCommit extends \Docker\API\Runtime\Client\BaseEndpoint implements \Do
     use \Docker\API\Runtime\Client\EndpointTrait;
 
     /**
-     * @param array $queryParameters {
-     *
-     * @var string $container The ID or name of the container to commit
-     * @var string $repo Repository name for the created image
-     * @var string $tag Tag name for the create image
-     * @var string $comment Commit message
-     * @var string $author Author of the image (e.g., `John Hannibal Smith <hannibal@a-team.com>`)
-     * @var bool   $pause Whether to pause the container before committing
-     * @var string $changes `Dockerfile` instructions to apply while committing
-     *             }
+     * @param array{
+     *    "container"?: string, //The ID or name of the container to commit
+     *    "repo"?: string, //Repository name for the created image
+     *    "tag"?: string, //Tag name for the create image
+     *    "comment"?: string, //Commit message
+     *    "author"?: string, //Author of the image (e.g., `John Hannibal Smith <hannibal@a-team.com>`)
+     *    "pause"?: bool, //Whether to pause the container before committing
+     *    "changes"?: string, //`Dockerfile` instructions to apply while committing
+     * } $queryParameters
      */
     public function __construct(?\Docker\API\Model\ContainerConfig $requestBody = null, array $queryParameters = [])
     {
@@ -39,7 +38,7 @@ class ImageCommit extends \Docker\API\Runtime\Client\BaseEndpoint implements \Do
     public function getBody(\Symfony\Component\Serializer\SerializerInterface $serializer, $streamFactory = null): array
     {
         if ($this->body instanceof \Docker\API\Model\ContainerConfig) {
-            return [['Content-Type' => ['application/json']], $serializer->serialize($this->body, 'json')];
+            return [['Content-Type' => ['application/json']], \Docker\API\Runtime\Client\JsonPayload::encode($serializer, $this->body)];
         }
 
         return [[], null];
@@ -77,13 +76,13 @@ class ImageCommit extends \Docker\API\Runtime\Client\BaseEndpoint implements \Do
     {
         $status = $response->getStatusCode();
         $body = (string) $response->getBody();
-        if ((null === $contentType) === false && (201 === $status && false !== mb_strpos($contentType, 'application/json'))) {
+        if ((null === $contentType) === false && (201 === $status && false !== stripos(strtolower($contentType), 'application/json'))) {
             return $serializer->deserialize($body, 'Docker\API\Model\IdResponse', 'json');
         }
-        if ((null === $contentType) === false && (404 === $status && false !== mb_strpos($contentType, 'application/json'))) {
+        if ((null === $contentType) === false && (404 === $status && false !== stripos(strtolower($contentType), 'application/json'))) {
             throw new \Docker\API\Exception\ImageCommitNotFoundException($serializer->deserialize($body, 'Docker\API\Model\ErrorResponse', 'json'), $response);
         }
-        if ((null === $contentType) === false && (500 === $status && false !== mb_strpos($contentType, 'application/json'))) {
+        if ((null === $contentType) === false && (500 === $status && false !== stripos(strtolower($contentType), 'application/json'))) {
             throw new \Docker\API\Exception\ImageCommitInternalServerErrorException($serializer->deserialize($body, 'Docker\API\Model\ErrorResponse', 'json'), $response);
         }
     }

@@ -33,27 +33,29 @@ class ThrottleDeviceNormalizer implements DenormalizerInterface, NormalizerInter
 
     public function denormalize(mixed $data, string $type, ?string $format = null, array $context = []): mixed
     {
-        if (isset($data['$ref'])) {
+        $object = new \Docker\API\Model\ThrottleDevice();
+        if (null === $data || false === \is_array($data)) {
+            return $object;
+        }
+        if (isset($data['$ref']) && !isset($data['type']) && !isset($data['properties']) && !isset($data['allOf'])) {
             return new Reference($data['$ref'], $context['document-origin']);
         }
         if (isset($data['$recursiveRef'])) {
             return new Reference($data['$recursiveRef'], $context['document-origin']);
-        }
-        $object = new \Docker\API\Model\ThrottleDevice();
-        if (null === $data || false === \is_array($data)) {
-            return $object;
         }
         if (\array_key_exists('Path', $data) && null !== $data['Path']) {
             $object->setPath($data['Path']);
             unset($data['Path']);
         } elseif (\array_key_exists('Path', $data) && null === $data['Path']) {
             $object->setPath(null);
+            unset($data['Path']);
         }
         if (\array_key_exists('Rate', $data) && null !== $data['Rate']) {
             $object->setRate($data['Rate']);
             unset($data['Rate']);
         } elseif (\array_key_exists('Rate', $data) && null === $data['Rate']) {
             $object->setRate(null);
+            unset($data['Rate']);
         }
         foreach ($data as $key => $value) {
             if (preg_match('/.*/', (string) $key)) {
@@ -73,7 +75,7 @@ class ThrottleDeviceNormalizer implements DenormalizerInterface, NormalizerInter
         if ($data->isInitialized('rate') && null !== $data->getRate()) {
             $dataArray['Rate'] = $data->getRate();
         }
-        foreach ($data as $key => $value) {
+        foreach ($data->additionalPropertyEntries() as $key => $value) {
             if (preg_match('/.*/', (string) $key)) {
                 $dataArray[$key] = $value;
             }

@@ -33,21 +33,22 @@ class EndpointSettingsNormalizer implements DenormalizerInterface, NormalizerInt
 
     public function denormalize(mixed $data, string $type, ?string $format = null, array $context = []): mixed
     {
-        if (isset($data['$ref'])) {
+        $object = new \Docker\API\Model\EndpointSettings();
+        if (null === $data || false === \is_array($data)) {
+            return $object;
+        }
+        if (isset($data['$ref']) && !isset($data['type']) && !isset($data['properties']) && !isset($data['allOf'])) {
             return new Reference($data['$ref'], $context['document-origin']);
         }
         if (isset($data['$recursiveRef'])) {
             return new Reference($data['$recursiveRef'], $context['document-origin']);
-        }
-        $object = new \Docker\API\Model\EndpointSettings();
-        if (null === $data || false === \is_array($data)) {
-            return $object;
         }
         if (\array_key_exists('IPAMConfig', $data) && null !== $data['IPAMConfig']) {
             $object->setIPAMConfig($this->denormalizer->denormalize($data['IPAMConfig'], \Docker\API\Model\EndpointIPAMConfig::class, 'json', $context));
             unset($data['IPAMConfig']);
         } elseif (\array_key_exists('IPAMConfig', $data) && null === $data['IPAMConfig']) {
             $object->setIPAMConfig(null);
+            unset($data['IPAMConfig']);
         }
         if (\array_key_exists('Links', $data) && null !== $data['Links']) {
             $values = [];
@@ -58,12 +59,14 @@ class EndpointSettingsNormalizer implements DenormalizerInterface, NormalizerInt
             unset($data['Links']);
         } elseif (\array_key_exists('Links', $data) && null === $data['Links']) {
             $object->setLinks(null);
+            unset($data['Links']);
         }
         if (\array_key_exists('MacAddress', $data) && null !== $data['MacAddress']) {
             $object->setMacAddress($data['MacAddress']);
             unset($data['MacAddress']);
         } elseif (\array_key_exists('MacAddress', $data) && null === $data['MacAddress']) {
             $object->setMacAddress(null);
+            unset($data['MacAddress']);
         }
         if (\array_key_exists('Aliases', $data) && null !== $data['Aliases']) {
             $values_1 = [];
@@ -74,57 +77,66 @@ class EndpointSettingsNormalizer implements DenormalizerInterface, NormalizerInt
             unset($data['Aliases']);
         } elseif (\array_key_exists('Aliases', $data) && null === $data['Aliases']) {
             $object->setAliases(null);
+            unset($data['Aliases']);
         }
         if (\array_key_exists('NetworkID', $data) && null !== $data['NetworkID']) {
             $object->setNetworkID($data['NetworkID']);
             unset($data['NetworkID']);
         } elseif (\array_key_exists('NetworkID', $data) && null === $data['NetworkID']) {
             $object->setNetworkID(null);
+            unset($data['NetworkID']);
         }
         if (\array_key_exists('EndpointID', $data) && null !== $data['EndpointID']) {
             $object->setEndpointID($data['EndpointID']);
             unset($data['EndpointID']);
         } elseif (\array_key_exists('EndpointID', $data) && null === $data['EndpointID']) {
             $object->setEndpointID(null);
+            unset($data['EndpointID']);
         }
         if (\array_key_exists('Gateway', $data) && null !== $data['Gateway']) {
             $object->setGateway($data['Gateway']);
             unset($data['Gateway']);
         } elseif (\array_key_exists('Gateway', $data) && null === $data['Gateway']) {
             $object->setGateway(null);
+            unset($data['Gateway']);
         }
         if (\array_key_exists('IPAddress', $data) && null !== $data['IPAddress']) {
             $object->setIPAddress($data['IPAddress']);
             unset($data['IPAddress']);
         } elseif (\array_key_exists('IPAddress', $data) && null === $data['IPAddress']) {
             $object->setIPAddress(null);
+            unset($data['IPAddress']);
         }
         if (\array_key_exists('IPPrefixLen', $data) && null !== $data['IPPrefixLen']) {
             $object->setIPPrefixLen($data['IPPrefixLen']);
             unset($data['IPPrefixLen']);
         } elseif (\array_key_exists('IPPrefixLen', $data) && null === $data['IPPrefixLen']) {
             $object->setIPPrefixLen(null);
+            unset($data['IPPrefixLen']);
         }
         if (\array_key_exists('IPv6Gateway', $data) && null !== $data['IPv6Gateway']) {
             $object->setIPv6Gateway($data['IPv6Gateway']);
             unset($data['IPv6Gateway']);
         } elseif (\array_key_exists('IPv6Gateway', $data) && null === $data['IPv6Gateway']) {
             $object->setIPv6Gateway(null);
+            unset($data['IPv6Gateway']);
         }
         if (\array_key_exists('GlobalIPv6Address', $data) && null !== $data['GlobalIPv6Address']) {
             $object->setGlobalIPv6Address($data['GlobalIPv6Address']);
             unset($data['GlobalIPv6Address']);
         } elseif (\array_key_exists('GlobalIPv6Address', $data) && null === $data['GlobalIPv6Address']) {
             $object->setGlobalIPv6Address(null);
+            unset($data['GlobalIPv6Address']);
         }
         if (\array_key_exists('GlobalIPv6PrefixLen', $data) && null !== $data['GlobalIPv6PrefixLen']) {
             $object->setGlobalIPv6PrefixLen($data['GlobalIPv6PrefixLen']);
             unset($data['GlobalIPv6PrefixLen']);
         } elseif (\array_key_exists('GlobalIPv6PrefixLen', $data) && null === $data['GlobalIPv6PrefixLen']) {
             $object->setGlobalIPv6PrefixLen(null);
+            unset($data['GlobalIPv6PrefixLen']);
         }
         if (\array_key_exists('DriverOpts', $data) && null !== $data['DriverOpts']) {
-            $values_2 = new \ArrayObject([], \ArrayObject::ARRAY_AS_PROPS);
+            $values_2 = new \Docker\API\Runtime\JsonObject();
             foreach ($data['DriverOpts'] as $key => $value_2) {
                 $values_2[$key] = $value_2;
             }
@@ -132,6 +144,7 @@ class EndpointSettingsNormalizer implements DenormalizerInterface, NormalizerInt
             unset($data['DriverOpts']);
         } elseif (\array_key_exists('DriverOpts', $data) && null === $data['DriverOpts']) {
             $object->setDriverOpts(null);
+            unset($data['DriverOpts']);
         }
         if (\array_key_exists('DNSNames', $data) && null !== $data['DNSNames']) {
             $values_3 = [];
@@ -142,6 +155,7 @@ class EndpointSettingsNormalizer implements DenormalizerInterface, NormalizerInt
             unset($data['DNSNames']);
         } elseif (\array_key_exists('DNSNames', $data) && null === $data['DNSNames']) {
             $object->setDNSNames(null);
+            unset($data['DNSNames']);
         }
         foreach ($data as $key_1 => $value_4) {
             if (preg_match('/.*/', (string) $key_1)) {
@@ -156,7 +170,7 @@ class EndpointSettingsNormalizer implements DenormalizerInterface, NormalizerInt
     {
         $dataArray = [];
         if ($data->isInitialized('iPAMConfig') && null !== $data->getIPAMConfig()) {
-            $dataArray['IPAMConfig'] = $this->normalizer->normalize($data->getIPAMConfig(), 'json', $context);
+            $dataArray['IPAMConfig'] = null === $data->getIPAMConfig() ? null : new \Docker\API\Runtime\JsonObject($this->normalizer->normalize($data->getIPAMConfig(), 'json', $context));
         }
         if ($data->isInitialized('links') && null !== $data->getLinks()) {
             $values = [];
@@ -200,7 +214,7 @@ class EndpointSettingsNormalizer implements DenormalizerInterface, NormalizerInt
             $dataArray['GlobalIPv6PrefixLen'] = $data->getGlobalIPv6PrefixLen();
         }
         if ($data->isInitialized('driverOpts') && null !== $data->getDriverOpts()) {
-            $values_2 = [];
+            $values_2 = new \Docker\API\Runtime\JsonObject();
             foreach ($data->getDriverOpts() as $key => $value_2) {
                 $values_2[$key] = $value_2;
             }
@@ -213,7 +227,7 @@ class EndpointSettingsNormalizer implements DenormalizerInterface, NormalizerInt
             }
             $dataArray['DNSNames'] = $values_3;
         }
-        foreach ($data as $key_1 => $value_4) {
+        foreach ($data->additionalPropertyEntries() as $key_1 => $value_4) {
             if (preg_match('/.*/', (string) $key_1)) {
                 $dataArray[$key_1] = $value_4;
             }

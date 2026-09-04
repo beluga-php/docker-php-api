@@ -33,21 +33,22 @@ class TaskSpecPlacementPreferencesItemNormalizer implements DenormalizerInterfac
 
     public function denormalize(mixed $data, string $type, ?string $format = null, array $context = []): mixed
     {
-        if (isset($data['$ref'])) {
+        $object = new \Docker\API\Model\TaskSpecPlacementPreferencesItem();
+        if (null === $data || false === \is_array($data)) {
+            return $object;
+        }
+        if (isset($data['$ref']) && !isset($data['type']) && !isset($data['properties']) && !isset($data['allOf'])) {
             return new Reference($data['$ref'], $context['document-origin']);
         }
         if (isset($data['$recursiveRef'])) {
             return new Reference($data['$recursiveRef'], $context['document-origin']);
-        }
-        $object = new \Docker\API\Model\TaskSpecPlacementPreferencesItem();
-        if (null === $data || false === \is_array($data)) {
-            return $object;
         }
         if (\array_key_exists('Spread', $data) && null !== $data['Spread']) {
             $object->setSpread($this->denormalizer->denormalize($data['Spread'], \Docker\API\Model\TaskSpecPlacementPreferencesItemSpread::class, 'json', $context));
             unset($data['Spread']);
         } elseif (\array_key_exists('Spread', $data) && null === $data['Spread']) {
             $object->setSpread(null);
+            unset($data['Spread']);
         }
         foreach ($data as $key => $value) {
             if (preg_match('/.*/', (string) $key)) {
@@ -62,9 +63,9 @@ class TaskSpecPlacementPreferencesItemNormalizer implements DenormalizerInterfac
     {
         $dataArray = [];
         if ($data->isInitialized('spread') && null !== $data->getSpread()) {
-            $dataArray['Spread'] = $this->normalizer->normalize($data->getSpread(), 'json', $context);
+            $dataArray['Spread'] = null === $data->getSpread() ? null : new \Docker\API\Runtime\JsonObject($this->normalizer->normalize($data->getSpread(), 'json', $context));
         }
-        foreach ($data as $key => $value) {
+        foreach ($data->additionalPropertyEntries() as $key => $value) {
             if (preg_match('/.*/', (string) $key)) {
                 $dataArray[$key] = $value;
             }

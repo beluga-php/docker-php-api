@@ -4,8 +4,12 @@ declare(strict_types=1);
 
 namespace Docker\API\Model;
 
-class MountTmpfsOptions extends \ArrayObject
+use Docker\API\Runtime\AdditionalAndPatternProperties;
+use Docker\API\Runtime\AdditionalPropertiesInterface;
+
+class MountTmpfsOptions implements AdditionalPropertiesInterface
 {
+    use AdditionalAndPatternProperties;
     /**
      * @var array
      */
@@ -23,6 +27,8 @@ class MountTmpfsOptions extends \ArrayObject
     protected $sizeBytes;
     /**
      * The permission mode for the tmpfs mount in an integer.
+     * The value must not be in octal format (e.g. 755) but rather
+     * the decimal representation of the octal value (e.g. 493).
      *
      * @var int|null
      */
@@ -49,6 +55,8 @@ class MountTmpfsOptions extends \ArrayObject
 
     /**
      * The permission mode for the tmpfs mount in an integer.
+     * The value must not be in octal format (e.g. 755) but rather
+     * the decimal representation of the octal value (e.g. 493).
      */
     public function getMode(): ?int
     {
@@ -57,6 +65,8 @@ class MountTmpfsOptions extends \ArrayObject
 
     /**
      * The permission mode for the tmpfs mount in an integer.
+     * The value must not be in octal format (e.g. 755) but rather
+     * the decimal representation of the octal value (e.g. 493).
      */
     public function setMode(?int $mode): self
     {
@@ -64,5 +74,10 @@ class MountTmpfsOptions extends \ArrayObject
         $this->mode = $mode;
 
         return $this;
+    }
+
+    public function definedProperties(): array
+    {
+        return ['sizeBytes' => ['SizeBytes', 'getSizeBytes', 'setSizeBytes'], 'mode' => ['Mode', 'getMode', 'setMode']];
     }
 }

@@ -33,15 +33,15 @@ class NetworksPrunePostResponse200Normalizer implements DenormalizerInterface, N
 
     public function denormalize(mixed $data, string $type, ?string $format = null, array $context = []): mixed
     {
-        if (isset($data['$ref'])) {
+        $object = new \Docker\API\Model\NetworksPrunePostResponse200();
+        if (null === $data || false === \is_array($data)) {
+            return $object;
+        }
+        if (isset($data['$ref']) && !isset($data['type']) && !isset($data['properties']) && !isset($data['allOf'])) {
             return new Reference($data['$ref'], $context['document-origin']);
         }
         if (isset($data['$recursiveRef'])) {
             return new Reference($data['$recursiveRef'], $context['document-origin']);
-        }
-        $object = new \Docker\API\Model\NetworksPrunePostResponse200();
-        if (null === $data || false === \is_array($data)) {
-            return $object;
         }
         if (\array_key_exists('NetworksDeleted', $data) && null !== $data['NetworksDeleted']) {
             $values = [];
@@ -52,6 +52,7 @@ class NetworksPrunePostResponse200Normalizer implements DenormalizerInterface, N
             unset($data['NetworksDeleted']);
         } elseif (\array_key_exists('NetworksDeleted', $data) && null === $data['NetworksDeleted']) {
             $object->setNetworksDeleted(null);
+            unset($data['NetworksDeleted']);
         }
         foreach ($data as $key => $value_1) {
             if (preg_match('/.*/', (string) $key)) {
@@ -72,7 +73,7 @@ class NetworksPrunePostResponse200Normalizer implements DenormalizerInterface, N
             }
             $dataArray['NetworksDeleted'] = $values;
         }
-        foreach ($data as $key => $value_1) {
+        foreach ($data->additionalPropertyEntries() as $key => $value_1) {
             if (preg_match('/.*/', (string) $key)) {
                 $dataArray[$key] = $value_1;
             }

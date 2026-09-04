@@ -33,13 +33,16 @@ class ContainersIdExecPostBodyNormalizer implements DenormalizerInterface, Norma
 
     public function denormalize(mixed $data, string $type, ?string $format = null, array $context = []): mixed
     {
-        if (isset($data['$ref'])) {
+        $object = new \Docker\API\Model\ContainersIdExecPostBody();
+        if (null === $data || false === \is_array($data)) {
+            return $object;
+        }
+        if (isset($data['$ref']) && !isset($data['type']) && !isset($data['properties']) && !isset($data['allOf'])) {
             return new Reference($data['$ref'], $context['document-origin']);
         }
         if (isset($data['$recursiveRef'])) {
             return new Reference($data['$recursiveRef'], $context['document-origin']);
         }
-        $object = new \Docker\API\Model\ContainersIdExecPostBody();
         if (\array_key_exists('AttachStdin', $data) && \is_int($data['AttachStdin'])) {
             $data['AttachStdin'] = (bool) $data['AttachStdin'];
         }
@@ -55,26 +58,26 @@ class ContainersIdExecPostBodyNormalizer implements DenormalizerInterface, Norma
         if (\array_key_exists('Privileged', $data) && \is_int($data['Privileged'])) {
             $data['Privileged'] = (bool) $data['Privileged'];
         }
-        if (null === $data || false === \is_array($data)) {
-            return $object;
-        }
         if (\array_key_exists('AttachStdin', $data) && null !== $data['AttachStdin']) {
             $object->setAttachStdin($data['AttachStdin']);
             unset($data['AttachStdin']);
         } elseif (\array_key_exists('AttachStdin', $data) && null === $data['AttachStdin']) {
             $object->setAttachStdin(null);
+            unset($data['AttachStdin']);
         }
         if (\array_key_exists('AttachStdout', $data) && null !== $data['AttachStdout']) {
             $object->setAttachStdout($data['AttachStdout']);
             unset($data['AttachStdout']);
         } elseif (\array_key_exists('AttachStdout', $data) && null === $data['AttachStdout']) {
             $object->setAttachStdout(null);
+            unset($data['AttachStdout']);
         }
         if (\array_key_exists('AttachStderr', $data) && null !== $data['AttachStderr']) {
             $object->setAttachStderr($data['AttachStderr']);
             unset($data['AttachStderr']);
         } elseif (\array_key_exists('AttachStderr', $data) && null === $data['AttachStderr']) {
             $object->setAttachStderr(null);
+            unset($data['AttachStderr']);
         }
         if (\array_key_exists('ConsoleSize', $data) && null !== $data['ConsoleSize']) {
             $values = [];
@@ -85,18 +88,21 @@ class ContainersIdExecPostBodyNormalizer implements DenormalizerInterface, Norma
             unset($data['ConsoleSize']);
         } elseif (\array_key_exists('ConsoleSize', $data) && null === $data['ConsoleSize']) {
             $object->setConsoleSize(null);
+            unset($data['ConsoleSize']);
         }
         if (\array_key_exists('DetachKeys', $data) && null !== $data['DetachKeys']) {
             $object->setDetachKeys($data['DetachKeys']);
             unset($data['DetachKeys']);
         } elseif (\array_key_exists('DetachKeys', $data) && null === $data['DetachKeys']) {
             $object->setDetachKeys(null);
+            unset($data['DetachKeys']);
         }
         if (\array_key_exists('Tty', $data) && null !== $data['Tty']) {
             $object->setTty($data['Tty']);
             unset($data['Tty']);
         } elseif (\array_key_exists('Tty', $data) && null === $data['Tty']) {
             $object->setTty(null);
+            unset($data['Tty']);
         }
         if (\array_key_exists('Env', $data) && null !== $data['Env']) {
             $values_1 = [];
@@ -107,6 +113,7 @@ class ContainersIdExecPostBodyNormalizer implements DenormalizerInterface, Norma
             unset($data['Env']);
         } elseif (\array_key_exists('Env', $data) && null === $data['Env']) {
             $object->setEnv(null);
+            unset($data['Env']);
         }
         if (\array_key_exists('Cmd', $data) && null !== $data['Cmd']) {
             $values_2 = [];
@@ -117,24 +124,28 @@ class ContainersIdExecPostBodyNormalizer implements DenormalizerInterface, Norma
             unset($data['Cmd']);
         } elseif (\array_key_exists('Cmd', $data) && null === $data['Cmd']) {
             $object->setCmd(null);
+            unset($data['Cmd']);
         }
         if (\array_key_exists('Privileged', $data) && null !== $data['Privileged']) {
             $object->setPrivileged($data['Privileged']);
             unset($data['Privileged']);
         } elseif (\array_key_exists('Privileged', $data) && null === $data['Privileged']) {
             $object->setPrivileged(null);
+            unset($data['Privileged']);
         }
         if (\array_key_exists('User', $data) && null !== $data['User']) {
             $object->setUser($data['User']);
             unset($data['User']);
         } elseif (\array_key_exists('User', $data) && null === $data['User']) {
             $object->setUser(null);
+            unset($data['User']);
         }
         if (\array_key_exists('WorkingDir', $data) && null !== $data['WorkingDir']) {
             $object->setWorkingDir($data['WorkingDir']);
             unset($data['WorkingDir']);
         } elseif (\array_key_exists('WorkingDir', $data) && null === $data['WorkingDir']) {
             $object->setWorkingDir(null);
+            unset($data['WorkingDir']);
         }
         foreach ($data as $key => $value_3) {
             if (preg_match('/.*/', (string) $key)) {
@@ -193,7 +204,7 @@ class ContainersIdExecPostBodyNormalizer implements DenormalizerInterface, Norma
         if ($data->isInitialized('workingDir') && null !== $data->getWorkingDir()) {
             $dataArray['WorkingDir'] = $data->getWorkingDir();
         }
-        foreach ($data as $key => $value_3) {
+        foreach ($data->additionalPropertyEntries() as $key => $value_3) {
             if (preg_match('/.*/', (string) $key)) {
                 $dataArray[$key] = $value_3;
             }

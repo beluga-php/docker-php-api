@@ -4,8 +4,12 @@ declare(strict_types=1);
 
 namespace Docker\API\Model;
 
-class Mount extends \ArrayObject
+use Docker\API\Runtime\AdditionalAndPatternProperties;
+use Docker\API\Runtime\AdditionalPropertiesInterface;
+
+class Mount implements AdditionalPropertiesInterface
 {
+    use AdditionalAndPatternProperties;
     /**
      * @var array
      */
@@ -22,7 +26,12 @@ class Mount extends \ArrayObject
      */
     protected $target;
     /**
-     * Mount source (e.g. a volume name, a host path).
+     * Mount source (e.g. a volume name, a host path). The source cannot be
+     * specified when using `Type=tmpfs`. For `Type=bind`, the source path
+     * must either exist, or the `CreateMountpoint` must be set to `true` to
+     * create the source path on the host if missing.
+     *
+     * For `Type=npipe`, the pipe must exist prior to creating the container.
      *
      * @var string|null
      */
@@ -30,11 +39,11 @@ class Mount extends \ArrayObject
     /**
      * The mount type. Available types:
      *
-     * - `bind` Mounts a file or directory from the host into the container. Must exist prior to creating the container.
-     * - `volume` Creates a volume with the given name and options (or uses a pre-existing volume with the same name and options). These are **not** removed when the container is removed.
-     * - `tmpfs` Create a tmpfs with the given options. The mount source cannot be specified for tmpfs.
-     * - `npipe` Mounts a named pipe from the host into the container. Must exist prior to creating the container.
+     * - `bind` Mounts a file or directory from the host into the container. The `Source` must exist prior to creating the container.
      * - `cluster` a Swarm cluster volume
+     * - `npipe` Mounts a named pipe from the host into the container. The `Source` must exist prior to creating the container.
+     * - `tmpfs` Create a tmpfs with the given options. The mount `Source` cannot be specified for tmpfs.
+     * - `volume` Creates a volume with the given name and options (or uses a pre-existing volume with the same name and options). These are **not** removed when the container is removed.
      *
      * @var string|null
      */
@@ -90,7 +99,12 @@ class Mount extends \ArrayObject
     }
 
     /**
-     * Mount source (e.g. a volume name, a host path).
+     * Mount source (e.g. a volume name, a host path). The source cannot be
+     * specified when using `Type=tmpfs`. For `Type=bind`, the source path
+     * must either exist, or the `CreateMountpoint` must be set to `true` to
+     * create the source path on the host if missing.
+     *
+     * For `Type=npipe`, the pipe must exist prior to creating the container.
      */
     public function getSource(): ?string
     {
@@ -98,7 +112,12 @@ class Mount extends \ArrayObject
     }
 
     /**
-     * Mount source (e.g. a volume name, a host path).
+     * Mount source (e.g. a volume name, a host path). The source cannot be
+     * specified when using `Type=tmpfs`. For `Type=bind`, the source path
+     * must either exist, or the `CreateMountpoint` must be set to `true` to
+     * create the source path on the host if missing.
+     *
+     * For `Type=npipe`, the pipe must exist prior to creating the container.
      */
     public function setSource(?string $source): self
     {
@@ -111,11 +130,11 @@ class Mount extends \ArrayObject
     /**
      * The mount type. Available types:
      *
-     * - `bind` Mounts a file or directory from the host into the container. Must exist prior to creating the container.
-     * - `volume` Creates a volume with the given name and options (or uses a pre-existing volume with the same name and options). These are **not** removed when the container is removed.
-     * - `tmpfs` Create a tmpfs with the given options. The mount source cannot be specified for tmpfs.
-     * - `npipe` Mounts a named pipe from the host into the container. Must exist prior to creating the container.
+     * - `bind` Mounts a file or directory from the host into the container. The `Source` must exist prior to creating the container.
      * - `cluster` a Swarm cluster volume
+     * - `npipe` Mounts a named pipe from the host into the container. The `Source` must exist prior to creating the container.
+     * - `tmpfs` Create a tmpfs with the given options. The mount `Source` cannot be specified for tmpfs.
+     * - `volume` Creates a volume with the given name and options (or uses a pre-existing volume with the same name and options). These are **not** removed when the container is removed.
      */
     public function getType(): ?string
     {
@@ -125,11 +144,11 @@ class Mount extends \ArrayObject
     /**
      * The mount type. Available types:
      *
-     * - `bind` Mounts a file or directory from the host into the container. Must exist prior to creating the container.
-     * - `volume` Creates a volume with the given name and options (or uses a pre-existing volume with the same name and options). These are **not** removed when the container is removed.
-     * - `tmpfs` Create a tmpfs with the given options. The mount source cannot be specified for tmpfs.
-     * - `npipe` Mounts a named pipe from the host into the container. Must exist prior to creating the container.
+     * - `bind` Mounts a file or directory from the host into the container. The `Source` must exist prior to creating the container.
      * - `cluster` a Swarm cluster volume
+     * - `npipe` Mounts a named pipe from the host into the container. The `Source` must exist prior to creating the container.
+     * - `tmpfs` Create a tmpfs with the given options. The mount `Source` cannot be specified for tmpfs.
+     * - `volume` Creates a volume with the given name and options (or uses a pre-existing volume with the same name and options). These are **not** removed when the container is removed.
      */
     public function setType(?string $type): self
     {
@@ -232,5 +251,10 @@ class Mount extends \ArrayObject
         $this->tmpfsOptions = $tmpfsOptions;
 
         return $this;
+    }
+
+    public function definedProperties(): array
+    {
+        return ['target' => ['Target', 'getTarget', 'setTarget'], 'source' => ['Source', 'getSource', 'setSource'], 'type' => ['Type', 'getType', 'setType'], 'readOnly' => ['ReadOnly', 'getReadOnly', 'setReadOnly'], 'consistency' => ['Consistency', 'getConsistency', 'setConsistency'], 'bindOptions' => ['BindOptions', 'getBindOptions', 'setBindOptions'], 'volumeOptions' => ['VolumeOptions', 'getVolumeOptions', 'setVolumeOptions'], 'tmpfsOptions' => ['TmpfsOptions', 'getTmpfsOptions', 'setTmpfsOptions']];
     }
 }

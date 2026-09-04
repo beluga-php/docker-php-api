@@ -33,27 +33,29 @@ class AuthPostResponse200Normalizer implements DenormalizerInterface, Normalizer
 
     public function denormalize(mixed $data, string $type, ?string $format = null, array $context = []): mixed
     {
-        if (isset($data['$ref'])) {
+        $object = new \Docker\API\Model\AuthPostResponse200();
+        if (null === $data || false === \is_array($data)) {
+            return $object;
+        }
+        if (isset($data['$ref']) && !isset($data['type']) && !isset($data['properties']) && !isset($data['allOf'])) {
             return new Reference($data['$ref'], $context['document-origin']);
         }
         if (isset($data['$recursiveRef'])) {
             return new Reference($data['$recursiveRef'], $context['document-origin']);
-        }
-        $object = new \Docker\API\Model\AuthPostResponse200();
-        if (null === $data || false === \is_array($data)) {
-            return $object;
         }
         if (\array_key_exists('Status', $data) && null !== $data['Status']) {
             $object->setStatus($data['Status']);
             unset($data['Status']);
         } elseif (\array_key_exists('Status', $data) && null === $data['Status']) {
             $object->setStatus(null);
+            unset($data['Status']);
         }
         if (\array_key_exists('IdentityToken', $data) && null !== $data['IdentityToken']) {
             $object->setIdentityToken($data['IdentityToken']);
             unset($data['IdentityToken']);
         } elseif (\array_key_exists('IdentityToken', $data) && null === $data['IdentityToken']) {
             $object->setIdentityToken(null);
+            unset($data['IdentityToken']);
         }
         foreach ($data as $key => $value) {
             if (preg_match('/.*/', (string) $key)) {
@@ -71,7 +73,7 @@ class AuthPostResponse200Normalizer implements DenormalizerInterface, Normalizer
         if ($data->isInitialized('identityToken') && null !== $data->getIdentityToken()) {
             $dataArray['IdentityToken'] = $data->getIdentityToken();
         }
-        foreach ($data as $key => $value) {
+        foreach ($data->additionalPropertyEntries() as $key => $value) {
             if (preg_match('/.*/', (string) $key)) {
                 $dataArray[$key] = $value;
             }

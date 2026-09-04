@@ -4,8 +4,12 @@ declare(strict_types=1);
 
 namespace Docker\API\Model;
 
-class ClusterVolumeSpecAccessModeCapacityRange extends \ArrayObject
+use Docker\API\Runtime\AdditionalAndPatternProperties;
+use Docker\API\Runtime\AdditionalPropertiesInterface;
+
+class ClusterVolumeSpecAccessModeCapacityRange implements AdditionalPropertiesInterface
 {
+    use AdditionalAndPatternProperties;
     /**
      * @var array
      */
@@ -70,5 +74,10 @@ class ClusterVolumeSpecAccessModeCapacityRange extends \ArrayObject
         $this->limitBytes = $limitBytes;
 
         return $this;
+    }
+
+    public function definedProperties(): array
+    {
+        return ['requiredBytes' => ['RequiredBytes', 'getRequiredBytes', 'setRequiredBytes'], 'limitBytes' => ['LimitBytes', 'getLimitBytes', 'setLimitBytes']];
     }
 }

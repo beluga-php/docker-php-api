@@ -33,43 +33,55 @@ class ServiceSpecModeNormalizer implements DenormalizerInterface, NormalizerInte
 
     public function denormalize(mixed $data, string $type, ?string $format = null, array $context = []): mixed
     {
-        if (isset($data['$ref'])) {
+        $object = new \Docker\API\Model\ServiceSpecMode();
+        if (null === $data || false === \is_array($data)) {
+            return $object;
+        }
+        if (isset($data['$ref']) && !isset($data['type']) && !isset($data['properties']) && !isset($data['allOf'])) {
             return new Reference($data['$ref'], $context['document-origin']);
         }
         if (isset($data['$recursiveRef'])) {
             return new Reference($data['$recursiveRef'], $context['document-origin']);
-        }
-        $object = new \Docker\API\Model\ServiceSpecMode();
-        if (null === $data || false === \is_array($data)) {
-            return $object;
         }
         if (\array_key_exists('Replicated', $data) && null !== $data['Replicated']) {
             $object->setReplicated($this->denormalizer->denormalize($data['Replicated'], \Docker\API\Model\ServiceSpecModeReplicated::class, 'json', $context));
             unset($data['Replicated']);
         } elseif (\array_key_exists('Replicated', $data) && null === $data['Replicated']) {
             $object->setReplicated(null);
+            unset($data['Replicated']);
         }
         if (\array_key_exists('Global', $data) && null !== $data['Global']) {
-            $object->setGlobal($this->denormalizer->denormalize($data['Global'], \Docker\API\Model\ServiceSpecModeGlobal::class, 'json', $context));
+            $values = new \Docker\API\Runtime\JsonObject();
+            foreach ($data['Global'] as $key => $value) {
+                $values[$key] = $value;
+            }
+            $object->setGlobal($values);
             unset($data['Global']);
         } elseif (\array_key_exists('Global', $data) && null === $data['Global']) {
             $object->setGlobal(null);
+            unset($data['Global']);
         }
         if (\array_key_exists('ReplicatedJob', $data) && null !== $data['ReplicatedJob']) {
             $object->setReplicatedJob($this->denormalizer->denormalize($data['ReplicatedJob'], \Docker\API\Model\ServiceSpecModeReplicatedJob::class, 'json', $context));
             unset($data['ReplicatedJob']);
         } elseif (\array_key_exists('ReplicatedJob', $data) && null === $data['ReplicatedJob']) {
             $object->setReplicatedJob(null);
+            unset($data['ReplicatedJob']);
         }
         if (\array_key_exists('GlobalJob', $data) && null !== $data['GlobalJob']) {
-            $object->setGlobalJob($this->denormalizer->denormalize($data['GlobalJob'], \Docker\API\Model\ServiceSpecModeGlobalJob::class, 'json', $context));
+            $values_1 = new \Docker\API\Runtime\JsonObject();
+            foreach ($data['GlobalJob'] as $key_1 => $value_1) {
+                $values_1[$key_1] = $value_1;
+            }
+            $object->setGlobalJob($values_1);
             unset($data['GlobalJob']);
         } elseif (\array_key_exists('GlobalJob', $data) && null === $data['GlobalJob']) {
             $object->setGlobalJob(null);
+            unset($data['GlobalJob']);
         }
-        foreach ($data as $key => $value) {
-            if (preg_match('/.*/', (string) $key)) {
-                $object[$key] = $value;
+        foreach ($data as $key_2 => $value_2) {
+            if (preg_match('/.*/', (string) $key_2)) {
+                $object[$key_2] = $value_2;
             }
         }
 
@@ -80,20 +92,28 @@ class ServiceSpecModeNormalizer implements DenormalizerInterface, NormalizerInte
     {
         $dataArray = [];
         if ($data->isInitialized('replicated') && null !== $data->getReplicated()) {
-            $dataArray['Replicated'] = $this->normalizer->normalize($data->getReplicated(), 'json', $context);
+            $dataArray['Replicated'] = null === $data->getReplicated() ? null : new \Docker\API\Runtime\JsonObject($this->normalizer->normalize($data->getReplicated(), 'json', $context));
         }
         if ($data->isInitialized('global') && null !== $data->getGlobal()) {
-            $dataArray['Global'] = $this->normalizer->normalize($data->getGlobal(), 'json', $context);
+            $values = new \Docker\API\Runtime\JsonObject();
+            foreach ($data->getGlobal() as $key => $value) {
+                $values[$key] = $value;
+            }
+            $dataArray['Global'] = $values;
         }
         if ($data->isInitialized('replicatedJob') && null !== $data->getReplicatedJob()) {
-            $dataArray['ReplicatedJob'] = $this->normalizer->normalize($data->getReplicatedJob(), 'json', $context);
+            $dataArray['ReplicatedJob'] = null === $data->getReplicatedJob() ? null : new \Docker\API\Runtime\JsonObject($this->normalizer->normalize($data->getReplicatedJob(), 'json', $context));
         }
         if ($data->isInitialized('globalJob') && null !== $data->getGlobalJob()) {
-            $dataArray['GlobalJob'] = $this->normalizer->normalize($data->getGlobalJob(), 'json', $context);
+            $values_1 = new \Docker\API\Runtime\JsonObject();
+            foreach ($data->getGlobalJob() as $key_1 => $value_1) {
+                $values_1[$key_1] = $value_1;
+            }
+            $dataArray['GlobalJob'] = $values_1;
         }
-        foreach ($data as $key => $value) {
-            if (preg_match('/.*/', (string) $key)) {
-                $dataArray[$key] = $value;
+        foreach ($data->additionalPropertyEntries() as $key_2 => $value_2) {
+            if (preg_match('/.*/', (string) $key_2)) {
+                $dataArray[$key_2] = $value_2;
             }
         }
 

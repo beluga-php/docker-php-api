@@ -33,39 +33,43 @@ class AuthConfigNormalizer implements DenormalizerInterface, NormalizerInterface
 
     public function denormalize(mixed $data, string $type, ?string $format = null, array $context = []): mixed
     {
-        if (isset($data['$ref'])) {
+        $object = new \Docker\API\Model\AuthConfig();
+        if (null === $data || false === \is_array($data)) {
+            return $object;
+        }
+        if (isset($data['$ref']) && !isset($data['type']) && !isset($data['properties']) && !isset($data['allOf'])) {
             return new Reference($data['$ref'], $context['document-origin']);
         }
         if (isset($data['$recursiveRef'])) {
             return new Reference($data['$recursiveRef'], $context['document-origin']);
-        }
-        $object = new \Docker\API\Model\AuthConfig();
-        if (null === $data || false === \is_array($data)) {
-            return $object;
         }
         if (\array_key_exists('username', $data) && null !== $data['username']) {
             $object->setUsername($data['username']);
             unset($data['username']);
         } elseif (\array_key_exists('username', $data) && null === $data['username']) {
             $object->setUsername(null);
+            unset($data['username']);
         }
         if (\array_key_exists('password', $data) && null !== $data['password']) {
             $object->setPassword($data['password']);
             unset($data['password']);
         } elseif (\array_key_exists('password', $data) && null === $data['password']) {
             $object->setPassword(null);
+            unset($data['password']);
         }
         if (\array_key_exists('email', $data) && null !== $data['email']) {
             $object->setEmail($data['email']);
             unset($data['email']);
         } elseif (\array_key_exists('email', $data) && null === $data['email']) {
             $object->setEmail(null);
+            unset($data['email']);
         }
         if (\array_key_exists('serveraddress', $data) && null !== $data['serveraddress']) {
             $object->setServeraddress($data['serveraddress']);
             unset($data['serveraddress']);
         } elseif (\array_key_exists('serveraddress', $data) && null === $data['serveraddress']) {
             $object->setServeraddress(null);
+            unset($data['serveraddress']);
         }
         foreach ($data as $key => $value) {
             if (preg_match('/.*/', (string) $key)) {
@@ -91,7 +95,7 @@ class AuthConfigNormalizer implements DenormalizerInterface, NormalizerInterface
         if ($data->isInitialized('serveraddress') && null !== $data->getServeraddress()) {
             $dataArray['serveraddress'] = $data->getServeraddress();
         }
-        foreach ($data as $key => $value) {
+        foreach ($data->additionalPropertyEntries() as $key => $value) {
             if (preg_match('/.*/', (string) $key)) {
                 $dataArray[$key] = $value;
             }

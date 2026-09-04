@@ -11,12 +11,10 @@ class NodeDelete extends \Docker\API\Runtime\Client\BaseEndpoint implements \Doc
     protected $accept;
 
     /**
-     * @param string $id              The ID or name of the node
-     * @param array  $queryParameters {
-     *
-     * @var bool $force Force remove a node from the swarm
-     *           }
-     *
+     * @param string $id The ID or name of the node
+     * @param array{
+     *    "force"?: bool, //Force remove a node from the swarm
+     * } $queryParameters
      * @param array $accept Accept content header application/json|text/plain
      */
     public function __construct(string $id, array $queryParameters = [], array $accept = [])
@@ -33,7 +31,7 @@ class NodeDelete extends \Docker\API\Runtime\Client\BaseEndpoint implements \Doc
 
     public function getUri(): string
     {
-        return str_replace(['{id}'], [$this->id], '/nodes/{id}');
+        return str_replace(['{id}'], [rawurlencode($this->id)], '/nodes/{id}');
     }
 
     public function getBody(\Symfony\Component\Serializer\SerializerInterface $serializer, $streamFactory = null): array
@@ -73,14 +71,15 @@ class NodeDelete extends \Docker\API\Runtime\Client\BaseEndpoint implements \Doc
         $status = $response->getStatusCode();
         $body = (string) $response->getBody();
         if (200 === $status) {
+            return null;
         }
-        if ((null === $contentType) === false && (404 === $status && false !== mb_strpos($contentType, 'application/json'))) {
+        if ((null === $contentType) === false && (404 === $status && false !== stripos(strtolower($contentType), 'application/json'))) {
             throw new \Docker\API\Exception\NodeDeleteNotFoundException($serializer->deserialize($body, 'Docker\API\Model\ErrorResponse', 'json'), $response);
         }
-        if ((null === $contentType) === false && (500 === $status && false !== mb_strpos($contentType, 'application/json'))) {
+        if ((null === $contentType) === false && (500 === $status && false !== stripos(strtolower($contentType), 'application/json'))) {
             throw new \Docker\API\Exception\NodeDeleteInternalServerErrorException($serializer->deserialize($body, 'Docker\API\Model\ErrorResponse', 'json'), $response);
         }
-        if ((null === $contentType) === false && (503 === $status && false !== mb_strpos($contentType, 'application/json'))) {
+        if ((null === $contentType) === false && (503 === $status && false !== stripos(strtolower($contentType), 'application/json'))) {
             throw new \Docker\API\Exception\NodeDeleteServiceUnavailableException($serializer->deserialize($body, 'Docker\API\Model\ErrorResponse', 'json'), $response);
         }
     }

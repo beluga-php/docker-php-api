@@ -33,21 +33,22 @@ class TaskSpecNetworkAttachmentSpecNormalizer implements DenormalizerInterface, 
 
     public function denormalize(mixed $data, string $type, ?string $format = null, array $context = []): mixed
     {
-        if (isset($data['$ref'])) {
+        $object = new \Docker\API\Model\TaskSpecNetworkAttachmentSpec();
+        if (null === $data || false === \is_array($data)) {
+            return $object;
+        }
+        if (isset($data['$ref']) && !isset($data['type']) && !isset($data['properties']) && !isset($data['allOf'])) {
             return new Reference($data['$ref'], $context['document-origin']);
         }
         if (isset($data['$recursiveRef'])) {
             return new Reference($data['$recursiveRef'], $context['document-origin']);
-        }
-        $object = new \Docker\API\Model\TaskSpecNetworkAttachmentSpec();
-        if (null === $data || false === \is_array($data)) {
-            return $object;
         }
         if (\array_key_exists('ContainerID', $data) && null !== $data['ContainerID']) {
             $object->setContainerID($data['ContainerID']);
             unset($data['ContainerID']);
         } elseif (\array_key_exists('ContainerID', $data) && null === $data['ContainerID']) {
             $object->setContainerID(null);
+            unset($data['ContainerID']);
         }
         foreach ($data as $key => $value) {
             if (preg_match('/.*/', (string) $key)) {
@@ -64,7 +65,7 @@ class TaskSpecNetworkAttachmentSpecNormalizer implements DenormalizerInterface, 
         if ($data->isInitialized('containerID') && null !== $data->getContainerID()) {
             $dataArray['ContainerID'] = $data->getContainerID();
         }
-        foreach ($data as $key => $value) {
+        foreach ($data->additionalPropertyEntries() as $key => $value) {
             if (preg_match('/.*/', (string) $key)) {
                 $dataArray[$key] = $value;
             }
