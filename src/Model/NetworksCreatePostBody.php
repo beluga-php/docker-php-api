@@ -4,8 +4,12 @@ declare(strict_types=1);
 
 namespace Docker\API\Model;
 
-class NetworksCreatePostBody extends \ArrayObject
+use Docker\API\Runtime\AdditionalAndPatternProperties;
+use Docker\API\Runtime\AdditionalPropertiesInterface;
+
+class NetworksCreatePostBody implements AdditionalPropertiesInterface
 {
+    use AdditionalAndPatternProperties;
     /**
      * @var array
      */
@@ -22,13 +26,7 @@ class NetworksCreatePostBody extends \ArrayObject
      */
     protected $name;
     /**
-     * Check for networks with duplicate names. Since Network is
-     * primarily keyed based on a random ID and not on the name, and
-     * network name is strictly a user-friendly alias to the network
-     * which is uniquely identified using ID, there is no guaranteed
-     * way to check for duplicates. CheckDuplicate is there to provide
-     * a best effort checking of any networks which has the same name
-     * but it is not guaranteed to catch all name collisions.
+     * Deprecated: CheckDuplicate is now always enabled.
      *
      * @var bool|null
      */
@@ -102,13 +100,7 @@ class NetworksCreatePostBody extends \ArrayObject
     }
 
     /**
-     * Check for networks with duplicate names. Since Network is
-     * primarily keyed based on a random ID and not on the name, and
-     * network name is strictly a user-friendly alias to the network
-     * which is uniquely identified using ID, there is no guaranteed
-     * way to check for duplicates. CheckDuplicate is there to provide
-     * a best effort checking of any networks which has the same name
-     * but it is not guaranteed to catch all name collisions.
+     * Deprecated: CheckDuplicate is now always enabled.
      */
     public function getCheckDuplicate(): ?bool
     {
@@ -116,13 +108,7 @@ class NetworksCreatePostBody extends \ArrayObject
     }
 
     /**
-     * Check for networks with duplicate names. Since Network is
-     * primarily keyed based on a random ID and not on the name, and
-     * network name is strictly a user-friendly alias to the network
-     * which is uniquely identified using ID, there is no guaranteed
-     * way to check for duplicates. CheckDuplicate is there to provide
-     * a best effort checking of any networks which has the same name
-     * but it is not guaranteed to catch all name collisions.
+     * Deprecated: CheckDuplicate is now always enabled.
      */
     public function setCheckDuplicate(?bool $checkDuplicate): self
     {
@@ -288,5 +274,10 @@ class NetworksCreatePostBody extends \ArrayObject
         $this->labels = $labels;
 
         return $this;
+    }
+
+    public function definedProperties(): array
+    {
+        return ['name' => ['Name', 'getName', 'setName'], 'checkDuplicate' => ['CheckDuplicate', 'getCheckDuplicate', 'setCheckDuplicate'], 'driver' => ['Driver', 'getDriver', 'setDriver'], 'internal' => ['Internal', 'getInternal', 'setInternal'], 'attachable' => ['Attachable', 'getAttachable', 'setAttachable'], 'ingress' => ['Ingress', 'getIngress', 'setIngress'], 'iPAM' => ['IPAM', 'getIPAM', 'setIPAM'], 'enableIPv6' => ['EnableIPv6', 'getEnableIPv6', 'setEnableIPv6'], 'options' => ['Options', 'getOptions', 'setOptions'], 'labels' => ['Labels', 'getLabels', 'setLabels']];
     }
 }

@@ -4,8 +4,12 @@ declare(strict_types=1);
 
 namespace Docker\API\Model;
 
-class EndpointSettings extends \ArrayObject
+use Docker\API\Runtime\AdditionalAndPatternProperties;
+use Docker\API\Runtime\AdditionalPropertiesInterface;
+
+class EndpointSettings implements AdditionalPropertiesInterface
 {
+    use AdditionalAndPatternProperties;
     /**
      * @var array
      */
@@ -25,6 +29,12 @@ class EndpointSettings extends \ArrayObject
      * @var list<string>|null
      */
     protected $links;
+    /**
+     * MAC address for the endpoint on this network. The network driver might ignore this parameter.
+     *
+     * @var string|null
+     */
+    protected $macAddress;
     /**
      * @var list<string>|null
      */
@@ -78,18 +88,26 @@ class EndpointSettings extends \ArrayObject
      */
     protected $globalIPv6PrefixLen;
     /**
-     * MAC address for the endpoint on this network.
-     *
-     * @var string|null
-     */
-    protected $macAddress;
-    /**
      * DriverOpts is a mapping of driver options and values. These options
      * are passed directly to the driver and are driver specific.
      *
      * @var array<string, string>|null
      */
     protected $driverOpts;
+    /**
+     * List of all DNS names an endpoint has on a specific network. This
+     * list is based on the container name, network aliases, container short
+     * ID, and hostname.
+     *
+     * These DNS names are non-fully qualified but can contain several dots.
+     * You can get fully qualified DNS names by appending `.<network-name>`.
+     * For instance, if container name is `my.ctr` and the network is named
+     * `testnet`, `DNSNames` will contain `my.ctr` and the FQDN will be
+     * `my.ctr.testnet`.
+     *
+     * @var list<string>|null
+     */
+    protected $dNSNames;
 
     /**
      * EndpointIPAMConfig represents an endpoint's IPAM configuration.
@@ -125,6 +143,25 @@ class EndpointSettings extends \ArrayObject
     {
         $this->initialized['links'] = true;
         $this->links = $links;
+
+        return $this;
+    }
+
+    /**
+     * MAC address for the endpoint on this network. The network driver might ignore this parameter.
+     */
+    public function getMacAddress(): ?string
+    {
+        return $this->macAddress;
+    }
+
+    /**
+     * MAC address for the endpoint on this network. The network driver might ignore this parameter.
+     */
+    public function setMacAddress(?string $macAddress): self
+    {
+        $this->initialized['macAddress'] = true;
+        $this->macAddress = $macAddress;
 
         return $this;
     }
@@ -301,25 +338,6 @@ class EndpointSettings extends \ArrayObject
     }
 
     /**
-     * MAC address for the endpoint on this network.
-     */
-    public function getMacAddress(): ?string
-    {
-        return $this->macAddress;
-    }
-
-    /**
-     * MAC address for the endpoint on this network.
-     */
-    public function setMacAddress(?string $macAddress): self
-    {
-        $this->initialized['macAddress'] = true;
-        $this->macAddress = $macAddress;
-
-        return $this;
-    }
-
-    /**
      * DriverOpts is a mapping of driver options and values. These options
      * are passed directly to the driver and are driver specific.
      *
@@ -342,5 +360,49 @@ class EndpointSettings extends \ArrayObject
         $this->driverOpts = $driverOpts;
 
         return $this;
+    }
+
+    /**
+     * List of all DNS names an endpoint has on a specific network. This
+     * list is based on the container name, network aliases, container short
+     * ID, and hostname.
+     *
+     * These DNS names are non-fully qualified but can contain several dots.
+     * You can get fully qualified DNS names by appending `.<network-name>`.
+     * For instance, if container name is `my.ctr` and the network is named
+     * `testnet`, `DNSNames` will contain `my.ctr` and the FQDN will be
+     * `my.ctr.testnet`.
+     *
+     * @return list<string>|null
+     */
+    public function getDNSNames(): ?array
+    {
+        return $this->dNSNames;
+    }
+
+    /**
+     * List of all DNS names an endpoint has on a specific network. This
+     * list is based on the container name, network aliases, container short
+     * ID, and hostname.
+     *
+     * These DNS names are non-fully qualified but can contain several dots.
+     * You can get fully qualified DNS names by appending `.<network-name>`.
+     * For instance, if container name is `my.ctr` and the network is named
+     * `testnet`, `DNSNames` will contain `my.ctr` and the FQDN will be
+     * `my.ctr.testnet`.
+     *
+     * @param list<string>|null $dNSNames
+     */
+    public function setDNSNames(?array $dNSNames): self
+    {
+        $this->initialized['dNSNames'] = true;
+        $this->dNSNames = $dNSNames;
+
+        return $this;
+    }
+
+    public function definedProperties(): array
+    {
+        return ['iPAMConfig' => ['IPAMConfig', 'getIPAMConfig', 'setIPAMConfig'], 'links' => ['Links', 'getLinks', 'setLinks'], 'macAddress' => ['MacAddress', 'getMacAddress', 'setMacAddress'], 'aliases' => ['Aliases', 'getAliases', 'setAliases'], 'networkID' => ['NetworkID', 'getNetworkID', 'setNetworkID'], 'endpointID' => ['EndpointID', 'getEndpointID', 'setEndpointID'], 'gateway' => ['Gateway', 'getGateway', 'setGateway'], 'iPAddress' => ['IPAddress', 'getIPAddress', 'setIPAddress'], 'iPPrefixLen' => ['IPPrefixLen', 'getIPPrefixLen', 'setIPPrefixLen'], 'iPv6Gateway' => ['IPv6Gateway', 'getIPv6Gateway', 'setIPv6Gateway'], 'globalIPv6Address' => ['GlobalIPv6Address', 'getGlobalIPv6Address', 'setGlobalIPv6Address'], 'globalIPv6PrefixLen' => ['GlobalIPv6PrefixLen', 'getGlobalIPv6PrefixLen', 'setGlobalIPv6PrefixLen'], 'driverOpts' => ['DriverOpts', 'getDriverOpts', 'setDriverOpts'], 'dNSNames' => ['DNSNames', 'getDNSNames', 'setDNSNames']];
     }
 }

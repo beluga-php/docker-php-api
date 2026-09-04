@@ -4,8 +4,12 @@ declare(strict_types=1);
 
 namespace Docker\API\Model;
 
-class Mount extends \ArrayObject
+use Docker\API\Runtime\AdditionalAndPatternProperties;
+use Docker\API\Runtime\AdditionalPropertiesInterface;
+
+class Mount implements AdditionalPropertiesInterface
 {
+    use AdditionalAndPatternProperties;
     /**
      * @var array
      */
@@ -232,5 +236,10 @@ class Mount extends \ArrayObject
         $this->tmpfsOptions = $tmpfsOptions;
 
         return $this;
+    }
+
+    public function definedProperties(): array
+    {
+        return ['target' => ['Target', 'getTarget', 'setTarget'], 'source' => ['Source', 'getSource', 'setSource'], 'type' => ['Type', 'getType', 'setType'], 'readOnly' => ['ReadOnly', 'getReadOnly', 'setReadOnly'], 'consistency' => ['Consistency', 'getConsistency', 'setConsistency'], 'bindOptions' => ['BindOptions', 'getBindOptions', 'setBindOptions'], 'volumeOptions' => ['VolumeOptions', 'getVolumeOptions', 'setVolumeOptions'], 'tmpfsOptions' => ['TmpfsOptions', 'getTmpfsOptions', 'setTmpfsOptions']];
     }
 }

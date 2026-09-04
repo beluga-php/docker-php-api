@@ -4,8 +4,12 @@ declare(strict_types=1);
 
 namespace Docker\API\Model;
 
-class SystemInfo extends \ArrayObject
+use Docker\API\Runtime\AdditionalAndPatternProperties;
+use Docker\API\Runtime\AdditionalPropertiesInterface;
+
+class SystemInfo implements AdditionalPropertiesInterface
 {
+    use AdditionalAndPatternProperties;
     /**
      * @var array
      */
@@ -270,7 +274,7 @@ class SystemInfo extends \ArrayObject
      * Go runtime (`GOOS`).
      *
      * Currently returned values are "linux" and "windows". A full list of
-     * possible values can be found in the [Go documentation](https://golang.org/doc/install/source#environment).
+     * possible values can be found in the [Go documentation](https://go.dev/doc/install/source#environment).
      *
      * @var string|null
      */
@@ -279,7 +283,7 @@ class SystemInfo extends \ArrayObject
      * Hardware architecture of the host, as returned by the Go runtime
      * (`GOARCH`).
      *
-     * A full list of possible values can be found in the [Go documentation](https://golang.org/doc/install/source#environment).
+     * A full list of possible values can be found in the [Go documentation](https://go.dev/doc/install/source#environment).
      *
      * @var string|null
      */
@@ -507,6 +511,22 @@ class SystemInfo extends \ArrayObject
      * @var list<string>|null
      */
     protected $warnings;
+    /**
+     * List of directories where (Container Device Interface) CDI
+     * specifications are located.
+     *
+     * These specifications define vendor-specific modifications to an OCI
+     * runtime specification for a container being created.
+     *
+     * An empty list indicates that CDI device injection is disabled.
+     *
+     * Note that since using CDI device injection requires the daemon to have
+     * experimental enabled. For non-experimental daemons an empty list will
+     * always be returned.
+     *
+     * @var list<string>|null
+     */
+    protected $cDISpecDirs;
 
     /**
      * Unique identifier of the daemon.
@@ -1248,7 +1268,7 @@ class SystemInfo extends \ArrayObject
      * Go runtime (`GOOS`).
      *
      * Currently returned values are "linux" and "windows". A full list of
-     * possible values can be found in the [Go documentation](https://golang.org/doc/install/source#environment).
+     * possible values can be found in the [Go documentation](https://go.dev/doc/install/source#environment).
      */
     public function getOSType(): ?string
     {
@@ -1260,7 +1280,7 @@ class SystemInfo extends \ArrayObject
      * Go runtime (`GOOS`).
      *
      * Currently returned values are "linux" and "windows". A full list of
-     * possible values can be found in the [Go documentation](https://golang.org/doc/install/source#environment).
+     * possible values can be found in the [Go documentation](https://go.dev/doc/install/source#environment).
      */
     public function setOSType(?string $oSType): self
     {
@@ -1274,7 +1294,7 @@ class SystemInfo extends \ArrayObject
      * Hardware architecture of the host, as returned by the Go runtime
      * (`GOARCH`).
      *
-     * A full list of possible values can be found in the [Go documentation](https://golang.org/doc/install/source#environment).
+     * A full list of possible values can be found in the [Go documentation](https://go.dev/doc/install/source#environment).
      */
     public function getArchitecture(): ?string
     {
@@ -1285,7 +1305,7 @@ class SystemInfo extends \ArrayObject
      * Hardware architecture of the host, as returned by the Go runtime
      * (`GOARCH`).
      *
-     * A full list of possible values can be found in the [Go documentation](https://golang.org/doc/install/source#environment).
+     * A full list of possible values can be found in the [Go documentation](https://go.dev/doc/install/source#environment).
      */
     public function setArchitecture(?string $architecture): self
     {
@@ -1938,5 +1958,53 @@ class SystemInfo extends \ArrayObject
         $this->warnings = $warnings;
 
         return $this;
+    }
+
+    /**
+     * List of directories where (Container Device Interface) CDI
+     * specifications are located.
+     *
+     * These specifications define vendor-specific modifications to an OCI
+     * runtime specification for a container being created.
+     *
+     * An empty list indicates that CDI device injection is disabled.
+     *
+     * Note that since using CDI device injection requires the daemon to have
+     * experimental enabled. For non-experimental daemons an empty list will
+     * always be returned.
+     *
+     * @return list<string>|null
+     */
+    public function getCDISpecDirs(): ?array
+    {
+        return $this->cDISpecDirs;
+    }
+
+    /**
+     * List of directories where (Container Device Interface) CDI
+     * specifications are located.
+     *
+     * These specifications define vendor-specific modifications to an OCI
+     * runtime specification for a container being created.
+     *
+     * An empty list indicates that CDI device injection is disabled.
+     *
+     * Note that since using CDI device injection requires the daemon to have
+     * experimental enabled. For non-experimental daemons an empty list will
+     * always be returned.
+     *
+     * @param list<string>|null $cDISpecDirs
+     */
+    public function setCDISpecDirs(?array $cDISpecDirs): self
+    {
+        $this->initialized['cDISpecDirs'] = true;
+        $this->cDISpecDirs = $cDISpecDirs;
+
+        return $this;
+    }
+
+    public function definedProperties(): array
+    {
+        return ['iD' => ['ID', 'getID', 'setID'], 'containers' => ['Containers', 'getContainers', 'setContainers'], 'containersRunning' => ['ContainersRunning', 'getContainersRunning', 'setContainersRunning'], 'containersPaused' => ['ContainersPaused', 'getContainersPaused', 'setContainersPaused'], 'containersStopped' => ['ContainersStopped', 'getContainersStopped', 'setContainersStopped'], 'images' => ['Images', 'getImages', 'setImages'], 'driver' => ['Driver', 'getDriver', 'setDriver'], 'driverStatus' => ['DriverStatus', 'getDriverStatus', 'setDriverStatus'], 'dockerRootDir' => ['DockerRootDir', 'getDockerRootDir', 'setDockerRootDir'], 'plugins' => ['Plugins', 'getPlugins', 'setPlugins'], 'memoryLimit' => ['MemoryLimit', 'getMemoryLimit', 'setMemoryLimit'], 'swapLimit' => ['SwapLimit', 'getSwapLimit', 'setSwapLimit'], 'kernelMemoryTCP' => ['KernelMemoryTCP', 'getKernelMemoryTCP', 'setKernelMemoryTCP'], 'cpuCfsPeriod' => ['CpuCfsPeriod', 'getCpuCfsPeriod', 'setCpuCfsPeriod'], 'cpuCfsQuota' => ['CpuCfsQuota', 'getCpuCfsQuota', 'setCpuCfsQuota'], 'cPUShares' => ['CPUShares', 'getCPUShares', 'setCPUShares'], 'cPUSet' => ['CPUSet', 'getCPUSet', 'setCPUSet'], 'pidsLimit' => ['PidsLimit', 'getPidsLimit', 'setPidsLimit'], 'oomKillDisable' => ['OomKillDisable', 'getOomKillDisable', 'setOomKillDisable'], 'iPv4Forwarding' => ['IPv4Forwarding', 'getIPv4Forwarding', 'setIPv4Forwarding'], 'bridgeNfIptables' => ['BridgeNfIptables', 'getBridgeNfIptables', 'setBridgeNfIptables'], 'bridgeNfIp6tables' => ['BridgeNfIp6tables', 'getBridgeNfIp6tables', 'setBridgeNfIp6tables'], 'debug' => ['Debug', 'getDebug', 'setDebug'], 'nFd' => ['NFd', 'getNFd', 'setNFd'], 'nGoroutines' => ['NGoroutines', 'getNGoroutines', 'setNGoroutines'], 'systemTime' => ['SystemTime', 'getSystemTime', 'setSystemTime'], 'loggingDriver' => ['LoggingDriver', 'getLoggingDriver', 'setLoggingDriver'], 'cgroupDriver' => ['CgroupDriver', 'getCgroupDriver', 'setCgroupDriver'], 'cgroupVersion' => ['CgroupVersion', 'getCgroupVersion', 'setCgroupVersion'], 'nEventsListener' => ['NEventsListener', 'getNEventsListener', 'setNEventsListener'], 'kernelVersion' => ['KernelVersion', 'getKernelVersion', 'setKernelVersion'], 'operatingSystem' => ['OperatingSystem', 'getOperatingSystem', 'setOperatingSystem'], 'oSVersion' => ['OSVersion', 'getOSVersion', 'setOSVersion'], 'oSType' => ['OSType', 'getOSType', 'setOSType'], 'architecture' => ['Architecture', 'getArchitecture', 'setArchitecture'], 'nCPU' => ['NCPU', 'getNCPU', 'setNCPU'], 'memTotal' => ['MemTotal', 'getMemTotal', 'setMemTotal'], 'indexServerAddress' => ['IndexServerAddress', 'getIndexServerAddress', 'setIndexServerAddress'], 'registryConfig' => ['RegistryConfig', 'getRegistryConfig', 'setRegistryConfig'], 'genericResources' => ['GenericResources', 'getGenericResources', 'setGenericResources'], 'httpProxy' => ['HttpProxy', 'getHttpProxy', 'setHttpProxy'], 'httpsProxy' => ['HttpsProxy', 'getHttpsProxy', 'setHttpsProxy'], 'noProxy' => ['NoProxy', 'getNoProxy', 'setNoProxy'], 'name' => ['Name', 'getName', 'setName'], 'labels' => ['Labels', 'getLabels', 'setLabels'], 'experimentalBuild' => ['ExperimentalBuild', 'getExperimentalBuild', 'setExperimentalBuild'], 'serverVersion' => ['ServerVersion', 'getServerVersion', 'setServerVersion'], 'runtimes' => ['Runtimes', 'getRuntimes', 'setRuntimes'], 'defaultRuntime' => ['DefaultRuntime', 'getDefaultRuntime', 'setDefaultRuntime'], 'swarm' => ['Swarm', 'getSwarm', 'setSwarm'], 'liveRestoreEnabled' => ['LiveRestoreEnabled', 'getLiveRestoreEnabled', 'setLiveRestoreEnabled'], 'isolation' => ['Isolation', 'getIsolation', 'setIsolation'], 'initBinary' => ['InitBinary', 'getInitBinary', 'setInitBinary'], 'containerdCommit' => ['ContainerdCommit', 'getContainerdCommit', 'setContainerdCommit'], 'runcCommit' => ['RuncCommit', 'getRuncCommit', 'setRuncCommit'], 'initCommit' => ['InitCommit', 'getInitCommit', 'setInitCommit'], 'securityOptions' => ['SecurityOptions', 'getSecurityOptions', 'setSecurityOptions'], 'productLicense' => ['ProductLicense', 'getProductLicense', 'setProductLicense'], 'defaultAddressPools' => ['DefaultAddressPools', 'getDefaultAddressPools', 'setDefaultAddressPools'], 'warnings' => ['Warnings', 'getWarnings', 'setWarnings'], 'cDISpecDirs' => ['CDISpecDirs', 'getCDISpecDirs', 'setCDISpecDirs']];
     }
 }

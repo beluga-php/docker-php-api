@@ -29,7 +29,7 @@ class ContainerExport extends \Docker\API\Runtime\Client\BaseEndpoint implements
 
     public function getUri(): string
     {
-        return str_replace(['{id}'], [$this->id], '/containers/{id}/export');
+        return str_replace(['{id}'], [rawurlencode($this->id)], '/containers/{id}/export');
     }
 
     public function getBody(\Symfony\Component\Serializer\SerializerInterface $serializer, $streamFactory = null): array
@@ -57,7 +57,7 @@ class ContainerExport extends \Docker\API\Runtime\Client\BaseEndpoint implements
         $body = (string) $response->getBody();
         if (200 === $status) {
         }
-        if ((null === $contentType) === false && (404 === $status && false !== mb_strpos($contentType, 'application/json'))) {
+        if ((null === $contentType) === false && (404 === $status && false !== stripos(strtolower($contentType), 'application/json'))) {
             throw new \Docker\API\Exception\ContainerExportNotFoundException($response);
         }
         if (500 === $status) {

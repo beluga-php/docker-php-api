@@ -11,15 +11,12 @@ class ContainerStart extends \Docker\API\Runtime\Client\BaseEndpoint implements 
     protected $accept;
 
     /**
-     * @param string $id              ID or name of the container
-     * @param array  $queryParameters {
-     *
-     * @var string $detachKeys Override the key sequence for detaching a container. Format is a
-     *             single character `[a-Z]` or `ctrl-<value>` where `<value>` is one
-     *             of: `a-z`, `@`, `^`, `[`, `,` or `_`.
-     *
-     * }
-     *
+     * @param string $id ID or name of the container
+     * @param array{
+     *    "detachKeys"?: string, //Override the key sequence for detaching a container. Format is a
+     * single character `[a-Z]` or `ctrl-<value>` where `<value>` is one
+     * of: `a-z`, `@`, `^`, `[`, `,` or `_`.
+     * } $queryParameters
      * @param array $accept Accept content header application/json|text/plain
      */
     public function __construct(string $id, array $queryParameters = [], array $accept = [])
@@ -36,7 +33,7 @@ class ContainerStart extends \Docker\API\Runtime\Client\BaseEndpoint implements 
 
     public function getUri(): string
     {
-        return str_replace(['{id}'], [$this->id], '/containers/{id}/start');
+        return str_replace(['{id}'], [rawurlencode($this->id)], '/containers/{id}/start');
     }
 
     public function getBody(\Symfony\Component\Serializer\SerializerInterface $serializer, $streamFactory = null): array
@@ -78,11 +75,11 @@ class ContainerStart extends \Docker\API\Runtime\Client\BaseEndpoint implements 
         }
         if (304 === $status) {
         }
-        if ((null === $contentType) === false && (404 === $status && false !== mb_strpos($contentType, 'application/json'))) {
-            throw new \Docker\API\Exception\ContainerStartNotFoundException($serializer->deserialize($body, 'Docker\\API\\Model\\ErrorResponse', 'json'), $response);
+        if ((null === $contentType) === false && (404 === $status && false !== stripos(strtolower($contentType), 'application/json'))) {
+            throw new \Docker\API\Exception\ContainerStartNotFoundException($serializer->deserialize($body, 'Docker\API\Model\ErrorResponse', 'json'), $response);
         }
-        if ((null === $contentType) === false && (500 === $status && false !== mb_strpos($contentType, 'application/json'))) {
-            throw new \Docker\API\Exception\ContainerStartInternalServerErrorException($serializer->deserialize($body, 'Docker\\API\\Model\\ErrorResponse', 'json'), $response);
+        if ((null === $contentType) === false && (500 === $status && false !== stripos(strtolower($contentType), 'application/json'))) {
+            throw new \Docker\API\Exception\ContainerStartInternalServerErrorException($serializer->deserialize($body, 'Docker\API\Model\ErrorResponse', 'json'), $response);
         }
     }
 

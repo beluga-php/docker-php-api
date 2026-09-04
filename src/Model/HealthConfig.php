@@ -4,8 +4,12 @@ declare(strict_types=1);
 
 namespace Docker\API\Model;
 
-class HealthConfig extends \ArrayObject
+use Docker\API\Runtime\AdditionalAndPatternProperties;
+use Docker\API\Runtime\AdditionalPropertiesInterface;
+
+class HealthConfig implements AdditionalPropertiesInterface
 {
+    use AdditionalAndPatternProperties;
     /**
      * @var array
      */
@@ -55,6 +59,13 @@ class HealthConfig extends \ArrayObject
      * @var int|null
      */
     protected $startPeriod;
+    /**
+     * The time to wait between checks in nanoseconds during the start period.
+     * It should be 0 or at least 1000000 (1 ms). 0 means inherit.
+     *
+     * @var int|null
+     */
+    protected $startInterval;
 
     /**
      * The test to perform. Possible values are:
@@ -173,5 +184,31 @@ class HealthConfig extends \ArrayObject
         $this->startPeriod = $startPeriod;
 
         return $this;
+    }
+
+    /**
+     * The time to wait between checks in nanoseconds during the start period.
+     * It should be 0 or at least 1000000 (1 ms). 0 means inherit.
+     */
+    public function getStartInterval(): ?int
+    {
+        return $this->startInterval;
+    }
+
+    /**
+     * The time to wait between checks in nanoseconds during the start period.
+     * It should be 0 or at least 1000000 (1 ms). 0 means inherit.
+     */
+    public function setStartInterval(?int $startInterval): self
+    {
+        $this->initialized['startInterval'] = true;
+        $this->startInterval = $startInterval;
+
+        return $this;
+    }
+
+    public function definedProperties(): array
+    {
+        return ['test' => ['Test', 'getTest', 'setTest'], 'interval' => ['Interval', 'getInterval', 'setInterval'], 'timeout' => ['Timeout', 'getTimeout', 'setTimeout'], 'retries' => ['Retries', 'getRetries', 'setRetries'], 'startPeriod' => ['StartPeriod', 'getStartPeriod', 'setStartPeriod'], 'startInterval' => ['StartInterval', 'getStartInterval', 'setStartInterval']];
     }
 }

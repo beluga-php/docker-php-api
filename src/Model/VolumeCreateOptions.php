@@ -4,8 +4,12 @@ declare(strict_types=1);
 
 namespace Docker\API\Model;
 
-class VolumeCreateOptions extends \ArrayObject
+use Docker\API\Runtime\AdditionalAndPatternProperties;
+use Docker\API\Runtime\AdditionalPropertiesInterface;
+
+class VolumeCreateOptions implements AdditionalPropertiesInterface
 {
+    use AdditionalAndPatternProperties;
     /**
      * @var array
      */
@@ -150,5 +154,10 @@ class VolumeCreateOptions extends \ArrayObject
         $this->clusterVolumeSpec = $clusterVolumeSpec;
 
         return $this;
+    }
+
+    public function definedProperties(): array
+    {
+        return ['name' => ['Name', 'getName', 'setName'], 'driver' => ['Driver', 'getDriver', 'setDriver'], 'driverOpts' => ['DriverOpts', 'getDriverOpts', 'setDriverOpts'], 'labels' => ['Labels', 'getLabels', 'setLabels'], 'clusterVolumeSpec' => ['ClusterVolumeSpec', 'getClusterVolumeSpec', 'setClusterVolumeSpec']];
     }
 }

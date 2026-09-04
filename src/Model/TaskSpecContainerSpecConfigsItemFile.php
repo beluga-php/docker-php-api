@@ -4,8 +4,12 @@ declare(strict_types=1);
 
 namespace Docker\API\Model;
 
-class TaskSpecContainerSpecConfigsItemFile extends \ArrayObject
+use Docker\API\Runtime\AdditionalAndPatternProperties;
+use Docker\API\Runtime\AdditionalPropertiesInterface;
+
+class TaskSpecContainerSpecConfigsItemFile implements AdditionalPropertiesInterface
 {
+    use AdditionalAndPatternProperties;
     /**
      * @var array
      */
@@ -114,5 +118,10 @@ class TaskSpecContainerSpecConfigsItemFile extends \ArrayObject
         $this->mode = $mode;
 
         return $this;
+    }
+
+    public function definedProperties(): array
+    {
+        return ['name' => ['Name', 'getName', 'setName'], 'uID' => ['UID', 'getUID', 'setUID'], 'gID' => ['GID', 'getGID', 'setGID'], 'mode' => ['Mode', 'getMode', 'setMode']];
     }
 }

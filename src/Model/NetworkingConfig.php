@@ -4,8 +4,12 @@ declare(strict_types=1);
 
 namespace Docker\API\Model;
 
-class NetworkingConfig extends \ArrayObject
+use Docker\API\Runtime\AdditionalAndPatternProperties;
+use Docker\API\Runtime\AdditionalPropertiesInterface;
+
+class NetworkingConfig implements AdditionalPropertiesInterface
 {
+    use AdditionalAndPatternProperties;
     /**
      * @var array
      */
@@ -17,6 +21,8 @@ class NetworkingConfig extends \ArrayObject
     }
     /**
      * A mapping of network name to endpoint configuration for that network.
+     * The endpoint configuration can be left empty to connect to that
+     * network with no particular endpoint configuration.
      *
      * @var array<string, EndpointSettings>|null
      */
@@ -24,6 +30,8 @@ class NetworkingConfig extends \ArrayObject
 
     /**
      * A mapping of network name to endpoint configuration for that network.
+     * The endpoint configuration can be left empty to connect to that
+     * network with no particular endpoint configuration.
      *
      * @return array<string, EndpointSettings>|null
      */
@@ -34,6 +42,8 @@ class NetworkingConfig extends \ArrayObject
 
     /**
      * A mapping of network name to endpoint configuration for that network.
+     * The endpoint configuration can be left empty to connect to that
+     * network with no particular endpoint configuration.
      *
      * @param array<string, EndpointSettings>|null $endpointsConfig
      */
@@ -43,5 +53,10 @@ class NetworkingConfig extends \ArrayObject
         $this->endpointsConfig = $endpointsConfig;
 
         return $this;
+    }
+
+    public function definedProperties(): array
+    {
+        return ['endpointsConfig' => ['EndpointsConfig', 'getEndpointsConfig', 'setEndpointsConfig']];
     }
 }

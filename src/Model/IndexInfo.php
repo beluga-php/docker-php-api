@@ -4,8 +4,12 @@ declare(strict_types=1);
 
 namespace Docker\API\Model;
 
-class IndexInfo extends \ArrayObject
+use Docker\API\Runtime\AdditionalAndPatternProperties;
+use Docker\API\Runtime\AdditionalPropertiesInterface;
+
+class IndexInfo implements AdditionalPropertiesInterface
 {
+    use AdditionalAndPatternProperties;
     /**
      * @var array
      */
@@ -151,5 +155,10 @@ class IndexInfo extends \ArrayObject
         $this->official = $official;
 
         return $this;
+    }
+
+    public function definedProperties(): array
+    {
+        return ['name' => ['Name', 'getName', 'setName'], 'mirrors' => ['Mirrors', 'getMirrors', 'setMirrors'], 'secure' => ['Secure', 'getSecure', 'setSecure'], 'official' => ['Official', 'getOfficial', 'setOfficial']];
     }
 }

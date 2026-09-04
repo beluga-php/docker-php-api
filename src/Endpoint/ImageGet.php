@@ -28,9 +28,9 @@ class ImageGet extends \Docker\API\Runtime\Client\BaseEndpoint implements \Docke
      *
      * ```json
      * {
-     * "hello-world": {
-     * "latest": "565a9d68a73f6706862bfe8409a7f659776d4d60a8d096eb4a3cbce6999cc2a1"
-     * }
+     *   "hello-world": {
+     *     "latest": "565a9d68a73f6706862bfe8409a7f659776d4d60a8d096eb4a3cbce6999cc2a1"
+     *   }
      * }
      * ```
      *
@@ -48,7 +48,7 @@ class ImageGet extends \Docker\API\Runtime\Client\BaseEndpoint implements \Docke
 
     public function getUri(): string
     {
-        return str_replace(['{name}'], [$this->name], '/images/{name}/get');
+        return str_replace(['{name}'], [rawurlencode($this->name)], '/images/{name}/get');
     }
 
     public function getBody(\Symfony\Component\Serializer\SerializerInterface $serializer, $streamFactory = null): array

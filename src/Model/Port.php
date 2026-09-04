@@ -4,8 +4,12 @@ declare(strict_types=1);
 
 namespace Docker\API\Model;
 
-class Port extends \ArrayObject
+use Docker\API\Runtime\AdditionalAndPatternProperties;
+use Docker\API\Runtime\AdditionalPropertiesInterface;
+
+class Port implements AdditionalPropertiesInterface
 {
+    use AdditionalAndPatternProperties;
     /**
      * @var array
      */
@@ -106,5 +110,10 @@ class Port extends \ArrayObject
         $this->type = $type;
 
         return $this;
+    }
+
+    public function definedProperties(): array
+    {
+        return ['iP' => ['IP', 'getIP', 'setIP'], 'privatePort' => ['PrivatePort', 'getPrivatePort', 'setPrivatePort'], 'publicPort' => ['PublicPort', 'getPublicPort', 'setPublicPort'], 'type' => ['Type', 'getType', 'setType']];
     }
 }

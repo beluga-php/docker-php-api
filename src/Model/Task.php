@@ -4,8 +4,12 @@ declare(strict_types=1);
 
 namespace Docker\API\Model;
 
-class Task extends \ArrayObject
+use Docker\API\Runtime\AdditionalAndPatternProperties;
+use Docker\API\Runtime\AdditionalPropertiesInterface;
+
+class Task implements AdditionalPropertiesInterface
 {
+    use AdditionalAndPatternProperties;
     /**
      * @var array
      */
@@ -86,6 +90,8 @@ class Task extends \ArrayObject
      */
     protected $assignedGenericResources;
     /**
+     * represents the status of a task.
+     *
      * @var TaskStatus|null
      */
     protected $status;
@@ -328,11 +334,17 @@ class Task extends \ArrayObject
         return $this;
     }
 
+    /**
+     * represents the status of a task.
+     */
     public function getStatus(): ?TaskStatus
     {
         return $this->status;
     }
 
+    /**
+     * represents the status of a task.
+     */
     public function setStatus(?TaskStatus $status): self
     {
         $this->initialized['status'] = true;
@@ -389,5 +401,10 @@ class Task extends \ArrayObject
         $this->jobIteration = $jobIteration;
 
         return $this;
+    }
+
+    public function definedProperties(): array
+    {
+        return ['iD' => ['ID', 'getID', 'setID'], 'version' => ['Version', 'getVersion', 'setVersion'], 'createdAt' => ['CreatedAt', 'getCreatedAt', 'setCreatedAt'], 'updatedAt' => ['UpdatedAt', 'getUpdatedAt', 'setUpdatedAt'], 'name' => ['Name', 'getName', 'setName'], 'labels' => ['Labels', 'getLabels', 'setLabels'], 'spec' => ['Spec', 'getSpec', 'setSpec'], 'serviceID' => ['ServiceID', 'getServiceID', 'setServiceID'], 'slot' => ['Slot', 'getSlot', 'setSlot'], 'nodeID' => ['NodeID', 'getNodeID', 'setNodeID'], 'assignedGenericResources' => ['AssignedGenericResources', 'getAssignedGenericResources', 'setAssignedGenericResources'], 'status' => ['Status', 'getStatus', 'setStatus'], 'desiredState' => ['DesiredState', 'getDesiredState', 'setDesiredState'], 'jobIteration' => ['JobIteration', 'getJobIteration', 'setJobIteration']];
     }
 }

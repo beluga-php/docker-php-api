@@ -1,0 +1,87 @@
+<?php
+
+declare(strict_types=1);
+
+namespace Docker\API\Model;
+
+use Docker\API\Runtime\AdditionalAndPatternProperties;
+use Docker\API\Runtime\AdditionalPropertiesInterface;
+
+class ServiceCreateResponse implements AdditionalPropertiesInterface
+{
+    use AdditionalAndPatternProperties;
+    /**
+     * @var array
+     */
+    protected $initialized = [];
+
+    public function isInitialized($property): bool
+    {
+        return \array_key_exists($property, $this->initialized);
+    }
+    /**
+     * The ID of the created service.
+     *
+     * @var string|null
+     */
+    protected $iD;
+    /**
+     * Optional warning message.
+     *
+     * FIXME(thaJeztah): this should have "omitempty" in the generated type.
+     *
+     * @var list<string>|null
+     */
+    protected $warnings;
+
+    /**
+     * The ID of the created service.
+     */
+    public function getID(): ?string
+    {
+        return $this->iD;
+    }
+
+    /**
+     * The ID of the created service.
+     */
+    public function setID(?string $iD): self
+    {
+        $this->initialized['iD'] = true;
+        $this->iD = $iD;
+
+        return $this;
+    }
+
+    /**
+     * Optional warning message.
+     *
+     * FIXME(thaJeztah): this should have "omitempty" in the generated type.
+     *
+     * @return list<string>|null
+     */
+    public function getWarnings(): ?array
+    {
+        return $this->warnings;
+    }
+
+    /**
+     * Optional warning message.
+     *
+     * FIXME(thaJeztah): this should have "omitempty" in the generated type.
+     *
+     * @param list<string>|null $warnings
+     */
+    public function setWarnings(?array $warnings): self
+    {
+        $this->initialized['warnings'] = true;
+        $this->warnings = $warnings;
+
+        return $this;
+    }
+
+    public function definedProperties(): array
+    {
+        return ['iD' => ['ID', 'getID', 'setID'], 'warnings' => ['Warnings', 'getWarnings', 'setWarnings']];
+    }
+}

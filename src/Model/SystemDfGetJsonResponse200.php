@@ -4,8 +4,12 @@ declare(strict_types=1);
 
 namespace Docker\API\Model;
 
-class SystemDfGetJsonResponse200 extends \ArrayObject
+use Docker\API\Runtime\AdditionalAndPatternProperties;
+use Docker\API\Runtime\AdditionalPropertiesInterface;
+
+class SystemDfGetJsonResponse200 implements AdditionalPropertiesInterface
 {
+    use AdditionalAndPatternProperties;
     /**
      * @var array
      */
@@ -123,5 +127,10 @@ class SystemDfGetJsonResponse200 extends \ArrayObject
         $this->buildCache = $buildCache;
 
         return $this;
+    }
+
+    public function definedProperties(): array
+    {
+        return ['layersSize' => ['LayersSize', 'getLayersSize', 'setLayersSize'], 'images' => ['Images', 'getImages', 'setImages'], 'containers' => ['Containers', 'getContainers', 'setContainers'], 'volumes' => ['Volumes', 'getVolumes', 'setVolumes'], 'buildCache' => ['BuildCache', 'getBuildCache', 'setBuildCache']];
     }
 }

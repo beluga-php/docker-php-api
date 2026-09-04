@@ -4,8 +4,12 @@ declare(strict_types=1);
 
 namespace Docker\API\Model;
 
-class ContainersIdJsonGetResponse200 extends \ArrayObject
+use Docker\API\Runtime\AdditionalAndPatternProperties;
+use Docker\API\Runtime\AdditionalPropertiesInterface;
+
+class ContainersIdJsonGetResponse200 implements AdditionalPropertiesInterface
 {
+    use AdditionalAndPatternProperties;
     /**
      * @var array
      */
@@ -587,5 +591,10 @@ class ContainersIdJsonGetResponse200 extends \ArrayObject
         $this->networkSettings = $networkSettings;
 
         return $this;
+    }
+
+    public function definedProperties(): array
+    {
+        return ['id' => ['Id', 'getId', 'setId'], 'created' => ['Created', 'getCreated', 'setCreated'], 'path' => ['Path', 'getPath', 'setPath'], 'args' => ['Args', 'getArgs', 'setArgs'], 'state' => ['State', 'getState', 'setState'], 'image' => ['Image', 'getImage', 'setImage'], 'resolvConfPath' => ['ResolvConfPath', 'getResolvConfPath', 'setResolvConfPath'], 'hostnamePath' => ['HostnamePath', 'getHostnamePath', 'setHostnamePath'], 'hostsPath' => ['HostsPath', 'getHostsPath', 'setHostsPath'], 'logPath' => ['LogPath', 'getLogPath', 'setLogPath'], 'name' => ['Name', 'getName', 'setName'], 'restartCount' => ['RestartCount', 'getRestartCount', 'setRestartCount'], 'driver' => ['Driver', 'getDriver', 'setDriver'], 'platform' => ['Platform', 'getPlatform', 'setPlatform'], 'mountLabel' => ['MountLabel', 'getMountLabel', 'setMountLabel'], 'processLabel' => ['ProcessLabel', 'getProcessLabel', 'setProcessLabel'], 'appArmorProfile' => ['AppArmorProfile', 'getAppArmorProfile', 'setAppArmorProfile'], 'execIDs' => ['ExecIDs', 'getExecIDs', 'setExecIDs'], 'hostConfig' => ['HostConfig', 'getHostConfig', 'setHostConfig'], 'graphDriver' => ['GraphDriver', 'getGraphDriver', 'setGraphDriver'], 'sizeRw' => ['SizeRw', 'getSizeRw', 'setSizeRw'], 'sizeRootFs' => ['SizeRootFs', 'getSizeRootFs', 'setSizeRootFs'], 'mounts' => ['Mounts', 'getMounts', 'setMounts'], 'config' => ['Config', 'getConfig', 'setConfig'], 'networkSettings' => ['NetworkSettings', 'getNetworkSettings', 'setNetworkSettings']];
     }
 }

@@ -4,8 +4,12 @@ declare(strict_types=1);
 
 namespace Docker\API\Model;
 
-class ClusterInfo extends \ArrayObject
+use Docker\API\Runtime\AdditionalAndPatternProperties;
+use Docker\API\Runtime\AdditionalPropertiesInterface;
+
+class ClusterInfo implements AdditionalPropertiesInterface
 {
+    use AdditionalAndPatternProperties;
     /**
      * @var array
      */
@@ -316,5 +320,10 @@ class ClusterInfo extends \ArrayObject
         $this->subnetSize = $subnetSize;
 
         return $this;
+    }
+
+    public function definedProperties(): array
+    {
+        return ['iD' => ['ID', 'getID', 'setID'], 'version' => ['Version', 'getVersion', 'setVersion'], 'createdAt' => ['CreatedAt', 'getCreatedAt', 'setCreatedAt'], 'updatedAt' => ['UpdatedAt', 'getUpdatedAt', 'setUpdatedAt'], 'spec' => ['Spec', 'getSpec', 'setSpec'], 'tLSInfo' => ['TLSInfo', 'getTLSInfo', 'setTLSInfo'], 'rootRotationInProgress' => ['RootRotationInProgress', 'getRootRotationInProgress', 'setRootRotationInProgress'], 'dataPathPort' => ['DataPathPort', 'getDataPathPort', 'setDataPathPort'], 'defaultAddrPool' => ['DefaultAddrPool', 'getDefaultAddrPool', 'setDefaultAddrPool'], 'subnetSize' => ['SubnetSize', 'getSubnetSize', 'setSubnetSize']];
     }
 }

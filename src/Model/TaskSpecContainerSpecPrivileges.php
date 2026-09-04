@@ -4,8 +4,12 @@ declare(strict_types=1);
 
 namespace Docker\API\Model;
 
-class TaskSpecContainerSpecPrivileges extends \ArrayObject
+use Docker\API\Runtime\AdditionalAndPatternProperties;
+use Docker\API\Runtime\AdditionalPropertiesInterface;
+
+class TaskSpecContainerSpecPrivileges implements AdditionalPropertiesInterface
 {
+    use AdditionalAndPatternProperties;
     /**
      * @var array
      */
@@ -27,6 +31,24 @@ class TaskSpecContainerSpecPrivileges extends \ArrayObject
      * @var TaskSpecContainerSpecPrivilegesSELinuxContext|null
      */
     protected $sELinuxContext;
+    /**
+     * Options for configuring seccomp on the container.
+     *
+     * @var TaskSpecContainerSpecPrivilegesSeccomp|null
+     */
+    protected $seccomp;
+    /**
+     * Options for configuring AppArmor on the container.
+     *
+     * @var TaskSpecContainerSpecPrivilegesAppArmor|null
+     */
+    protected $appArmor;
+    /**
+     * Configuration of the no_new_privs bit in the container.
+     *
+     * @var bool|null
+     */
+    protected $noNewPrivileges;
 
     /**
      * CredentialSpec for managed service account (Windows only).
@@ -64,5 +86,67 @@ class TaskSpecContainerSpecPrivileges extends \ArrayObject
         $this->sELinuxContext = $sELinuxContext;
 
         return $this;
+    }
+
+    /**
+     * Options for configuring seccomp on the container.
+     */
+    public function getSeccomp(): ?TaskSpecContainerSpecPrivilegesSeccomp
+    {
+        return $this->seccomp;
+    }
+
+    /**
+     * Options for configuring seccomp on the container.
+     */
+    public function setSeccomp(?TaskSpecContainerSpecPrivilegesSeccomp $seccomp): self
+    {
+        $this->initialized['seccomp'] = true;
+        $this->seccomp = $seccomp;
+
+        return $this;
+    }
+
+    /**
+     * Options for configuring AppArmor on the container.
+     */
+    public function getAppArmor(): ?TaskSpecContainerSpecPrivilegesAppArmor
+    {
+        return $this->appArmor;
+    }
+
+    /**
+     * Options for configuring AppArmor on the container.
+     */
+    public function setAppArmor(?TaskSpecContainerSpecPrivilegesAppArmor $appArmor): self
+    {
+        $this->initialized['appArmor'] = true;
+        $this->appArmor = $appArmor;
+
+        return $this;
+    }
+
+    /**
+     * Configuration of the no_new_privs bit in the container.
+     */
+    public function getNoNewPrivileges(): ?bool
+    {
+        return $this->noNewPrivileges;
+    }
+
+    /**
+     * Configuration of the no_new_privs bit in the container.
+     */
+    public function setNoNewPrivileges(?bool $noNewPrivileges): self
+    {
+        $this->initialized['noNewPrivileges'] = true;
+        $this->noNewPrivileges = $noNewPrivileges;
+
+        return $this;
+    }
+
+    public function definedProperties(): array
+    {
+        return ['credentialSpec' => ['CredentialSpec', 'getCredentialSpec', 'setCredentialSpec'], 'sELinuxContext' => ['SELinuxContext', 'getSELinuxContext', 'setSELinuxContext'], 'seccomp' => ['Seccomp', 'getSeccomp', 'setSeccomp'], 'appArmor' => ['AppArmor', 'getAppArmor', 'setAppArmor'], 'noNewPrivileges' => ['NoNewPrivileges', 'getNoNewPrivileges', 'setNoNewPrivileges']];
     }
 }

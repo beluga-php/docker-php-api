@@ -4,8 +4,12 @@ declare(strict_types=1);
 
 namespace Docker\API\Model;
 
-class TaskSpecContainerSpec extends \ArrayObject
+use Docker\API\Runtime\AdditionalAndPatternProperties;
+use Docker\API\Runtime\AdditionalPropertiesInterface;
+
+class TaskSpecContainerSpec implements AdditionalPropertiesInterface
 {
+    use AdditionalAndPatternProperties;
     /**
      * @var array
      */
@@ -126,7 +130,7 @@ class TaskSpecContainerSpec extends \ArrayObject
      * [hosts(5)](http://man7.org/linux/man-pages/man5/hosts.5.html)
      * man page:
      *
-     * IP_address canonical_hostname [aliases...]
+     *     IP_address canonical_hostname [aliases...]
      *
      * @var list<string>|null
      */
@@ -559,7 +563,7 @@ class TaskSpecContainerSpec extends \ArrayObject
      * [hosts(5)](http://man7.org/linux/man-pages/man5/hosts.5.html)
      * man page:
      *
-     * IP_address canonical_hostname [aliases...]
+     *     IP_address canonical_hostname [aliases...]
      *
      * @return list<string>|null
      */
@@ -807,5 +811,10 @@ class TaskSpecContainerSpec extends \ArrayObject
         $this->ulimits = $ulimits;
 
         return $this;
+    }
+
+    public function definedProperties(): array
+    {
+        return ['image' => ['Image', 'getImage', 'setImage'], 'labels' => ['Labels', 'getLabels', 'setLabels'], 'command' => ['Command', 'getCommand', 'setCommand'], 'args' => ['Args', 'getArgs', 'setArgs'], 'hostname' => ['Hostname', 'getHostname', 'setHostname'], 'env' => ['Env', 'getEnv', 'setEnv'], 'dir' => ['Dir', 'getDir', 'setDir'], 'user' => ['User', 'getUser', 'setUser'], 'groups' => ['Groups', 'getGroups', 'setGroups'], 'privileges' => ['Privileges', 'getPrivileges', 'setPrivileges'], 'tTY' => ['TTY', 'getTTY', 'setTTY'], 'openStdin' => ['OpenStdin', 'getOpenStdin', 'setOpenStdin'], 'readOnly' => ['ReadOnly', 'getReadOnly', 'setReadOnly'], 'mounts' => ['Mounts', 'getMounts', 'setMounts'], 'stopSignal' => ['StopSignal', 'getStopSignal', 'setStopSignal'], 'stopGracePeriod' => ['StopGracePeriod', 'getStopGracePeriod', 'setStopGracePeriod'], 'healthCheck' => ['HealthCheck', 'getHealthCheck', 'setHealthCheck'], 'hosts' => ['Hosts', 'getHosts', 'setHosts'], 'dNSConfig' => ['DNSConfig', 'getDNSConfig', 'setDNSConfig'], 'secrets' => ['Secrets', 'getSecrets', 'setSecrets'], 'configs' => ['Configs', 'getConfigs', 'setConfigs'], 'isolation' => ['Isolation', 'getIsolation', 'setIsolation'], 'init' => ['Init', 'getInit', 'setInit'], 'sysctls' => ['Sysctls', 'getSysctls', 'setSysctls'], 'capabilityAdd' => ['CapabilityAdd', 'getCapabilityAdd', 'setCapabilityAdd'], 'capabilityDrop' => ['CapabilityDrop', 'getCapabilityDrop', 'setCapabilityDrop'], 'ulimits' => ['Ulimits', 'getUlimits', 'setUlimits']];
     }
 }

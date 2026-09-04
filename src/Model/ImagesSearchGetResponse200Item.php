@@ -4,8 +4,12 @@ declare(strict_types=1);
 
 namespace Docker\API\Model;
 
-class ImagesSearchGetResponse200Item extends \ArrayObject
+use Docker\API\Runtime\AdditionalAndPatternProperties;
+use Docker\API\Runtime\AdditionalPropertiesInterface;
+
+class ImagesSearchGetResponse200Item implements AdditionalPropertiesInterface
 {
+    use AdditionalAndPatternProperties;
     /**
      * @var array
      */
@@ -24,6 +28,13 @@ class ImagesSearchGetResponse200Item extends \ArrayObject
      */
     protected $isOfficial;
     /**
+     * Whether this repository has automated builds enabled.
+     *
+     * <p><br /></p>
+     *
+     * > **Deprecated**: This field is deprecated and will always
+     * > be "false" in future.
+     *
      * @var bool|null
      */
     protected $isAutomated;
@@ -62,11 +73,27 @@ class ImagesSearchGetResponse200Item extends \ArrayObject
         return $this;
     }
 
+    /**
+     * Whether this repository has automated builds enabled.
+     *
+     * <p><br /></p>
+     *
+     * > **Deprecated**: This field is deprecated and will always
+     * > be "false" in future.
+     */
     public function getIsAutomated(): ?bool
     {
         return $this->isAutomated;
     }
 
+    /**
+     * Whether this repository has automated builds enabled.
+     *
+     * <p><br /></p>
+     *
+     * > **Deprecated**: This field is deprecated and will always
+     * > be "false" in future.
+     */
     public function setIsAutomated(?bool $isAutomated): self
     {
         $this->initialized['isAutomated'] = true;
@@ -99,5 +126,10 @@ class ImagesSearchGetResponse200Item extends \ArrayObject
         $this->starCount = $starCount;
 
         return $this;
+    }
+
+    public function definedProperties(): array
+    {
+        return ['description' => ['description', 'getDescription', 'setDescription'], 'isOfficial' => ['is_official', 'getIsOfficial', 'setIsOfficial'], 'isAutomated' => ['is_automated', 'getIsAutomated', 'setIsAutomated'], 'name' => ['name', 'getName', 'setName'], 'starCount' => ['star_count', 'getStarCount', 'setStarCount']];
     }
 }

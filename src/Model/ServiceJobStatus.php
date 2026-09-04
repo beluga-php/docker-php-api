@@ -4,8 +4,12 @@ declare(strict_types=1);
 
 namespace Docker\API\Model;
 
-class ServiceJobStatus extends \ArrayObject
+use Docker\API\Runtime\AdditionalAndPatternProperties;
+use Docker\API\Runtime\AdditionalPropertiesInterface;
+
+class ServiceJobStatus implements AdditionalPropertiesInterface
 {
+    use AdditionalAndPatternProperties;
     /**
      * @var array
      */
@@ -94,5 +98,10 @@ class ServiceJobStatus extends \ArrayObject
         $this->lastExecution = $lastExecution;
 
         return $this;
+    }
+
+    public function definedProperties(): array
+    {
+        return ['jobIteration' => ['JobIteration', 'getJobIteration', 'setJobIteration'], 'lastExecution' => ['LastExecution', 'getLastExecution', 'setLastExecution']];
     }
 }

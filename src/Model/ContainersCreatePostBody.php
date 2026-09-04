@@ -4,8 +4,12 @@ declare(strict_types=1);
 
 namespace Docker\API\Model;
 
-class ContainersCreatePostBody extends \ArrayObject
+use Docker\API\Runtime\AdditionalAndPatternProperties;
+use Docker\API\Runtime\AdditionalPropertiesInterface;
+
+class ContainersCreatePostBody implements AdditionalPropertiesInterface
 {
+    use AdditionalAndPatternProperties;
     /**
      * @var array
      */
@@ -141,6 +145,8 @@ class ContainersCreatePostBody extends \ArrayObject
     protected $networkDisabled;
     /**
      * MAC address of the container.
+     *
+     * Deprecated: this field is deprecated in API v1.44 and up. Use EndpointSettings.MacAddress instead.
      *
      * @var string|null
      */
@@ -594,6 +600,8 @@ class ContainersCreatePostBody extends \ArrayObject
 
     /**
      * MAC address of the container.
+     *
+     * Deprecated: this field is deprecated in API v1.44 and up. Use EndpointSettings.MacAddress instead.
      */
     public function getMacAddress(): ?string
     {
@@ -602,6 +610,8 @@ class ContainersCreatePostBody extends \ArrayObject
 
     /**
      * MAC address of the container.
+     *
+     * Deprecated: this field is deprecated in API v1.44 and up. Use EndpointSettings.MacAddress instead.
      */
     public function setMacAddress(?string $macAddress): self
     {
@@ -760,5 +770,10 @@ class ContainersCreatePostBody extends \ArrayObject
         $this->networkingConfig = $networkingConfig;
 
         return $this;
+    }
+
+    public function definedProperties(): array
+    {
+        return ['hostname' => ['Hostname', 'getHostname', 'setHostname'], 'domainname' => ['Domainname', 'getDomainname', 'setDomainname'], 'user' => ['User', 'getUser', 'setUser'], 'attachStdin' => ['AttachStdin', 'getAttachStdin', 'setAttachStdin'], 'attachStdout' => ['AttachStdout', 'getAttachStdout', 'setAttachStdout'], 'attachStderr' => ['AttachStderr', 'getAttachStderr', 'setAttachStderr'], 'exposedPorts' => ['ExposedPorts', 'getExposedPorts', 'setExposedPorts'], 'tty' => ['Tty', 'getTty', 'setTty'], 'openStdin' => ['OpenStdin', 'getOpenStdin', 'setOpenStdin'], 'stdinOnce' => ['StdinOnce', 'getStdinOnce', 'setStdinOnce'], 'env' => ['Env', 'getEnv', 'setEnv'], 'cmd' => ['Cmd', 'getCmd', 'setCmd'], 'healthcheck' => ['Healthcheck', 'getHealthcheck', 'setHealthcheck'], 'argsEscaped' => ['ArgsEscaped', 'getArgsEscaped', 'setArgsEscaped'], 'image' => ['Image', 'getImage', 'setImage'], 'volumes' => ['Volumes', 'getVolumes', 'setVolumes'], 'workingDir' => ['WorkingDir', 'getWorkingDir', 'setWorkingDir'], 'entrypoint' => ['Entrypoint', 'getEntrypoint', 'setEntrypoint'], 'networkDisabled' => ['NetworkDisabled', 'getNetworkDisabled', 'setNetworkDisabled'], 'macAddress' => ['MacAddress', 'getMacAddress', 'setMacAddress'], 'onBuild' => ['OnBuild', 'getOnBuild', 'setOnBuild'], 'labels' => ['Labels', 'getLabels', 'setLabels'], 'stopSignal' => ['StopSignal', 'getStopSignal', 'setStopSignal'], 'stopTimeout' => ['StopTimeout', 'getStopTimeout', 'setStopTimeout'], 'shell' => ['Shell', 'getShell', 'setShell'], 'hostConfig' => ['HostConfig', 'getHostConfig', 'setHostConfig'], 'networkingConfig' => ['NetworkingConfig', 'getNetworkingConfig', 'setNetworkingConfig']];
     }
 }

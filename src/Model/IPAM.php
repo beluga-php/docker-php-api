@@ -4,8 +4,12 @@ declare(strict_types=1);
 
 namespace Docker\API\Model;
 
-class IPAM extends \ArrayObject
+use Docker\API\Runtime\AdditionalAndPatternProperties;
+use Docker\API\Runtime\AdditionalPropertiesInterface;
+
+class IPAM implements AdditionalPropertiesInterface
 {
+    use AdditionalAndPatternProperties;
     /**
      * @var array
      */
@@ -109,5 +113,10 @@ class IPAM extends \ArrayObject
         $this->options = $options;
 
         return $this;
+    }
+
+    public function definedProperties(): array
+    {
+        return ['driver' => ['Driver', 'getDriver', 'setDriver'], 'config' => ['Config', 'getConfig', 'setConfig'], 'options' => ['Options', 'getOptions', 'setOptions']];
     }
 }

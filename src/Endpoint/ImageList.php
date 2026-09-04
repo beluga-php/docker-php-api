@@ -11,11 +11,10 @@ class ImageList extends \Docker\API\Runtime\Client\BaseEndpoint implements \Dock
     /**
      * Returns a list of images on the server. Note that it uses a different, smaller representation of an image than inspecting a single image.
      *
-     * @param array $queryParameters {
-     *
-     * @var bool   $all Show all images. Only images from a final layer (no children) are shown by default.
-     * @var string $filters A JSON encoded value of the filters (a `map[string][]string`) to
-     *             process on the images list.
+     * @param array{
+     *    "all"?: bool, //Show all images. Only images from a final layer (no children) are shown by default.
+     *    "filters"?: string, //A JSON encoded value of the filters (a `map[string][]string`) to
+     * process on the images list.
      *
      * Available filters:
      *
@@ -24,9 +23,10 @@ class ImageList extends \Docker\API\Runtime\Client\BaseEndpoint implements \Dock
      * - `label=key` or `label="key=value"` of an image label
      * - `reference`=(`<image-name>[:<tag>]`)
      * - `since`=(`<image-name>[:<tag>]`,  `<image id>` or `<image@digest>`)
-     * @var bool $shared-size Compute and show shared size as a `SharedSize` field on each image
-     * @var bool $digests Show digest information as a `RepoDigests` field on each image.
-     *           }
+     * - `until=<timestamp>`
+     *    "shared-size"?: bool, //Compute and show shared size as a `SharedSize` field on each image.
+     *    "digests"?: bool, //Show digest information as a `RepoDigests` field on each image.
+     * } $queryParameters
      */
     public function __construct(array $queryParameters = [])
     {
@@ -76,11 +76,11 @@ class ImageList extends \Docker\API\Runtime\Client\BaseEndpoint implements \Dock
     {
         $status = $response->getStatusCode();
         $body = (string) $response->getBody();
-        if ((null === $contentType) === false && (200 === $status && false !== mb_strpos($contentType, 'application/json'))) {
-            return $serializer->deserialize($body, 'Docker\\API\\Model\\ImageSummary[]', 'json');
+        if ((null === $contentType) === false && (200 === $status && false !== stripos(strtolower($contentType), 'application/json'))) {
+            return $serializer->deserialize($body, 'Docker\API\Model\ImageSummary[]', 'json');
         }
-        if ((null === $contentType) === false && (500 === $status && false !== mb_strpos($contentType, 'application/json'))) {
-            throw new \Docker\API\Exception\ImageListInternalServerErrorException($serializer->deserialize($body, 'Docker\\API\\Model\\ErrorResponse', 'json'), $response);
+        if ((null === $contentType) === false && (500 === $status && false !== stripos(strtolower($contentType), 'application/json'))) {
+            throw new \Docker\API\Exception\ImageListInternalServerErrorException($serializer->deserialize($body, 'Docker\API\Model\ErrorResponse', 'json'), $response);
         }
     }
 

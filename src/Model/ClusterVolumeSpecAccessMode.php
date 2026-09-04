@@ -4,8 +4,12 @@ declare(strict_types=1);
 
 namespace Docker\API\Model;
 
-class ClusterVolumeSpecAccessMode extends \ArrayObject
+use Docker\API\Runtime\AdditionalAndPatternProperties;
+use Docker\API\Runtime\AdditionalPropertiesInterface;
+
+class ClusterVolumeSpecAccessMode implements AdditionalPropertiesInterface
 {
+    use AdditionalAndPatternProperties;
     /**
      * @var array
      */
@@ -37,25 +41,25 @@ class ClusterVolumeSpecAccessMode extends \ArrayObject
     /**
      * Options for using this volume as a Mount-type volume.
      *
-     * Either MountVolume or BlockVolume, but not both, must be
-     * present.
-     * properties:
-     * FsType:
-     * type: "string"
-     * description: |
-     * Specifies the filesystem type for the mount volume.
-     * Optional.
-     * MountFlags:
-     * type: "array"
-     * description: |
-     * Flags to pass when mounting the volume. Optional.
-     * items:
-     * type: "string"
+     *     Either MountVolume or BlockVolume, but not both, must be
+     *     present.
+     *   properties:
+     *     FsType:
+     *       type: "string"
+     *       description: |
+     *         Specifies the filesystem type for the mount volume.
+     *         Optional.
+     *     MountFlags:
+     *       type: "array"
+     *       description: |
+     *         Flags to pass when mounting the volume. Optional.
+     *       items:
+     *         type: "string"
      * BlockVolume:
-     * type: "object"
-     * description: |
-     * Options for using this volume as a Block-type volume.
-     * Intentionally empty.
+     *   type: "object"
+     *   description: |
+     *     Options for using this volume as a Block-type volume.
+     *     Intentionally empty.
      *
      * @var ClusterVolumeSpecAccessModeMountVolume|null
      */
@@ -147,25 +151,25 @@ class ClusterVolumeSpecAccessMode extends \ArrayObject
     /**
      * Options for using this volume as a Mount-type volume.
      *
-     * Either MountVolume or BlockVolume, but not both, must be
-     * present.
-     * properties:
-     * FsType:
-     * type: "string"
-     * description: |
-     * Specifies the filesystem type for the mount volume.
-     * Optional.
-     * MountFlags:
-     * type: "array"
-     * description: |
-     * Flags to pass when mounting the volume. Optional.
-     * items:
-     * type: "string"
+     *     Either MountVolume or BlockVolume, but not both, must be
+     *     present.
+     *   properties:
+     *     FsType:
+     *       type: "string"
+     *       description: |
+     *         Specifies the filesystem type for the mount volume.
+     *         Optional.
+     *     MountFlags:
+     *       type: "array"
+     *       description: |
+     *         Flags to pass when mounting the volume. Optional.
+     *       items:
+     *         type: "string"
      * BlockVolume:
-     * type: "object"
-     * description: |
-     * Options for using this volume as a Block-type volume.
-     * Intentionally empty.
+     *   type: "object"
+     *   description: |
+     *     Options for using this volume as a Block-type volume.
+     *     Intentionally empty.
      */
     public function getMountVolume(): ?ClusterVolumeSpecAccessModeMountVolume
     {
@@ -295,5 +299,10 @@ class ClusterVolumeSpecAccessMode extends \ArrayObject
         $this->availability = $availability;
 
         return $this;
+    }
+
+    public function definedProperties(): array
+    {
+        return ['scope' => ['Scope', 'getScope', 'setScope'], 'sharing' => ['Sharing', 'getSharing', 'setSharing'], 'mountVolume' => ['MountVolume', 'getMountVolume', 'setMountVolume'], 'secrets' => ['Secrets', 'getSecrets', 'setSecrets'], 'accessibilityRequirements' => ['AccessibilityRequirements', 'getAccessibilityRequirements', 'setAccessibilityRequirements'], 'capacityRange' => ['CapacityRange', 'getCapacityRange', 'setCapacityRange'], 'availability' => ['Availability', 'getAvailability', 'setAvailability']];
     }
 }

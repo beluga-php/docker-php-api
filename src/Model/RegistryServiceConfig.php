@@ -4,8 +4,12 @@ declare(strict_types=1);
 
 namespace Docker\API\Model;
 
-class RegistryServiceConfig extends \ArrayObject
+use Docker\API\Runtime\AdditionalAndPatternProperties;
+use Docker\API\Runtime\AdditionalPropertiesInterface;
+
+class RegistryServiceConfig implements AdditionalPropertiesInterface
 {
+    use AdditionalAndPatternProperties;
     /**
      * @var array
      */
@@ -339,5 +343,10 @@ class RegistryServiceConfig extends \ArrayObject
         $this->mirrors = $mirrors;
 
         return $this;
+    }
+
+    public function definedProperties(): array
+    {
+        return ['allowNondistributableArtifactsCIDRs' => ['AllowNondistributableArtifactsCIDRs', 'getAllowNondistributableArtifactsCIDRs', 'setAllowNondistributableArtifactsCIDRs'], 'allowNondistributableArtifactsHostnames' => ['AllowNondistributableArtifactsHostnames', 'getAllowNondistributableArtifactsHostnames', 'setAllowNondistributableArtifactsHostnames'], 'insecureRegistryCIDRs' => ['InsecureRegistryCIDRs', 'getInsecureRegistryCIDRs', 'setInsecureRegistryCIDRs'], 'indexConfigs' => ['IndexConfigs', 'getIndexConfigs', 'setIndexConfigs'], 'mirrors' => ['Mirrors', 'getMirrors', 'setMirrors']];
     }
 }

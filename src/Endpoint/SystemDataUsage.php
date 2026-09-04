@@ -10,11 +10,9 @@ class SystemDataUsage extends \Docker\API\Runtime\Client\BaseEndpoint implements
     protected $accept;
 
     /**
-     * @param array $queryParameters {
-     *
-     * @var array $type Object types, for which to compute and return data.
-     *            }
-     *
+     * @param array{
+     *    "type"?: array, //Object types, for which to compute and return data.
+     * } $queryParameters
      * @param array $accept Accept content header application/json|text/plain
      */
     public function __construct(array $queryParameters = [], array $accept = [])
@@ -58,6 +56,11 @@ class SystemDataUsage extends \Docker\API\Runtime\Client\BaseEndpoint implements
         return $optionsResolver;
     }
 
+    protected function getQueryStyles(): array
+    {
+        return ['type' => ['style' => 'form', 'explode' => true]];
+    }
+
     /**
      * @throws \Docker\API\Exception\SystemDataUsageInternalServerErrorException
      *
@@ -67,11 +70,11 @@ class SystemDataUsage extends \Docker\API\Runtime\Client\BaseEndpoint implements
     {
         $status = $response->getStatusCode();
         $body = (string) $response->getBody();
-        if ((null === $contentType) === false && (200 === $status && false !== mb_strpos($contentType, 'application/json'))) {
-            return $serializer->deserialize($body, 'Docker\\API\\Model\\SystemDfGetJsonResponse200', 'json');
+        if ((null === $contentType) === false && (200 === $status && false !== stripos(strtolower($contentType), 'application/json'))) {
+            return $serializer->deserialize($body, 'Docker\API\Model\SystemDfGetJsonResponse200', 'json');
         }
-        if ((null === $contentType) === false && (500 === $status && false !== mb_strpos($contentType, 'application/json'))) {
-            throw new \Docker\API\Exception\SystemDataUsageInternalServerErrorException($serializer->deserialize($body, 'Docker\\API\\Model\\ErrorResponse', 'json'), $response);
+        if ((null === $contentType) === false && (500 === $status && false !== stripos(strtolower($contentType), 'application/json'))) {
+            throw new \Docker\API\Exception\SystemDataUsageInternalServerErrorException($serializer->deserialize($body, 'Docker\API\Model\ErrorResponse', 'json'), $response);
         }
     }
 

@@ -11,13 +11,10 @@ class PluginCreate extends \Docker\API\Runtime\Client\BaseEndpoint implements \D
 
     /**
      * @param string|resource|\Psr\Http\Message\StreamInterface|null $requestBody
-     * @param array                                                  $queryParameters {
-     *
-     * @var string $name The name of the plugin. The `:latest` tag is optional, and is the
-     *             default if omitted.
-     *
-     * }
-     *
+     * @param array{
+     *    "name": string, //The name of the plugin. The `:latest` tag is optional, and is the
+     * default if omitted.
+     * } $queryParameters
      * @param array $accept Accept content header application/json|text/plain
      */
     public function __construct($requestBody = null, array $queryParameters = [], array $accept = [])
@@ -77,8 +74,8 @@ class PluginCreate extends \Docker\API\Runtime\Client\BaseEndpoint implements \D
         $body = (string) $response->getBody();
         if (204 === $status) {
         }
-        if ((null === $contentType) === false && (500 === $status && false !== mb_strpos($contentType, 'application/json'))) {
-            throw new \Docker\API\Exception\PluginCreateInternalServerErrorException($serializer->deserialize($body, 'Docker\\API\\Model\\ErrorResponse', 'json'), $response);
+        if ((null === $contentType) === false && (500 === $status && false !== stripos(strtolower($contentType), 'application/json'))) {
+            throw new \Docker\API\Exception\PluginCreateInternalServerErrorException($serializer->deserialize($body, 'Docker\API\Model\ErrorResponse', 'json'), $response);
         }
     }
 

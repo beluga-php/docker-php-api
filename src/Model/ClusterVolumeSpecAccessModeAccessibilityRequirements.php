@@ -4,8 +4,12 @@ declare(strict_types=1);
 
 namespace Docker\API\Model;
 
-class ClusterVolumeSpecAccessModeAccessibilityRequirements extends \ArrayObject
+use Docker\API\Runtime\AdditionalAndPatternProperties;
+use Docker\API\Runtime\AdditionalPropertiesInterface;
+
+class ClusterVolumeSpecAccessModeAccessibilityRequirements implements AdditionalPropertiesInterface
 {
+    use AdditionalAndPatternProperties;
     /**
      * @var array
      */
@@ -78,5 +82,10 @@ class ClusterVolumeSpecAccessModeAccessibilityRequirements extends \ArrayObject
         $this->preferred = $preferred;
 
         return $this;
+    }
+
+    public function definedProperties(): array
+    {
+        return ['requisite' => ['Requisite', 'getRequisite', 'setRequisite'], 'preferred' => ['Preferred', 'getPreferred', 'setPreferred']];
     }
 }

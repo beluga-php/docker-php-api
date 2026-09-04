@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Docker\API\Exception;
 
-class NotFoundException extends \RuntimeException implements ClientException
+abstract class NotFoundException extends \RuntimeException implements ClientException, WithResponseInterface
 {
     public function __construct(string $message)
     {

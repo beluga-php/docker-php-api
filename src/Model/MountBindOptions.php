@@ -4,8 +4,12 @@ declare(strict_types=1);
 
 namespace Docker\API\Model;
 
-class MountBindOptions extends \ArrayObject
+use Docker\API\Runtime\AdditionalAndPatternProperties;
+use Docker\API\Runtime\AdditionalPropertiesInterface;
+
+class MountBindOptions implements AdditionalPropertiesInterface
 {
+    use AdditionalAndPatternProperties;
     /**
      * @var array
      */
@@ -33,6 +37,19 @@ class MountBindOptions extends \ArrayObject
      * @var bool|null
      */
     protected $createMountpoint = false;
+    /**
+     * Make the mount non-recursively read-only, but still leave the mount recursive
+     * (unless NonRecursive is set to true in conjunction).
+     *
+     * @var bool|null
+     */
+    protected $readOnlyNonRecursive = false;
+    /**
+     * Raise an error if the mount cannot be made recursively read-only.
+     *
+     * @var bool|null
+     */
+    protected $readOnlyForceRecursive = false;
 
     /**
      * A propagation mode with the value `[r]private`, `[r]shared`, or `[r]slave`.
@@ -89,5 +106,50 @@ class MountBindOptions extends \ArrayObject
         $this->createMountpoint = $createMountpoint;
 
         return $this;
+    }
+
+    /**
+     * Make the mount non-recursively read-only, but still leave the mount recursive
+     * (unless NonRecursive is set to true in conjunction).
+     */
+    public function getReadOnlyNonRecursive(): ?bool
+    {
+        return $this->readOnlyNonRecursive;
+    }
+
+    /**
+     * Make the mount non-recursively read-only, but still leave the mount recursive
+     * (unless NonRecursive is set to true in conjunction).
+     */
+    public function setReadOnlyNonRecursive(?bool $readOnlyNonRecursive): self
+    {
+        $this->initialized['readOnlyNonRecursive'] = true;
+        $this->readOnlyNonRecursive = $readOnlyNonRecursive;
+
+        return $this;
+    }
+
+    /**
+     * Raise an error if the mount cannot be made recursively read-only.
+     */
+    public function getReadOnlyForceRecursive(): ?bool
+    {
+        return $this->readOnlyForceRecursive;
+    }
+
+    /**
+     * Raise an error if the mount cannot be made recursively read-only.
+     */
+    public function setReadOnlyForceRecursive(?bool $readOnlyForceRecursive): self
+    {
+        $this->initialized['readOnlyForceRecursive'] = true;
+        $this->readOnlyForceRecursive = $readOnlyForceRecursive;
+
+        return $this;
+    }
+
+    public function definedProperties(): array
+    {
+        return ['propagation' => ['Propagation', 'getPropagation', 'setPropagation'], 'nonRecursive' => ['NonRecursive', 'getNonRecursive', 'setNonRecursive'], 'createMountpoint' => ['CreateMountpoint', 'getCreateMountpoint', 'setCreateMountpoint'], 'readOnlyNonRecursive' => ['ReadOnlyNonRecursive', 'getReadOnlyNonRecursive', 'setReadOnlyNonRecursive'], 'readOnlyForceRecursive' => ['ReadOnlyForceRecursive', 'getReadOnlyForceRecursive', 'setReadOnlyForceRecursive']];
     }
 }

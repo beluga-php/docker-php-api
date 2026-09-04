@@ -4,8 +4,12 @@ declare(strict_types=1);
 
 namespace Docker\API\Model;
 
-class ImagesNameHistoryGetResponse200Item extends \ArrayObject
+use Docker\API\Runtime\AdditionalAndPatternProperties;
+use Docker\API\Runtime\AdditionalPropertiesInterface;
+
+class ImagesNameHistoryGetResponse200Item implements AdditionalPropertiesInterface
 {
+    use AdditionalAndPatternProperties;
     /**
      * @var array
      */
@@ -122,5 +126,10 @@ class ImagesNameHistoryGetResponse200Item extends \ArrayObject
         $this->comment = $comment;
 
         return $this;
+    }
+
+    public function definedProperties(): array
+    {
+        return ['id' => ['Id', 'getId', 'setId'], 'created' => ['Created', 'getCreated', 'setCreated'], 'createdBy' => ['CreatedBy', 'getCreatedBy', 'setCreatedBy'], 'tags' => ['Tags', 'getTags', 'setTags'], 'size' => ['Size', 'getSize', 'setSize'], 'comment' => ['Comment', 'getComment', 'setComment']];
     }
 }

@@ -4,8 +4,12 @@ declare(strict_types=1);
 
 namespace Docker\API\Model;
 
-class Platform extends \ArrayObject
+use Docker\API\Runtime\AdditionalAndPatternProperties;
+use Docker\API\Runtime\AdditionalPropertiesInterface;
+
+class Platform implements AdditionalPropertiesInterface
 {
+    use AdditionalAndPatternProperties;
     /**
      * @var array
      */
@@ -67,5 +71,10 @@ class Platform extends \ArrayObject
         $this->oS = $oS;
 
         return $this;
+    }
+
+    public function definedProperties(): array
+    {
+        return ['architecture' => ['Architecture', 'getArchitecture', 'setArchitecture'], 'oS' => ['OS', 'getOS', 'setOS']];
     }
 }

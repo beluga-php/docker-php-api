@@ -4,8 +4,12 @@ declare(strict_types=1);
 
 namespace Docker\API\Model;
 
-class ClusterVolumeInfo extends \ArrayObject
+use Docker\API\Runtime\AdditionalAndPatternProperties;
+use Docker\API\Runtime\AdditionalPropertiesInterface;
+
+class ClusterVolumeInfo implements AdditionalPropertiesInterface
 {
+    use AdditionalAndPatternProperties;
     /**
      * @var array
      */
@@ -140,5 +144,10 @@ class ClusterVolumeInfo extends \ArrayObject
         $this->accessibleTopology = $accessibleTopology;
 
         return $this;
+    }
+
+    public function definedProperties(): array
+    {
+        return ['capacityBytes' => ['CapacityBytes', 'getCapacityBytes', 'setCapacityBytes'], 'volumeContext' => ['VolumeContext', 'getVolumeContext', 'setVolumeContext'], 'volumeID' => ['VolumeID', 'getVolumeID', 'setVolumeID'], 'accessibleTopology' => ['AccessibleTopology', 'getAccessibleTopology', 'setAccessibleTopology']];
     }
 }

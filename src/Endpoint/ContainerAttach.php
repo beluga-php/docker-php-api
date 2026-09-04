@@ -106,13 +106,12 @@ class ContainerAttach extends \Docker\API\Runtime\Client\BaseEndpoint implements
      * connection is simply the raw data from the process PTY and client's
      * `stdin`.
      *
-     * @param string $id              ID or name of the container
-     * @param array  $queryParameters {
-     *
-     * @var string $detachKeys Override the key sequence for detaching a container.Format is a single
-     *             character `[a-Z]` or `ctrl-<value>` where `<value>` is one of: `a-z`,
-     *             `@`, `^`, `[`, `,` or `_`.
-     * @var bool   $logs Replay previous logs from the container.
+     * @param string $id ID or name of the container
+     * @param array{
+     *    "detachKeys"?: string, //Override the key sequence for detaching a container.Format is a single
+     * character `[a-Z]` or `ctrl-<value>` where `<value>` is one of: `a-z`,
+     * `@`, `^`, `[`, `,` or `_`.
+     *    "logs"?: bool, //Replay previous logs from the container.
      *
      * This is useful for attaching to a container that has started and you
      * want to output everything since the container started.
@@ -120,12 +119,11 @@ class ContainerAttach extends \Docker\API\Runtime\Client\BaseEndpoint implements
      * If `stream` is also enabled, once all the previous output has been
      * returned, it will seamlessly transition into streaming current
      * output.
-     * @var bool $stream stream attached streams from the time the request was made onwards
-     * @var bool $stdin Attach to `stdin`
-     * @var bool $stdout Attach to `stdout`
-     * @var bool $stderr Attach to `stderr`
-     *           }
-     *
+     *    "stream"?: bool, //Stream attached streams from the time the request was made onwards.
+     *    "stdin"?: bool, //Attach to `stdin`
+     *    "stdout"?: bool, //Attach to `stdout`
+     *    "stderr"?: bool, //Attach to `stderr`
+     * } $queryParameters
      * @param array $accept Accept content header application/vnd.docker.raw-stream|application/vnd.docker.multiplexed-stream|application/json
      */
     public function __construct(string $id, array $queryParameters = [], array $accept = [])
@@ -142,7 +140,7 @@ class ContainerAttach extends \Docker\API\Runtime\Client\BaseEndpoint implements
 
     public function getUri(): string
     {
-        return str_replace(['{id}'], [$this->id], '/containers/{id}/attach');
+        return str_replace(['{id}'], [rawurlencode($this->id)], '/containers/{id}/attach');
     }
 
     public function getBody(\Symfony\Component\Serializer\SerializerInterface $serializer, $streamFactory = null): array
@@ -190,7 +188,7 @@ class ContainerAttach extends \Docker\API\Runtime\Client\BaseEndpoint implements
         }
         if (400 === $status) {
         }
-        if ((null === $contentType) === false && (404 === $status && false !== mb_strpos($contentType, 'application/json'))) {
+        if ((null === $contentType) === false && (404 === $status && false !== stripos(strtolower($contentType), 'application/json'))) {
             throw new \Docker\API\Exception\ContainerAttachNotFoundException($response);
         }
         if (500 === $status) {

@@ -10,15 +10,13 @@ class SwarmUpdate extends \Docker\API\Runtime\Client\BaseEndpoint implements \Do
     protected $accept;
 
     /**
-     * @param array $queryParameters {
-     *
-     * @var int  $version The version number of the swarm object being updated. This is
-     *           required to avoid conflicting writes.
-     * @var bool $rotateWorkerToken rotate the worker join token
-     * @var bool $rotateManagerToken rotate the manager join token
-     * @var bool $rotateManagerUnlockKey Rotate the manager unlock key.
-     *           }
-     *
+     * @param array{
+     *    "version": int, //The version number of the swarm object being updated. This is
+     * required to avoid conflicting writes.
+     *    "rotateWorkerToken"?: bool, //Rotate the worker join token.
+     *    "rotateManagerToken"?: bool, //Rotate the manager join token.
+     *    "rotateManagerUnlockKey"?: bool, //Rotate the manager unlock key.
+     * } $queryParameters
      * @param array $accept Accept content header application/json|text/plain
      */
     public function __construct(?\Docker\API\Model\SwarmSpec $requestBody = null, array $queryParameters = [], array $accept = [])
@@ -41,7 +39,7 @@ class SwarmUpdate extends \Docker\API\Runtime\Client\BaseEndpoint implements \Do
     public function getBody(\Symfony\Component\Serializer\SerializerInterface $serializer, $streamFactory = null): array
     {
         if ($this->body instanceof \Docker\API\Model\SwarmSpec) {
-            return [['Content-Type' => ['application/json']], $serializer->serialize($this->body, 'json')];
+            return [['Content-Type' => ['application/json']], \Docker\API\Runtime\Client\JsonPayload::encode($serializer, $this->body)];
         }
         if ($this->body instanceof \Docker\API\Model\SwarmSpec) {
             return [['Content-Type' => ['text/plain']], $this->body];
@@ -86,14 +84,14 @@ class SwarmUpdate extends \Docker\API\Runtime\Client\BaseEndpoint implements \Do
         $body = (string) $response->getBody();
         if (200 === $status) {
         }
-        if ((null === $contentType) === false && (400 === $status && false !== mb_strpos($contentType, 'application/json'))) {
-            throw new \Docker\API\Exception\SwarmUpdateBadRequestException($serializer->deserialize($body, 'Docker\\API\\Model\\ErrorResponse', 'json'), $response);
+        if ((null === $contentType) === false && (400 === $status && false !== stripos(strtolower($contentType), 'application/json'))) {
+            throw new \Docker\API\Exception\SwarmUpdateBadRequestException($serializer->deserialize($body, 'Docker\API\Model\ErrorResponse', 'json'), $response);
         }
-        if ((null === $contentType) === false && (500 === $status && false !== mb_strpos($contentType, 'application/json'))) {
-            throw new \Docker\API\Exception\SwarmUpdateInternalServerErrorException($serializer->deserialize($body, 'Docker\\API\\Model\\ErrorResponse', 'json'), $response);
+        if ((null === $contentType) === false && (500 === $status && false !== stripos(strtolower($contentType), 'application/json'))) {
+            throw new \Docker\API\Exception\SwarmUpdateInternalServerErrorException($serializer->deserialize($body, 'Docker\API\Model\ErrorResponse', 'json'), $response);
         }
-        if ((null === $contentType) === false && (503 === $status && false !== mb_strpos($contentType, 'application/json'))) {
-            throw new \Docker\API\Exception\SwarmUpdateServiceUnavailableException($serializer->deserialize($body, 'Docker\\API\\Model\\ErrorResponse', 'json'), $response);
+        if ((null === $contentType) === false && (503 === $status && false !== stripos(strtolower($contentType), 'application/json'))) {
+            throw new \Docker\API\Exception\SwarmUpdateServiceUnavailableException($serializer->deserialize($body, 'Docker\API\Model\ErrorResponse', 'json'), $response);
         }
     }
 

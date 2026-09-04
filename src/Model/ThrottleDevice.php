@@ -4,8 +4,12 @@ declare(strict_types=1);
 
 namespace Docker\API\Model;
 
-class ThrottleDevice extends \ArrayObject
+use Docker\API\Runtime\AdditionalAndPatternProperties;
+use Docker\API\Runtime\AdditionalPropertiesInterface;
+
+class ThrottleDevice implements AdditionalPropertiesInterface
 {
+    use AdditionalAndPatternProperties;
     /**
      * @var array
      */
@@ -64,5 +68,10 @@ class ThrottleDevice extends \ArrayObject
         $this->rate = $rate;
 
         return $this;
+    }
+
+    public function definedProperties(): array
+    {
+        return ['path' => ['Path', 'getPath', 'setPath'], 'rate' => ['Rate', 'getRate', 'setRate']];
     }
 }

@@ -4,8 +4,12 @@ declare(strict_types=1);
 
 namespace Docker\API\Model;
 
-class PluginConfig extends \ArrayObject
+use Docker\API\Runtime\AdditionalAndPatternProperties;
+use Docker\API\Runtime\AdditionalPropertiesInterface;
+
+class PluginConfig implements AdditionalPropertiesInterface
 {
+    use AdditionalAndPatternProperties;
     /**
      * @var array
      */
@@ -320,5 +324,10 @@ class PluginConfig extends \ArrayObject
         $this->rootfs = $rootfs;
 
         return $this;
+    }
+
+    public function definedProperties(): array
+    {
+        return ['dockerVersion' => ['DockerVersion', 'getDockerVersion', 'setDockerVersion'], 'description' => ['Description', 'getDescription', 'setDescription'], 'documentation' => ['Documentation', 'getDocumentation', 'setDocumentation'], 'interface' => ['Interface', 'getInterface', 'setInterface'], 'entrypoint' => ['Entrypoint', 'getEntrypoint', 'setEntrypoint'], 'workDir' => ['WorkDir', 'getWorkDir', 'setWorkDir'], 'user' => ['User', 'getUser', 'setUser'], 'network' => ['Network', 'getNetwork', 'setNetwork'], 'linux' => ['Linux', 'getLinux', 'setLinux'], 'propagatedMount' => ['PropagatedMount', 'getPropagatedMount', 'setPropagatedMount'], 'ipcHost' => ['IpcHost', 'getIpcHost', 'setIpcHost'], 'pidHost' => ['PidHost', 'getPidHost', 'setPidHost'], 'mounts' => ['Mounts', 'getMounts', 'setMounts'], 'env' => ['Env', 'getEnv', 'setEnv'], 'args' => ['Args', 'getArgs', 'setArgs'], 'rootfs' => ['rootfs', 'getRootfs', 'setRootfs']];
     }
 }

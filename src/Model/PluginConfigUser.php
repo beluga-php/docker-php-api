@@ -4,8 +4,12 @@ declare(strict_types=1);
 
 namespace Docker\API\Model;
 
-class PluginConfigUser extends \ArrayObject
+use Docker\API\Runtime\AdditionalAndPatternProperties;
+use Docker\API\Runtime\AdditionalPropertiesInterface;
+
+class PluginConfigUser implements AdditionalPropertiesInterface
 {
+    use AdditionalAndPatternProperties;
     /**
      * @var array
      */
@@ -48,5 +52,10 @@ class PluginConfigUser extends \ArrayObject
         $this->gID = $gID;
 
         return $this;
+    }
+
+    public function definedProperties(): array
+    {
+        return ['uID' => ['UID', 'getUID', 'setUID'], 'gID' => ['GID', 'getGID', 'setGID']];
     }
 }

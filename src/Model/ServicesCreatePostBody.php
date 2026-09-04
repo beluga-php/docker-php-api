@@ -4,8 +4,12 @@ declare(strict_types=1);
 
 namespace Docker\API\Model;
 
-class ServicesCreatePostBody extends \ArrayObject
+use Docker\API\Runtime\AdditionalAndPatternProperties;
+use Docker\API\Runtime\AdditionalPropertiesInterface;
+
+class ServicesCreatePostBody implements AdditionalPropertiesInterface
 {
+    use AdditionalAndPatternProperties;
     /**
      * @var array
      */
@@ -53,6 +57,8 @@ class ServicesCreatePostBody extends \ArrayObject
     protected $rollbackConfig;
     /**
      * Specifies which networks the service should attach to.
+     *
+     * Deprecated: This field is deprecated since v1.44. The Networks field in TaskSpec should be used instead.
      *
      * @var list<NetworkAttachmentConfig>|null
      */
@@ -185,6 +191,8 @@ class ServicesCreatePostBody extends \ArrayObject
     /**
      * Specifies which networks the service should attach to.
      *
+     * Deprecated: This field is deprecated since v1.44. The Networks field in TaskSpec should be used instead.
+     *
      * @return list<NetworkAttachmentConfig>|null
      */
     public function getNetworks(): ?array
@@ -194,6 +202,8 @@ class ServicesCreatePostBody extends \ArrayObject
 
     /**
      * Specifies which networks the service should attach to.
+     *
+     * Deprecated: This field is deprecated since v1.44. The Networks field in TaskSpec should be used instead.
      *
      * @param list<NetworkAttachmentConfig>|null $networks
      */
@@ -222,5 +232,10 @@ class ServicesCreatePostBody extends \ArrayObject
         $this->endpointSpec = $endpointSpec;
 
         return $this;
+    }
+
+    public function definedProperties(): array
+    {
+        return ['name' => ['Name', 'getName', 'setName'], 'labels' => ['Labels', 'getLabels', 'setLabels'], 'taskTemplate' => ['TaskTemplate', 'getTaskTemplate', 'setTaskTemplate'], 'mode' => ['Mode', 'getMode', 'setMode'], 'updateConfig' => ['UpdateConfig', 'getUpdateConfig', 'setUpdateConfig'], 'rollbackConfig' => ['RollbackConfig', 'getRollbackConfig', 'setRollbackConfig'], 'networks' => ['Networks', 'getNetworks', 'setNetworks'], 'endpointSpec' => ['EndpointSpec', 'getEndpointSpec', 'setEndpointSpec']];
     }
 }

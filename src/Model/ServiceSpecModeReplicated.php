@@ -4,8 +4,12 @@ declare(strict_types=1);
 
 namespace Docker\API\Model;
 
-class ServiceSpecModeReplicated extends \ArrayObject
+use Docker\API\Runtime\AdditionalAndPatternProperties;
+use Docker\API\Runtime\AdditionalPropertiesInterface;
+
+class ServiceSpecModeReplicated implements AdditionalPropertiesInterface
 {
+    use AdditionalAndPatternProperties;
     /**
      * @var array
      */
@@ -31,5 +35,10 @@ class ServiceSpecModeReplicated extends \ArrayObject
         $this->replicas = $replicas;
 
         return $this;
+    }
+
+    public function definedProperties(): array
+    {
+        return ['replicas' => ['Replicas', 'getReplicas', 'setReplicas']];
     }
 }

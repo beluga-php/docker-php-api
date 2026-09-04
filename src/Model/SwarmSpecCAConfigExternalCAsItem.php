@@ -4,8 +4,12 @@ declare(strict_types=1);
 
 namespace Docker\API\Model;
 
-class SwarmSpecCAConfigExternalCAsItem extends \ArrayObject
+use Docker\API\Runtime\AdditionalAndPatternProperties;
+use Docker\API\Runtime\AdditionalPropertiesInterface;
+
+class SwarmSpecCAConfigExternalCAsItem implements AdditionalPropertiesInterface
 {
+    use AdditionalAndPatternProperties;
     /**
      * @var array
      */
@@ -130,5 +134,10 @@ class SwarmSpecCAConfigExternalCAsItem extends \ArrayObject
         $this->cACert = $cACert;
 
         return $this;
+    }
+
+    public function definedProperties(): array
+    {
+        return ['protocol' => ['Protocol', 'getProtocol', 'setProtocol'], 'uRL' => ['URL', 'getURL', 'setURL'], 'options' => ['Options', 'getOptions', 'setOptions'], 'cACert' => ['CACert', 'getCACert', 'setCACert']];
     }
 }

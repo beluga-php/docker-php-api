@@ -4,8 +4,12 @@ declare(strict_types=1);
 
 namespace Docker\API\Model;
 
-class PluginsInfo extends \ArrayObject
+use Docker\API\Runtime\AdditionalAndPatternProperties;
+use Docker\API\Runtime\AdditionalPropertiesInterface;
+
+class PluginsInfo implements AdditionalPropertiesInterface
 {
+    use AdditionalAndPatternProperties;
     /**
      * @var array
      */
@@ -130,5 +134,10 @@ class PluginsInfo extends \ArrayObject
         $this->log = $log;
 
         return $this;
+    }
+
+    public function definedProperties(): array
+    {
+        return ['volume' => ['Volume', 'getVolume', 'setVolume'], 'network' => ['Network', 'getNetwork', 'setNetwork'], 'authorization' => ['Authorization', 'getAuthorization', 'setAuthorization'], 'log' => ['Log', 'getLog', 'setLog']];
     }
 }
