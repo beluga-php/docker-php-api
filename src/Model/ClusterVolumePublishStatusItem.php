@@ -4,8 +4,12 @@ declare(strict_types=1);
 
 namespace Docker\API\Model;
 
-class ClusterVolumePublishStatusItem extends \ArrayObject
+use Docker\API\Runtime\AdditionalAndPatternProperties;
+use Docker\API\Runtime\AdditionalPropertiesInterface;
+
+class ClusterVolumePublishStatusItem implements AdditionalPropertiesInterface
 {
+    use AdditionalAndPatternProperties;
     /**
      * @var array
      */
@@ -23,10 +27,10 @@ class ClusterVolumePublishStatusItem extends \ArrayObject
     protected $nodeID;
     /**
      * The published state of the volume.
-     * `pending-publish` The volume should be published to this node, but the call to the controller plugin to do so has not yet been successfully completed.
-     * `published` The volume is published successfully to the node.
-     * `pending-node-unpublish` The volume should be unpublished from the node, and the manager is awaiting confirmation from the worker that it has done so.
-     * `pending-controller-unpublish` The volume is successfully unpublished from the node, but has not yet been successfully unpublished on the controller.
+     * * `pending-publish` The volume should be published to this node, but the call to the controller plugin to do so has not yet been successfully completed.
+     * * `published` The volume is published successfully to the node.
+     * * `pending-node-unpublish` The volume should be unpublished from the node, and the manager is awaiting confirmation from the worker that it has done so.
+     * * `pending-controller-unpublish` The volume is successfully unpublished from the node, but has not yet been successfully unpublished on the controller.
      *
      * @var string|null
      */
@@ -60,10 +64,10 @@ class ClusterVolumePublishStatusItem extends \ArrayObject
 
     /**
      * The published state of the volume.
-     * `pending-publish` The volume should be published to this node, but the call to the controller plugin to do so has not yet been successfully completed.
-     * `published` The volume is published successfully to the node.
-     * `pending-node-unpublish` The volume should be unpublished from the node, and the manager is awaiting confirmation from the worker that it has done so.
-     * `pending-controller-unpublish` The volume is successfully unpublished from the node, but has not yet been successfully unpublished on the controller.
+     * * `pending-publish` The volume should be published to this node, but the call to the controller plugin to do so has not yet been successfully completed.
+     * * `published` The volume is published successfully to the node.
+     * * `pending-node-unpublish` The volume should be unpublished from the node, and the manager is awaiting confirmation from the worker that it has done so.
+     * * `pending-controller-unpublish` The volume is successfully unpublished from the node, but has not yet been successfully unpublished on the controller.
      */
     public function getState(): ?string
     {
@@ -108,5 +112,10 @@ class ClusterVolumePublishStatusItem extends \ArrayObject
         $this->publishContext = $publishContext;
 
         return $this;
+    }
+
+    public function definedProperties(): array
+    {
+        return ['nodeID' => ['NodeID', 'getNodeID', 'setNodeID'], 'state' => ['State', 'getState', 'setState'], 'publishContext' => ['PublishContext', 'getPublishContext', 'setPublishContext']];
     }
 }

@@ -33,15 +33,15 @@ class TaskSpecPlacementNormalizer implements DenormalizerInterface, NormalizerIn
 
     public function denormalize(mixed $data, string $type, ?string $format = null, array $context = []): mixed
     {
-        if (isset($data['$ref'])) {
+        $object = new \Docker\API\Model\TaskSpecPlacement();
+        if (null === $data || false === \is_array($data)) {
+            return $object;
+        }
+        if (isset($data['$ref']) && !isset($data['type']) && !isset($data['properties']) && !isset($data['allOf'])) {
             return new Reference($data['$ref'], $context['document-origin']);
         }
         if (isset($data['$recursiveRef'])) {
             return new Reference($data['$recursiveRef'], $context['document-origin']);
-        }
-        $object = new \Docker\API\Model\TaskSpecPlacement();
-        if (null === $data || false === \is_array($data)) {
-            return $object;
         }
         if (\array_key_exists('Constraints', $data) && null !== $data['Constraints']) {
             $values = [];
@@ -52,6 +52,7 @@ class TaskSpecPlacementNormalizer implements DenormalizerInterface, NormalizerIn
             unset($data['Constraints']);
         } elseif (\array_key_exists('Constraints', $data) && null === $data['Constraints']) {
             $object->setConstraints(null);
+            unset($data['Constraints']);
         }
         if (\array_key_exists('Preferences', $data) && null !== $data['Preferences']) {
             $values_1 = [];
@@ -62,12 +63,14 @@ class TaskSpecPlacementNormalizer implements DenormalizerInterface, NormalizerIn
             unset($data['Preferences']);
         } elseif (\array_key_exists('Preferences', $data) && null === $data['Preferences']) {
             $object->setPreferences(null);
+            unset($data['Preferences']);
         }
         if (\array_key_exists('MaxReplicas', $data) && null !== $data['MaxReplicas']) {
             $object->setMaxReplicas($data['MaxReplicas']);
             unset($data['MaxReplicas']);
         } elseif (\array_key_exists('MaxReplicas', $data) && null === $data['MaxReplicas']) {
             $object->setMaxReplicas(null);
+            unset($data['MaxReplicas']);
         }
         if (\array_key_exists('Platforms', $data) && null !== $data['Platforms']) {
             $values_2 = [];
@@ -78,6 +81,7 @@ class TaskSpecPlacementNormalizer implements DenormalizerInterface, NormalizerIn
             unset($data['Platforms']);
         } elseif (\array_key_exists('Platforms', $data) && null === $data['Platforms']) {
             $object->setPlatforms(null);
+            unset($data['Platforms']);
         }
         foreach ($data as $key => $value_3) {
             if (preg_match('/.*/', (string) $key)) {
@@ -101,7 +105,7 @@ class TaskSpecPlacementNormalizer implements DenormalizerInterface, NormalizerIn
         if ($data->isInitialized('preferences') && null !== $data->getPreferences()) {
             $values_1 = [];
             foreach ($data->getPreferences() as $value_1) {
-                $values_1[] = $this->normalizer->normalize($value_1, 'json', $context);
+                $values_1[] = null === $value_1 ? null : new \Docker\API\Runtime\JsonObject($this->normalizer->normalize($value_1, 'json', $context));
             }
             $dataArray['Preferences'] = $values_1;
         }
@@ -111,11 +115,11 @@ class TaskSpecPlacementNormalizer implements DenormalizerInterface, NormalizerIn
         if ($data->isInitialized('platforms') && null !== $data->getPlatforms()) {
             $values_2 = [];
             foreach ($data->getPlatforms() as $value_2) {
-                $values_2[] = $this->normalizer->normalize($value_2, 'json', $context);
+                $values_2[] = null === $value_2 ? null : new \Docker\API\Runtime\JsonObject($this->normalizer->normalize($value_2, 'json', $context));
             }
             $dataArray['Platforms'] = $values_2;
         }
-        foreach ($data as $key => $value_3) {
+        foreach ($data->additionalPropertyEntries() as $key => $value_3) {
             if (preg_match('/.*/', (string) $key)) {
                 $dataArray[$key] = $value_3;
             }

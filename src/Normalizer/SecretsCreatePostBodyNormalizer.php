@@ -33,24 +33,25 @@ class SecretsCreatePostBodyNormalizer implements DenormalizerInterface, Normaliz
 
     public function denormalize(mixed $data, string $type, ?string $format = null, array $context = []): mixed
     {
-        if (isset($data['$ref'])) {
+        $object = new \Docker\API\Model\SecretsCreatePostBody();
+        if (null === $data || false === \is_array($data)) {
+            return $object;
+        }
+        if (isset($data['$ref']) && !isset($data['type']) && !isset($data['properties']) && !isset($data['allOf'])) {
             return new Reference($data['$ref'], $context['document-origin']);
         }
         if (isset($data['$recursiveRef'])) {
             return new Reference($data['$recursiveRef'], $context['document-origin']);
-        }
-        $object = new \Docker\API\Model\SecretsCreatePostBody();
-        if (null === $data || false === \is_array($data)) {
-            return $object;
         }
         if (\array_key_exists('Name', $data) && null !== $data['Name']) {
             $object->setName($data['Name']);
             unset($data['Name']);
         } elseif (\array_key_exists('Name', $data) && null === $data['Name']) {
             $object->setName(null);
+            unset($data['Name']);
         }
         if (\array_key_exists('Labels', $data) && null !== $data['Labels']) {
-            $values = new \ArrayObject([], \ArrayObject::ARRAY_AS_PROPS);
+            $values = new \Docker\API\Runtime\JsonObject();
             foreach ($data['Labels'] as $key => $value) {
                 $values[$key] = $value;
             }
@@ -58,24 +59,28 @@ class SecretsCreatePostBodyNormalizer implements DenormalizerInterface, Normaliz
             unset($data['Labels']);
         } elseif (\array_key_exists('Labels', $data) && null === $data['Labels']) {
             $object->setLabels(null);
+            unset($data['Labels']);
         }
         if (\array_key_exists('Data', $data) && null !== $data['Data']) {
             $object->setData($data['Data']);
             unset($data['Data']);
         } elseif (\array_key_exists('Data', $data) && null === $data['Data']) {
             $object->setData(null);
+            unset($data['Data']);
         }
         if (\array_key_exists('Driver', $data) && null !== $data['Driver']) {
             $object->setDriver($this->denormalizer->denormalize($data['Driver'], \Docker\API\Model\Driver::class, 'json', $context));
             unset($data['Driver']);
         } elseif (\array_key_exists('Driver', $data) && null === $data['Driver']) {
             $object->setDriver(null);
+            unset($data['Driver']);
         }
         if (\array_key_exists('Templating', $data) && null !== $data['Templating']) {
             $object->setTemplating($this->denormalizer->denormalize($data['Templating'], \Docker\API\Model\Driver::class, 'json', $context));
             unset($data['Templating']);
         } elseif (\array_key_exists('Templating', $data) && null === $data['Templating']) {
             $object->setTemplating(null);
+            unset($data['Templating']);
         }
         foreach ($data as $key_1 => $value_1) {
             if (preg_match('/.*/', (string) $key_1)) {
@@ -93,7 +98,7 @@ class SecretsCreatePostBodyNormalizer implements DenormalizerInterface, Normaliz
             $dataArray['Name'] = $data->getName();
         }
         if ($data->isInitialized('labels') && null !== $data->getLabels()) {
-            $values = [];
+            $values = new \Docker\API\Runtime\JsonObject();
             foreach ($data->getLabels() as $key => $value) {
                 $values[$key] = $value;
             }
@@ -103,12 +108,12 @@ class SecretsCreatePostBodyNormalizer implements DenormalizerInterface, Normaliz
             $dataArray['Data'] = $data->getData();
         }
         if ($data->isInitialized('driver') && null !== $data->getDriver()) {
-            $dataArray['Driver'] = $this->normalizer->normalize($data->getDriver(), 'json', $context);
+            $dataArray['Driver'] = null === $data->getDriver() ? null : new \Docker\API\Runtime\JsonObject($this->normalizer->normalize($data->getDriver(), 'json', $context));
         }
         if ($data->isInitialized('templating') && null !== $data->getTemplating()) {
-            $dataArray['Templating'] = $this->normalizer->normalize($data->getTemplating(), 'json', $context);
+            $dataArray['Templating'] = null === $data->getTemplating() ? null : new \Docker\API\Runtime\JsonObject($this->normalizer->normalize($data->getTemplating(), 'json', $context));
         }
-        foreach ($data as $key_1 => $value_1) {
+        foreach ($data->additionalPropertyEntries() as $key_1 => $value_1) {
             if (preg_match('/.*/', (string) $key_1)) {
                 $dataArray[$key_1] = $value_1;
             }

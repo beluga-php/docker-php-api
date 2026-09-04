@@ -4,8 +4,12 @@ declare(strict_types=1);
 
 namespace Docker\API\Model;
 
-class ServiceSpecRollbackConfig extends \ArrayObject
+use Docker\API\Runtime\AdditionalAndPatternProperties;
+use Docker\API\Runtime\AdditionalPropertiesInterface;
+
+class ServiceSpecRollbackConfig implements AdditionalPropertiesInterface
 {
+    use AdditionalAndPatternProperties;
     /**
      * @var array
      */
@@ -49,7 +53,7 @@ class ServiceSpecRollbackConfig extends \ArrayObject
      *
      * @var float|null
      */
-    protected $maxFailureRatio;
+    protected $maxFailureRatio = 0;
     /**
      * The order of operations when rolling back a task. Either the old
      * task is shut down before the new task is started, or the new task
@@ -185,5 +189,10 @@ class ServiceSpecRollbackConfig extends \ArrayObject
         $this->order = $order;
 
         return $this;
+    }
+
+    public function definedProperties(): array
+    {
+        return ['parallelism' => ['Parallelism', 'getParallelism', 'setParallelism'], 'delay' => ['Delay', 'getDelay', 'setDelay'], 'failureAction' => ['FailureAction', 'getFailureAction', 'setFailureAction'], 'monitor' => ['Monitor', 'getMonitor', 'setMonitor'], 'maxFailureRatio' => ['MaxFailureRatio', 'getMaxFailureRatio', 'setMaxFailureRatio'], 'order' => ['Order', 'getOrder', 'setOrder']];
     }
 }

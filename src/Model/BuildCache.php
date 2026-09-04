@@ -4,8 +4,12 @@ declare(strict_types=1);
 
 namespace Docker\API\Model;
 
-class BuildCache extends \ArrayObject
+use Docker\API\Runtime\AdditionalAndPatternProperties;
+use Docker\API\Runtime\AdditionalPropertiesInterface;
+
+class BuildCache implements AdditionalPropertiesInterface
 {
+    use AdditionalAndPatternProperties;
     /**
      * @var array
      */
@@ -21,14 +25,6 @@ class BuildCache extends \ArrayObject
      * @var string|null
      */
     protected $iD;
-    /**
-     * ID of the parent build cache record.
-     *
-     * > **Deprecated**: This field is deprecated, and omitted if empty.
-     *
-     * @var string|null
-     */
-    protected $parent;
     /**
      * List of parent build cache record IDs.
      *
@@ -99,29 +95,6 @@ class BuildCache extends \ArrayObject
     {
         $this->initialized['iD'] = true;
         $this->iD = $iD;
-
-        return $this;
-    }
-
-    /**
-     * ID of the parent build cache record.
-     *
-     * > **Deprecated**: This field is deprecated, and omitted if empty.
-     */
-    public function getParent(): ?string
-    {
-        return $this->parent;
-    }
-
-    /**
-     * ID of the parent build cache record.
-     *
-     * > **Deprecated**: This field is deprecated, and omitted if empty.
-     */
-    public function setParent(?string $parent): self
-    {
-        $this->initialized['parent'] = true;
-        $this->parent = $parent;
 
         return $this;
     }
@@ -297,5 +270,10 @@ class BuildCache extends \ArrayObject
         $this->usageCount = $usageCount;
 
         return $this;
+    }
+
+    public function definedProperties(): array
+    {
+        return ['iD' => ['ID', 'getID', 'setID'], 'parents' => ['Parents', 'getParents', 'setParents'], 'type' => ['Type', 'getType', 'setType'], 'description' => ['Description', 'getDescription', 'setDescription'], 'inUse' => ['InUse', 'getInUse', 'setInUse'], 'shared' => ['Shared', 'getShared', 'setShared'], 'size' => ['Size', 'getSize', 'setSize'], 'createdAt' => ['CreatedAt', 'getCreatedAt', 'setCreatedAt'], 'lastUsedAt' => ['LastUsedAt', 'getLastUsedAt', 'setLastUsedAt'], 'usageCount' => ['UsageCount', 'getUsageCount', 'setUsageCount']];
     }
 }

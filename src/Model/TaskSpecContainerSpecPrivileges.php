@@ -4,8 +4,12 @@ declare(strict_types=1);
 
 namespace Docker\API\Model;
 
-class TaskSpecContainerSpecPrivileges extends \ArrayObject
+use Docker\API\Runtime\AdditionalAndPatternProperties;
+use Docker\API\Runtime\AdditionalPropertiesInterface;
+
+class TaskSpecContainerSpecPrivileges implements AdditionalPropertiesInterface
 {
+    use AdditionalAndPatternProperties;
     /**
      * @var array
      */
@@ -139,5 +143,10 @@ class TaskSpecContainerSpecPrivileges extends \ArrayObject
         $this->noNewPrivileges = $noNewPrivileges;
 
         return $this;
+    }
+
+    public function definedProperties(): array
+    {
+        return ['credentialSpec' => ['CredentialSpec', 'getCredentialSpec', 'setCredentialSpec'], 'sELinuxContext' => ['SELinuxContext', 'getSELinuxContext', 'setSELinuxContext'], 'seccomp' => ['Seccomp', 'getSeccomp', 'setSeccomp'], 'appArmor' => ['AppArmor', 'getAppArmor', 'setAppArmor'], 'noNewPrivileges' => ['NoNewPrivileges', 'getNoNewPrivileges', 'setNoNewPrivileges']];
     }
 }

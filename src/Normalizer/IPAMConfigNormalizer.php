@@ -33,36 +33,39 @@ class IPAMConfigNormalizer implements DenormalizerInterface, NormalizerInterface
 
     public function denormalize(mixed $data, string $type, ?string $format = null, array $context = []): mixed
     {
-        if (isset($data['$ref'])) {
+        $object = new \Docker\API\Model\IPAMConfig();
+        if (null === $data || false === \is_array($data)) {
+            return $object;
+        }
+        if (isset($data['$ref']) && !isset($data['type']) && !isset($data['properties']) && !isset($data['allOf'])) {
             return new Reference($data['$ref'], $context['document-origin']);
         }
         if (isset($data['$recursiveRef'])) {
             return new Reference($data['$recursiveRef'], $context['document-origin']);
-        }
-        $object = new \Docker\API\Model\IPAMConfig();
-        if (null === $data || false === \is_array($data)) {
-            return $object;
         }
         if (\array_key_exists('Subnet', $data) && null !== $data['Subnet']) {
             $object->setSubnet($data['Subnet']);
             unset($data['Subnet']);
         } elseif (\array_key_exists('Subnet', $data) && null === $data['Subnet']) {
             $object->setSubnet(null);
+            unset($data['Subnet']);
         }
         if (\array_key_exists('IPRange', $data) && null !== $data['IPRange']) {
             $object->setIPRange($data['IPRange']);
             unset($data['IPRange']);
         } elseif (\array_key_exists('IPRange', $data) && null === $data['IPRange']) {
             $object->setIPRange(null);
+            unset($data['IPRange']);
         }
         if (\array_key_exists('Gateway', $data) && null !== $data['Gateway']) {
             $object->setGateway($data['Gateway']);
             unset($data['Gateway']);
         } elseif (\array_key_exists('Gateway', $data) && null === $data['Gateway']) {
             $object->setGateway(null);
+            unset($data['Gateway']);
         }
         if (\array_key_exists('AuxiliaryAddresses', $data) && null !== $data['AuxiliaryAddresses']) {
-            $values = new \ArrayObject([], \ArrayObject::ARRAY_AS_PROPS);
+            $values = new \Docker\API\Runtime\JsonObject();
             foreach ($data['AuxiliaryAddresses'] as $key => $value) {
                 $values[$key] = $value;
             }
@@ -70,6 +73,7 @@ class IPAMConfigNormalizer implements DenormalizerInterface, NormalizerInterface
             unset($data['AuxiliaryAddresses']);
         } elseif (\array_key_exists('AuxiliaryAddresses', $data) && null === $data['AuxiliaryAddresses']) {
             $object->setAuxiliaryAddresses(null);
+            unset($data['AuxiliaryAddresses']);
         }
         foreach ($data as $key_1 => $value_1) {
             if (preg_match('/.*/', (string) $key_1)) {
@@ -93,13 +97,13 @@ class IPAMConfigNormalizer implements DenormalizerInterface, NormalizerInterface
             $dataArray['Gateway'] = $data->getGateway();
         }
         if ($data->isInitialized('auxiliaryAddresses') && null !== $data->getAuxiliaryAddresses()) {
-            $values = [];
+            $values = new \Docker\API\Runtime\JsonObject();
             foreach ($data->getAuxiliaryAddresses() as $key => $value) {
                 $values[$key] = $value;
             }
             $dataArray['AuxiliaryAddresses'] = $values;
         }
-        foreach ($data as $key_1 => $value_1) {
+        foreach ($data->additionalPropertyEntries() as $key_1 => $value_1) {
             if (preg_match('/.*/', (string) $key_1)) {
                 $dataArray[$key_1] = $value_1;
             }

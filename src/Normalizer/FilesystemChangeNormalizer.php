@@ -33,27 +33,29 @@ class FilesystemChangeNormalizer implements DenormalizerInterface, NormalizerInt
 
     public function denormalize(mixed $data, string $type, ?string $format = null, array $context = []): mixed
     {
-        if (isset($data['$ref'])) {
+        $object = new \Docker\API\Model\FilesystemChange();
+        if (null === $data || false === \is_array($data)) {
+            return $object;
+        }
+        if (isset($data['$ref']) && !isset($data['type']) && !isset($data['properties']) && !isset($data['allOf'])) {
             return new Reference($data['$ref'], $context['document-origin']);
         }
         if (isset($data['$recursiveRef'])) {
             return new Reference($data['$recursiveRef'], $context['document-origin']);
-        }
-        $object = new \Docker\API\Model\FilesystemChange();
-        if (null === $data || false === \is_array($data)) {
-            return $object;
         }
         if (\array_key_exists('Path', $data) && null !== $data['Path']) {
             $object->setPath($data['Path']);
             unset($data['Path']);
         } elseif (\array_key_exists('Path', $data) && null === $data['Path']) {
             $object->setPath(null);
+            unset($data['Path']);
         }
         if (\array_key_exists('Kind', $data) && null !== $data['Kind']) {
             $object->setKind($data['Kind']);
             unset($data['Kind']);
         } elseif (\array_key_exists('Kind', $data) && null === $data['Kind']) {
             $object->setKind(null);
+            unset($data['Kind']);
         }
         foreach ($data as $key => $value) {
             if (preg_match('/.*/', (string) $key)) {
@@ -69,7 +71,7 @@ class FilesystemChangeNormalizer implements DenormalizerInterface, NormalizerInt
         $dataArray = [];
         $dataArray['Path'] = $data->getPath();
         $dataArray['Kind'] = $data->getKind();
-        foreach ($data as $key => $value) {
+        foreach ($data->additionalPropertyEntries() as $key => $value) {
             if (preg_match('/.*/', (string) $key)) {
                 $dataArray[$key] = $value;
             }

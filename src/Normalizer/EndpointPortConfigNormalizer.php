@@ -33,45 +33,50 @@ class EndpointPortConfigNormalizer implements DenormalizerInterface, NormalizerI
 
     public function denormalize(mixed $data, string $type, ?string $format = null, array $context = []): mixed
     {
-        if (isset($data['$ref'])) {
+        $object = new \Docker\API\Model\EndpointPortConfig();
+        if (null === $data || false === \is_array($data)) {
+            return $object;
+        }
+        if (isset($data['$ref']) && !isset($data['type']) && !isset($data['properties']) && !isset($data['allOf'])) {
             return new Reference($data['$ref'], $context['document-origin']);
         }
         if (isset($data['$recursiveRef'])) {
             return new Reference($data['$recursiveRef'], $context['document-origin']);
-        }
-        $object = new \Docker\API\Model\EndpointPortConfig();
-        if (null === $data || false === \is_array($data)) {
-            return $object;
         }
         if (\array_key_exists('Name', $data) && null !== $data['Name']) {
             $object->setName($data['Name']);
             unset($data['Name']);
         } elseif (\array_key_exists('Name', $data) && null === $data['Name']) {
             $object->setName(null);
+            unset($data['Name']);
         }
         if (\array_key_exists('Protocol', $data) && null !== $data['Protocol']) {
             $object->setProtocol($data['Protocol']);
             unset($data['Protocol']);
         } elseif (\array_key_exists('Protocol', $data) && null === $data['Protocol']) {
             $object->setProtocol(null);
+            unset($data['Protocol']);
         }
         if (\array_key_exists('TargetPort', $data) && null !== $data['TargetPort']) {
             $object->setTargetPort($data['TargetPort']);
             unset($data['TargetPort']);
         } elseif (\array_key_exists('TargetPort', $data) && null === $data['TargetPort']) {
             $object->setTargetPort(null);
+            unset($data['TargetPort']);
         }
         if (\array_key_exists('PublishedPort', $data) && null !== $data['PublishedPort']) {
             $object->setPublishedPort($data['PublishedPort']);
             unset($data['PublishedPort']);
         } elseif (\array_key_exists('PublishedPort', $data) && null === $data['PublishedPort']) {
             $object->setPublishedPort(null);
+            unset($data['PublishedPort']);
         }
         if (\array_key_exists('PublishMode', $data) && null !== $data['PublishMode']) {
             $object->setPublishMode($data['PublishMode']);
             unset($data['PublishMode']);
         } elseif (\array_key_exists('PublishMode', $data) && null === $data['PublishMode']) {
             $object->setPublishMode(null);
+            unset($data['PublishMode']);
         }
         foreach ($data as $key => $value) {
             if (preg_match('/.*/', (string) $key)) {
@@ -100,7 +105,7 @@ class EndpointPortConfigNormalizer implements DenormalizerInterface, NormalizerI
         if ($data->isInitialized('publishMode') && null !== $data->getPublishMode()) {
             $dataArray['PublishMode'] = $data->getPublishMode();
         }
-        foreach ($data as $key => $value) {
+        foreach ($data->additionalPropertyEntries() as $key => $value) {
             if (preg_match('/.*/', (string) $key)) {
                 $dataArray[$key] = $value;
             }

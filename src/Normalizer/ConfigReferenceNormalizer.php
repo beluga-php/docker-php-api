@@ -14,7 +14,7 @@ use Symfony\Component\Serializer\Normalizer\NormalizerAwareInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerAwareTrait;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
-class ContainerConfigVolumesItemNormalizer implements DenormalizerInterface, NormalizerInterface, DenormalizerAwareInterface, NormalizerAwareInterface
+class ConfigReferenceNormalizer implements DenormalizerInterface, NormalizerInterface, DenormalizerAwareInterface, NormalizerAwareInterface
 {
     use CheckArray;
     use DenormalizerAwareTrait;
@@ -23,25 +23,32 @@ class ContainerConfigVolumesItemNormalizer implements DenormalizerInterface, Nor
 
     public function supportsDenormalization(mixed $data, string $type, ?string $format = null, array $context = []): bool
     {
-        return \Docker\API\Model\ContainerConfigVolumesItem::class === $type;
+        return \Docker\API\Model\ConfigReference::class === $type;
     }
 
     public function supportsNormalization(mixed $data, ?string $format = null, array $context = []): bool
     {
-        return \is_object($data) && \Docker\API\Model\ContainerConfigVolumesItem::class === $data::class;
+        return \is_object($data) && \Docker\API\Model\ConfigReference::class === $data::class;
     }
 
     public function denormalize(mixed $data, string $type, ?string $format = null, array $context = []): mixed
     {
-        if (isset($data['$ref'])) {
+        $object = new \Docker\API\Model\ConfigReference();
+        if (null === $data || false === \is_array($data)) {
+            return $object;
+        }
+        if (isset($data['$ref']) && !isset($data['type']) && !isset($data['properties']) && !isset($data['allOf'])) {
             return new Reference($data['$ref'], $context['document-origin']);
         }
         if (isset($data['$recursiveRef'])) {
             return new Reference($data['$recursiveRef'], $context['document-origin']);
         }
-        $object = new \Docker\API\Model\ContainerConfigVolumesItem();
-        if (null === $data || false === \is_array($data)) {
-            return $object;
+        if (\array_key_exists('Network', $data) && null !== $data['Network']) {
+            $object->setNetwork($data['Network']);
+            unset($data['Network']);
+        } elseif (\array_key_exists('Network', $data) && null === $data['Network']) {
+            $object->setNetwork(null);
+            unset($data['Network']);
         }
         foreach ($data as $key => $value) {
             if (preg_match('/.*/', (string) $key)) {
@@ -55,7 +62,10 @@ class ContainerConfigVolumesItemNormalizer implements DenormalizerInterface, Nor
     public function normalize(mixed $data, ?string $format = null, array $context = []): array|string|int|float|bool|\ArrayObject|null
     {
         $dataArray = [];
-        foreach ($data as $key => $value) {
+        if ($data->isInitialized('network') && null !== $data->getNetwork()) {
+            $dataArray['Network'] = $data->getNetwork();
+        }
+        foreach ($data->additionalPropertyEntries() as $key => $value) {
             if (preg_match('/.*/', (string) $key)) {
                 $dataArray[$key] = $value;
             }
@@ -66,6 +76,6 @@ class ContainerConfigVolumesItemNormalizer implements DenormalizerInterface, Nor
 
     public function getSupportedTypes(?string $format = null): array
     {
-        return [\Docker\API\Model\ContainerConfigVolumesItem::class => false];
+        return [\Docker\API\Model\ConfigReference::class => false];
     }
 }

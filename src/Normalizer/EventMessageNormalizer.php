@@ -33,51 +33,57 @@ class EventMessageNormalizer implements DenormalizerInterface, NormalizerInterfa
 
     public function denormalize(mixed $data, string $type, ?string $format = null, array $context = []): mixed
     {
-        if (isset($data['$ref'])) {
+        $object = new \Docker\API\Model\EventMessage();
+        if (null === $data || false === \is_array($data)) {
+            return $object;
+        }
+        if (isset($data['$ref']) && !isset($data['type']) && !isset($data['properties']) && !isset($data['allOf'])) {
             return new Reference($data['$ref'], $context['document-origin']);
         }
         if (isset($data['$recursiveRef'])) {
             return new Reference($data['$recursiveRef'], $context['document-origin']);
-        }
-        $object = new \Docker\API\Model\EventMessage();
-        if (null === $data || false === \is_array($data)) {
-            return $object;
         }
         if (\array_key_exists('Type', $data) && null !== $data['Type']) {
             $object->setType($data['Type']);
             unset($data['Type']);
         } elseif (\array_key_exists('Type', $data) && null === $data['Type']) {
             $object->setType(null);
+            unset($data['Type']);
         }
         if (\array_key_exists('Action', $data) && null !== $data['Action']) {
             $object->setAction($data['Action']);
             unset($data['Action']);
         } elseif (\array_key_exists('Action', $data) && null === $data['Action']) {
             $object->setAction(null);
+            unset($data['Action']);
         }
         if (\array_key_exists('Actor', $data) && null !== $data['Actor']) {
             $object->setActor($this->denormalizer->denormalize($data['Actor'], \Docker\API\Model\EventActor::class, 'json', $context));
             unset($data['Actor']);
         } elseif (\array_key_exists('Actor', $data) && null === $data['Actor']) {
             $object->setActor(null);
+            unset($data['Actor']);
         }
         if (\array_key_exists('scope', $data) && null !== $data['scope']) {
             $object->setScope($data['scope']);
             unset($data['scope']);
         } elseif (\array_key_exists('scope', $data) && null === $data['scope']) {
             $object->setScope(null);
+            unset($data['scope']);
         }
         if (\array_key_exists('time', $data) && null !== $data['time']) {
             $object->setTime($data['time']);
             unset($data['time']);
         } elseif (\array_key_exists('time', $data) && null === $data['time']) {
             $object->setTime(null);
+            unset($data['time']);
         }
         if (\array_key_exists('timeNano', $data) && null !== $data['timeNano']) {
             $object->setTimeNano($data['timeNano']);
             unset($data['timeNano']);
         } elseif (\array_key_exists('timeNano', $data) && null === $data['timeNano']) {
             $object->setTimeNano(null);
+            unset($data['timeNano']);
         }
         foreach ($data as $key => $value) {
             if (preg_match('/.*/', (string) $key)) {
@@ -98,7 +104,7 @@ class EventMessageNormalizer implements DenormalizerInterface, NormalizerInterfa
             $dataArray['Action'] = $data->getAction();
         }
         if ($data->isInitialized('actor') && null !== $data->getActor()) {
-            $dataArray['Actor'] = $this->normalizer->normalize($data->getActor(), 'json', $context);
+            $dataArray['Actor'] = null === $data->getActor() ? null : new \Docker\API\Runtime\JsonObject($this->normalizer->normalize($data->getActor(), 'json', $context));
         }
         if ($data->isInitialized('scope') && null !== $data->getScope()) {
             $dataArray['scope'] = $data->getScope();
@@ -109,7 +115,7 @@ class EventMessageNormalizer implements DenormalizerInterface, NormalizerInterfa
         if ($data->isInitialized('timeNano') && null !== $data->getTimeNano()) {
             $dataArray['timeNano'] = $data->getTimeNano();
         }
-        foreach ($data as $key => $value) {
+        foreach ($data->additionalPropertyEntries() as $key => $value) {
             if (preg_match('/.*/', (string) $key)) {
                 $dataArray[$key] = $value;
             }

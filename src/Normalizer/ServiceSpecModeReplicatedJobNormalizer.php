@@ -33,27 +33,29 @@ class ServiceSpecModeReplicatedJobNormalizer implements DenormalizerInterface, N
 
     public function denormalize(mixed $data, string $type, ?string $format = null, array $context = []): mixed
     {
-        if (isset($data['$ref'])) {
+        $object = new \Docker\API\Model\ServiceSpecModeReplicatedJob();
+        if (null === $data || false === \is_array($data)) {
+            return $object;
+        }
+        if (isset($data['$ref']) && !isset($data['type']) && !isset($data['properties']) && !isset($data['allOf'])) {
             return new Reference($data['$ref'], $context['document-origin']);
         }
         if (isset($data['$recursiveRef'])) {
             return new Reference($data['$recursiveRef'], $context['document-origin']);
-        }
-        $object = new \Docker\API\Model\ServiceSpecModeReplicatedJob();
-        if (null === $data || false === \is_array($data)) {
-            return $object;
         }
         if (\array_key_exists('MaxConcurrent', $data) && null !== $data['MaxConcurrent']) {
             $object->setMaxConcurrent($data['MaxConcurrent']);
             unset($data['MaxConcurrent']);
         } elseif (\array_key_exists('MaxConcurrent', $data) && null === $data['MaxConcurrent']) {
             $object->setMaxConcurrent(null);
+            unset($data['MaxConcurrent']);
         }
         if (\array_key_exists('TotalCompletions', $data) && null !== $data['TotalCompletions']) {
             $object->setTotalCompletions($data['TotalCompletions']);
             unset($data['TotalCompletions']);
         } elseif (\array_key_exists('TotalCompletions', $data) && null === $data['TotalCompletions']) {
             $object->setTotalCompletions(null);
+            unset($data['TotalCompletions']);
         }
         foreach ($data as $key => $value) {
             if (preg_match('/.*/', (string) $key)) {
@@ -73,7 +75,7 @@ class ServiceSpecModeReplicatedJobNormalizer implements DenormalizerInterface, N
         if ($data->isInitialized('totalCompletions') && null !== $data->getTotalCompletions()) {
             $dataArray['TotalCompletions'] = $data->getTotalCompletions();
         }
-        foreach ($data as $key => $value) {
+        foreach ($data->additionalPropertyEntries() as $key => $value) {
             if (preg_match('/.*/', (string) $key)) {
                 $dataArray[$key] = $value;
             }

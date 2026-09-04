@@ -33,24 +33,25 @@ class HostConfigLogConfigNormalizer implements DenormalizerInterface, Normalizer
 
     public function denormalize(mixed $data, string $type, ?string $format = null, array $context = []): mixed
     {
-        if (isset($data['$ref'])) {
+        $object = new \Docker\API\Model\HostConfigLogConfig();
+        if (null === $data || false === \is_array($data)) {
+            return $object;
+        }
+        if (isset($data['$ref']) && !isset($data['type']) && !isset($data['properties']) && !isset($data['allOf'])) {
             return new Reference($data['$ref'], $context['document-origin']);
         }
         if (isset($data['$recursiveRef'])) {
             return new Reference($data['$recursiveRef'], $context['document-origin']);
-        }
-        $object = new \Docker\API\Model\HostConfigLogConfig();
-        if (null === $data || false === \is_array($data)) {
-            return $object;
         }
         if (\array_key_exists('Type', $data) && null !== $data['Type']) {
             $object->setType($data['Type']);
             unset($data['Type']);
         } elseif (\array_key_exists('Type', $data) && null === $data['Type']) {
             $object->setType(null);
+            unset($data['Type']);
         }
         if (\array_key_exists('Config', $data) && null !== $data['Config']) {
-            $values = new \ArrayObject([], \ArrayObject::ARRAY_AS_PROPS);
+            $values = new \Docker\API\Runtime\JsonObject();
             foreach ($data['Config'] as $key => $value) {
                 $values[$key] = $value;
             }
@@ -58,6 +59,7 @@ class HostConfigLogConfigNormalizer implements DenormalizerInterface, Normalizer
             unset($data['Config']);
         } elseif (\array_key_exists('Config', $data) && null === $data['Config']) {
             $object->setConfig(null);
+            unset($data['Config']);
         }
         foreach ($data as $key_1 => $value_1) {
             if (preg_match('/.*/', (string) $key_1)) {
@@ -75,13 +77,13 @@ class HostConfigLogConfigNormalizer implements DenormalizerInterface, Normalizer
             $dataArray['Type'] = $data->getType();
         }
         if ($data->isInitialized('config') && null !== $data->getConfig()) {
-            $values = [];
+            $values = new \Docker\API\Runtime\JsonObject();
             foreach ($data->getConfig() as $key => $value) {
                 $values[$key] = $value;
             }
             $dataArray['Config'] = $values;
         }
-        foreach ($data as $key_1 => $value_1) {
+        foreach ($data->additionalPropertyEntries() as $key_1 => $value_1) {
             if (preg_match('/.*/', (string) $key_1)) {
                 $dataArray[$key_1] = $value_1;
             }

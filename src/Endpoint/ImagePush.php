@@ -19,21 +19,25 @@ class ImagePush extends \Docker\API\Runtime\Client\BaseEndpoint implements \Dock
      *
      * The push is cancelled if the HTTP connection is closed.
      *
-     * @param string $name            image name or ID
-     * @param array  $queryParameters {
+     * @param string $name Name of the image to push. For example, `registry.example.com/myimage`.
+     *                     The image must be present in the local image store with the same name.
      *
-     * @var string $tag The tag to associate with the image on the registry.
-     *             }
+     * The name should be provided without tag; if a tag is provided, it
+     * is ignored. For example, `registry.example.com/myimage:latest` is
+     * considered equivalent to `registry.example.com/myimage`.
      *
-     * @param array $headerParameters {
-     *
-     * @var string $X-Registry-Auth A base64url-encoded auth configuration.
+     * Use the `tag` parameter to specify the tag to push.
+     * @param array{
+     *    "tag"?: string, //Tag of the image to push. For example, `latest`. If no tag is provided,
+     * all tags of the given image that are present in the local image store
+     * are pushed.
+     * } $queryParameters
+     * @param array{
+     *    "X-Registry-Auth": string, //A base64url-encoded auth configuration.
      *
      * Refer to the [authentication section](#section/Authentication) for
      * details.
-     *
-     * }
-     *
+     * } $headerParameters
      * @param array $accept Accept content header application/json|text/plain
      */
     public function __construct(string $name, array $queryParameters = [], array $headerParameters = [], array $accept = [])
@@ -51,7 +55,7 @@ class ImagePush extends \Docker\API\Runtime\Client\BaseEndpoint implements \Dock
 
     public function getUri(): string
     {
-        return str_replace(['{name}'], [$this->name], '/images/{name}/push');
+        return str_replace(['{name}'], [rawurlencode($this->name)], '/images/{name}/push');
     }
 
     public function getBody(\Symfony\Component\Serializer\SerializerInterface $serializer, $streamFactory = null): array
@@ -101,11 +105,12 @@ class ImagePush extends \Docker\API\Runtime\Client\BaseEndpoint implements \Dock
         $status = $response->getStatusCode();
         $body = (string) $response->getBody();
         if (200 === $status) {
+            return null;
         }
-        if ((null === $contentType) === false && (404 === $status && false !== mb_strpos($contentType, 'application/json'))) {
+        if ((null === $contentType) === false && (404 === $status && false !== stripos(strtolower($contentType), 'application/json'))) {
             throw new \Docker\API\Exception\ImagePushNotFoundException($serializer->deserialize($body, 'Docker\API\Model\ErrorResponse', 'json'), $response);
         }
-        if ((null === $contentType) === false && (500 === $status && false !== mb_strpos($contentType, 'application/json'))) {
+        if ((null === $contentType) === false && (500 === $status && false !== stripos(strtolower($contentType), 'application/json'))) {
             throw new \Docker\API\Exception\ImagePushInternalServerErrorException($serializer->deserialize($body, 'Docker\API\Model\ErrorResponse', 'json'), $response);
         }
     }

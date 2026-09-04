@@ -4,8 +4,12 @@ declare(strict_types=1);
 
 namespace Docker\API\Model;
 
-class ExecIdStartPostBody extends \ArrayObject
+use Docker\API\Runtime\AdditionalAndPatternProperties;
+use Docker\API\Runtime\AdditionalPropertiesInterface;
+
+class ExecIdStartPostBody implements AdditionalPropertiesInterface
 {
+    use AdditionalAndPatternProperties;
     /**
      * @var array
      */
@@ -93,5 +97,10 @@ class ExecIdStartPostBody extends \ArrayObject
         $this->consoleSize = $consoleSize;
 
         return $this;
+    }
+
+    public function definedProperties(): array
+    {
+        return ['detach' => ['Detach', 'getDetach', 'setDetach'], 'tty' => ['Tty', 'getTty', 'setTty'], 'consoleSize' => ['ConsoleSize', 'getConsoleSize', 'setConsoleSize']];
     }
 }

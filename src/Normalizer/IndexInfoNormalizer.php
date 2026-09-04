@@ -33,27 +33,28 @@ class IndexInfoNormalizer implements DenormalizerInterface, NormalizerInterface,
 
     public function denormalize(mixed $data, string $type, ?string $format = null, array $context = []): mixed
     {
-        if (isset($data['$ref'])) {
+        $object = new \Docker\API\Model\IndexInfo();
+        if (null === $data || false === \is_array($data)) {
+            return $object;
+        }
+        if (isset($data['$ref']) && !isset($data['type']) && !isset($data['properties']) && !isset($data['allOf'])) {
             return new Reference($data['$ref'], $context['document-origin']);
         }
         if (isset($data['$recursiveRef'])) {
             return new Reference($data['$recursiveRef'], $context['document-origin']);
         }
-        $object = new \Docker\API\Model\IndexInfo();
         if (\array_key_exists('Secure', $data) && \is_int($data['Secure'])) {
             $data['Secure'] = (bool) $data['Secure'];
         }
         if (\array_key_exists('Official', $data) && \is_int($data['Official'])) {
             $data['Official'] = (bool) $data['Official'];
         }
-        if (null === $data || false === \is_array($data)) {
-            return $object;
-        }
         if (\array_key_exists('Name', $data) && null !== $data['Name']) {
             $object->setName($data['Name']);
             unset($data['Name']);
         } elseif (\array_key_exists('Name', $data) && null === $data['Name']) {
             $object->setName(null);
+            unset($data['Name']);
         }
         if (\array_key_exists('Mirrors', $data) && null !== $data['Mirrors']) {
             $values = [];
@@ -64,18 +65,21 @@ class IndexInfoNormalizer implements DenormalizerInterface, NormalizerInterface,
             unset($data['Mirrors']);
         } elseif (\array_key_exists('Mirrors', $data) && null === $data['Mirrors']) {
             $object->setMirrors(null);
+            unset($data['Mirrors']);
         }
         if (\array_key_exists('Secure', $data) && null !== $data['Secure']) {
             $object->setSecure($data['Secure']);
             unset($data['Secure']);
         } elseif (\array_key_exists('Secure', $data) && null === $data['Secure']) {
             $object->setSecure(null);
+            unset($data['Secure']);
         }
         if (\array_key_exists('Official', $data) && null !== $data['Official']) {
             $object->setOfficial($data['Official']);
             unset($data['Official']);
         } elseif (\array_key_exists('Official', $data) && null === $data['Official']) {
             $object->setOfficial(null);
+            unset($data['Official']);
         }
         foreach ($data as $key => $value_1) {
             if (preg_match('/.*/', (string) $key)) {
@@ -105,7 +109,7 @@ class IndexInfoNormalizer implements DenormalizerInterface, NormalizerInterface,
         if ($data->isInitialized('official') && null !== $data->getOfficial()) {
             $dataArray['Official'] = $data->getOfficial();
         }
-        foreach ($data as $key => $value_1) {
+        foreach ($data->additionalPropertyEntries() as $key => $value_1) {
             if (preg_match('/.*/', (string) $key)) {
                 $dataArray[$key] = $value_1;
             }

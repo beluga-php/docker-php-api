@@ -9,15 +9,13 @@ class VolumePrune extends \Docker\API\Runtime\Client\BaseEndpoint implements \Do
     use \Docker\API\Runtime\Client\EndpointTrait;
 
     /**
-     * @param array $queryParameters {
-     *
-     * @var string $filters Filters to process on the prune list, encoded as JSON (a `map[string][]string`).
+     * @param array{
+     *    "filters"?: string, //Filters to process on the prune list, encoded as JSON (a `map[string][]string`).
      *
      * Available filters:
      * - `label` (`label=<key>`, `label=<key>=<value>`, `label!=<key>`, or `label!=<key>=<value>`) Prune volumes with (or without, in case `label!=...` is used) the specified labels.
      * - `all` (`all=true`) - Consider all (local) volumes for pruning and not just anonymous volumes.
-     *
-     * }
+     * } $queryParameters
      */
     public function __construct(array $queryParameters = [])
     {
@@ -64,10 +62,10 @@ class VolumePrune extends \Docker\API\Runtime\Client\BaseEndpoint implements \Do
     {
         $status = $response->getStatusCode();
         $body = (string) $response->getBody();
-        if ((null === $contentType) === false && (200 === $status && false !== mb_strpos($contentType, 'application/json'))) {
+        if ((null === $contentType) === false && (200 === $status && false !== stripos(strtolower($contentType), 'application/json'))) {
             return $serializer->deserialize($body, 'Docker\API\Model\VolumesPrunePostResponse200', 'json');
         }
-        if ((null === $contentType) === false && (500 === $status && false !== mb_strpos($contentType, 'application/json'))) {
+        if ((null === $contentType) === false && (500 === $status && false !== stripos(strtolower($contentType), 'application/json'))) {
             throw new \Docker\API\Exception\VolumePruneInternalServerErrorException($serializer->deserialize($body, 'Docker\API\Model\ErrorResponse', 'json'), $response);
         }
     }

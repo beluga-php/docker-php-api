@@ -11,12 +11,10 @@ class ServiceInspect extends \Docker\API\Runtime\Client\BaseEndpoint implements 
     protected $accept;
 
     /**
-     * @param string $id              ID or name of service
-     * @param array  $queryParameters {
-     *
-     * @var bool $insertDefaults Fill empty fields with default values.
-     *           }
-     *
+     * @param string $id ID or name of service
+     * @param array{
+     *    "insertDefaults"?: bool, //Fill empty fields with default values.
+     * } $queryParameters
      * @param array $accept Accept content header application/json|text/plain
      */
     public function __construct(string $id, array $queryParameters = [], array $accept = [])
@@ -33,7 +31,7 @@ class ServiceInspect extends \Docker\API\Runtime\Client\BaseEndpoint implements 
 
     public function getUri(): string
     {
-        return str_replace(['{id}'], [$this->id], '/services/{id}');
+        return str_replace(['{id}'], [rawurlencode($this->id)], '/services/{id}');
     }
 
     public function getBody(\Symfony\Component\Serializer\SerializerInterface $serializer, $streamFactory = null): array
@@ -72,16 +70,16 @@ class ServiceInspect extends \Docker\API\Runtime\Client\BaseEndpoint implements 
     {
         $status = $response->getStatusCode();
         $body = (string) $response->getBody();
-        if ((null === $contentType) === false && (200 === $status && false !== mb_strpos($contentType, 'application/json'))) {
+        if ((null === $contentType) === false && (200 === $status && false !== stripos(strtolower($contentType), 'application/json'))) {
             return $serializer->deserialize($body, 'Docker\API\Model\Service', 'json');
         }
-        if ((null === $contentType) === false && (404 === $status && false !== mb_strpos($contentType, 'application/json'))) {
+        if ((null === $contentType) === false && (404 === $status && false !== stripos(strtolower($contentType), 'application/json'))) {
             throw new \Docker\API\Exception\ServiceInspectNotFoundException($serializer->deserialize($body, 'Docker\API\Model\ErrorResponse', 'json'), $response);
         }
-        if ((null === $contentType) === false && (500 === $status && false !== mb_strpos($contentType, 'application/json'))) {
+        if ((null === $contentType) === false && (500 === $status && false !== stripos(strtolower($contentType), 'application/json'))) {
             throw new \Docker\API\Exception\ServiceInspectInternalServerErrorException($serializer->deserialize($body, 'Docker\API\Model\ErrorResponse', 'json'), $response);
         }
-        if ((null === $contentType) === false && (503 === $status && false !== mb_strpos($contentType, 'application/json'))) {
+        if ((null === $contentType) === false && (503 === $status && false !== stripos(strtolower($contentType), 'application/json'))) {
             throw new \Docker\API\Exception\ServiceInspectServiceUnavailableException($serializer->deserialize($body, 'Docker\API\Model\ErrorResponse', 'json'), $response);
         }
     }

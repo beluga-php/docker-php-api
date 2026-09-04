@@ -33,21 +33,22 @@ class SwarmSpecCAConfigNormalizer implements DenormalizerInterface, NormalizerIn
 
     public function denormalize(mixed $data, string $type, ?string $format = null, array $context = []): mixed
     {
-        if (isset($data['$ref'])) {
+        $object = new \Docker\API\Model\SwarmSpecCAConfig();
+        if (null === $data || false === \is_array($data)) {
+            return $object;
+        }
+        if (isset($data['$ref']) && !isset($data['type']) && !isset($data['properties']) && !isset($data['allOf'])) {
             return new Reference($data['$ref'], $context['document-origin']);
         }
         if (isset($data['$recursiveRef'])) {
             return new Reference($data['$recursiveRef'], $context['document-origin']);
-        }
-        $object = new \Docker\API\Model\SwarmSpecCAConfig();
-        if (null === $data || false === \is_array($data)) {
-            return $object;
         }
         if (\array_key_exists('NodeCertExpiry', $data) && null !== $data['NodeCertExpiry']) {
             $object->setNodeCertExpiry($data['NodeCertExpiry']);
             unset($data['NodeCertExpiry']);
         } elseif (\array_key_exists('NodeCertExpiry', $data) && null === $data['NodeCertExpiry']) {
             $object->setNodeCertExpiry(null);
+            unset($data['NodeCertExpiry']);
         }
         if (\array_key_exists('ExternalCAs', $data) && null !== $data['ExternalCAs']) {
             $values = [];
@@ -58,24 +59,28 @@ class SwarmSpecCAConfigNormalizer implements DenormalizerInterface, NormalizerIn
             unset($data['ExternalCAs']);
         } elseif (\array_key_exists('ExternalCAs', $data) && null === $data['ExternalCAs']) {
             $object->setExternalCAs(null);
+            unset($data['ExternalCAs']);
         }
         if (\array_key_exists('SigningCACert', $data) && null !== $data['SigningCACert']) {
             $object->setSigningCACert($data['SigningCACert']);
             unset($data['SigningCACert']);
         } elseif (\array_key_exists('SigningCACert', $data) && null === $data['SigningCACert']) {
             $object->setSigningCACert(null);
+            unset($data['SigningCACert']);
         }
         if (\array_key_exists('SigningCAKey', $data) && null !== $data['SigningCAKey']) {
             $object->setSigningCAKey($data['SigningCAKey']);
             unset($data['SigningCAKey']);
         } elseif (\array_key_exists('SigningCAKey', $data) && null === $data['SigningCAKey']) {
             $object->setSigningCAKey(null);
+            unset($data['SigningCAKey']);
         }
         if (\array_key_exists('ForceRotate', $data) && null !== $data['ForceRotate']) {
             $object->setForceRotate($data['ForceRotate']);
             unset($data['ForceRotate']);
         } elseif (\array_key_exists('ForceRotate', $data) && null === $data['ForceRotate']) {
             $object->setForceRotate(null);
+            unset($data['ForceRotate']);
         }
         foreach ($data as $key => $value_1) {
             if (preg_match('/.*/', (string) $key)) {
@@ -95,7 +100,7 @@ class SwarmSpecCAConfigNormalizer implements DenormalizerInterface, NormalizerIn
         if ($data->isInitialized('externalCAs') && null !== $data->getExternalCAs()) {
             $values = [];
             foreach ($data->getExternalCAs() as $value) {
-                $values[] = $this->normalizer->normalize($value, 'json', $context);
+                $values[] = null === $value ? null : new \Docker\API\Runtime\JsonObject($this->normalizer->normalize($value, 'json', $context));
             }
             $dataArray['ExternalCAs'] = $values;
         }
@@ -108,7 +113,7 @@ class SwarmSpecCAConfigNormalizer implements DenormalizerInterface, NormalizerIn
         if ($data->isInitialized('forceRotate') && null !== $data->getForceRotate()) {
             $dataArray['ForceRotate'] = $data->getForceRotate();
         }
-        foreach ($data as $key => $value_1) {
+        foreach ($data->additionalPropertyEntries() as $key => $value_1) {
             if (preg_match('/.*/', (string) $key)) {
                 $dataArray[$key] = $value_1;
             }

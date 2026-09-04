@@ -4,8 +4,12 @@ declare(strict_types=1);
 
 namespace Docker\API\Model;
 
-class ClusterVolumeInfo extends \ArrayObject
+use Docker\API\Runtime\AdditionalAndPatternProperties;
+use Docker\API\Runtime\AdditionalPropertiesInterface;
+
+class ClusterVolumeInfo implements AdditionalPropertiesInterface
 {
+    use AdditionalAndPatternProperties;
     /**
      * @var array
      */
@@ -42,7 +46,7 @@ class ClusterVolumeInfo extends \ArrayObject
     /**
      * The topology this volume is actually accessible from.
      *
-     * @var list<array<string, string>>|null
+     * @var list<Topology>|null
      */
     protected $accessibleTopology;
 
@@ -122,7 +126,7 @@ class ClusterVolumeInfo extends \ArrayObject
     /**
      * The topology this volume is actually accessible from.
      *
-     * @return list<array<string, string>>|null
+     * @return list<Topology>|null
      */
     public function getAccessibleTopology(): ?array
     {
@@ -132,7 +136,7 @@ class ClusterVolumeInfo extends \ArrayObject
     /**
      * The topology this volume is actually accessible from.
      *
-     * @param list<array<string, string>>|null $accessibleTopology
+     * @param list<Topology>|null $accessibleTopology
      */
     public function setAccessibleTopology(?array $accessibleTopology): self
     {
@@ -140,5 +144,10 @@ class ClusterVolumeInfo extends \ArrayObject
         $this->accessibleTopology = $accessibleTopology;
 
         return $this;
+    }
+
+    public function definedProperties(): array
+    {
+        return ['capacityBytes' => ['CapacityBytes', 'getCapacityBytes', 'setCapacityBytes'], 'volumeContext' => ['VolumeContext', 'getVolumeContext', 'setVolumeContext'], 'volumeID' => ['VolumeID', 'getVolumeID', 'setVolumeID'], 'accessibleTopology' => ['AccessibleTopology', 'getAccessibleTopology', 'setAccessibleTopology']];
     }
 }

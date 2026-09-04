@@ -4,8 +4,12 @@ declare(strict_types=1);
 
 namespace Docker\API\Model;
 
-class SystemVersionComponentsItem extends \ArrayObject
+use Docker\API\Runtime\AdditionalAndPatternProperties;
+use Docker\API\Runtime\AdditionalPropertiesInterface;
+
+class SystemVersionComponentsItem implements AdditionalPropertiesInterface
 {
+    use AdditionalAndPatternProperties;
     /**
      * @var array
      */
@@ -35,7 +39,7 @@ class SystemVersionComponentsItem extends \ArrayObject
      *
      * These messages can be printed by the client as information to the user.
      *
-     * @var SystemVersionComponentsItemDetails|null
+     * @var array<string, mixed>|null
      */
     protected $details;
 
@@ -84,8 +88,10 @@ class SystemVersionComponentsItem extends \ArrayObject
      * specification.
      *
      * These messages can be printed by the client as information to the user.
+     *
+     * @return array<string, mixed>|null
      */
-    public function getDetails(): ?SystemVersionComponentsItemDetails
+    public function getDetails(): ?iterable
     {
         return $this->details;
     }
@@ -97,12 +103,19 @@ class SystemVersionComponentsItem extends \ArrayObject
      * specification.
      *
      * These messages can be printed by the client as information to the user.
+     *
+     * @param array<string, mixed>|null $details
      */
-    public function setDetails(?SystemVersionComponentsItemDetails $details): self
+    public function setDetails(?iterable $details): self
     {
         $this->initialized['details'] = true;
         $this->details = $details;
 
         return $this;
+    }
+
+    public function definedProperties(): array
+    {
+        return ['name' => ['Name', 'getName', 'setName'], 'version' => ['Version', 'getVersion', 'setVersion'], 'details' => ['Details', 'getDetails', 'setDetails']];
     }
 }

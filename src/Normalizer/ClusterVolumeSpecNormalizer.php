@@ -33,27 +33,29 @@ class ClusterVolumeSpecNormalizer implements DenormalizerInterface, NormalizerIn
 
     public function denormalize(mixed $data, string $type, ?string $format = null, array $context = []): mixed
     {
-        if (isset($data['$ref'])) {
+        $object = new \Docker\API\Model\ClusterVolumeSpec();
+        if (null === $data || false === \is_array($data)) {
+            return $object;
+        }
+        if (isset($data['$ref']) && !isset($data['type']) && !isset($data['properties']) && !isset($data['allOf'])) {
             return new Reference($data['$ref'], $context['document-origin']);
         }
         if (isset($data['$recursiveRef'])) {
             return new Reference($data['$recursiveRef'], $context['document-origin']);
-        }
-        $object = new \Docker\API\Model\ClusterVolumeSpec();
-        if (null === $data || false === \is_array($data)) {
-            return $object;
         }
         if (\array_key_exists('Group', $data) && null !== $data['Group']) {
             $object->setGroup($data['Group']);
             unset($data['Group']);
         } elseif (\array_key_exists('Group', $data) && null === $data['Group']) {
             $object->setGroup(null);
+            unset($data['Group']);
         }
         if (\array_key_exists('AccessMode', $data) && null !== $data['AccessMode']) {
             $object->setAccessMode($this->denormalizer->denormalize($data['AccessMode'], \Docker\API\Model\ClusterVolumeSpecAccessMode::class, 'json', $context));
             unset($data['AccessMode']);
         } elseif (\array_key_exists('AccessMode', $data) && null === $data['AccessMode']) {
             $object->setAccessMode(null);
+            unset($data['AccessMode']);
         }
         foreach ($data as $key => $value) {
             if (preg_match('/.*/', (string) $key)) {
@@ -71,9 +73,9 @@ class ClusterVolumeSpecNormalizer implements DenormalizerInterface, NormalizerIn
             $dataArray['Group'] = $data->getGroup();
         }
         if ($data->isInitialized('accessMode') && null !== $data->getAccessMode()) {
-            $dataArray['AccessMode'] = $this->normalizer->normalize($data->getAccessMode(), 'json', $context);
+            $dataArray['AccessMode'] = null === $data->getAccessMode() ? null : new \Docker\API\Runtime\JsonObject($this->normalizer->normalize($data->getAccessMode(), 'json', $context));
         }
-        foreach ($data as $key => $value) {
+        foreach ($data->additionalPropertyEntries() as $key => $value) {
             if (preg_match('/.*/', (string) $key)) {
                 $dataArray[$key] = $value;
             }

@@ -10,14 +10,12 @@ class VolumeUpdate extends \Docker\API\Runtime\Client\BaseEndpoint implements \D
     protected $name;
 
     /**
-     * @param string $name            The name or ID of the volume
-     * @param array  $queryParameters {
-     *
-     * @var int $version The version number of the volume being updated. This is required to
-     *          avoid conflicting writes. Found in the volume's `ClusterVolume`
-     *          field.
-     *
-     * }
+     * @param string $name The name or ID of the volume
+     * @param array{
+     *    "version": int, //The version number of the volume being updated. This is required to
+     * avoid conflicting writes. Found in the volume's `ClusterVolume`
+     * field.
+     * } $queryParameters
      */
     public function __construct(string $name, ?\Docker\API\Model\VolumesNamePutBody $requestBody = null, array $queryParameters = [])
     {
@@ -33,13 +31,13 @@ class VolumeUpdate extends \Docker\API\Runtime\Client\BaseEndpoint implements \D
 
     public function getUri(): string
     {
-        return str_replace(['{name}'], [$this->name], '/volumes/{name}');
+        return str_replace(['{name}'], [rawurlencode($this->name)], '/volumes/{name}');
     }
 
     public function getBody(\Symfony\Component\Serializer\SerializerInterface $serializer, $streamFactory = null): array
     {
         if ($this->body instanceof \Docker\API\Model\VolumesNamePutBody) {
-            return [['Content-Type' => ['application/json']], $serializer->serialize($this->body, 'json')];
+            return [['Content-Type' => ['application/json']], \Docker\API\Runtime\Client\JsonPayload::encode($serializer, $this->body)];
         }
 
         return [[], null];
@@ -74,17 +72,18 @@ class VolumeUpdate extends \Docker\API\Runtime\Client\BaseEndpoint implements \D
         $status = $response->getStatusCode();
         $body = (string) $response->getBody();
         if (200 === $status) {
+            return null;
         }
-        if ((null === $contentType) === false && (400 === $status && false !== mb_strpos($contentType, 'application/json'))) {
+        if ((null === $contentType) === false && (400 === $status && false !== stripos(strtolower($contentType), 'application/json'))) {
             throw new \Docker\API\Exception\VolumeUpdateBadRequestException($serializer->deserialize($body, 'Docker\API\Model\ErrorResponse', 'json'), $response);
         }
-        if ((null === $contentType) === false && (404 === $status && false !== mb_strpos($contentType, 'application/json'))) {
+        if ((null === $contentType) === false && (404 === $status && false !== stripos(strtolower($contentType), 'application/json'))) {
             throw new \Docker\API\Exception\VolumeUpdateNotFoundException($serializer->deserialize($body, 'Docker\API\Model\ErrorResponse', 'json'), $response);
         }
-        if ((null === $contentType) === false && (500 === $status && false !== mb_strpos($contentType, 'application/json'))) {
+        if ((null === $contentType) === false && (500 === $status && false !== stripos(strtolower($contentType), 'application/json'))) {
             throw new \Docker\API\Exception\VolumeUpdateInternalServerErrorException($serializer->deserialize($body, 'Docker\API\Model\ErrorResponse', 'json'), $response);
         }
-        if ((null === $contentType) === false && (503 === $status && false !== mb_strpos($contentType, 'application/json'))) {
+        if ((null === $contentType) === false && (503 === $status && false !== stripos(strtolower($contentType), 'application/json'))) {
             throw new \Docker\API\Exception\VolumeUpdateServiceUnavailableException($serializer->deserialize($body, 'Docker\API\Model\ErrorResponse', 'json'), $response);
         }
     }

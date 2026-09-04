@@ -4,8 +4,12 @@ declare(strict_types=1);
 
 namespace Docker\API\Model;
 
-class ManagerStatus extends \ArrayObject
+use Docker\API\Runtime\AdditionalAndPatternProperties;
+use Docker\API\Runtime\AdditionalPropertiesInterface;
+
+class ManagerStatus implements AdditionalPropertiesInterface
 {
+    use AdditionalAndPatternProperties;
     /**
      * @var array
      */
@@ -81,5 +85,10 @@ class ManagerStatus extends \ArrayObject
         $this->addr = $addr;
 
         return $this;
+    }
+
+    public function definedProperties(): array
+    {
+        return ['leader' => ['Leader', 'getLeader', 'setLeader'], 'reachability' => ['Reachability', 'getReachability', 'setReachability'], 'addr' => ['Addr', 'getAddr', 'setAddr']];
     }
 }

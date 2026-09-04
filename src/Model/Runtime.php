@@ -4,8 +4,12 @@ declare(strict_types=1);
 
 namespace Docker\API\Model;
 
-class Runtime extends \ArrayObject
+use Docker\API\Runtime\AdditionalAndPatternProperties;
+use Docker\API\Runtime\AdditionalPropertiesInterface;
+
+class Runtime implements AdditionalPropertiesInterface
 {
+    use AdditionalAndPatternProperties;
     /**
      * @var array
      */
@@ -145,5 +149,10 @@ class Runtime extends \ArrayObject
         $this->status = $status;
 
         return $this;
+    }
+
+    public function definedProperties(): array
+    {
+        return ['path' => ['path', 'getPath', 'setPath'], 'runtimeArgs' => ['runtimeArgs', 'getRuntimeArgs', 'setRuntimeArgs'], 'status' => ['status', 'getStatus', 'setStatus']];
     }
 }

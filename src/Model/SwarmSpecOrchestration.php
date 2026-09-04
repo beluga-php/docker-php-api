@@ -4,8 +4,12 @@ declare(strict_types=1);
 
 namespace Docker\API\Model;
 
-class SwarmSpecOrchestration extends \ArrayObject
+use Docker\API\Runtime\AdditionalAndPatternProperties;
+use Docker\API\Runtime\AdditionalPropertiesInterface;
+
+class SwarmSpecOrchestration implements AdditionalPropertiesInterface
 {
+    use AdditionalAndPatternProperties;
     /**
      * @var array
      */
@@ -42,5 +46,10 @@ class SwarmSpecOrchestration extends \ArrayObject
         $this->taskHistoryRetentionLimit = $taskHistoryRetentionLimit;
 
         return $this;
+    }
+
+    public function definedProperties(): array
+    {
+        return ['taskHistoryRetentionLimit' => ['TaskHistoryRetentionLimit', 'getTaskHistoryRetentionLimit', 'setTaskHistoryRetentionLimit']];
     }
 }

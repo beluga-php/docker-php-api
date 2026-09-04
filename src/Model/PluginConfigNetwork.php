@@ -4,8 +4,12 @@ declare(strict_types=1);
 
 namespace Docker\API\Model;
 
-class PluginConfigNetwork extends \ArrayObject
+use Docker\API\Runtime\AdditionalAndPatternProperties;
+use Docker\API\Runtime\AdditionalPropertiesInterface;
+
+class PluginConfigNetwork implements AdditionalPropertiesInterface
 {
+    use AdditionalAndPatternProperties;
     /**
      * @var array
      */
@@ -31,5 +35,10 @@ class PluginConfigNetwork extends \ArrayObject
         $this->type = $type;
 
         return $this;
+    }
+
+    public function definedProperties(): array
+    {
+        return ['type' => ['Type', 'getType', 'setType']];
     }
 }

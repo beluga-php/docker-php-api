@@ -33,13 +33,16 @@ class MountBindOptionsNormalizer implements DenormalizerInterface, NormalizerInt
 
     public function denormalize(mixed $data, string $type, ?string $format = null, array $context = []): mixed
     {
-        if (isset($data['$ref'])) {
+        $object = new \Docker\API\Model\MountBindOptions();
+        if (null === $data || false === \is_array($data)) {
+            return $object;
+        }
+        if (isset($data['$ref']) && !isset($data['type']) && !isset($data['properties']) && !isset($data['allOf'])) {
             return new Reference($data['$ref'], $context['document-origin']);
         }
         if (isset($data['$recursiveRef'])) {
             return new Reference($data['$recursiveRef'], $context['document-origin']);
         }
-        $object = new \Docker\API\Model\MountBindOptions();
         if (\array_key_exists('NonRecursive', $data) && \is_int($data['NonRecursive'])) {
             $data['NonRecursive'] = (bool) $data['NonRecursive'];
         }
@@ -52,38 +55,40 @@ class MountBindOptionsNormalizer implements DenormalizerInterface, NormalizerInt
         if (\array_key_exists('ReadOnlyForceRecursive', $data) && \is_int($data['ReadOnlyForceRecursive'])) {
             $data['ReadOnlyForceRecursive'] = (bool) $data['ReadOnlyForceRecursive'];
         }
-        if (null === $data || false === \is_array($data)) {
-            return $object;
-        }
         if (\array_key_exists('Propagation', $data) && null !== $data['Propagation']) {
             $object->setPropagation($data['Propagation']);
             unset($data['Propagation']);
         } elseif (\array_key_exists('Propagation', $data) && null === $data['Propagation']) {
             $object->setPropagation(null);
+            unset($data['Propagation']);
         }
         if (\array_key_exists('NonRecursive', $data) && null !== $data['NonRecursive']) {
             $object->setNonRecursive($data['NonRecursive']);
             unset($data['NonRecursive']);
         } elseif (\array_key_exists('NonRecursive', $data) && null === $data['NonRecursive']) {
             $object->setNonRecursive(null);
+            unset($data['NonRecursive']);
         }
         if (\array_key_exists('CreateMountpoint', $data) && null !== $data['CreateMountpoint']) {
             $object->setCreateMountpoint($data['CreateMountpoint']);
             unset($data['CreateMountpoint']);
         } elseif (\array_key_exists('CreateMountpoint', $data) && null === $data['CreateMountpoint']) {
             $object->setCreateMountpoint(null);
+            unset($data['CreateMountpoint']);
         }
         if (\array_key_exists('ReadOnlyNonRecursive', $data) && null !== $data['ReadOnlyNonRecursive']) {
             $object->setReadOnlyNonRecursive($data['ReadOnlyNonRecursive']);
             unset($data['ReadOnlyNonRecursive']);
         } elseif (\array_key_exists('ReadOnlyNonRecursive', $data) && null === $data['ReadOnlyNonRecursive']) {
             $object->setReadOnlyNonRecursive(null);
+            unset($data['ReadOnlyNonRecursive']);
         }
         if (\array_key_exists('ReadOnlyForceRecursive', $data) && null !== $data['ReadOnlyForceRecursive']) {
             $object->setReadOnlyForceRecursive($data['ReadOnlyForceRecursive']);
             unset($data['ReadOnlyForceRecursive']);
         } elseif (\array_key_exists('ReadOnlyForceRecursive', $data) && null === $data['ReadOnlyForceRecursive']) {
             $object->setReadOnlyForceRecursive(null);
+            unset($data['ReadOnlyForceRecursive']);
         }
         foreach ($data as $key => $value) {
             if (preg_match('/.*/', (string) $key)) {
@@ -112,7 +117,7 @@ class MountBindOptionsNormalizer implements DenormalizerInterface, NormalizerInt
         if ($data->isInitialized('readOnlyForceRecursive') && null !== $data->getReadOnlyForceRecursive()) {
             $dataArray['ReadOnlyForceRecursive'] = $data->getReadOnlyForceRecursive();
         }
-        foreach ($data as $key => $value) {
+        foreach ($data->additionalPropertyEntries() as $key => $value) {
             if (preg_match('/.*/', (string) $key)) {
                 $dataArray[$key] = $value;
             }

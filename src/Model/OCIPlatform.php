@@ -4,8 +4,12 @@ declare(strict_types=1);
 
 namespace Docker\API\Model;
 
-class OCIPlatform extends \ArrayObject
+use Docker\API\Runtime\AdditionalAndPatternProperties;
+use Docker\API\Runtime\AdditionalPropertiesInterface;
+
+class OCIPlatform implements AdditionalPropertiesInterface
 {
+    use AdditionalAndPatternProperties;
     /**
      * @var array
      */
@@ -152,5 +156,10 @@ class OCIPlatform extends \ArrayObject
         $this->variant = $variant;
 
         return $this;
+    }
+
+    public function definedProperties(): array
+    {
+        return ['architecture' => ['architecture', 'getArchitecture', 'setArchitecture'], 'os' => ['os', 'getOs', 'setOs'], 'osVersion' => ['os.version', 'getOsVersion', 'setOsVersion'], 'osFeatures' => ['os.features', 'getOsFeatures', 'setOsFeatures'], 'variant' => ['variant', 'getVariant', 'setVariant']];
     }
 }

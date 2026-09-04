@@ -33,27 +33,29 @@ class GenericResourcesItemNamedResourceSpecNormalizer implements DenormalizerInt
 
     public function denormalize(mixed $data, string $type, ?string $format = null, array $context = []): mixed
     {
-        if (isset($data['$ref'])) {
+        $object = new \Docker\API\Model\GenericResourcesItemNamedResourceSpec();
+        if (null === $data || false === \is_array($data)) {
+            return $object;
+        }
+        if (isset($data['$ref']) && !isset($data['type']) && !isset($data['properties']) && !isset($data['allOf'])) {
             return new Reference($data['$ref'], $context['document-origin']);
         }
         if (isset($data['$recursiveRef'])) {
             return new Reference($data['$recursiveRef'], $context['document-origin']);
-        }
-        $object = new \Docker\API\Model\GenericResourcesItemNamedResourceSpec();
-        if (null === $data || false === \is_array($data)) {
-            return $object;
         }
         if (\array_key_exists('Kind', $data) && null !== $data['Kind']) {
             $object->setKind($data['Kind']);
             unset($data['Kind']);
         } elseif (\array_key_exists('Kind', $data) && null === $data['Kind']) {
             $object->setKind(null);
+            unset($data['Kind']);
         }
         if (\array_key_exists('Value', $data) && null !== $data['Value']) {
             $object->setValue($data['Value']);
             unset($data['Value']);
         } elseif (\array_key_exists('Value', $data) && null === $data['Value']) {
             $object->setValue(null);
+            unset($data['Value']);
         }
         foreach ($data as $key => $value) {
             if (preg_match('/.*/', (string) $key)) {
@@ -73,7 +75,7 @@ class GenericResourcesItemNamedResourceSpecNormalizer implements DenormalizerInt
         if ($data->isInitialized('value') && null !== $data->getValue()) {
             $dataArray['Value'] = $data->getValue();
         }
-        foreach ($data as $key => $value) {
+        foreach ($data->additionalPropertyEntries() as $key => $value) {
             if (preg_match('/.*/', (string) $key)) {
                 $dataArray[$key] = $value;
             }

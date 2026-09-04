@@ -4,8 +4,12 @@ declare(strict_types=1);
 
 namespace Docker\API\Model;
 
-class ClusterVolumeSpecAccessModeAccessibilityRequirements extends \ArrayObject
+use Docker\API\Runtime\AdditionalAndPatternProperties;
+use Docker\API\Runtime\AdditionalPropertiesInterface;
+
+class ClusterVolumeSpecAccessModeAccessibilityRequirements implements AdditionalPropertiesInterface
 {
+    use AdditionalAndPatternProperties;
     /**
      * @var array
      */
@@ -19,14 +23,14 @@ class ClusterVolumeSpecAccessModeAccessibilityRequirements extends \ArrayObject
      * A list of required topologies, at least one of which the
      * volume must be accessible from.
      *
-     * @var list<array<string, string>>|null
+     * @var list<Topology>|null
      */
     protected $requisite;
     /**
      * A list of topologies that the volume should attempt to be
      * provisioned in.
      *
-     * @var list<array<string, string>>|null
+     * @var list<Topology>|null
      */
     protected $preferred;
 
@@ -34,7 +38,7 @@ class ClusterVolumeSpecAccessModeAccessibilityRequirements extends \ArrayObject
      * A list of required topologies, at least one of which the
      * volume must be accessible from.
      *
-     * @return list<array<string, string>>|null
+     * @return list<Topology>|null
      */
     public function getRequisite(): ?array
     {
@@ -45,7 +49,7 @@ class ClusterVolumeSpecAccessModeAccessibilityRequirements extends \ArrayObject
      * A list of required topologies, at least one of which the
      * volume must be accessible from.
      *
-     * @param list<array<string, string>>|null $requisite
+     * @param list<Topology>|null $requisite
      */
     public function setRequisite(?array $requisite): self
     {
@@ -59,7 +63,7 @@ class ClusterVolumeSpecAccessModeAccessibilityRequirements extends \ArrayObject
      * A list of topologies that the volume should attempt to be
      * provisioned in.
      *
-     * @return list<array<string, string>>|null
+     * @return list<Topology>|null
      */
     public function getPreferred(): ?array
     {
@@ -70,7 +74,7 @@ class ClusterVolumeSpecAccessModeAccessibilityRequirements extends \ArrayObject
      * A list of topologies that the volume should attempt to be
      * provisioned in.
      *
-     * @param list<array<string, string>>|null $preferred
+     * @param list<Topology>|null $preferred
      */
     public function setPreferred(?array $preferred): self
     {
@@ -78,5 +82,10 @@ class ClusterVolumeSpecAccessModeAccessibilityRequirements extends \ArrayObject
         $this->preferred = $preferred;
 
         return $this;
+    }
+
+    public function definedProperties(): array
+    {
+        return ['requisite' => ['Requisite', 'getRequisite', 'setRequisite'], 'preferred' => ['Preferred', 'getPreferred', 'setPreferred']];
     }
 }

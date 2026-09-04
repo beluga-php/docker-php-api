@@ -33,21 +33,22 @@ class DistributionInspectNormalizer implements DenormalizerInterface, Normalizer
 
     public function denormalize(mixed $data, string $type, ?string $format = null, array $context = []): mixed
     {
-        if (isset($data['$ref'])) {
+        $object = new \Docker\API\Model\DistributionInspect();
+        if (null === $data || false === \is_array($data)) {
+            return $object;
+        }
+        if (isset($data['$ref']) && !isset($data['type']) && !isset($data['properties']) && !isset($data['allOf'])) {
             return new Reference($data['$ref'], $context['document-origin']);
         }
         if (isset($data['$recursiveRef'])) {
             return new Reference($data['$recursiveRef'], $context['document-origin']);
-        }
-        $object = new \Docker\API\Model\DistributionInspect();
-        if (null === $data || false === \is_array($data)) {
-            return $object;
         }
         if (\array_key_exists('Descriptor', $data) && null !== $data['Descriptor']) {
             $object->setDescriptor($this->denormalizer->denormalize($data['Descriptor'], \Docker\API\Model\OCIDescriptor::class, 'json', $context));
             unset($data['Descriptor']);
         } elseif (\array_key_exists('Descriptor', $data) && null === $data['Descriptor']) {
             $object->setDescriptor(null);
+            unset($data['Descriptor']);
         }
         if (\array_key_exists('Platforms', $data) && null !== $data['Platforms']) {
             $values = [];
@@ -58,6 +59,7 @@ class DistributionInspectNormalizer implements DenormalizerInterface, Normalizer
             unset($data['Platforms']);
         } elseif (\array_key_exists('Platforms', $data) && null === $data['Platforms']) {
             $object->setPlatforms(null);
+            unset($data['Platforms']);
         }
         foreach ($data as $key => $value_1) {
             if (preg_match('/.*/', (string) $key)) {
@@ -71,13 +73,13 @@ class DistributionInspectNormalizer implements DenormalizerInterface, Normalizer
     public function normalize(mixed $data, ?string $format = null, array $context = []): array|string|int|float|bool|\ArrayObject|null
     {
         $dataArray = [];
-        $dataArray['Descriptor'] = $this->normalizer->normalize($data->getDescriptor(), 'json', $context);
+        $dataArray['Descriptor'] = null === $data->getDescriptor() ? null : new \Docker\API\Runtime\JsonObject($this->normalizer->normalize($data->getDescriptor(), 'json', $context));
         $values = [];
         foreach ($data->getPlatforms() as $value) {
-            $values[] = $this->normalizer->normalize($value, 'json', $context);
+            $values[] = null === $value ? null : new \Docker\API\Runtime\JsonObject($this->normalizer->normalize($value, 'json', $context));
         }
         $dataArray['Platforms'] = $values;
-        foreach ($data as $key => $value_1) {
+        foreach ($data->additionalPropertyEntries() as $key => $value_1) {
             if (preg_match('/.*/', (string) $key)) {
                 $dataArray[$key] = $value_1;
             }

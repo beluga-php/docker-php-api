@@ -33,27 +33,29 @@ class ResourceObjectNormalizer implements DenormalizerInterface, NormalizerInter
 
     public function denormalize(mixed $data, string $type, ?string $format = null, array $context = []): mixed
     {
-        if (isset($data['$ref'])) {
+        $object = new \Docker\API\Model\ResourceObject();
+        if (null === $data || false === \is_array($data)) {
+            return $object;
+        }
+        if (isset($data['$ref']) && !isset($data['type']) && !isset($data['properties']) && !isset($data['allOf'])) {
             return new Reference($data['$ref'], $context['document-origin']);
         }
         if (isset($data['$recursiveRef'])) {
             return new Reference($data['$recursiveRef'], $context['document-origin']);
-        }
-        $object = new \Docker\API\Model\ResourceObject();
-        if (null === $data || false === \is_array($data)) {
-            return $object;
         }
         if (\array_key_exists('NanoCPUs', $data) && null !== $data['NanoCPUs']) {
             $object->setNanoCPUs($data['NanoCPUs']);
             unset($data['NanoCPUs']);
         } elseif (\array_key_exists('NanoCPUs', $data) && null === $data['NanoCPUs']) {
             $object->setNanoCPUs(null);
+            unset($data['NanoCPUs']);
         }
         if (\array_key_exists('MemoryBytes', $data) && null !== $data['MemoryBytes']) {
             $object->setMemoryBytes($data['MemoryBytes']);
             unset($data['MemoryBytes']);
         } elseif (\array_key_exists('MemoryBytes', $data) && null === $data['MemoryBytes']) {
             $object->setMemoryBytes(null);
+            unset($data['MemoryBytes']);
         }
         if (\array_key_exists('GenericResources', $data) && null !== $data['GenericResources']) {
             $values = [];
@@ -64,6 +66,7 @@ class ResourceObjectNormalizer implements DenormalizerInterface, NormalizerInter
             unset($data['GenericResources']);
         } elseif (\array_key_exists('GenericResources', $data) && null === $data['GenericResources']) {
             $object->setGenericResources(null);
+            unset($data['GenericResources']);
         }
         foreach ($data as $key => $value_1) {
             if (preg_match('/.*/', (string) $key)) {
@@ -86,11 +89,11 @@ class ResourceObjectNormalizer implements DenormalizerInterface, NormalizerInter
         if ($data->isInitialized('genericResources') && null !== $data->getGenericResources()) {
             $values = [];
             foreach ($data->getGenericResources() as $value) {
-                $values[] = $this->normalizer->normalize($value, 'json', $context);
+                $values[] = null === $value ? null : new \Docker\API\Runtime\JsonObject($this->normalizer->normalize($value, 'json', $context));
             }
             $dataArray['GenericResources'] = $values;
         }
-        foreach ($data as $key => $value_1) {
+        foreach ($data->additionalPropertyEntries() as $key => $value_1) {
             if (preg_match('/.*/', (string) $key)) {
                 $dataArray[$key] = $value_1;
             }

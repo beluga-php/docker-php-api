@@ -33,51 +33,57 @@ class TaskStatusNormalizer implements DenormalizerInterface, NormalizerInterface
 
     public function denormalize(mixed $data, string $type, ?string $format = null, array $context = []): mixed
     {
-        if (isset($data['$ref'])) {
+        $object = new \Docker\API\Model\TaskStatus();
+        if (null === $data || false === \is_array($data)) {
+            return $object;
+        }
+        if (isset($data['$ref']) && !isset($data['type']) && !isset($data['properties']) && !isset($data['allOf'])) {
             return new Reference($data['$ref'], $context['document-origin']);
         }
         if (isset($data['$recursiveRef'])) {
             return new Reference($data['$recursiveRef'], $context['document-origin']);
-        }
-        $object = new \Docker\API\Model\TaskStatus();
-        if (null === $data || false === \is_array($data)) {
-            return $object;
         }
         if (\array_key_exists('Timestamp', $data) && null !== $data['Timestamp']) {
             $object->setTimestamp($data['Timestamp']);
             unset($data['Timestamp']);
         } elseif (\array_key_exists('Timestamp', $data) && null === $data['Timestamp']) {
             $object->setTimestamp(null);
+            unset($data['Timestamp']);
         }
         if (\array_key_exists('State', $data) && null !== $data['State']) {
             $object->setState($data['State']);
             unset($data['State']);
         } elseif (\array_key_exists('State', $data) && null === $data['State']) {
             $object->setState(null);
+            unset($data['State']);
         }
         if (\array_key_exists('Message', $data) && null !== $data['Message']) {
             $object->setMessage($data['Message']);
             unset($data['Message']);
         } elseif (\array_key_exists('Message', $data) && null === $data['Message']) {
             $object->setMessage(null);
+            unset($data['Message']);
         }
         if (\array_key_exists('Err', $data) && null !== $data['Err']) {
             $object->setErr($data['Err']);
             unset($data['Err']);
         } elseif (\array_key_exists('Err', $data) && null === $data['Err']) {
             $object->setErr(null);
+            unset($data['Err']);
         }
         if (\array_key_exists('ContainerStatus', $data) && null !== $data['ContainerStatus']) {
             $object->setContainerStatus($this->denormalizer->denormalize($data['ContainerStatus'], \Docker\API\Model\ContainerStatus::class, 'json', $context));
             unset($data['ContainerStatus']);
         } elseif (\array_key_exists('ContainerStatus', $data) && null === $data['ContainerStatus']) {
             $object->setContainerStatus(null);
+            unset($data['ContainerStatus']);
         }
         if (\array_key_exists('PortStatus', $data) && null !== $data['PortStatus']) {
             $object->setPortStatus($this->denormalizer->denormalize($data['PortStatus'], \Docker\API\Model\PortStatus::class, 'json', $context));
             unset($data['PortStatus']);
         } elseif (\array_key_exists('PortStatus', $data) && null === $data['PortStatus']) {
             $object->setPortStatus(null);
+            unset($data['PortStatus']);
         }
         foreach ($data as $key => $value) {
             if (preg_match('/.*/', (string) $key)) {
@@ -104,12 +110,12 @@ class TaskStatusNormalizer implements DenormalizerInterface, NormalizerInterface
             $dataArray['Err'] = $data->getErr();
         }
         if ($data->isInitialized('containerStatus') && null !== $data->getContainerStatus()) {
-            $dataArray['ContainerStatus'] = $this->normalizer->normalize($data->getContainerStatus(), 'json', $context);
+            $dataArray['ContainerStatus'] = null === $data->getContainerStatus() ? null : new \Docker\API\Runtime\JsonObject($this->normalizer->normalize($data->getContainerStatus(), 'json', $context));
         }
         if ($data->isInitialized('portStatus') && null !== $data->getPortStatus()) {
-            $dataArray['PortStatus'] = $this->normalizer->normalize($data->getPortStatus(), 'json', $context);
+            $dataArray['PortStatus'] = null === $data->getPortStatus() ? null : new \Docker\API\Runtime\JsonObject($this->normalizer->normalize($data->getPortStatus(), 'json', $context));
         }
-        foreach ($data as $key => $value) {
+        foreach ($data->additionalPropertyEntries() as $key => $value) {
             if (preg_match('/.*/', (string) $key)) {
                 $dataArray[$key] = $value;
             }

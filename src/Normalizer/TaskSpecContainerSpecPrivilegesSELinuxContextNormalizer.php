@@ -33,48 +33,53 @@ class TaskSpecContainerSpecPrivilegesSELinuxContextNormalizer implements Denorma
 
     public function denormalize(mixed $data, string $type, ?string $format = null, array $context = []): mixed
     {
-        if (isset($data['$ref'])) {
+        $object = new \Docker\API\Model\TaskSpecContainerSpecPrivilegesSELinuxContext();
+        if (null === $data || false === \is_array($data)) {
+            return $object;
+        }
+        if (isset($data['$ref']) && !isset($data['type']) && !isset($data['properties']) && !isset($data['allOf'])) {
             return new Reference($data['$ref'], $context['document-origin']);
         }
         if (isset($data['$recursiveRef'])) {
             return new Reference($data['$recursiveRef'], $context['document-origin']);
         }
-        $object = new \Docker\API\Model\TaskSpecContainerSpecPrivilegesSELinuxContext();
         if (\array_key_exists('Disable', $data) && \is_int($data['Disable'])) {
             $data['Disable'] = (bool) $data['Disable'];
-        }
-        if (null === $data || false === \is_array($data)) {
-            return $object;
         }
         if (\array_key_exists('Disable', $data) && null !== $data['Disable']) {
             $object->setDisable($data['Disable']);
             unset($data['Disable']);
         } elseif (\array_key_exists('Disable', $data) && null === $data['Disable']) {
             $object->setDisable(null);
+            unset($data['Disable']);
         }
         if (\array_key_exists('User', $data) && null !== $data['User']) {
             $object->setUser($data['User']);
             unset($data['User']);
         } elseif (\array_key_exists('User', $data) && null === $data['User']) {
             $object->setUser(null);
+            unset($data['User']);
         }
         if (\array_key_exists('Role', $data) && null !== $data['Role']) {
             $object->setRole($data['Role']);
             unset($data['Role']);
         } elseif (\array_key_exists('Role', $data) && null === $data['Role']) {
             $object->setRole(null);
+            unset($data['Role']);
         }
         if (\array_key_exists('Type', $data) && null !== $data['Type']) {
             $object->setType($data['Type']);
             unset($data['Type']);
         } elseif (\array_key_exists('Type', $data) && null === $data['Type']) {
             $object->setType(null);
+            unset($data['Type']);
         }
         if (\array_key_exists('Level', $data) && null !== $data['Level']) {
             $object->setLevel($data['Level']);
             unset($data['Level']);
         } elseif (\array_key_exists('Level', $data) && null === $data['Level']) {
             $object->setLevel(null);
+            unset($data['Level']);
         }
         foreach ($data as $key => $value) {
             if (preg_match('/.*/', (string) $key)) {
@@ -103,7 +108,7 @@ class TaskSpecContainerSpecPrivilegesSELinuxContextNormalizer implements Denorma
         if ($data->isInitialized('level') && null !== $data->getLevel()) {
             $dataArray['Level'] = $data->getLevel();
         }
-        foreach ($data as $key => $value) {
+        foreach ($data->additionalPropertyEntries() as $key => $value) {
             if (preg_match('/.*/', (string) $key)) {
                 $dataArray[$key] = $value;
             }

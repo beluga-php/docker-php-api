@@ -4,8 +4,12 @@ declare(strict_types=1);
 
 namespace Docker\API\Model;
 
-class Volume extends \ArrayObject
+use Docker\API\Runtime\AdditionalAndPatternProperties;
+use Docker\API\Runtime\AdditionalPropertiesInterface;
+
+class Volume implements AdditionalPropertiesInterface
 {
+    use AdditionalAndPatternProperties;
     /**
      * @var array
      */
@@ -47,7 +51,7 @@ class Volume extends \ArrayObject
      * The `Status` field is optional, and is omitted if the volume driver
      * does not support this feature.
      *
-     * @var array<string, VolumeStatusItem>|null
+     * @var array<string, array<string, mixed>>|null
      */
     protected $status;
     /**
@@ -168,7 +172,7 @@ class Volume extends \ArrayObject
      * The `Status` field is optional, and is omitted if the volume driver
      * does not support this feature.
      *
-     * @return array<string, VolumeStatusItem>|null
+     * @return array<string, array<string, mixed>>|null
      */
     public function getStatus(): ?iterable
     {
@@ -183,7 +187,7 @@ class Volume extends \ArrayObject
      * The `Status` field is optional, and is omitted if the volume driver
      * does not support this feature.
      *
-     * @param array<string, VolumeStatusItem>|null $status
+     * @param array<string, array<string, mixed>>|null $status
      */
     public function setStatus(?iterable $status): self
     {
@@ -300,5 +304,10 @@ class Volume extends \ArrayObject
         $this->usageData = $usageData;
 
         return $this;
+    }
+
+    public function definedProperties(): array
+    {
+        return ['name' => ['Name', 'getName', 'setName'], 'driver' => ['Driver', 'getDriver', 'setDriver'], 'mountpoint' => ['Mountpoint', 'getMountpoint', 'setMountpoint'], 'createdAt' => ['CreatedAt', 'getCreatedAt', 'setCreatedAt'], 'status' => ['Status', 'getStatus', 'setStatus'], 'labels' => ['Labels', 'getLabels', 'setLabels'], 'scope' => ['Scope', 'getScope', 'setScope'], 'clusterVolume' => ['ClusterVolume', 'getClusterVolume', 'setClusterVolume'], 'options' => ['Options', 'getOptions', 'setOptions'], 'usageData' => ['UsageData', 'getUsageData', 'setUsageData']];
     }
 }

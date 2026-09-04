@@ -4,8 +4,12 @@ declare(strict_types=1);
 
 namespace Docker\API\Model;
 
-class ContainersIdUpdatePostResponse200 extends \ArrayObject
+use Docker\API\Runtime\AdditionalAndPatternProperties;
+use Docker\API\Runtime\AdditionalPropertiesInterface;
+
+class ContainersIdUpdatePostResponse200 implements AdditionalPropertiesInterface
 {
+    use AdditionalAndPatternProperties;
     /**
      * @var array
      */
@@ -37,5 +41,10 @@ class ContainersIdUpdatePostResponse200 extends \ArrayObject
         $this->warnings = $warnings;
 
         return $this;
+    }
+
+    public function definedProperties(): array
+    {
+        return ['warnings' => ['Warnings', 'getWarnings', 'setWarnings']];
     }
 }

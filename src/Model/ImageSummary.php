@@ -4,8 +4,12 @@ declare(strict_types=1);
 
 namespace Docker\API\Model;
 
-class ImageSummary extends \ArrayObject
+use Docker\API\Runtime\AdditionalAndPatternProperties;
+use Docker\API\Runtime\AdditionalPropertiesInterface;
+
+class ImageSummary implements AdditionalPropertiesInterface
 {
+    use AdditionalAndPatternProperties;
     /**
      * @var array
      */
@@ -63,7 +67,7 @@ class ImageSummary extends \ArrayObject
     protected $repoDigests;
     /**
      * Date and time at which the image was created as a Unix timestamp
-     * (number of seconds sinds EPOCH).
+     * (number of seconds since EPOCH).
      *
      * @var int|null
      */
@@ -84,14 +88,6 @@ class ImageSummary extends \ArrayObject
      * @var int|null
      */
     protected $sharedSize;
-    /**
-     * Total size of the image including all layers it is composed of.
-     *
-     * Deprecated: this field is omitted in API v1.44, but kept for backward compatibility. Use Size instead.
-     *
-     * @var int|null
-     */
-    protected $virtualSize;
     /**
      * User-defined key/value metadata.
      *
@@ -239,7 +235,7 @@ class ImageSummary extends \ArrayObject
 
     /**
      * Date and time at which the image was created as a Unix timestamp
-     * (number of seconds sinds EPOCH).
+     * (number of seconds since EPOCH).
      */
     public function getCreated(): ?int
     {
@@ -248,7 +244,7 @@ class ImageSummary extends \ArrayObject
 
     /**
      * Date and time at which the image was created as a Unix timestamp
-     * (number of seconds sinds EPOCH).
+     * (number of seconds since EPOCH).
      */
     public function setCreated(?int $created): self
     {
@@ -305,29 +301,6 @@ class ImageSummary extends \ArrayObject
     }
 
     /**
-     * Total size of the image including all layers it is composed of.
-     *
-     * Deprecated: this field is omitted in API v1.44, but kept for backward compatibility. Use Size instead.
-     */
-    public function getVirtualSize(): ?int
-    {
-        return $this->virtualSize;
-    }
-
-    /**
-     * Total size of the image including all layers it is composed of.
-     *
-     * Deprecated: this field is omitted in API v1.44, but kept for backward compatibility. Use Size instead.
-     */
-    public function setVirtualSize(?int $virtualSize): self
-    {
-        $this->initialized['virtualSize'] = true;
-        $this->virtualSize = $virtualSize;
-
-        return $this;
-    }
-
-    /**
      * User-defined key/value metadata.
      *
      * @return array<string, string>|null
@@ -375,5 +348,10 @@ class ImageSummary extends \ArrayObject
         $this->containers = $containers;
 
         return $this;
+    }
+
+    public function definedProperties(): array
+    {
+        return ['id' => ['Id', 'getId', 'setId'], 'parentId' => ['ParentId', 'getParentId', 'setParentId'], 'repoTags' => ['RepoTags', 'getRepoTags', 'setRepoTags'], 'repoDigests' => ['RepoDigests', 'getRepoDigests', 'setRepoDigests'], 'created' => ['Created', 'getCreated', 'setCreated'], 'size' => ['Size', 'getSize', 'setSize'], 'sharedSize' => ['SharedSize', 'getSharedSize', 'setSharedSize'], 'labels' => ['Labels', 'getLabels', 'setLabels'], 'containers' => ['Containers', 'getContainers', 'setContainers']];
     }
 }

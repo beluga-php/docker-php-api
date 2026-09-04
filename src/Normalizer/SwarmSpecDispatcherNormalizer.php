@@ -33,21 +33,22 @@ class SwarmSpecDispatcherNormalizer implements DenormalizerInterface, Normalizer
 
     public function denormalize(mixed $data, string $type, ?string $format = null, array $context = []): mixed
     {
-        if (isset($data['$ref'])) {
+        $object = new \Docker\API\Model\SwarmSpecDispatcher();
+        if (null === $data || false === \is_array($data)) {
+            return $object;
+        }
+        if (isset($data['$ref']) && !isset($data['type']) && !isset($data['properties']) && !isset($data['allOf'])) {
             return new Reference($data['$ref'], $context['document-origin']);
         }
         if (isset($data['$recursiveRef'])) {
             return new Reference($data['$recursiveRef'], $context['document-origin']);
-        }
-        $object = new \Docker\API\Model\SwarmSpecDispatcher();
-        if (null === $data || false === \is_array($data)) {
-            return $object;
         }
         if (\array_key_exists('HeartbeatPeriod', $data) && null !== $data['HeartbeatPeriod']) {
             $object->setHeartbeatPeriod($data['HeartbeatPeriod']);
             unset($data['HeartbeatPeriod']);
         } elseif (\array_key_exists('HeartbeatPeriod', $data) && null === $data['HeartbeatPeriod']) {
             $object->setHeartbeatPeriod(null);
+            unset($data['HeartbeatPeriod']);
         }
         foreach ($data as $key => $value) {
             if (preg_match('/.*/', (string) $key)) {
@@ -64,7 +65,7 @@ class SwarmSpecDispatcherNormalizer implements DenormalizerInterface, Normalizer
         if ($data->isInitialized('heartbeatPeriod') && null !== $data->getHeartbeatPeriod()) {
             $dataArray['HeartbeatPeriod'] = $data->getHeartbeatPeriod();
         }
-        foreach ($data as $key => $value) {
+        foreach ($data->additionalPropertyEntries() as $key => $value) {
             if (preg_match('/.*/', (string) $key)) {
                 $dataArray[$key] = $value;
             }

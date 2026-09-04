@@ -4,8 +4,12 @@ declare(strict_types=1);
 
 namespace Docker\API\Model;
 
-class PluginConfigArgs extends \ArrayObject
+use Docker\API\Runtime\AdditionalAndPatternProperties;
+use Docker\API\Runtime\AdditionalPropertiesInterface;
+
+class PluginConfigArgs implements AdditionalPropertiesInterface
 {
+    use AdditionalAndPatternProperties;
     /**
      * @var array
      */
@@ -94,5 +98,10 @@ class PluginConfigArgs extends \ArrayObject
         $this->value = $value;
 
         return $this;
+    }
+
+    public function definedProperties(): array
+    {
+        return ['name' => ['Name', 'getName', 'setName'], 'description' => ['Description', 'getDescription', 'setDescription'], 'settable' => ['Settable', 'getSettable', 'setSettable'], 'value' => ['Value', 'getValue', 'setValue']];
     }
 }

@@ -4,8 +4,12 @@ declare(strict_types=1);
 
 namespace Docker\API\Model;
 
-class NetworksIdDisconnectPostBody extends \ArrayObject
+use Docker\API\Runtime\AdditionalAndPatternProperties;
+use Docker\API\Runtime\AdditionalPropertiesInterface;
+
+class NetworksIdDisconnectPostBody implements AdditionalPropertiesInterface
 {
+    use AdditionalAndPatternProperties;
     /**
      * @var array
      */
@@ -64,5 +68,10 @@ class NetworksIdDisconnectPostBody extends \ArrayObject
         $this->force = $force;
 
         return $this;
+    }
+
+    public function definedProperties(): array
+    {
+        return ['container' => ['Container', 'getContainer', 'setContainer'], 'force' => ['Force', 'getForce', 'setForce']];
     }
 }

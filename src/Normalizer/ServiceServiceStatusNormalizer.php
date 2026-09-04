@@ -33,33 +33,36 @@ class ServiceServiceStatusNormalizer implements DenormalizerInterface, Normalize
 
     public function denormalize(mixed $data, string $type, ?string $format = null, array $context = []): mixed
     {
-        if (isset($data['$ref'])) {
+        $object = new \Docker\API\Model\ServiceServiceStatus();
+        if (null === $data || false === \is_array($data)) {
+            return $object;
+        }
+        if (isset($data['$ref']) && !isset($data['type']) && !isset($data['properties']) && !isset($data['allOf'])) {
             return new Reference($data['$ref'], $context['document-origin']);
         }
         if (isset($data['$recursiveRef'])) {
             return new Reference($data['$recursiveRef'], $context['document-origin']);
-        }
-        $object = new \Docker\API\Model\ServiceServiceStatus();
-        if (null === $data || false === \is_array($data)) {
-            return $object;
         }
         if (\array_key_exists('RunningTasks', $data) && null !== $data['RunningTasks']) {
             $object->setRunningTasks($data['RunningTasks']);
             unset($data['RunningTasks']);
         } elseif (\array_key_exists('RunningTasks', $data) && null === $data['RunningTasks']) {
             $object->setRunningTasks(null);
+            unset($data['RunningTasks']);
         }
         if (\array_key_exists('DesiredTasks', $data) && null !== $data['DesiredTasks']) {
             $object->setDesiredTasks($data['DesiredTasks']);
             unset($data['DesiredTasks']);
         } elseif (\array_key_exists('DesiredTasks', $data) && null === $data['DesiredTasks']) {
             $object->setDesiredTasks(null);
+            unset($data['DesiredTasks']);
         }
         if (\array_key_exists('CompletedTasks', $data) && null !== $data['CompletedTasks']) {
             $object->setCompletedTasks($data['CompletedTasks']);
             unset($data['CompletedTasks']);
         } elseif (\array_key_exists('CompletedTasks', $data) && null === $data['CompletedTasks']) {
             $object->setCompletedTasks(null);
+            unset($data['CompletedTasks']);
         }
         foreach ($data as $key => $value) {
             if (preg_match('/.*/', (string) $key)) {
@@ -82,7 +85,7 @@ class ServiceServiceStatusNormalizer implements DenormalizerInterface, Normalize
         if ($data->isInitialized('completedTasks') && null !== $data->getCompletedTasks()) {
             $dataArray['CompletedTasks'] = $data->getCompletedTasks();
         }
-        foreach ($data as $key => $value) {
+        foreach ($data->additionalPropertyEntries() as $key => $value) {
             if (preg_match('/.*/', (string) $key)) {
                 $dataArray[$key] = $value;
             }

@@ -11,19 +11,17 @@ class ContainerAttachWebsocket extends \Docker\API\Runtime\Client\BaseEndpoint i
     protected $accept;
 
     /**
-     * @param string $id              ID or name of the container
-     * @param array  $queryParameters {
-     *
-     * @var string $detachKeys Override the key sequence for detaching a container.Format is a single
-     *             character `[a-Z]` or `ctrl-<value>` where `<value>` is one of: `a-z`,
-     *             `@`, `^`, `[`, `,`, or `_`.
-     * @var bool   $logs Return logs
-     * @var bool   $stream Return stream
-     * @var bool   $stdin Attach to `stdin`
-     * @var bool   $stdout Attach to `stdout`
-     * @var bool   $stderr Attach to `stderr`
-     *             }
-     *
+     * @param string $id ID or name of the container
+     * @param array{
+     *    "detachKeys"?: string, //Override the key sequence for detaching a container.Format is a single
+     * character `[a-Z]` or `ctrl-<value>` where `<value>` is one of: `a-z`,
+     * `@`, `^`, `[`, `,`, or `_`.
+     *    "logs"?: bool, //Return logs
+     *    "stream"?: bool, //Return stream
+     *    "stdin"?: bool, //Attach to `stdin`
+     *    "stdout"?: bool, //Attach to `stdout`
+     *    "stderr"?: bool, //Attach to `stderr`
+     * } $queryParameters
      * @param array $accept Accept content header application/json|text/plain
      */
     public function __construct(string $id, array $queryParameters = [], array $accept = [])
@@ -40,7 +38,7 @@ class ContainerAttachWebsocket extends \Docker\API\Runtime\Client\BaseEndpoint i
 
     public function getUri(): string
     {
-        return str_replace(['{id}'], [$this->id], '/containers/{id}/attach/ws');
+        return str_replace(['{id}'], [rawurlencode($this->id)], '/containers/{id}/attach/ws');
     }
 
     public function getBody(\Symfony\Component\Serializer\SerializerInterface $serializer, $streamFactory = null): array
@@ -85,16 +83,18 @@ class ContainerAttachWebsocket extends \Docker\API\Runtime\Client\BaseEndpoint i
         $status = $response->getStatusCode();
         $body = (string) $response->getBody();
         if (101 === $status) {
+            return null;
         }
         if (200 === $status) {
+            return null;
         }
-        if ((null === $contentType) === false && (400 === $status && false !== mb_strpos($contentType, 'application/json'))) {
+        if ((null === $contentType) === false && (400 === $status && false !== stripos(strtolower($contentType), 'application/json'))) {
             throw new \Docker\API\Exception\ContainerAttachWebsocketBadRequestException($serializer->deserialize($body, 'Docker\API\Model\ErrorResponse', 'json'), $response);
         }
-        if ((null === $contentType) === false && (404 === $status && false !== mb_strpos($contentType, 'application/json'))) {
+        if ((null === $contentType) === false && (404 === $status && false !== stripos(strtolower($contentType), 'application/json'))) {
             throw new \Docker\API\Exception\ContainerAttachWebsocketNotFoundException($serializer->deserialize($body, 'Docker\API\Model\ErrorResponse', 'json'), $response);
         }
-        if ((null === $contentType) === false && (500 === $status && false !== mb_strpos($contentType, 'application/json'))) {
+        if ((null === $contentType) === false && (500 === $status && false !== stripos(strtolower($contentType), 'application/json'))) {
             throw new \Docker\API\Exception\ContainerAttachWebsocketInternalServerErrorException($serializer->deserialize($body, 'Docker\API\Model\ErrorResponse', 'json'), $response);
         }
     }

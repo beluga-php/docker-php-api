@@ -4,8 +4,12 @@ declare(strict_types=1);
 
 namespace Docker\API\Model;
 
-class Health extends \ArrayObject
+use Docker\API\Runtime\AdditionalAndPatternProperties;
+use Docker\API\Runtime\AdditionalPropertiesInterface;
+
+class Health implements AdditionalPropertiesInterface
 {
+    use AdditionalAndPatternProperties;
     /**
      * @var array
      */
@@ -108,5 +112,10 @@ class Health extends \ArrayObject
         $this->log = $log;
 
         return $this;
+    }
+
+    public function definedProperties(): array
+    {
+        return ['status' => ['Status', 'getStatus', 'setStatus'], 'failingStreak' => ['FailingStreak', 'getFailingStreak', 'setFailingStreak'], 'log' => ['Log', 'getLog', 'setLog']];
     }
 }

@@ -4,8 +4,12 @@ declare(strict_types=1);
 
 namespace Docker\API\Model;
 
-class NetworksPrunePostResponse200 extends \ArrayObject
+use Docker\API\Runtime\AdditionalAndPatternProperties;
+use Docker\API\Runtime\AdditionalPropertiesInterface;
+
+class NetworksPrunePostResponse200 implements AdditionalPropertiesInterface
 {
+    use AdditionalAndPatternProperties;
     /**
      * @var array
      */
@@ -43,5 +47,10 @@ class NetworksPrunePostResponse200 extends \ArrayObject
         $this->networksDeleted = $networksDeleted;
 
         return $this;
+    }
+
+    public function definedProperties(): array
+    {
+        return ['networksDeleted' => ['NetworksDeleted', 'getNetworksDeleted', 'setNetworksDeleted']];
     }
 }

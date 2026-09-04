@@ -33,21 +33,22 @@ class ImageInspectMetadataNormalizer implements DenormalizerInterface, Normalize
 
     public function denormalize(mixed $data, string $type, ?string $format = null, array $context = []): mixed
     {
-        if (isset($data['$ref'])) {
+        $object = new \Docker\API\Model\ImageInspectMetadata();
+        if (null === $data || false === \is_array($data)) {
+            return $object;
+        }
+        if (isset($data['$ref']) && !isset($data['type']) && !isset($data['properties']) && !isset($data['allOf'])) {
             return new Reference($data['$ref'], $context['document-origin']);
         }
         if (isset($data['$recursiveRef'])) {
             return new Reference($data['$recursiveRef'], $context['document-origin']);
-        }
-        $object = new \Docker\API\Model\ImageInspectMetadata();
-        if (null === $data || false === \is_array($data)) {
-            return $object;
         }
         if (\array_key_exists('LastTagTime', $data) && null !== $data['LastTagTime']) {
             $object->setLastTagTime($data['LastTagTime']);
             unset($data['LastTagTime']);
         } elseif (\array_key_exists('LastTagTime', $data) && null === $data['LastTagTime']) {
             $object->setLastTagTime(null);
+            unset($data['LastTagTime']);
         }
         foreach ($data as $key => $value) {
             if (preg_match('/.*/', (string) $key)) {
@@ -64,7 +65,7 @@ class ImageInspectMetadataNormalizer implements DenormalizerInterface, Normalize
         if ($data->isInitialized('lastTagTime') && null !== $data->getLastTagTime()) {
             $dataArray['LastTagTime'] = $data->getLastTagTime();
         }
-        foreach ($data as $key => $value) {
+        foreach ($data->additionalPropertyEntries() as $key => $value) {
             if (preg_match('/.*/', (string) $key)) {
                 $dataArray[$key] = $value;
             }

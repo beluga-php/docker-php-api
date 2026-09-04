@@ -33,37 +33,44 @@ class SystemVersionComponentsItemNormalizer implements DenormalizerInterface, No
 
     public function denormalize(mixed $data, string $type, ?string $format = null, array $context = []): mixed
     {
-        if (isset($data['$ref'])) {
+        $object = new \Docker\API\Model\SystemVersionComponentsItem();
+        if (null === $data || false === \is_array($data)) {
+            return $object;
+        }
+        if (isset($data['$ref']) && !isset($data['type']) && !isset($data['properties']) && !isset($data['allOf'])) {
             return new Reference($data['$ref'], $context['document-origin']);
         }
         if (isset($data['$recursiveRef'])) {
             return new Reference($data['$recursiveRef'], $context['document-origin']);
-        }
-        $object = new \Docker\API\Model\SystemVersionComponentsItem();
-        if (null === $data || false === \is_array($data)) {
-            return $object;
         }
         if (\array_key_exists('Name', $data) && null !== $data['Name']) {
             $object->setName($data['Name']);
             unset($data['Name']);
         } elseif (\array_key_exists('Name', $data) && null === $data['Name']) {
             $object->setName(null);
+            unset($data['Name']);
         }
         if (\array_key_exists('Version', $data) && null !== $data['Version']) {
             $object->setVersion($data['Version']);
             unset($data['Version']);
         } elseif (\array_key_exists('Version', $data) && null === $data['Version']) {
             $object->setVersion(null);
+            unset($data['Version']);
         }
         if (\array_key_exists('Details', $data) && null !== $data['Details']) {
-            $object->setDetails($this->denormalizer->denormalize($data['Details'], \Docker\API\Model\SystemVersionComponentsItemDetails::class, 'json', $context));
+            $values = new \Docker\API\Runtime\JsonObject();
+            foreach ($data['Details'] as $key => $value) {
+                $values[$key] = $value;
+            }
+            $object->setDetails($values);
             unset($data['Details']);
         } elseif (\array_key_exists('Details', $data) && null === $data['Details']) {
             $object->setDetails(null);
+            unset($data['Details']);
         }
-        foreach ($data as $key => $value) {
-            if (preg_match('/.*/', (string) $key)) {
-                $object[$key] = $value;
+        foreach ($data as $key_1 => $value_1) {
+            if (preg_match('/.*/', (string) $key_1)) {
+                $object[$key_1] = $value_1;
             }
         }
 
@@ -76,11 +83,15 @@ class SystemVersionComponentsItemNormalizer implements DenormalizerInterface, No
         $dataArray['Name'] = $data->getName();
         $dataArray['Version'] = $data->getVersion();
         if ($data->isInitialized('details') && null !== $data->getDetails()) {
-            $dataArray['Details'] = $this->normalizer->normalize($data->getDetails(), 'json', $context);
+            $values = new \Docker\API\Runtime\JsonObject();
+            foreach ($data->getDetails() as $key => $value) {
+                $values[$key] = $value;
+            }
+            $dataArray['Details'] = $values;
         }
-        foreach ($data as $key => $value) {
-            if (preg_match('/.*/', (string) $key)) {
-                $dataArray[$key] = $value;
+        foreach ($data->additionalPropertyEntries() as $key_1 => $value_1) {
+            if (preg_match('/.*/', (string) $key_1)) {
+                $dataArray[$key_1] = $value_1;
             }
         }
 

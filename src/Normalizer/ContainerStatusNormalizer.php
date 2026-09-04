@@ -33,33 +33,36 @@ class ContainerStatusNormalizer implements DenormalizerInterface, NormalizerInte
 
     public function denormalize(mixed $data, string $type, ?string $format = null, array $context = []): mixed
     {
-        if (isset($data['$ref'])) {
+        $object = new \Docker\API\Model\ContainerStatus();
+        if (null === $data || false === \is_array($data)) {
+            return $object;
+        }
+        if (isset($data['$ref']) && !isset($data['type']) && !isset($data['properties']) && !isset($data['allOf'])) {
             return new Reference($data['$ref'], $context['document-origin']);
         }
         if (isset($data['$recursiveRef'])) {
             return new Reference($data['$recursiveRef'], $context['document-origin']);
-        }
-        $object = new \Docker\API\Model\ContainerStatus();
-        if (null === $data || false === \is_array($data)) {
-            return $object;
         }
         if (\array_key_exists('ContainerID', $data) && null !== $data['ContainerID']) {
             $object->setContainerID($data['ContainerID']);
             unset($data['ContainerID']);
         } elseif (\array_key_exists('ContainerID', $data) && null === $data['ContainerID']) {
             $object->setContainerID(null);
+            unset($data['ContainerID']);
         }
         if (\array_key_exists('PID', $data) && null !== $data['PID']) {
             $object->setPID($data['PID']);
             unset($data['PID']);
         } elseif (\array_key_exists('PID', $data) && null === $data['PID']) {
             $object->setPID(null);
+            unset($data['PID']);
         }
         if (\array_key_exists('ExitCode', $data) && null !== $data['ExitCode']) {
             $object->setExitCode($data['ExitCode']);
             unset($data['ExitCode']);
         } elseif (\array_key_exists('ExitCode', $data) && null === $data['ExitCode']) {
             $object->setExitCode(null);
+            unset($data['ExitCode']);
         }
         foreach ($data as $key => $value) {
             if (preg_match('/.*/', (string) $key)) {
@@ -82,7 +85,7 @@ class ContainerStatusNormalizer implements DenormalizerInterface, NormalizerInte
         if ($data->isInitialized('exitCode') && null !== $data->getExitCode()) {
             $dataArray['ExitCode'] = $data->getExitCode();
         }
-        foreach ($data as $key => $value) {
+        foreach ($data->additionalPropertyEntries() as $key => $value) {
             if (preg_match('/.*/', (string) $key)) {
                 $dataArray[$key] = $value;
             }

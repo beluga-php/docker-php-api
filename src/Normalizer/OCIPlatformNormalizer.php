@@ -33,33 +33,36 @@ class OCIPlatformNormalizer implements DenormalizerInterface, NormalizerInterfac
 
     public function denormalize(mixed $data, string $type, ?string $format = null, array $context = []): mixed
     {
-        if (isset($data['$ref'])) {
+        $object = new \Docker\API\Model\OCIPlatform();
+        if (null === $data || false === \is_array($data)) {
+            return $object;
+        }
+        if (isset($data['$ref']) && !isset($data['type']) && !isset($data['properties']) && !isset($data['allOf'])) {
             return new Reference($data['$ref'], $context['document-origin']);
         }
         if (isset($data['$recursiveRef'])) {
             return new Reference($data['$recursiveRef'], $context['document-origin']);
-        }
-        $object = new \Docker\API\Model\OCIPlatform();
-        if (null === $data || false === \is_array($data)) {
-            return $object;
         }
         if (\array_key_exists('architecture', $data) && null !== $data['architecture']) {
             $object->setArchitecture($data['architecture']);
             unset($data['architecture']);
         } elseif (\array_key_exists('architecture', $data) && null === $data['architecture']) {
             $object->setArchitecture(null);
+            unset($data['architecture']);
         }
         if (\array_key_exists('os', $data) && null !== $data['os']) {
             $object->setOs($data['os']);
             unset($data['os']);
         } elseif (\array_key_exists('os', $data) && null === $data['os']) {
             $object->setOs(null);
+            unset($data['os']);
         }
         if (\array_key_exists('os.version', $data) && null !== $data['os.version']) {
             $object->setOsVersion($data['os.version']);
             unset($data['os.version']);
         } elseif (\array_key_exists('os.version', $data) && null === $data['os.version']) {
             $object->setOsVersion(null);
+            unset($data['os.version']);
         }
         if (\array_key_exists('os.features', $data) && null !== $data['os.features']) {
             $values = [];
@@ -70,12 +73,14 @@ class OCIPlatformNormalizer implements DenormalizerInterface, NormalizerInterfac
             unset($data['os.features']);
         } elseif (\array_key_exists('os.features', $data) && null === $data['os.features']) {
             $object->setOsFeatures(null);
+            unset($data['os.features']);
         }
         if (\array_key_exists('variant', $data) && null !== $data['variant']) {
             $object->setVariant($data['variant']);
             unset($data['variant']);
         } elseif (\array_key_exists('variant', $data) && null === $data['variant']) {
             $object->setVariant(null);
+            unset($data['variant']);
         }
         foreach ($data as $key => $value_1) {
             if (preg_match('/.*/', (string) $key)) {
@@ -108,7 +113,7 @@ class OCIPlatformNormalizer implements DenormalizerInterface, NormalizerInterfac
         if ($data->isInitialized('variant') && null !== $data->getVariant()) {
             $dataArray['variant'] = $data->getVariant();
         }
-        foreach ($data as $key => $value_1) {
+        foreach ($data->additionalPropertyEntries() as $key => $value_1) {
             if (preg_match('/.*/', (string) $key)) {
                 $dataArray[$key] = $value_1;
             }

@@ -4,8 +4,12 @@ declare(strict_types=1);
 
 namespace Docker\API\Model;
 
-class ConfigSpec extends \ArrayObject
+use Docker\API\Runtime\AdditionalAndPatternProperties;
+use Docker\API\Runtime\AdditionalPropertiesInterface;
+
+class ConfigSpec implements AdditionalPropertiesInterface
 {
+    use AdditionalAndPatternProperties;
     /**
      * @var array
      */
@@ -28,8 +32,9 @@ class ConfigSpec extends \ArrayObject
      */
     protected $labels;
     /**
-     * Base64-url-safe-encoded ([RFC 4648](https://tools.ietf.org/html/rfc4648#section-5))
-     * config data.
+     * Data is the data to store as a config, formatted as a standard base64-encoded
+     * ([RFC 4648](https://tools.ietf.org/html/rfc4648#section-4)) string.
+     * The maximum allowed size is 1000KB, as defined in [MaxConfigSize](https://pkg.go.dev/github.com/moby/swarmkit/v2@v2.0.0-20250103191802-8c1959736554/manager/controlapi#MaxConfigSize).
      *
      * @var string|null
      */
@@ -84,8 +89,9 @@ class ConfigSpec extends \ArrayObject
     }
 
     /**
-     * Base64-url-safe-encoded ([RFC 4648](https://tools.ietf.org/html/rfc4648#section-5))
-     * config data.
+     * Data is the data to store as a config, formatted as a standard base64-encoded
+     * ([RFC 4648](https://tools.ietf.org/html/rfc4648#section-4)) string.
+     * The maximum allowed size is 1000KB, as defined in [MaxConfigSize](https://pkg.go.dev/github.com/moby/swarmkit/v2@v2.0.0-20250103191802-8c1959736554/manager/controlapi#MaxConfigSize).
      */
     public function getData(): ?string
     {
@@ -93,8 +99,9 @@ class ConfigSpec extends \ArrayObject
     }
 
     /**
-     * Base64-url-safe-encoded ([RFC 4648](https://tools.ietf.org/html/rfc4648#section-5))
-     * config data.
+     * Data is the data to store as a config, formatted as a standard base64-encoded
+     * ([RFC 4648](https://tools.ietf.org/html/rfc4648#section-4)) string.
+     * The maximum allowed size is 1000KB, as defined in [MaxConfigSize](https://pkg.go.dev/github.com/moby/swarmkit/v2@v2.0.0-20250103191802-8c1959736554/manager/controlapi#MaxConfigSize).
      */
     public function setData(?string $data): self
     {
@@ -121,5 +128,10 @@ class ConfigSpec extends \ArrayObject
         $this->templating = $templating;
 
         return $this;
+    }
+
+    public function definedProperties(): array
+    {
+        return ['name' => ['Name', 'getName', 'setName'], 'labels' => ['Labels', 'getLabels', 'setLabels'], 'data' => ['Data', 'getData', 'setData'], 'templating' => ['Templating', 'getTemplating', 'setTemplating']];
     }
 }

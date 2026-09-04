@@ -4,8 +4,12 @@ declare(strict_types=1);
 
 namespace Docker\API\Model;
 
-class ContainerSummary extends \ArrayObject
+use Docker\API\Runtime\AdditionalAndPatternProperties;
+use Docker\API\Runtime\AdditionalPropertiesInterface;
+
+class ContainerSummary implements AdditionalPropertiesInterface
 {
+    use AdditionalAndPatternProperties;
     /**
      * @var array
      */
@@ -391,5 +395,10 @@ class ContainerSummary extends \ArrayObject
         $this->mounts = $mounts;
 
         return $this;
+    }
+
+    public function definedProperties(): array
+    {
+        return ['id' => ['Id', 'getId', 'setId'], 'names' => ['Names', 'getNames', 'setNames'], 'image' => ['Image', 'getImage', 'setImage'], 'imageID' => ['ImageID', 'getImageID', 'setImageID'], 'command' => ['Command', 'getCommand', 'setCommand'], 'created' => ['Created', 'getCreated', 'setCreated'], 'ports' => ['Ports', 'getPorts', 'setPorts'], 'sizeRw' => ['SizeRw', 'getSizeRw', 'setSizeRw'], 'sizeRootFs' => ['SizeRootFs', 'getSizeRootFs', 'setSizeRootFs'], 'labels' => ['Labels', 'getLabels', 'setLabels'], 'state' => ['State', 'getState', 'setState'], 'status' => ['Status', 'getStatus', 'setStatus'], 'hostConfig' => ['HostConfig', 'getHostConfig', 'setHostConfig'], 'networkSettings' => ['NetworkSettings', 'getNetworkSettings', 'setNetworkSettings'], 'mounts' => ['Mounts', 'getMounts', 'setMounts']];
     }
 }

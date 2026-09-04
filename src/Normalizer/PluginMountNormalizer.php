@@ -33,27 +33,29 @@ class PluginMountNormalizer implements DenormalizerInterface, NormalizerInterfac
 
     public function denormalize(mixed $data, string $type, ?string $format = null, array $context = []): mixed
     {
-        if (isset($data['$ref'])) {
+        $object = new \Docker\API\Model\PluginMount();
+        if (null === $data || false === \is_array($data)) {
+            return $object;
+        }
+        if (isset($data['$ref']) && !isset($data['type']) && !isset($data['properties']) && !isset($data['allOf'])) {
             return new Reference($data['$ref'], $context['document-origin']);
         }
         if (isset($data['$recursiveRef'])) {
             return new Reference($data['$recursiveRef'], $context['document-origin']);
-        }
-        $object = new \Docker\API\Model\PluginMount();
-        if (null === $data || false === \is_array($data)) {
-            return $object;
         }
         if (\array_key_exists('Name', $data) && null !== $data['Name']) {
             $object->setName($data['Name']);
             unset($data['Name']);
         } elseif (\array_key_exists('Name', $data) && null === $data['Name']) {
             $object->setName(null);
+            unset($data['Name']);
         }
         if (\array_key_exists('Description', $data) && null !== $data['Description']) {
             $object->setDescription($data['Description']);
             unset($data['Description']);
         } elseif (\array_key_exists('Description', $data) && null === $data['Description']) {
             $object->setDescription(null);
+            unset($data['Description']);
         }
         if (\array_key_exists('Settable', $data) && null !== $data['Settable']) {
             $values = [];
@@ -64,24 +66,28 @@ class PluginMountNormalizer implements DenormalizerInterface, NormalizerInterfac
             unset($data['Settable']);
         } elseif (\array_key_exists('Settable', $data) && null === $data['Settable']) {
             $object->setSettable(null);
+            unset($data['Settable']);
         }
         if (\array_key_exists('Source', $data) && null !== $data['Source']) {
             $object->setSource($data['Source']);
             unset($data['Source']);
         } elseif (\array_key_exists('Source', $data) && null === $data['Source']) {
             $object->setSource(null);
+            unset($data['Source']);
         }
         if (\array_key_exists('Destination', $data) && null !== $data['Destination']) {
             $object->setDestination($data['Destination']);
             unset($data['Destination']);
         } elseif (\array_key_exists('Destination', $data) && null === $data['Destination']) {
             $object->setDestination(null);
+            unset($data['Destination']);
         }
         if (\array_key_exists('Type', $data) && null !== $data['Type']) {
             $object->setType($data['Type']);
             unset($data['Type']);
         } elseif (\array_key_exists('Type', $data) && null === $data['Type']) {
             $object->setType(null);
+            unset($data['Type']);
         }
         if (\array_key_exists('Options', $data) && null !== $data['Options']) {
             $values_1 = [];
@@ -92,6 +98,7 @@ class PluginMountNormalizer implements DenormalizerInterface, NormalizerInterfac
             unset($data['Options']);
         } elseif (\array_key_exists('Options', $data) && null === $data['Options']) {
             $object->setOptions(null);
+            unset($data['Options']);
         }
         foreach ($data as $key => $value_2) {
             if (preg_match('/.*/', (string) $key)) {
@@ -120,7 +127,7 @@ class PluginMountNormalizer implements DenormalizerInterface, NormalizerInterfac
             $values_1[] = $value_1;
         }
         $dataArray['Options'] = $values_1;
-        foreach ($data as $key => $value_2) {
+        foreach ($data->additionalPropertyEntries() as $key => $value_2) {
             if (preg_match('/.*/', (string) $key)) {
                 $dataArray[$key] = $value_2;
             }

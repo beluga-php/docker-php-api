@@ -4,8 +4,12 @@ declare(strict_types=1);
 
 namespace Docker\API\Model;
 
-class DistributionInspect extends \ArrayObject
+use Docker\API\Runtime\AdditionalAndPatternProperties;
+use Docker\API\Runtime\AdditionalPropertiesInterface;
+
+class DistributionInspect implements AdditionalPropertiesInterface
 {
+    use AdditionalAndPatternProperties;
     /**
      * @var array
      */
@@ -71,5 +75,10 @@ class DistributionInspect extends \ArrayObject
         $this->platforms = $platforms;
 
         return $this;
+    }
+
+    public function definedProperties(): array
+    {
+        return ['descriptor' => ['Descriptor', 'getDescriptor', 'setDescriptor'], 'platforms' => ['Platforms', 'getPlatforms', 'setPlatforms']];
     }
 }

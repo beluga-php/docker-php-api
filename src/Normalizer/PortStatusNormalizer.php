@@ -33,15 +33,15 @@ class PortStatusNormalizer implements DenormalizerInterface, NormalizerInterface
 
     public function denormalize(mixed $data, string $type, ?string $format = null, array $context = []): mixed
     {
-        if (isset($data['$ref'])) {
+        $object = new \Docker\API\Model\PortStatus();
+        if (null === $data || false === \is_array($data)) {
+            return $object;
+        }
+        if (isset($data['$ref']) && !isset($data['type']) && !isset($data['properties']) && !isset($data['allOf'])) {
             return new Reference($data['$ref'], $context['document-origin']);
         }
         if (isset($data['$recursiveRef'])) {
             return new Reference($data['$recursiveRef'], $context['document-origin']);
-        }
-        $object = new \Docker\API\Model\PortStatus();
-        if (null === $data || false === \is_array($data)) {
-            return $object;
         }
         if (\array_key_exists('Ports', $data) && null !== $data['Ports']) {
             $values = [];
@@ -52,6 +52,7 @@ class PortStatusNormalizer implements DenormalizerInterface, NormalizerInterface
             unset($data['Ports']);
         } elseif (\array_key_exists('Ports', $data) && null === $data['Ports']) {
             $object->setPorts(null);
+            unset($data['Ports']);
         }
         foreach ($data as $key => $value_1) {
             if (preg_match('/.*/', (string) $key)) {
@@ -68,11 +69,11 @@ class PortStatusNormalizer implements DenormalizerInterface, NormalizerInterface
         if ($data->isInitialized('ports') && null !== $data->getPorts()) {
             $values = [];
             foreach ($data->getPorts() as $value) {
-                $values[] = $this->normalizer->normalize($value, 'json', $context);
+                $values[] = null === $value ? null : new \Docker\API\Runtime\JsonObject($this->normalizer->normalize($value, 'json', $context));
             }
             $dataArray['Ports'] = $values;
         }
-        foreach ($data as $key => $value_1) {
+        foreach ($data->additionalPropertyEntries() as $key => $value_1) {
             if (preg_match('/.*/', (string) $key)) {
                 $dataArray[$key] = $value_1;
             }

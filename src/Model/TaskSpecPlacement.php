@@ -4,8 +4,12 @@ declare(strict_types=1);
 
 namespace Docker\API\Model;
 
-class TaskSpecPlacement extends \ArrayObject
+use Docker\API\Runtime\AdditionalAndPatternProperties;
+use Docker\API\Runtime\AdditionalPropertiesInterface;
+
+class TaskSpecPlacement implements AdditionalPropertiesInterface
 {
+    use AdditionalAndPatternProperties;
     /**
      * @var array
      */
@@ -198,5 +202,10 @@ class TaskSpecPlacement extends \ArrayObject
         $this->platforms = $platforms;
 
         return $this;
+    }
+
+    public function definedProperties(): array
+    {
+        return ['constraints' => ['Constraints', 'getConstraints', 'setConstraints'], 'preferences' => ['Preferences', 'getPreferences', 'setPreferences'], 'maxReplicas' => ['MaxReplicas', 'getMaxReplicas', 'setMaxReplicas'], 'platforms' => ['Platforms', 'getPlatforms', 'setPlatforms']];
     }
 }

@@ -4,8 +4,12 @@ declare(strict_types=1);
 
 namespace Docker\API\Model;
 
-class TaskSpecContainerSpecPrivilegesSeccomp extends \ArrayObject
+use Docker\API\Runtime\AdditionalAndPatternProperties;
+use Docker\API\Runtime\AdditionalPropertiesInterface;
+
+class TaskSpecContainerSpecPrivilegesSeccomp implements AdditionalPropertiesInterface
 {
+    use AdditionalAndPatternProperties;
     /**
      * @var array
      */
@@ -56,5 +60,10 @@ class TaskSpecContainerSpecPrivilegesSeccomp extends \ArrayObject
         $this->profile = $profile;
 
         return $this;
+    }
+
+    public function definedProperties(): array
+    {
+        return ['mode' => ['Mode', 'getMode', 'setMode'], 'profile' => ['Profile', 'getProfile', 'setProfile']];
     }
 }

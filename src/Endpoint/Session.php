@@ -36,6 +36,7 @@ class Session extends \Docker\API\Runtime\Client\BaseEndpoint implements \Docker
         $status = $response->getStatusCode();
         $body = (string) $response->getBody();
         if (101 === $status) {
+            return null;
         }
         if (400 === $status) {
         }

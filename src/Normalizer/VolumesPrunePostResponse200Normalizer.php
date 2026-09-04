@@ -33,15 +33,15 @@ class VolumesPrunePostResponse200Normalizer implements DenormalizerInterface, No
 
     public function denormalize(mixed $data, string $type, ?string $format = null, array $context = []): mixed
     {
-        if (isset($data['$ref'])) {
+        $object = new \Docker\API\Model\VolumesPrunePostResponse200();
+        if (null === $data || false === \is_array($data)) {
+            return $object;
+        }
+        if (isset($data['$ref']) && !isset($data['type']) && !isset($data['properties']) && !isset($data['allOf'])) {
             return new Reference($data['$ref'], $context['document-origin']);
         }
         if (isset($data['$recursiveRef'])) {
             return new Reference($data['$recursiveRef'], $context['document-origin']);
-        }
-        $object = new \Docker\API\Model\VolumesPrunePostResponse200();
-        if (null === $data || false === \is_array($data)) {
-            return $object;
         }
         if (\array_key_exists('VolumesDeleted', $data) && null !== $data['VolumesDeleted']) {
             $values = [];
@@ -52,12 +52,14 @@ class VolumesPrunePostResponse200Normalizer implements DenormalizerInterface, No
             unset($data['VolumesDeleted']);
         } elseif (\array_key_exists('VolumesDeleted', $data) && null === $data['VolumesDeleted']) {
             $object->setVolumesDeleted(null);
+            unset($data['VolumesDeleted']);
         }
         if (\array_key_exists('SpaceReclaimed', $data) && null !== $data['SpaceReclaimed']) {
             $object->setSpaceReclaimed($data['SpaceReclaimed']);
             unset($data['SpaceReclaimed']);
         } elseif (\array_key_exists('SpaceReclaimed', $data) && null === $data['SpaceReclaimed']) {
             $object->setSpaceReclaimed(null);
+            unset($data['SpaceReclaimed']);
         }
         foreach ($data as $key => $value_1) {
             if (preg_match('/.*/', (string) $key)) {
@@ -81,7 +83,7 @@ class VolumesPrunePostResponse200Normalizer implements DenormalizerInterface, No
         if ($data->isInitialized('spaceReclaimed') && null !== $data->getSpaceReclaimed()) {
             $dataArray['SpaceReclaimed'] = $data->getSpaceReclaimed();
         }
-        foreach ($data as $key => $value_1) {
+        foreach ($data->additionalPropertyEntries() as $key => $value_1) {
             if (preg_match('/.*/', (string) $key)) {
                 $dataArray[$key] = $value_1;
             }

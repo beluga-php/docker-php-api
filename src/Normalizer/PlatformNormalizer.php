@@ -33,27 +33,29 @@ class PlatformNormalizer implements DenormalizerInterface, NormalizerInterface, 
 
     public function denormalize(mixed $data, string $type, ?string $format = null, array $context = []): mixed
     {
-        if (isset($data['$ref'])) {
+        $object = new \Docker\API\Model\Platform();
+        if (null === $data || false === \is_array($data)) {
+            return $object;
+        }
+        if (isset($data['$ref']) && !isset($data['type']) && !isset($data['properties']) && !isset($data['allOf'])) {
             return new Reference($data['$ref'], $context['document-origin']);
         }
         if (isset($data['$recursiveRef'])) {
             return new Reference($data['$recursiveRef'], $context['document-origin']);
-        }
-        $object = new \Docker\API\Model\Platform();
-        if (null === $data || false === \is_array($data)) {
-            return $object;
         }
         if (\array_key_exists('Architecture', $data) && null !== $data['Architecture']) {
             $object->setArchitecture($data['Architecture']);
             unset($data['Architecture']);
         } elseif (\array_key_exists('Architecture', $data) && null === $data['Architecture']) {
             $object->setArchitecture(null);
+            unset($data['Architecture']);
         }
         if (\array_key_exists('OS', $data) && null !== $data['OS']) {
             $object->setOS($data['OS']);
             unset($data['OS']);
         } elseif (\array_key_exists('OS', $data) && null === $data['OS']) {
             $object->setOS(null);
+            unset($data['OS']);
         }
         foreach ($data as $key => $value) {
             if (preg_match('/.*/', (string) $key)) {
@@ -73,7 +75,7 @@ class PlatformNormalizer implements DenormalizerInterface, NormalizerInterface, 
         if ($data->isInitialized('oS') && null !== $data->getOS()) {
             $dataArray['OS'] = $data->getOS();
         }
-        foreach ($data as $key => $value) {
+        foreach ($data->additionalPropertyEntries() as $key => $value) {
             if (preg_match('/.*/', (string) $key)) {
                 $dataArray[$key] = $value;
             }

@@ -33,33 +33,36 @@ class TaskSpecContainerSpecSecretsItemNormalizer implements DenormalizerInterfac
 
     public function denormalize(mixed $data, string $type, ?string $format = null, array $context = []): mixed
     {
-        if (isset($data['$ref'])) {
+        $object = new \Docker\API\Model\TaskSpecContainerSpecSecretsItem();
+        if (null === $data || false === \is_array($data)) {
+            return $object;
+        }
+        if (isset($data['$ref']) && !isset($data['type']) && !isset($data['properties']) && !isset($data['allOf'])) {
             return new Reference($data['$ref'], $context['document-origin']);
         }
         if (isset($data['$recursiveRef'])) {
             return new Reference($data['$recursiveRef'], $context['document-origin']);
-        }
-        $object = new \Docker\API\Model\TaskSpecContainerSpecSecretsItem();
-        if (null === $data || false === \is_array($data)) {
-            return $object;
         }
         if (\array_key_exists('File', $data) && null !== $data['File']) {
             $object->setFile($this->denormalizer->denormalize($data['File'], \Docker\API\Model\TaskSpecContainerSpecSecretsItemFile::class, 'json', $context));
             unset($data['File']);
         } elseif (\array_key_exists('File', $data) && null === $data['File']) {
             $object->setFile(null);
+            unset($data['File']);
         }
         if (\array_key_exists('SecretID', $data) && null !== $data['SecretID']) {
             $object->setSecretID($data['SecretID']);
             unset($data['SecretID']);
         } elseif (\array_key_exists('SecretID', $data) && null === $data['SecretID']) {
             $object->setSecretID(null);
+            unset($data['SecretID']);
         }
         if (\array_key_exists('SecretName', $data) && null !== $data['SecretName']) {
             $object->setSecretName($data['SecretName']);
             unset($data['SecretName']);
         } elseif (\array_key_exists('SecretName', $data) && null === $data['SecretName']) {
             $object->setSecretName(null);
+            unset($data['SecretName']);
         }
         foreach ($data as $key => $value) {
             if (preg_match('/.*/', (string) $key)) {
@@ -74,7 +77,7 @@ class TaskSpecContainerSpecSecretsItemNormalizer implements DenormalizerInterfac
     {
         $dataArray = [];
         if ($data->isInitialized('file') && null !== $data->getFile()) {
-            $dataArray['File'] = $this->normalizer->normalize($data->getFile(), 'json', $context);
+            $dataArray['File'] = null === $data->getFile() ? null : new \Docker\API\Runtime\JsonObject($this->normalizer->normalize($data->getFile(), 'json', $context));
         }
         if ($data->isInitialized('secretID') && null !== $data->getSecretID()) {
             $dataArray['SecretID'] = $data->getSecretID();
@@ -82,7 +85,7 @@ class TaskSpecContainerSpecSecretsItemNormalizer implements DenormalizerInterfac
         if ($data->isInitialized('secretName') && null !== $data->getSecretName()) {
             $dataArray['SecretName'] = $data->getSecretName();
         }
-        foreach ($data as $key => $value) {
+        foreach ($data->additionalPropertyEntries() as $key => $value) {
             if (preg_match('/.*/', (string) $key)) {
                 $dataArray[$key] = $value;
             }

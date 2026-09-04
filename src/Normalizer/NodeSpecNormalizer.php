@@ -33,24 +33,25 @@ class NodeSpecNormalizer implements DenormalizerInterface, NormalizerInterface, 
 
     public function denormalize(mixed $data, string $type, ?string $format = null, array $context = []): mixed
     {
-        if (isset($data['$ref'])) {
+        $object = new \Docker\API\Model\NodeSpec();
+        if (null === $data || false === \is_array($data)) {
+            return $object;
+        }
+        if (isset($data['$ref']) && !isset($data['type']) && !isset($data['properties']) && !isset($data['allOf'])) {
             return new Reference($data['$ref'], $context['document-origin']);
         }
         if (isset($data['$recursiveRef'])) {
             return new Reference($data['$recursiveRef'], $context['document-origin']);
-        }
-        $object = new \Docker\API\Model\NodeSpec();
-        if (null === $data || false === \is_array($data)) {
-            return $object;
         }
         if (\array_key_exists('Name', $data) && null !== $data['Name']) {
             $object->setName($data['Name']);
             unset($data['Name']);
         } elseif (\array_key_exists('Name', $data) && null === $data['Name']) {
             $object->setName(null);
+            unset($data['Name']);
         }
         if (\array_key_exists('Labels', $data) && null !== $data['Labels']) {
-            $values = new \ArrayObject([], \ArrayObject::ARRAY_AS_PROPS);
+            $values = new \Docker\API\Runtime\JsonObject();
             foreach ($data['Labels'] as $key => $value) {
                 $values[$key] = $value;
             }
@@ -58,18 +59,21 @@ class NodeSpecNormalizer implements DenormalizerInterface, NormalizerInterface, 
             unset($data['Labels']);
         } elseif (\array_key_exists('Labels', $data) && null === $data['Labels']) {
             $object->setLabels(null);
+            unset($data['Labels']);
         }
         if (\array_key_exists('Role', $data) && null !== $data['Role']) {
             $object->setRole($data['Role']);
             unset($data['Role']);
         } elseif (\array_key_exists('Role', $data) && null === $data['Role']) {
             $object->setRole(null);
+            unset($data['Role']);
         }
         if (\array_key_exists('Availability', $data) && null !== $data['Availability']) {
             $object->setAvailability($data['Availability']);
             unset($data['Availability']);
         } elseif (\array_key_exists('Availability', $data) && null === $data['Availability']) {
             $object->setAvailability(null);
+            unset($data['Availability']);
         }
         foreach ($data as $key_1 => $value_1) {
             if (preg_match('/.*/', (string) $key_1)) {
@@ -87,7 +91,7 @@ class NodeSpecNormalizer implements DenormalizerInterface, NormalizerInterface, 
             $dataArray['Name'] = $data->getName();
         }
         if ($data->isInitialized('labels') && null !== $data->getLabels()) {
-            $values = [];
+            $values = new \Docker\API\Runtime\JsonObject();
             foreach ($data->getLabels() as $key => $value) {
                 $values[$key] = $value;
             }
@@ -99,7 +103,7 @@ class NodeSpecNormalizer implements DenormalizerInterface, NormalizerInterface, 
         if ($data->isInitialized('availability') && null !== $data->getAvailability()) {
             $dataArray['Availability'] = $data->getAvailability();
         }
-        foreach ($data as $key_1 => $value_1) {
+        foreach ($data->additionalPropertyEntries() as $key_1 => $value_1) {
             if (preg_match('/.*/', (string) $key_1)) {
                 $dataArray[$key_1] = $value_1;
             }

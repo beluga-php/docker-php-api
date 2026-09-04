@@ -33,21 +33,22 @@ class NetworkAttachmentConfigNormalizer implements DenormalizerInterface, Normal
 
     public function denormalize(mixed $data, string $type, ?string $format = null, array $context = []): mixed
     {
-        if (isset($data['$ref'])) {
+        $object = new \Docker\API\Model\NetworkAttachmentConfig();
+        if (null === $data || false === \is_array($data)) {
+            return $object;
+        }
+        if (isset($data['$ref']) && !isset($data['type']) && !isset($data['properties']) && !isset($data['allOf'])) {
             return new Reference($data['$ref'], $context['document-origin']);
         }
         if (isset($data['$recursiveRef'])) {
             return new Reference($data['$recursiveRef'], $context['document-origin']);
-        }
-        $object = new \Docker\API\Model\NetworkAttachmentConfig();
-        if (null === $data || false === \is_array($data)) {
-            return $object;
         }
         if (\array_key_exists('Target', $data) && null !== $data['Target']) {
             $object->setTarget($data['Target']);
             unset($data['Target']);
         } elseif (\array_key_exists('Target', $data) && null === $data['Target']) {
             $object->setTarget(null);
+            unset($data['Target']);
         }
         if (\array_key_exists('Aliases', $data) && null !== $data['Aliases']) {
             $values = [];
@@ -58,9 +59,10 @@ class NetworkAttachmentConfigNormalizer implements DenormalizerInterface, Normal
             unset($data['Aliases']);
         } elseif (\array_key_exists('Aliases', $data) && null === $data['Aliases']) {
             $object->setAliases(null);
+            unset($data['Aliases']);
         }
         if (\array_key_exists('DriverOpts', $data) && null !== $data['DriverOpts']) {
-            $values_1 = new \ArrayObject([], \ArrayObject::ARRAY_AS_PROPS);
+            $values_1 = new \Docker\API\Runtime\JsonObject();
             foreach ($data['DriverOpts'] as $key => $value_1) {
                 $values_1[$key] = $value_1;
             }
@@ -68,6 +70,7 @@ class NetworkAttachmentConfigNormalizer implements DenormalizerInterface, Normal
             unset($data['DriverOpts']);
         } elseif (\array_key_exists('DriverOpts', $data) && null === $data['DriverOpts']) {
             $object->setDriverOpts(null);
+            unset($data['DriverOpts']);
         }
         foreach ($data as $key_1 => $value_2) {
             if (preg_match('/.*/', (string) $key_1)) {
@@ -92,13 +95,13 @@ class NetworkAttachmentConfigNormalizer implements DenormalizerInterface, Normal
             $dataArray['Aliases'] = $values;
         }
         if ($data->isInitialized('driverOpts') && null !== $data->getDriverOpts()) {
-            $values_1 = [];
+            $values_1 = new \Docker\API\Runtime\JsonObject();
             foreach ($data->getDriverOpts() as $key => $value_1) {
                 $values_1[$key] = $value_1;
             }
             $dataArray['DriverOpts'] = $values_1;
         }
-        foreach ($data as $key_1 => $value_2) {
+        foreach ($data->additionalPropertyEntries() as $key_1 => $value_2) {
             if (preg_match('/.*/', (string) $key_1)) {
                 $dataArray[$key_1] = $value_2;
             }

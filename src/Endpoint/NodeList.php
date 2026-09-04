@@ -10,9 +10,8 @@ class NodeList extends \Docker\API\Runtime\Client\BaseEndpoint implements \Docke
     protected $accept;
 
     /**
-     * @param array $queryParameters {
-     *
-     * @var string $filters Filters to process on the nodes list, encoded as JSON (a `map[string][]string`).
+     * @param array{
+     *    "filters"?: string, //Filters to process on the nodes list, encoded as JSON (a `map[string][]string`).
      *
      * Available filters:
      * - `id=<node id>`
@@ -21,9 +20,7 @@ class NodeList extends \Docker\API\Runtime\Client\BaseEndpoint implements \Docke
      * - `name=<node name>`
      * - `node.label=<node label>`
      * - `role=`(`manager`|`worker`)`
-     *
-     * }
-     *
+     * } $queryParameters
      * @param array $accept Accept content header application/json|text/plain
      */
     public function __construct(array $queryParameters = [], array $accept = [])
@@ -77,13 +74,13 @@ class NodeList extends \Docker\API\Runtime\Client\BaseEndpoint implements \Docke
     {
         $status = $response->getStatusCode();
         $body = (string) $response->getBody();
-        if ((null === $contentType) === false && (200 === $status && false !== mb_strpos($contentType, 'application/json'))) {
+        if ((null === $contentType) === false && (200 === $status && false !== stripos(strtolower($contentType), 'application/json'))) {
             return $serializer->deserialize($body, 'Docker\API\Model\Node[]', 'json');
         }
-        if ((null === $contentType) === false && (500 === $status && false !== mb_strpos($contentType, 'application/json'))) {
+        if ((null === $contentType) === false && (500 === $status && false !== stripos(strtolower($contentType), 'application/json'))) {
             throw new \Docker\API\Exception\NodeListInternalServerErrorException($serializer->deserialize($body, 'Docker\API\Model\ErrorResponse', 'json'), $response);
         }
-        if ((null === $contentType) === false && (503 === $status && false !== mb_strpos($contentType, 'application/json'))) {
+        if ((null === $contentType) === false && (503 === $status && false !== stripos(strtolower($contentType), 'application/json'))) {
             throw new \Docker\API\Exception\NodeListServiceUnavailableException($serializer->deserialize($body, 'Docker\API\Model\ErrorResponse', 'json'), $response);
         }
     }

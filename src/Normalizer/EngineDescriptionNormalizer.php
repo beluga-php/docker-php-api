@@ -33,24 +33,25 @@ class EngineDescriptionNormalizer implements DenormalizerInterface, NormalizerIn
 
     public function denormalize(mixed $data, string $type, ?string $format = null, array $context = []): mixed
     {
-        if (isset($data['$ref'])) {
+        $object = new \Docker\API\Model\EngineDescription();
+        if (null === $data || false === \is_array($data)) {
+            return $object;
+        }
+        if (isset($data['$ref']) && !isset($data['type']) && !isset($data['properties']) && !isset($data['allOf'])) {
             return new Reference($data['$ref'], $context['document-origin']);
         }
         if (isset($data['$recursiveRef'])) {
             return new Reference($data['$recursiveRef'], $context['document-origin']);
-        }
-        $object = new \Docker\API\Model\EngineDescription();
-        if (null === $data || false === \is_array($data)) {
-            return $object;
         }
         if (\array_key_exists('EngineVersion', $data) && null !== $data['EngineVersion']) {
             $object->setEngineVersion($data['EngineVersion']);
             unset($data['EngineVersion']);
         } elseif (\array_key_exists('EngineVersion', $data) && null === $data['EngineVersion']) {
             $object->setEngineVersion(null);
+            unset($data['EngineVersion']);
         }
         if (\array_key_exists('Labels', $data) && null !== $data['Labels']) {
-            $values = new \ArrayObject([], \ArrayObject::ARRAY_AS_PROPS);
+            $values = new \Docker\API\Runtime\JsonObject();
             foreach ($data['Labels'] as $key => $value) {
                 $values[$key] = $value;
             }
@@ -58,6 +59,7 @@ class EngineDescriptionNormalizer implements DenormalizerInterface, NormalizerIn
             unset($data['Labels']);
         } elseif (\array_key_exists('Labels', $data) && null === $data['Labels']) {
             $object->setLabels(null);
+            unset($data['Labels']);
         }
         if (\array_key_exists('Plugins', $data) && null !== $data['Plugins']) {
             $values_1 = [];
@@ -68,6 +70,7 @@ class EngineDescriptionNormalizer implements DenormalizerInterface, NormalizerIn
             unset($data['Plugins']);
         } elseif (\array_key_exists('Plugins', $data) && null === $data['Plugins']) {
             $object->setPlugins(null);
+            unset($data['Plugins']);
         }
         foreach ($data as $key_1 => $value_2) {
             if (preg_match('/.*/', (string) $key_1)) {
@@ -85,7 +88,7 @@ class EngineDescriptionNormalizer implements DenormalizerInterface, NormalizerIn
             $dataArray['EngineVersion'] = $data->getEngineVersion();
         }
         if ($data->isInitialized('labels') && null !== $data->getLabels()) {
-            $values = [];
+            $values = new \Docker\API\Runtime\JsonObject();
             foreach ($data->getLabels() as $key => $value) {
                 $values[$key] = $value;
             }
@@ -94,11 +97,11 @@ class EngineDescriptionNormalizer implements DenormalizerInterface, NormalizerIn
         if ($data->isInitialized('plugins') && null !== $data->getPlugins()) {
             $values_1 = [];
             foreach ($data->getPlugins() as $value_1) {
-                $values_1[] = $this->normalizer->normalize($value_1, 'json', $context);
+                $values_1[] = null === $value_1 ? null : new \Docker\API\Runtime\JsonObject($this->normalizer->normalize($value_1, 'json', $context));
             }
             $dataArray['Plugins'] = $values_1;
         }
-        foreach ($data as $key_1 => $value_2) {
+        foreach ($data->additionalPropertyEntries() as $key_1 => $value_2) {
             if (preg_match('/.*/', (string) $key_1)) {
                 $dataArray[$key_1] = $value_2;
             }

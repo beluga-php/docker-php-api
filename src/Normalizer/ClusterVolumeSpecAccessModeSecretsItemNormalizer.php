@@ -33,27 +33,29 @@ class ClusterVolumeSpecAccessModeSecretsItemNormalizer implements DenormalizerIn
 
     public function denormalize(mixed $data, string $type, ?string $format = null, array $context = []): mixed
     {
-        if (isset($data['$ref'])) {
+        $object = new \Docker\API\Model\ClusterVolumeSpecAccessModeSecretsItem();
+        if (null === $data || false === \is_array($data)) {
+            return $object;
+        }
+        if (isset($data['$ref']) && !isset($data['type']) && !isset($data['properties']) && !isset($data['allOf'])) {
             return new Reference($data['$ref'], $context['document-origin']);
         }
         if (isset($data['$recursiveRef'])) {
             return new Reference($data['$recursiveRef'], $context['document-origin']);
-        }
-        $object = new \Docker\API\Model\ClusterVolumeSpecAccessModeSecretsItem();
-        if (null === $data || false === \is_array($data)) {
-            return $object;
         }
         if (\array_key_exists('Key', $data) && null !== $data['Key']) {
             $object->setKey($data['Key']);
             unset($data['Key']);
         } elseif (\array_key_exists('Key', $data) && null === $data['Key']) {
             $object->setKey(null);
+            unset($data['Key']);
         }
         if (\array_key_exists('Secret', $data) && null !== $data['Secret']) {
             $object->setSecret($data['Secret']);
             unset($data['Secret']);
         } elseif (\array_key_exists('Secret', $data) && null === $data['Secret']) {
             $object->setSecret(null);
+            unset($data['Secret']);
         }
         foreach ($data as $key => $value) {
             if (preg_match('/.*/', (string) $key)) {
@@ -73,7 +75,7 @@ class ClusterVolumeSpecAccessModeSecretsItemNormalizer implements DenormalizerIn
         if ($data->isInitialized('secret') && null !== $data->getSecret()) {
             $dataArray['Secret'] = $data->getSecret();
         }
-        foreach ($data as $key => $value) {
+        foreach ($data->additionalPropertyEntries() as $key => $value) {
             if (preg_match('/.*/', (string) $key)) {
                 $dataArray[$key] = $value;
             }

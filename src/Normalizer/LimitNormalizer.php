@@ -33,33 +33,36 @@ class LimitNormalizer implements DenormalizerInterface, NormalizerInterface, Den
 
     public function denormalize(mixed $data, string $type, ?string $format = null, array $context = []): mixed
     {
-        if (isset($data['$ref'])) {
+        $object = new \Docker\API\Model\Limit();
+        if (null === $data || false === \is_array($data)) {
+            return $object;
+        }
+        if (isset($data['$ref']) && !isset($data['type']) && !isset($data['properties']) && !isset($data['allOf'])) {
             return new Reference($data['$ref'], $context['document-origin']);
         }
         if (isset($data['$recursiveRef'])) {
             return new Reference($data['$recursiveRef'], $context['document-origin']);
-        }
-        $object = new \Docker\API\Model\Limit();
-        if (null === $data || false === \is_array($data)) {
-            return $object;
         }
         if (\array_key_exists('NanoCPUs', $data) && null !== $data['NanoCPUs']) {
             $object->setNanoCPUs($data['NanoCPUs']);
             unset($data['NanoCPUs']);
         } elseif (\array_key_exists('NanoCPUs', $data) && null === $data['NanoCPUs']) {
             $object->setNanoCPUs(null);
+            unset($data['NanoCPUs']);
         }
         if (\array_key_exists('MemoryBytes', $data) && null !== $data['MemoryBytes']) {
             $object->setMemoryBytes($data['MemoryBytes']);
             unset($data['MemoryBytes']);
         } elseif (\array_key_exists('MemoryBytes', $data) && null === $data['MemoryBytes']) {
             $object->setMemoryBytes(null);
+            unset($data['MemoryBytes']);
         }
         if (\array_key_exists('Pids', $data) && null !== $data['Pids']) {
             $object->setPids($data['Pids']);
             unset($data['Pids']);
         } elseif (\array_key_exists('Pids', $data) && null === $data['Pids']) {
             $object->setPids(null);
+            unset($data['Pids']);
         }
         foreach ($data as $key => $value) {
             if (preg_match('/.*/', (string) $key)) {
@@ -82,7 +85,7 @@ class LimitNormalizer implements DenormalizerInterface, NormalizerInterface, Den
         if ($data->isInitialized('pids') && null !== $data->getPids()) {
             $dataArray['Pids'] = $data->getPids();
         }
-        foreach ($data as $key => $value) {
+        foreach ($data->additionalPropertyEntries() as $key => $value) {
             if (preg_match('/.*/', (string) $key)) {
                 $dataArray[$key] = $value;
             }

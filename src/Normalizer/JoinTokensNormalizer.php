@@ -33,27 +33,29 @@ class JoinTokensNormalizer implements DenormalizerInterface, NormalizerInterface
 
     public function denormalize(mixed $data, string $type, ?string $format = null, array $context = []): mixed
     {
-        if (isset($data['$ref'])) {
+        $object = new \Docker\API\Model\JoinTokens();
+        if (null === $data || false === \is_array($data)) {
+            return $object;
+        }
+        if (isset($data['$ref']) && !isset($data['type']) && !isset($data['properties']) && !isset($data['allOf'])) {
             return new Reference($data['$ref'], $context['document-origin']);
         }
         if (isset($data['$recursiveRef'])) {
             return new Reference($data['$recursiveRef'], $context['document-origin']);
-        }
-        $object = new \Docker\API\Model\JoinTokens();
-        if (null === $data || false === \is_array($data)) {
-            return $object;
         }
         if (\array_key_exists('Worker', $data) && null !== $data['Worker']) {
             $object->setWorker($data['Worker']);
             unset($data['Worker']);
         } elseif (\array_key_exists('Worker', $data) && null === $data['Worker']) {
             $object->setWorker(null);
+            unset($data['Worker']);
         }
         if (\array_key_exists('Manager', $data) && null !== $data['Manager']) {
             $object->setManager($data['Manager']);
             unset($data['Manager']);
         } elseif (\array_key_exists('Manager', $data) && null === $data['Manager']) {
             $object->setManager(null);
+            unset($data['Manager']);
         }
         foreach ($data as $key => $value) {
             if (preg_match('/.*/', (string) $key)) {
@@ -73,7 +75,7 @@ class JoinTokensNormalizer implements DenormalizerInterface, NormalizerInterface
         if ($data->isInitialized('manager') && null !== $data->getManager()) {
             $dataArray['Manager'] = $data->getManager();
         }
-        foreach ($data as $key => $value) {
+        foreach ($data->additionalPropertyEntries() as $key => $value) {
             if (preg_match('/.*/', (string) $key)) {
                 $dataArray[$key] = $value;
             }

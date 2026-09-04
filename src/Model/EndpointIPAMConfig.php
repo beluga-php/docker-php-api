@@ -4,8 +4,12 @@ declare(strict_types=1);
 
 namespace Docker\API\Model;
 
-class EndpointIPAMConfig extends \ArrayObject
+use Docker\API\Runtime\AdditionalAndPatternProperties;
+use Docker\API\Runtime\AdditionalPropertiesInterface;
+
+class EndpointIPAMConfig implements AdditionalPropertiesInterface
 {
+    use AdditionalAndPatternProperties;
     /**
      * @var array
      */
@@ -71,5 +75,10 @@ class EndpointIPAMConfig extends \ArrayObject
         $this->linkLocalIPs = $linkLocalIPs;
 
         return $this;
+    }
+
+    public function definedProperties(): array
+    {
+        return ['iPv4Address' => ['IPv4Address', 'getIPv4Address', 'setIPv4Address'], 'iPv6Address' => ['IPv6Address', 'getIPv6Address', 'setIPv6Address'], 'linkLocalIPs' => ['LinkLocalIPs', 'getLinkLocalIPs', 'setLinkLocalIPs']];
     }
 }

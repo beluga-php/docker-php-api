@@ -4,8 +4,12 @@ declare(strict_types=1);
 
 namespace Docker\API\Model;
 
-class ContainersIdExecPostBody extends \ArrayObject
+use Docker\API\Runtime\AdditionalAndPatternProperties;
+use Docker\API\Runtime\AdditionalPropertiesInterface;
+
+class ContainersIdExecPostBody implements AdditionalPropertiesInterface
 {
+    use AdditionalAndPatternProperties;
     /**
      * @var array
      */
@@ -313,5 +317,10 @@ class ContainersIdExecPostBody extends \ArrayObject
         $this->workingDir = $workingDir;
 
         return $this;
+    }
+
+    public function definedProperties(): array
+    {
+        return ['attachStdin' => ['AttachStdin', 'getAttachStdin', 'setAttachStdin'], 'attachStdout' => ['AttachStdout', 'getAttachStdout', 'setAttachStdout'], 'attachStderr' => ['AttachStderr', 'getAttachStderr', 'setAttachStderr'], 'consoleSize' => ['ConsoleSize', 'getConsoleSize', 'setConsoleSize'], 'detachKeys' => ['DetachKeys', 'getDetachKeys', 'setDetachKeys'], 'tty' => ['Tty', 'getTty', 'setTty'], 'env' => ['Env', 'getEnv', 'setEnv'], 'cmd' => ['Cmd', 'getCmd', 'setCmd'], 'privileged' => ['Privileged', 'getPrivileged', 'setPrivileged'], 'user' => ['User', 'getUser', 'setUser'], 'workingDir' => ['WorkingDir', 'getWorkingDir', 'setWorkingDir']];
     }
 }

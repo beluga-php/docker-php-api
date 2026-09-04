@@ -33,48 +33,53 @@ class SwarmInfoNormalizer implements DenormalizerInterface, NormalizerInterface,
 
     public function denormalize(mixed $data, string $type, ?string $format = null, array $context = []): mixed
     {
-        if (isset($data['$ref'])) {
+        $object = new \Docker\API\Model\SwarmInfo();
+        if (null === $data || false === \is_array($data)) {
+            return $object;
+        }
+        if (isset($data['$ref']) && !isset($data['type']) && !isset($data['properties']) && !isset($data['allOf'])) {
             return new Reference($data['$ref'], $context['document-origin']);
         }
         if (isset($data['$recursiveRef'])) {
             return new Reference($data['$recursiveRef'], $context['document-origin']);
         }
-        $object = new \Docker\API\Model\SwarmInfo();
         if (\array_key_exists('ControlAvailable', $data) && \is_int($data['ControlAvailable'])) {
             $data['ControlAvailable'] = (bool) $data['ControlAvailable'];
-        }
-        if (null === $data || false === \is_array($data)) {
-            return $object;
         }
         if (\array_key_exists('NodeID', $data) && null !== $data['NodeID']) {
             $object->setNodeID($data['NodeID']);
             unset($data['NodeID']);
         } elseif (\array_key_exists('NodeID', $data) && null === $data['NodeID']) {
             $object->setNodeID(null);
+            unset($data['NodeID']);
         }
         if (\array_key_exists('NodeAddr', $data) && null !== $data['NodeAddr']) {
             $object->setNodeAddr($data['NodeAddr']);
             unset($data['NodeAddr']);
         } elseif (\array_key_exists('NodeAddr', $data) && null === $data['NodeAddr']) {
             $object->setNodeAddr(null);
+            unset($data['NodeAddr']);
         }
         if (\array_key_exists('LocalNodeState', $data) && null !== $data['LocalNodeState']) {
             $object->setLocalNodeState($data['LocalNodeState']);
             unset($data['LocalNodeState']);
         } elseif (\array_key_exists('LocalNodeState', $data) && null === $data['LocalNodeState']) {
             $object->setLocalNodeState(null);
+            unset($data['LocalNodeState']);
         }
         if (\array_key_exists('ControlAvailable', $data) && null !== $data['ControlAvailable']) {
             $object->setControlAvailable($data['ControlAvailable']);
             unset($data['ControlAvailable']);
         } elseif (\array_key_exists('ControlAvailable', $data) && null === $data['ControlAvailable']) {
             $object->setControlAvailable(null);
+            unset($data['ControlAvailable']);
         }
         if (\array_key_exists('Error', $data) && null !== $data['Error']) {
             $object->setError($data['Error']);
             unset($data['Error']);
         } elseif (\array_key_exists('Error', $data) && null === $data['Error']) {
             $object->setError(null);
+            unset($data['Error']);
         }
         if (\array_key_exists('RemoteManagers', $data) && null !== $data['RemoteManagers']) {
             $values = [];
@@ -85,24 +90,28 @@ class SwarmInfoNormalizer implements DenormalizerInterface, NormalizerInterface,
             unset($data['RemoteManagers']);
         } elseif (\array_key_exists('RemoteManagers', $data) && null === $data['RemoteManagers']) {
             $object->setRemoteManagers(null);
+            unset($data['RemoteManagers']);
         }
         if (\array_key_exists('Nodes', $data) && null !== $data['Nodes']) {
             $object->setNodes($data['Nodes']);
             unset($data['Nodes']);
         } elseif (\array_key_exists('Nodes', $data) && null === $data['Nodes']) {
             $object->setNodes(null);
+            unset($data['Nodes']);
         }
         if (\array_key_exists('Managers', $data) && null !== $data['Managers']) {
             $object->setManagers($data['Managers']);
             unset($data['Managers']);
         } elseif (\array_key_exists('Managers', $data) && null === $data['Managers']) {
             $object->setManagers(null);
+            unset($data['Managers']);
         }
         if (\array_key_exists('Cluster', $data) && null !== $data['Cluster']) {
             $object->setCluster($this->denormalizer->denormalize($data['Cluster'], \Docker\API\Model\ClusterInfo::class, 'json', $context));
             unset($data['Cluster']);
         } elseif (\array_key_exists('Cluster', $data) && null === $data['Cluster']) {
             $object->setCluster(null);
+            unset($data['Cluster']);
         }
         foreach ($data as $key => $value_1) {
             if (preg_match('/.*/', (string) $key)) {
@@ -134,7 +143,7 @@ class SwarmInfoNormalizer implements DenormalizerInterface, NormalizerInterface,
         if ($data->isInitialized('remoteManagers') && null !== $data->getRemoteManagers()) {
             $values = [];
             foreach ($data->getRemoteManagers() as $value) {
-                $values[] = $this->normalizer->normalize($value, 'json', $context);
+                $values[] = null === $value ? null : new \Docker\API\Runtime\JsonObject($this->normalizer->normalize($value, 'json', $context));
             }
             $dataArray['RemoteManagers'] = $values;
         }
@@ -145,9 +154,9 @@ class SwarmInfoNormalizer implements DenormalizerInterface, NormalizerInterface,
             $dataArray['Managers'] = $data->getManagers();
         }
         if ($data->isInitialized('cluster') && null !== $data->getCluster()) {
-            $dataArray['Cluster'] = $this->normalizer->normalize($data->getCluster(), 'json', $context);
+            $dataArray['Cluster'] = null === $data->getCluster() ? null : new \Docker\API\Runtime\JsonObject($this->normalizer->normalize($data->getCluster(), 'json', $context));
         }
-        foreach ($data as $key => $value_1) {
+        foreach ($data->additionalPropertyEntries() as $key => $value_1) {
             if (preg_match('/.*/', (string) $key)) {
                 $dataArray[$key] = $value_1;
             }

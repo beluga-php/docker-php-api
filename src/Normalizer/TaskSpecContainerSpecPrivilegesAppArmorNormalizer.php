@@ -33,21 +33,22 @@ class TaskSpecContainerSpecPrivilegesAppArmorNormalizer implements DenormalizerI
 
     public function denormalize(mixed $data, string $type, ?string $format = null, array $context = []): mixed
     {
-        if (isset($data['$ref'])) {
+        $object = new \Docker\API\Model\TaskSpecContainerSpecPrivilegesAppArmor();
+        if (null === $data || false === \is_array($data)) {
+            return $object;
+        }
+        if (isset($data['$ref']) && !isset($data['type']) && !isset($data['properties']) && !isset($data['allOf'])) {
             return new Reference($data['$ref'], $context['document-origin']);
         }
         if (isset($data['$recursiveRef'])) {
             return new Reference($data['$recursiveRef'], $context['document-origin']);
-        }
-        $object = new \Docker\API\Model\TaskSpecContainerSpecPrivilegesAppArmor();
-        if (null === $data || false === \is_array($data)) {
-            return $object;
         }
         if (\array_key_exists('Mode', $data) && null !== $data['Mode']) {
             $object->setMode($data['Mode']);
             unset($data['Mode']);
         } elseif (\array_key_exists('Mode', $data) && null === $data['Mode']) {
             $object->setMode(null);
+            unset($data['Mode']);
         }
         foreach ($data as $key => $value) {
             if (preg_match('/.*/', (string) $key)) {
@@ -64,7 +65,7 @@ class TaskSpecContainerSpecPrivilegesAppArmorNormalizer implements DenormalizerI
         if ($data->isInitialized('mode') && null !== $data->getMode()) {
             $dataArray['Mode'] = $data->getMode();
         }
-        foreach ($data as $key => $value) {
+        foreach ($data->additionalPropertyEntries() as $key => $value) {
             if (preg_match('/.*/', (string) $key)) {
                 $dataArray[$key] = $value;
             }

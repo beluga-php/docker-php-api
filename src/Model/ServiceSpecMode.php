@@ -4,8 +4,12 @@ declare(strict_types=1);
 
 namespace Docker\API\Model;
 
-class ServiceSpecMode extends \ArrayObject
+use Docker\API\Runtime\AdditionalAndPatternProperties;
+use Docker\API\Runtime\AdditionalPropertiesInterface;
+
+class ServiceSpecMode implements AdditionalPropertiesInterface
 {
+    use AdditionalAndPatternProperties;
     /**
      * @var array
      */
@@ -20,7 +24,7 @@ class ServiceSpecMode extends \ArrayObject
      */
     protected $replicated;
     /**
-     * @var ServiceSpecModeGlobal|null
+     * @var array<string, mixed>|null
      */
     protected $global;
     /**
@@ -34,7 +38,7 @@ class ServiceSpecMode extends \ArrayObject
      * The mode used for services which run a task to the completed state
      * on each valid node.
      *
-     * @var ServiceSpecModeGlobalJob|null
+     * @var array<string, mixed>|null
      */
     protected $globalJob;
 
@@ -51,12 +55,18 @@ class ServiceSpecMode extends \ArrayObject
         return $this;
     }
 
-    public function getGlobal(): ?ServiceSpecModeGlobal
+    /**
+     * @return array<string, mixed>|null
+     */
+    public function getGlobal(): ?iterable
     {
         return $this->global;
     }
 
-    public function setGlobal(?ServiceSpecModeGlobal $global): self
+    /**
+     * @param array<string, mixed>|null $global
+     */
+    public function setGlobal(?iterable $global): self
     {
         $this->initialized['global'] = true;
         $this->global = $global;
@@ -88,8 +98,10 @@ class ServiceSpecMode extends \ArrayObject
     /**
      * The mode used for services which run a task to the completed state
      * on each valid node.
+     *
+     * @return array<string, mixed>|null
      */
-    public function getGlobalJob(): ?ServiceSpecModeGlobalJob
+    public function getGlobalJob(): ?iterable
     {
         return $this->globalJob;
     }
@@ -97,12 +109,19 @@ class ServiceSpecMode extends \ArrayObject
     /**
      * The mode used for services which run a task to the completed state
      * on each valid node.
+     *
+     * @param array<string, mixed>|null $globalJob
      */
-    public function setGlobalJob(?ServiceSpecModeGlobalJob $globalJob): self
+    public function setGlobalJob(?iterable $globalJob): self
     {
         $this->initialized['globalJob'] = true;
         $this->globalJob = $globalJob;
 
         return $this;
+    }
+
+    public function definedProperties(): array
+    {
+        return ['replicated' => ['Replicated', 'getReplicated', 'setReplicated'], 'global' => ['Global', 'getGlobal', 'setGlobal'], 'replicatedJob' => ['ReplicatedJob', 'getReplicatedJob', 'setReplicatedJob'], 'globalJob' => ['GlobalJob', 'getGlobalJob', 'setGlobalJob']];
     }
 }

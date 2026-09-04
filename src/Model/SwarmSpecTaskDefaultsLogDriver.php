@@ -4,8 +4,12 @@ declare(strict_types=1);
 
 namespace Docker\API\Model;
 
-class SwarmSpecTaskDefaultsLogDriver extends \ArrayObject
+use Docker\API\Runtime\AdditionalAndPatternProperties;
+use Docker\API\Runtime\AdditionalPropertiesInterface;
+
+class SwarmSpecTaskDefaultsLogDriver implements AdditionalPropertiesInterface
 {
+    use AdditionalAndPatternProperties;
     /**
      * @var array
      */
@@ -22,7 +26,7 @@ class SwarmSpecTaskDefaultsLogDriver extends \ArrayObject
      */
     protected $name;
     /**
-     * Driver-specific options for the selectd log driver, specified
+     * Driver-specific options for the selected log driver, specified
      * as key/value pairs.
      *
      * @var array<string, string>|null
@@ -49,7 +53,7 @@ class SwarmSpecTaskDefaultsLogDriver extends \ArrayObject
     }
 
     /**
-     * Driver-specific options for the selectd log driver, specified
+     * Driver-specific options for the selected log driver, specified
      * as key/value pairs.
      *
      * @return array<string, string>|null
@@ -60,7 +64,7 @@ class SwarmSpecTaskDefaultsLogDriver extends \ArrayObject
     }
 
     /**
-     * Driver-specific options for the selectd log driver, specified
+     * Driver-specific options for the selected log driver, specified
      * as key/value pairs.
      *
      * @param array<string, string>|null $options
@@ -71,5 +75,10 @@ class SwarmSpecTaskDefaultsLogDriver extends \ArrayObject
         $this->options = $options;
 
         return $this;
+    }
+
+    public function definedProperties(): array
+    {
+        return ['name' => ['Name', 'getName', 'setName'], 'options' => ['Options', 'getOptions', 'setOptions']];
     }
 }

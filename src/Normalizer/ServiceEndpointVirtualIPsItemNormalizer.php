@@ -33,27 +33,29 @@ class ServiceEndpointVirtualIPsItemNormalizer implements DenormalizerInterface, 
 
     public function denormalize(mixed $data, string $type, ?string $format = null, array $context = []): mixed
     {
-        if (isset($data['$ref'])) {
+        $object = new \Docker\API\Model\ServiceEndpointVirtualIPsItem();
+        if (null === $data || false === \is_array($data)) {
+            return $object;
+        }
+        if (isset($data['$ref']) && !isset($data['type']) && !isset($data['properties']) && !isset($data['allOf'])) {
             return new Reference($data['$ref'], $context['document-origin']);
         }
         if (isset($data['$recursiveRef'])) {
             return new Reference($data['$recursiveRef'], $context['document-origin']);
-        }
-        $object = new \Docker\API\Model\ServiceEndpointVirtualIPsItem();
-        if (null === $data || false === \is_array($data)) {
-            return $object;
         }
         if (\array_key_exists('NetworkID', $data) && null !== $data['NetworkID']) {
             $object->setNetworkID($data['NetworkID']);
             unset($data['NetworkID']);
         } elseif (\array_key_exists('NetworkID', $data) && null === $data['NetworkID']) {
             $object->setNetworkID(null);
+            unset($data['NetworkID']);
         }
         if (\array_key_exists('Addr', $data) && null !== $data['Addr']) {
             $object->setAddr($data['Addr']);
             unset($data['Addr']);
         } elseif (\array_key_exists('Addr', $data) && null === $data['Addr']) {
             $object->setAddr(null);
+            unset($data['Addr']);
         }
         foreach ($data as $key => $value) {
             if (preg_match('/.*/', (string) $key)) {
@@ -73,7 +75,7 @@ class ServiceEndpointVirtualIPsItemNormalizer implements DenormalizerInterface, 
         if ($data->isInitialized('addr') && null !== $data->getAddr()) {
             $dataArray['Addr'] = $data->getAddr();
         }
-        foreach ($data as $key => $value) {
+        foreach ($data->additionalPropertyEntries() as $key => $value) {
             if (preg_match('/.*/', (string) $key)) {
                 $dataArray[$key] = $value;
             }

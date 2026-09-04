@@ -4,8 +4,12 @@ declare(strict_types=1);
 
 namespace Docker\API\Model;
 
-class BuildPrunePostResponse200 extends \ArrayObject
+use Docker\API\Runtime\AdditionalAndPatternProperties;
+use Docker\API\Runtime\AdditionalPropertiesInterface;
+
+class BuildPrunePostResponse200 implements AdditionalPropertiesInterface
 {
+    use AdditionalAndPatternProperties;
     /**
      * @var array
      */
@@ -62,5 +66,10 @@ class BuildPrunePostResponse200 extends \ArrayObject
         $this->spaceReclaimed = $spaceReclaimed;
 
         return $this;
+    }
+
+    public function definedProperties(): array
+    {
+        return ['cachesDeleted' => ['CachesDeleted', 'getCachesDeleted', 'setCachesDeleted'], 'spaceReclaimed' => ['SpaceReclaimed', 'getSpaceReclaimed', 'setSpaceReclaimed']];
     }
 }

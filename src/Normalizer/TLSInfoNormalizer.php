@@ -33,33 +33,36 @@ class TLSInfoNormalizer implements DenormalizerInterface, NormalizerInterface, D
 
     public function denormalize(mixed $data, string $type, ?string $format = null, array $context = []): mixed
     {
-        if (isset($data['$ref'])) {
+        $object = new \Docker\API\Model\TLSInfo();
+        if (null === $data || false === \is_array($data)) {
+            return $object;
+        }
+        if (isset($data['$ref']) && !isset($data['type']) && !isset($data['properties']) && !isset($data['allOf'])) {
             return new Reference($data['$ref'], $context['document-origin']);
         }
         if (isset($data['$recursiveRef'])) {
             return new Reference($data['$recursiveRef'], $context['document-origin']);
-        }
-        $object = new \Docker\API\Model\TLSInfo();
-        if (null === $data || false === \is_array($data)) {
-            return $object;
         }
         if (\array_key_exists('TrustRoot', $data) && null !== $data['TrustRoot']) {
             $object->setTrustRoot($data['TrustRoot']);
             unset($data['TrustRoot']);
         } elseif (\array_key_exists('TrustRoot', $data) && null === $data['TrustRoot']) {
             $object->setTrustRoot(null);
+            unset($data['TrustRoot']);
         }
         if (\array_key_exists('CertIssuerSubject', $data) && null !== $data['CertIssuerSubject']) {
             $object->setCertIssuerSubject($data['CertIssuerSubject']);
             unset($data['CertIssuerSubject']);
         } elseif (\array_key_exists('CertIssuerSubject', $data) && null === $data['CertIssuerSubject']) {
             $object->setCertIssuerSubject(null);
+            unset($data['CertIssuerSubject']);
         }
         if (\array_key_exists('CertIssuerPublicKey', $data) && null !== $data['CertIssuerPublicKey']) {
             $object->setCertIssuerPublicKey($data['CertIssuerPublicKey']);
             unset($data['CertIssuerPublicKey']);
         } elseif (\array_key_exists('CertIssuerPublicKey', $data) && null === $data['CertIssuerPublicKey']) {
             $object->setCertIssuerPublicKey(null);
+            unset($data['CertIssuerPublicKey']);
         }
         foreach ($data as $key => $value) {
             if (preg_match('/.*/', (string) $key)) {
@@ -82,7 +85,7 @@ class TLSInfoNormalizer implements DenormalizerInterface, NormalizerInterface, D
         if ($data->isInitialized('certIssuerPublicKey') && null !== $data->getCertIssuerPublicKey()) {
             $dataArray['CertIssuerPublicKey'] = $data->getCertIssuerPublicKey();
         }
-        foreach ($data as $key => $value) {
+        foreach ($data->additionalPropertyEntries() as $key => $value) {
             if (preg_match('/.*/', (string) $key)) {
                 $dataArray[$key] = $value;
             }

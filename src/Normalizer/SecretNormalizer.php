@@ -33,45 +33,50 @@ class SecretNormalizer implements DenormalizerInterface, NormalizerInterface, De
 
     public function denormalize(mixed $data, string $type, ?string $format = null, array $context = []): mixed
     {
-        if (isset($data['$ref'])) {
+        $object = new \Docker\API\Model\Secret();
+        if (null === $data || false === \is_array($data)) {
+            return $object;
+        }
+        if (isset($data['$ref']) && !isset($data['type']) && !isset($data['properties']) && !isset($data['allOf'])) {
             return new Reference($data['$ref'], $context['document-origin']);
         }
         if (isset($data['$recursiveRef'])) {
             return new Reference($data['$recursiveRef'], $context['document-origin']);
-        }
-        $object = new \Docker\API\Model\Secret();
-        if (null === $data || false === \is_array($data)) {
-            return $object;
         }
         if (\array_key_exists('ID', $data) && null !== $data['ID']) {
             $object->setID($data['ID']);
             unset($data['ID']);
         } elseif (\array_key_exists('ID', $data) && null === $data['ID']) {
             $object->setID(null);
+            unset($data['ID']);
         }
         if (\array_key_exists('Version', $data) && null !== $data['Version']) {
             $object->setVersion($this->denormalizer->denormalize($data['Version'], \Docker\API\Model\ObjectVersion::class, 'json', $context));
             unset($data['Version']);
         } elseif (\array_key_exists('Version', $data) && null === $data['Version']) {
             $object->setVersion(null);
+            unset($data['Version']);
         }
         if (\array_key_exists('CreatedAt', $data) && null !== $data['CreatedAt']) {
             $object->setCreatedAt($data['CreatedAt']);
             unset($data['CreatedAt']);
         } elseif (\array_key_exists('CreatedAt', $data) && null === $data['CreatedAt']) {
             $object->setCreatedAt(null);
+            unset($data['CreatedAt']);
         }
         if (\array_key_exists('UpdatedAt', $data) && null !== $data['UpdatedAt']) {
             $object->setUpdatedAt($data['UpdatedAt']);
             unset($data['UpdatedAt']);
         } elseif (\array_key_exists('UpdatedAt', $data) && null === $data['UpdatedAt']) {
             $object->setUpdatedAt(null);
+            unset($data['UpdatedAt']);
         }
         if (\array_key_exists('Spec', $data) && null !== $data['Spec']) {
             $object->setSpec($this->denormalizer->denormalize($data['Spec'], \Docker\API\Model\SecretSpec::class, 'json', $context));
             unset($data['Spec']);
         } elseif (\array_key_exists('Spec', $data) && null === $data['Spec']) {
             $object->setSpec(null);
+            unset($data['Spec']);
         }
         foreach ($data as $key => $value) {
             if (preg_match('/.*/', (string) $key)) {
@@ -89,7 +94,7 @@ class SecretNormalizer implements DenormalizerInterface, NormalizerInterface, De
             $dataArray['ID'] = $data->getID();
         }
         if ($data->isInitialized('version') && null !== $data->getVersion()) {
-            $dataArray['Version'] = $this->normalizer->normalize($data->getVersion(), 'json', $context);
+            $dataArray['Version'] = null === $data->getVersion() ? null : new \Docker\API\Runtime\JsonObject($this->normalizer->normalize($data->getVersion(), 'json', $context));
         }
         if ($data->isInitialized('createdAt') && null !== $data->getCreatedAt()) {
             $dataArray['CreatedAt'] = $data->getCreatedAt();
@@ -98,9 +103,9 @@ class SecretNormalizer implements DenormalizerInterface, NormalizerInterface, De
             $dataArray['UpdatedAt'] = $data->getUpdatedAt();
         }
         if ($data->isInitialized('spec') && null !== $data->getSpec()) {
-            $dataArray['Spec'] = $this->normalizer->normalize($data->getSpec(), 'json', $context);
+            $dataArray['Spec'] = null === $data->getSpec() ? null : new \Docker\API\Runtime\JsonObject($this->normalizer->normalize($data->getSpec(), 'json', $context));
         }
-        foreach ($data as $key => $value) {
+        foreach ($data->additionalPropertyEntries() as $key => $value) {
             if (preg_match('/.*/', (string) $key)) {
                 $dataArray[$key] = $value;
             }

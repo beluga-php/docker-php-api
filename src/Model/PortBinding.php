@@ -4,8 +4,12 @@ declare(strict_types=1);
 
 namespace Docker\API\Model;
 
-class PortBinding extends \ArrayObject
+use Docker\API\Runtime\AdditionalAndPatternProperties;
+use Docker\API\Runtime\AdditionalPropertiesInterface;
+
+class PortBinding implements AdditionalPropertiesInterface
 {
+    use AdditionalAndPatternProperties;
     /**
      * @var array
      */
@@ -64,5 +68,10 @@ class PortBinding extends \ArrayObject
         $this->hostPort = $hostPort;
 
         return $this;
+    }
+
+    public function definedProperties(): array
+    {
+        return ['hostIp' => ['HostIp', 'getHostIp', 'setHostIp'], 'hostPort' => ['HostPort', 'getHostPort', 'setHostPort']];
     }
 }

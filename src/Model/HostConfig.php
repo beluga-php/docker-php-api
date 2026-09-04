@@ -4,8 +4,12 @@ declare(strict_types=1);
 
 namespace Docker\API\Model;
 
-class HostConfig extends \ArrayObject
+use Docker\API\Runtime\AdditionalAndPatternProperties;
+use Docker\API\Runtime\AdditionalPropertiesInterface;
+
+class HostConfig implements AdditionalPropertiesInterface
 {
+    use AdditionalAndPatternProperties;
     /**
      * @var array
      */
@@ -255,40 +259,40 @@ class HostConfig extends \ArrayObject
      * is a string in one of these forms:
      *
      * - `host-src:container-dest[:options]` to bind-mount a host path
-     * into the container. Both `host-src`, and `container-dest` must
-     * be an _absolute_ path.
+     *   into the container. Both `host-src`, and `container-dest` must
+     *   be an _absolute_ path.
      * - `volume-name:container-dest[:options]` to bind-mount a volume
-     * managed by a volume driver into the container. `container-dest`
-     * must be an _absolute_ path.
+     *   managed by a volume driver into the container. `container-dest`
+     *   must be an _absolute_ path.
      *
      * `options` is an optional, comma-delimited list of:
      *
      * - `nocopy` disables automatic copying of data from the container
-     * path to the volume. The `nocopy` flag only applies to named volumes.
+     *   path to the volume. The `nocopy` flag only applies to named volumes.
      * - `[ro|rw]` mounts a volume read-only or read-write, respectively.
-     * If omitted or set to `rw`, volumes are mounted read-write.
+     *   If omitted or set to `rw`, volumes are mounted read-write.
      * - `[z|Z]` applies SELinux labels to allow or deny multiple containers
-     * to read and write to the same volume.
-     * - `z`: a _shared_ content label is applied to the content. This
-     * label indicates that multiple containers can share the volume
-     * content, for both reading and writing.
-     * - `Z`: a _private unshared_ label is applied to the content.
-     * This label indicates that only the current container can use
-     * a private volume. Labeling systems such as SELinux require
-     * proper labels to be placed on volume content that is mounted
-     * into a container. Without a label, the security system can
-     * prevent a container's processes from using the content. By
-     * default, the labels set by the host operating system are not
-     * modified.
+     *   to read and write to the same volume.
+     *     - `z`: a _shared_ content label is applied to the content. This
+     *       label indicates that multiple containers can share the volume
+     *       content, for both reading and writing.
+     *     - `Z`: a _private unshared_ label is applied to the content.
+     *       This label indicates that only the current container can use
+     *       a private volume. Labeling systems such as SELinux require
+     *       proper labels to be placed on volume content that is mounted
+     *       into a container. Without a label, the security system can
+     *       prevent a container's processes from using the content. By
+     *       default, the labels set by the host operating system are not
+     *       modified.
      * - `[[r]shared|[r]slave|[r]private]` specifies mount
-     * [propagation behavior](https://www.kernel.org/doc/Documentation/filesystems/sharedsubtree.txt).
-     * This only applies to bind-mounted volumes, not internal volumes
-     * or named volumes. Mount propagation requires the source mount
-     * point (the location where the source directory is mounted in the
-     * host operating system) to have the correct propagation properties.
-     * For shared volumes, the source mount point must be set to `shared`.
-     * For slave volumes, the mount must be set to either `shared` or
-     * `slave`.
+     *   [propagation behavior](https://www.kernel.org/doc/Documentation/filesystems/sharedsubtree.txt).
+     *   This only applies to bind-mounted volumes, not internal volumes
+     *   or named volumes. Mount propagation requires the source mount
+     *   point (the location where the source directory is mounted in the
+     *   host operating system) to have the correct propagation properties.
+     *   For shared volumes, the source mount point must be set to `shared`.
+     *   For slave volumes, the mount must be set to either `shared` or
+     *   `slave`.
      *
      * @var list<string>|null
      */
@@ -1311,40 +1315,40 @@ class HostConfig extends \ArrayObject
      * is a string in one of these forms:
      *
      * - `host-src:container-dest[:options]` to bind-mount a host path
-     * into the container. Both `host-src`, and `container-dest` must
-     * be an _absolute_ path.
+     *   into the container. Both `host-src`, and `container-dest` must
+     *   be an _absolute_ path.
      * - `volume-name:container-dest[:options]` to bind-mount a volume
-     * managed by a volume driver into the container. `container-dest`
-     * must be an _absolute_ path.
+     *   managed by a volume driver into the container. `container-dest`
+     *   must be an _absolute_ path.
      *
      * `options` is an optional, comma-delimited list of:
      *
      * - `nocopy` disables automatic copying of data from the container
-     * path to the volume. The `nocopy` flag only applies to named volumes.
+     *   path to the volume. The `nocopy` flag only applies to named volumes.
      * - `[ro|rw]` mounts a volume read-only or read-write, respectively.
-     * If omitted or set to `rw`, volumes are mounted read-write.
+     *   If omitted or set to `rw`, volumes are mounted read-write.
      * - `[z|Z]` applies SELinux labels to allow or deny multiple containers
-     * to read and write to the same volume.
-     * - `z`: a _shared_ content label is applied to the content. This
-     * label indicates that multiple containers can share the volume
-     * content, for both reading and writing.
-     * - `Z`: a _private unshared_ label is applied to the content.
-     * This label indicates that only the current container can use
-     * a private volume. Labeling systems such as SELinux require
-     * proper labels to be placed on volume content that is mounted
-     * into a container. Without a label, the security system can
-     * prevent a container's processes from using the content. By
-     * default, the labels set by the host operating system are not
-     * modified.
+     *   to read and write to the same volume.
+     *     - `z`: a _shared_ content label is applied to the content. This
+     *       label indicates that multiple containers can share the volume
+     *       content, for both reading and writing.
+     *     - `Z`: a _private unshared_ label is applied to the content.
+     *       This label indicates that only the current container can use
+     *       a private volume. Labeling systems such as SELinux require
+     *       proper labels to be placed on volume content that is mounted
+     *       into a container. Without a label, the security system can
+     *       prevent a container's processes from using the content. By
+     *       default, the labels set by the host operating system are not
+     *       modified.
      * - `[[r]shared|[r]slave|[r]private]` specifies mount
-     * [propagation behavior](https://www.kernel.org/doc/Documentation/filesystems/sharedsubtree.txt).
-     * This only applies to bind-mounted volumes, not internal volumes
-     * or named volumes. Mount propagation requires the source mount
-     * point (the location where the source directory is mounted in the
-     * host operating system) to have the correct propagation properties.
-     * For shared volumes, the source mount point must be set to `shared`.
-     * For slave volumes, the mount must be set to either `shared` or
-     * `slave`.
+     *   [propagation behavior](https://www.kernel.org/doc/Documentation/filesystems/sharedsubtree.txt).
+     *   This only applies to bind-mounted volumes, not internal volumes
+     *   or named volumes. Mount propagation requires the source mount
+     *   point (the location where the source directory is mounted in the
+     *   host operating system) to have the correct propagation properties.
+     *   For shared volumes, the source mount point must be set to `shared`.
+     *   For slave volumes, the mount must be set to either `shared` or
+     *   `slave`.
      *
      * @return list<string>|null
      */
@@ -2321,5 +2325,10 @@ class HostConfig extends \ArrayObject
         $this->readonlyPaths = $readonlyPaths;
 
         return $this;
+    }
+
+    public function definedProperties(): array
+    {
+        return ['cpuShares' => ['CpuShares', 'getCpuShares', 'setCpuShares'], 'memory' => ['Memory', 'getMemory', 'setMemory'], 'cgroupParent' => ['CgroupParent', 'getCgroupParent', 'setCgroupParent'], 'blkioWeight' => ['BlkioWeight', 'getBlkioWeight', 'setBlkioWeight'], 'blkioWeightDevice' => ['BlkioWeightDevice', 'getBlkioWeightDevice', 'setBlkioWeightDevice'], 'blkioDeviceReadBps' => ['BlkioDeviceReadBps', 'getBlkioDeviceReadBps', 'setBlkioDeviceReadBps'], 'blkioDeviceWriteBps' => ['BlkioDeviceWriteBps', 'getBlkioDeviceWriteBps', 'setBlkioDeviceWriteBps'], 'blkioDeviceReadIOps' => ['BlkioDeviceReadIOps', 'getBlkioDeviceReadIOps', 'setBlkioDeviceReadIOps'], 'blkioDeviceWriteIOps' => ['BlkioDeviceWriteIOps', 'getBlkioDeviceWriteIOps', 'setBlkioDeviceWriteIOps'], 'cpuPeriod' => ['CpuPeriod', 'getCpuPeriod', 'setCpuPeriod'], 'cpuQuota' => ['CpuQuota', 'getCpuQuota', 'setCpuQuota'], 'cpuRealtimePeriod' => ['CpuRealtimePeriod', 'getCpuRealtimePeriod', 'setCpuRealtimePeriod'], 'cpuRealtimeRuntime' => ['CpuRealtimeRuntime', 'getCpuRealtimeRuntime', 'setCpuRealtimeRuntime'], 'cpusetCpus' => ['CpusetCpus', 'getCpusetCpus', 'setCpusetCpus'], 'cpusetMems' => ['CpusetMems', 'getCpusetMems', 'setCpusetMems'], 'devices' => ['Devices', 'getDevices', 'setDevices'], 'deviceCgroupRules' => ['DeviceCgroupRules', 'getDeviceCgroupRules', 'setDeviceCgroupRules'], 'deviceRequests' => ['DeviceRequests', 'getDeviceRequests', 'setDeviceRequests'], 'kernelMemoryTCP' => ['KernelMemoryTCP', 'getKernelMemoryTCP', 'setKernelMemoryTCP'], 'memoryReservation' => ['MemoryReservation', 'getMemoryReservation', 'setMemoryReservation'], 'memorySwap' => ['MemorySwap', 'getMemorySwap', 'setMemorySwap'], 'memorySwappiness' => ['MemorySwappiness', 'getMemorySwappiness', 'setMemorySwappiness'], 'nanoCpus' => ['NanoCpus', 'getNanoCpus', 'setNanoCpus'], 'oomKillDisable' => ['OomKillDisable', 'getOomKillDisable', 'setOomKillDisable'], 'init' => ['Init', 'getInit', 'setInit'], 'pidsLimit' => ['PidsLimit', 'getPidsLimit', 'setPidsLimit'], 'ulimits' => ['Ulimits', 'getUlimits', 'setUlimits'], 'cpuCount' => ['CpuCount', 'getCpuCount', 'setCpuCount'], 'cpuPercent' => ['CpuPercent', 'getCpuPercent', 'setCpuPercent'], 'iOMaximumIOps' => ['IOMaximumIOps', 'getIOMaximumIOps', 'setIOMaximumIOps'], 'iOMaximumBandwidth' => ['IOMaximumBandwidth', 'getIOMaximumBandwidth', 'setIOMaximumBandwidth'], 'binds' => ['Binds', 'getBinds', 'setBinds'], 'containerIDFile' => ['ContainerIDFile', 'getContainerIDFile', 'setContainerIDFile'], 'logConfig' => ['LogConfig', 'getLogConfig', 'setLogConfig'], 'networkMode' => ['NetworkMode', 'getNetworkMode', 'setNetworkMode'], 'portBindings' => ['PortBindings', 'getPortBindings', 'setPortBindings'], 'restartPolicy' => ['RestartPolicy', 'getRestartPolicy', 'setRestartPolicy'], 'autoRemove' => ['AutoRemove', 'getAutoRemove', 'setAutoRemove'], 'volumeDriver' => ['VolumeDriver', 'getVolumeDriver', 'setVolumeDriver'], 'volumesFrom' => ['VolumesFrom', 'getVolumesFrom', 'setVolumesFrom'], 'mounts' => ['Mounts', 'getMounts', 'setMounts'], 'consoleSize' => ['ConsoleSize', 'getConsoleSize', 'setConsoleSize'], 'annotations' => ['Annotations', 'getAnnotations', 'setAnnotations'], 'capAdd' => ['CapAdd', 'getCapAdd', 'setCapAdd'], 'capDrop' => ['CapDrop', 'getCapDrop', 'setCapDrop'], 'cgroupnsMode' => ['CgroupnsMode', 'getCgroupnsMode', 'setCgroupnsMode'], 'dns' => ['Dns', 'getDns', 'setDns'], 'dnsOptions' => ['DnsOptions', 'getDnsOptions', 'setDnsOptions'], 'dnsSearch' => ['DnsSearch', 'getDnsSearch', 'setDnsSearch'], 'extraHosts' => ['ExtraHosts', 'getExtraHosts', 'setExtraHosts'], 'groupAdd' => ['GroupAdd', 'getGroupAdd', 'setGroupAdd'], 'ipcMode' => ['IpcMode', 'getIpcMode', 'setIpcMode'], 'cgroup' => ['Cgroup', 'getCgroup', 'setCgroup'], 'links' => ['Links', 'getLinks', 'setLinks'], 'oomScoreAdj' => ['OomScoreAdj', 'getOomScoreAdj', 'setOomScoreAdj'], 'pidMode' => ['PidMode', 'getPidMode', 'setPidMode'], 'privileged' => ['Privileged', 'getPrivileged', 'setPrivileged'], 'publishAllPorts' => ['PublishAllPorts', 'getPublishAllPorts', 'setPublishAllPorts'], 'readonlyRootfs' => ['ReadonlyRootfs', 'getReadonlyRootfs', 'setReadonlyRootfs'], 'securityOpt' => ['SecurityOpt', 'getSecurityOpt', 'setSecurityOpt'], 'storageOpt' => ['StorageOpt', 'getStorageOpt', 'setStorageOpt'], 'tmpfs' => ['Tmpfs', 'getTmpfs', 'setTmpfs'], 'uTSMode' => ['UTSMode', 'getUTSMode', 'setUTSMode'], 'usernsMode' => ['UsernsMode', 'getUsernsMode', 'setUsernsMode'], 'shmSize' => ['ShmSize', 'getShmSize', 'setShmSize'], 'sysctls' => ['Sysctls', 'getSysctls', 'setSysctls'], 'runtime' => ['Runtime', 'getRuntime', 'setRuntime'], 'isolation' => ['Isolation', 'getIsolation', 'setIsolation'], 'maskedPaths' => ['MaskedPaths', 'getMaskedPaths', 'setMaskedPaths'], 'readonlyPaths' => ['ReadonlyPaths', 'getReadonlyPaths', 'setReadonlyPaths']];
     }
 }

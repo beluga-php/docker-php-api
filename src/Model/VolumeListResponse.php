@@ -4,8 +4,12 @@ declare(strict_types=1);
 
 namespace Docker\API\Model;
 
-class VolumeListResponse extends \ArrayObject
+use Docker\API\Runtime\AdditionalAndPatternProperties;
+use Docker\API\Runtime\AdditionalPropertiesInterface;
+
+class VolumeListResponse implements AdditionalPropertiesInterface
 {
+    use AdditionalAndPatternProperties;
     /**
      * @var array
      */
@@ -72,5 +76,10 @@ class VolumeListResponse extends \ArrayObject
         $this->warnings = $warnings;
 
         return $this;
+    }
+
+    public function definedProperties(): array
+    {
+        return ['volumes' => ['Volumes', 'getVolumes', 'setVolumes'], 'warnings' => ['Warnings', 'getWarnings', 'setWarnings']];
     }
 }
