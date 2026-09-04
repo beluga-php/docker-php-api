@@ -21,33 +21,34 @@ class SwarmSpecTaskDefaultsNormalizer implements DenormalizerInterface, Normaliz
     use NormalizerAwareTrait;
     use ValidatorTrait;
 
-    public function supportsDenormalization($data, $type, $format = null, array $context = []): bool
+    public function supportsDenormalization(mixed $data, string $type, ?string $format = null, array $context = []): bool
     {
-        return 'Docker\\API\\Model\\SwarmSpecTaskDefaults' === $type;
+        return \Docker\API\Model\SwarmSpecTaskDefaults::class === $type;
     }
 
-    public function supportsNormalization($data, $format = null, array $context = []): bool
+    public function supportsNormalization(mixed $data, ?string $format = null, array $context = []): bool
     {
-        return \is_object($data) && 'Docker\\API\\Model\\SwarmSpecTaskDefaults' === $data::class;
+        return \is_object($data) && \Docker\API\Model\SwarmSpecTaskDefaults::class === $data::class;
     }
 
-    public function denormalize($data, $class, $format = null, array $context = [])
+    public function denormalize(mixed $data, string $type, ?string $format = null, array $context = []): mixed
     {
-        if (isset($data['$ref'])) {
+        $object = new \Docker\API\Model\SwarmSpecTaskDefaults();
+        if (null === $data || false === \is_array($data)) {
+            return $object;
+        }
+        if (isset($data['$ref']) && !isset($data['type']) && !isset($data['properties']) && !isset($data['allOf'])) {
             return new Reference($data['$ref'], $context['document-origin']);
         }
         if (isset($data['$recursiveRef'])) {
             return new Reference($data['$recursiveRef'], $context['document-origin']);
         }
-        $object = new \Docker\API\Model\SwarmSpecTaskDefaults();
-        if (null === $data || false === \is_array($data)) {
-            return $object;
-        }
         if (\array_key_exists('LogDriver', $data) && null !== $data['LogDriver']) {
-            $object->setLogDriver($this->denormalizer->denormalize($data['LogDriver'], 'Docker\\API\\Model\\SwarmSpecTaskDefaultsLogDriver', 'json', $context));
+            $object->setLogDriver($this->denormalizer->denormalize($data['LogDriver'], \Docker\API\Model\SwarmSpecTaskDefaultsLogDriver::class, 'json', $context));
             unset($data['LogDriver']);
         } elseif (\array_key_exists('LogDriver', $data) && null === $data['LogDriver']) {
             $object->setLogDriver(null);
+            unset($data['LogDriver']);
         }
         foreach ($data as $key => $value) {
             if (preg_match('/.*/', (string) $key)) {
@@ -58,26 +59,23 @@ class SwarmSpecTaskDefaultsNormalizer implements DenormalizerInterface, Normaliz
         return $object;
     }
 
-    /**
-     * @return array|string|int|float|bool|\ArrayObject|null
-     */
-    public function normalize($object, $format = null, array $context = [])
+    public function normalize(mixed $data, ?string $format = null, array $context = []): array|string|int|float|bool|\ArrayObject|null
     {
-        $data = [];
-        if ($object->isInitialized('logDriver') && null !== $object->getLogDriver()) {
-            $data['LogDriver'] = null === $object->getLogDriver() ? null : new \ArrayObject($this->normalizer->normalize($object->getLogDriver(), 'json', $context), \ArrayObject::ARRAY_AS_PROPS);
+        $dataArray = [];
+        if ($data->isInitialized('logDriver') && null !== $data->getLogDriver()) {
+            $dataArray['LogDriver'] = null === $data->getLogDriver() ? null : new \Docker\API\Runtime\JsonObject($this->normalizer->normalize($data->getLogDriver(), 'json', $context));
         }
-        foreach ($object as $key => $value) {
+        foreach ($data->additionalPropertyEntries() as $key => $value) {
             if (preg_match('/.*/', (string) $key)) {
-                $data[$key] = $value;
+                $dataArray[$key] = $value;
             }
         }
 
-        return $data;
+        return $dataArray;
     }
 
-    public function getSupportedTypes(string $format = null): array
+    public function getSupportedTypes(?string $format = null): array
     {
-        return ['Docker\\API\\Model\\SwarmSpecTaskDefaults' => false];
+        return [\Docker\API\Model\SwarmSpecTaskDefaults::class => false];
     }
 }

@@ -4,8 +4,12 @@ declare(strict_types=1);
 
 namespace Docker\API\Model;
 
-class Image extends \ArrayObject
+use Docker\API\Runtime\AdditionalAndPatternProperties;
+use Docker\API\Runtime\AdditionalPropertiesInterface;
+
+class Image implements AdditionalPropertiesInterface
 {
+    use AdditionalAndPatternProperties;
     /**
      * @var array
      */
@@ -20,11 +24,11 @@ class Image extends \ArrayObject
      */
     protected $id;
     /**
-     * @var string[]|null
+     * @var list<string>|null
      */
     protected $repoTags;
     /**
-     * @var string[]|null
+     * @var list<string>|null
      */
     protected $repoDigests;
     /**
@@ -112,7 +116,7 @@ class Image extends \ArrayObject
     }
 
     /**
-     * @return string[]|null
+     * @return list<string>|null
      */
     public function getRepoTags(): ?array
     {
@@ -120,7 +124,7 @@ class Image extends \ArrayObject
     }
 
     /**
-     * @param string[]|null $repoTags
+     * @param list<string>|null $repoTags
      */
     public function setRepoTags(?array $repoTags): self
     {
@@ -131,7 +135,7 @@ class Image extends \ArrayObject
     }
 
     /**
-     * @return string[]|null
+     * @return list<string>|null
      */
     public function getRepoDigests(): ?array
     {
@@ -139,7 +143,7 @@ class Image extends \ArrayObject
     }
 
     /**
-     * @param string[]|null $repoDigests
+     * @param list<string>|null $repoDigests
      */
     public function setRepoDigests(?array $repoDigests): self
     {
@@ -373,5 +377,10 @@ class Image extends \ArrayObject
         $this->metadata = $metadata;
 
         return $this;
+    }
+
+    public function definedProperties(): array
+    {
+        return ['id' => ['Id', 'getId', 'setId'], 'repoTags' => ['RepoTags', 'getRepoTags', 'setRepoTags'], 'repoDigests' => ['RepoDigests', 'getRepoDigests', 'setRepoDigests'], 'parent' => ['Parent', 'getParent', 'setParent'], 'comment' => ['Comment', 'getComment', 'setComment'], 'created' => ['Created', 'getCreated', 'setCreated'], 'container' => ['Container', 'getContainer', 'setContainer'], 'containerConfig' => ['ContainerConfig', 'getContainerConfig', 'setContainerConfig'], 'dockerVersion' => ['DockerVersion', 'getDockerVersion', 'setDockerVersion'], 'author' => ['Author', 'getAuthor', 'setAuthor'], 'config' => ['Config', 'getConfig', 'setConfig'], 'architecture' => ['Architecture', 'getArchitecture', 'setArchitecture'], 'os' => ['Os', 'getOs', 'setOs'], 'osVersion' => ['OsVersion', 'getOsVersion', 'setOsVersion'], 'size' => ['Size', 'getSize', 'setSize'], 'virtualSize' => ['VirtualSize', 'getVirtualSize', 'setVirtualSize'], 'graphDriver' => ['GraphDriver', 'getGraphDriver', 'setGraphDriver'], 'rootFS' => ['RootFS', 'getRootFS', 'setRootFS'], 'metadata' => ['Metadata', 'getMetadata', 'setMetadata']];
     }
 }

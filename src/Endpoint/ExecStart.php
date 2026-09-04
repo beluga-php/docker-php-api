@@ -16,7 +16,7 @@ class ExecStart extends \Docker\API\Runtime\Client\BaseEndpoint implements \Dock
      *
      * @param string $id Exec instance ID
      */
-    public function __construct(string $id, \Docker\API\Model\ExecIdStartPostBody $requestBody = null)
+    public function __construct(string $id, ?\Docker\API\Model\ExecIdStartPostBody $requestBody = null)
     {
         $this->id = $id;
         $this->body = $requestBody;
@@ -29,13 +29,13 @@ class ExecStart extends \Docker\API\Runtime\Client\BaseEndpoint implements \Dock
 
     public function getUri(): string
     {
-        return str_replace(['{id}'], [$this->id], '/exec/{id}/start');
+        return str_replace(['{id}'], [rawurlencode($this->id)], '/exec/{id}/start');
     }
 
     public function getBody(\Symfony\Component\Serializer\SerializerInterface $serializer, $streamFactory = null): array
     {
         if ($this->body instanceof \Docker\API\Model\ExecIdStartPostBody) {
-            return [['Content-Type' => ['application/json']], $serializer->serialize($this->body, 'json')];
+            return [['Content-Type' => ['application/json']], \Docker\API\Runtime\Client\JsonPayload::encode($serializer, $this->body)];
         }
 
         return [[], null];
@@ -49,7 +49,7 @@ class ExecStart extends \Docker\API\Runtime\Client\BaseEndpoint implements \Dock
     /**
      * @return null
      */
-    protected function transformResponseBody(\Psr\Http\Message\ResponseInterface $response, \Symfony\Component\Serializer\SerializerInterface $serializer, string $contentType = null)
+    protected function transformResponseBody(\Psr\Http\Message\ResponseInterface $response, \Symfony\Component\Serializer\SerializerInterface $serializer, ?string $contentType = null)
     {
         $status = $response->getStatusCode();
         $body = (string) $response->getBody();

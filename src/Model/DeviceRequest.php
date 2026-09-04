@@ -4,8 +4,12 @@ declare(strict_types=1);
 
 namespace Docker\API\Model;
 
-class DeviceRequest extends \ArrayObject
+use Docker\API\Runtime\AdditionalAndPatternProperties;
+use Docker\API\Runtime\AdditionalPropertiesInterface;
+
+class DeviceRequest implements AdditionalPropertiesInterface
 {
+    use AdditionalAndPatternProperties;
     /**
      * @var array
      */
@@ -24,13 +28,13 @@ class DeviceRequest extends \ArrayObject
      */
     protected $count;
     /**
-     * @var string[]|null
+     * @var list<string>|null
      */
     protected $deviceIDs;
     /**
      * A list of capabilities; an OR list of AND lists of capabilities.
      *
-     * @var string[][]|null
+     * @var list<list<string>>|null
      */
     protected $capabilities;
     /**
@@ -68,7 +72,7 @@ class DeviceRequest extends \ArrayObject
     }
 
     /**
-     * @return string[]|null
+     * @return list<string>|null
      */
     public function getDeviceIDs(): ?array
     {
@@ -76,7 +80,7 @@ class DeviceRequest extends \ArrayObject
     }
 
     /**
-     * @param string[]|null $deviceIDs
+     * @param list<string>|null $deviceIDs
      */
     public function setDeviceIDs(?array $deviceIDs): self
     {
@@ -89,7 +93,7 @@ class DeviceRequest extends \ArrayObject
     /**
      * A list of capabilities; an OR list of AND lists of capabilities.
      *
-     * @return string[][]|null
+     * @return list<list<string>>|null
      */
     public function getCapabilities(): ?array
     {
@@ -99,7 +103,7 @@ class DeviceRequest extends \ArrayObject
     /**
      * A list of capabilities; an OR list of AND lists of capabilities.
      *
-     * @param string[][]|null $capabilities
+     * @param list<list<string>>|null $capabilities
      */
     public function setCapabilities(?array $capabilities): self
     {
@@ -132,5 +136,10 @@ class DeviceRequest extends \ArrayObject
         $this->options = $options;
 
         return $this;
+    }
+
+    public function definedProperties(): array
+    {
+        return ['driver' => ['Driver', 'getDriver', 'setDriver'], 'count' => ['Count', 'getCount', 'setCount'], 'deviceIDs' => ['DeviceIDs', 'getDeviceIDs', 'setDeviceIDs'], 'capabilities' => ['Capabilities', 'getCapabilities', 'setCapabilities'], 'options' => ['Options', 'getOptions', 'setOptions']];
     }
 }

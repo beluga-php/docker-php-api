@@ -4,8 +4,12 @@ declare(strict_types=1);
 
 namespace Docker\API\Model;
 
-class DistributionNameJsonGetResponse200PlatformsItem extends \ArrayObject
+use Docker\API\Runtime\AdditionalAndPatternProperties;
+use Docker\API\Runtime\AdditionalPropertiesInterface;
+
+class DistributionNameJsonGetResponse200PlatformsItem implements AdditionalPropertiesInterface
 {
+    use AdditionalAndPatternProperties;
     /**
      * @var array
      */
@@ -28,7 +32,7 @@ class DistributionNameJsonGetResponse200PlatformsItem extends \ArrayObject
      */
     protected $oSVersion;
     /**
-     * @var string[]|null
+     * @var list<string>|null
      */
     protected $oSFeatures;
     /**
@@ -36,7 +40,7 @@ class DistributionNameJsonGetResponse200PlatformsItem extends \ArrayObject
      */
     protected $variant;
     /**
-     * @var string[]|null
+     * @var list<string>|null
      */
     protected $features;
 
@@ -80,7 +84,7 @@ class DistributionNameJsonGetResponse200PlatformsItem extends \ArrayObject
     }
 
     /**
-     * @return string[]|null
+     * @return list<string>|null
      */
     public function getOSFeatures(): ?array
     {
@@ -88,7 +92,7 @@ class DistributionNameJsonGetResponse200PlatformsItem extends \ArrayObject
     }
 
     /**
-     * @param string[]|null $oSFeatures
+     * @param list<string>|null $oSFeatures
      */
     public function setOSFeatures(?array $oSFeatures): self
     {
@@ -112,7 +116,7 @@ class DistributionNameJsonGetResponse200PlatformsItem extends \ArrayObject
     }
 
     /**
-     * @return string[]|null
+     * @return list<string>|null
      */
     public function getFeatures(): ?array
     {
@@ -120,7 +124,7 @@ class DistributionNameJsonGetResponse200PlatformsItem extends \ArrayObject
     }
 
     /**
-     * @param string[]|null $features
+     * @param list<string>|null $features
      */
     public function setFeatures(?array $features): self
     {
@@ -128,5 +132,10 @@ class DistributionNameJsonGetResponse200PlatformsItem extends \ArrayObject
         $this->features = $features;
 
         return $this;
+    }
+
+    public function definedProperties(): array
+    {
+        return ['architecture' => ['Architecture', 'getArchitecture', 'setArchitecture'], 'oS' => ['OS', 'getOS', 'setOS'], 'oSVersion' => ['OSVersion', 'getOSVersion', 'setOSVersion'], 'oSFeatures' => ['OSFeatures', 'getOSFeatures', 'setOSFeatures'], 'variant' => ['Variant', 'getVariant', 'setVariant'], 'features' => ['Features', 'getFeatures', 'setFeatures']];
     }
 }

@@ -21,27 +21,27 @@ class VolumesPrunePostResponse200Normalizer implements DenormalizerInterface, No
     use NormalizerAwareTrait;
     use ValidatorTrait;
 
-    public function supportsDenormalization($data, $type, $format = null, array $context = []): bool
+    public function supportsDenormalization(mixed $data, string $type, ?string $format = null, array $context = []): bool
     {
-        return 'Docker\\API\\Model\\VolumesPrunePostResponse200' === $type;
+        return \Docker\API\Model\VolumesPrunePostResponse200::class === $type;
     }
 
-    public function supportsNormalization($data, $format = null, array $context = []): bool
+    public function supportsNormalization(mixed $data, ?string $format = null, array $context = []): bool
     {
-        return \is_object($data) && 'Docker\\API\\Model\\VolumesPrunePostResponse200' === $data::class;
+        return \is_object($data) && \Docker\API\Model\VolumesPrunePostResponse200::class === $data::class;
     }
 
-    public function denormalize($data, $class, $format = null, array $context = [])
+    public function denormalize(mixed $data, string $type, ?string $format = null, array $context = []): mixed
     {
-        if (isset($data['$ref'])) {
+        $object = new \Docker\API\Model\VolumesPrunePostResponse200();
+        if (null === $data || false === \is_array($data)) {
+            return $object;
+        }
+        if (isset($data['$ref']) && !isset($data['type']) && !isset($data['properties']) && !isset($data['allOf'])) {
             return new Reference($data['$ref'], $context['document-origin']);
         }
         if (isset($data['$recursiveRef'])) {
             return new Reference($data['$recursiveRef'], $context['document-origin']);
-        }
-        $object = new \Docker\API\Model\VolumesPrunePostResponse200();
-        if (null === $data || false === \is_array($data)) {
-            return $object;
         }
         if (\array_key_exists('VolumesDeleted', $data) && null !== $data['VolumesDeleted']) {
             $values = [];
@@ -52,12 +52,14 @@ class VolumesPrunePostResponse200Normalizer implements DenormalizerInterface, No
             unset($data['VolumesDeleted']);
         } elseif (\array_key_exists('VolumesDeleted', $data) && null === $data['VolumesDeleted']) {
             $object->setVolumesDeleted(null);
+            unset($data['VolumesDeleted']);
         }
         if (\array_key_exists('SpaceReclaimed', $data) && null !== $data['SpaceReclaimed']) {
             $object->setSpaceReclaimed($data['SpaceReclaimed']);
             unset($data['SpaceReclaimed']);
         } elseif (\array_key_exists('SpaceReclaimed', $data) && null === $data['SpaceReclaimed']) {
             $object->setSpaceReclaimed(null);
+            unset($data['SpaceReclaimed']);
         }
         foreach ($data as $key => $value_1) {
             if (preg_match('/.*/', (string) $key)) {
@@ -68,33 +70,30 @@ class VolumesPrunePostResponse200Normalizer implements DenormalizerInterface, No
         return $object;
     }
 
-    /**
-     * @return array|string|int|float|bool|\ArrayObject|null
-     */
-    public function normalize($object, $format = null, array $context = [])
+    public function normalize(mixed $data, ?string $format = null, array $context = []): array|string|int|float|bool|\ArrayObject|null
     {
-        $data = [];
-        if ($object->isInitialized('volumesDeleted') && null !== $object->getVolumesDeleted()) {
+        $dataArray = [];
+        if ($data->isInitialized('volumesDeleted') && null !== $data->getVolumesDeleted()) {
             $values = [];
-            foreach ($object->getVolumesDeleted() as $value) {
+            foreach ($data->getVolumesDeleted() as $value) {
                 $values[] = $value;
             }
-            $data['VolumesDeleted'] = $values;
+            $dataArray['VolumesDeleted'] = $values;
         }
-        if ($object->isInitialized('spaceReclaimed') && null !== $object->getSpaceReclaimed()) {
-            $data['SpaceReclaimed'] = $object->getSpaceReclaimed();
+        if ($data->isInitialized('spaceReclaimed') && null !== $data->getSpaceReclaimed()) {
+            $dataArray['SpaceReclaimed'] = $data->getSpaceReclaimed();
         }
-        foreach ($object as $key => $value_1) {
+        foreach ($data->additionalPropertyEntries() as $key => $value_1) {
             if (preg_match('/.*/', (string) $key)) {
-                $data[$key] = $value_1;
+                $dataArray[$key] = $value_1;
             }
         }
 
-        return $data;
+        return $dataArray;
     }
 
-    public function getSupportedTypes(string $format = null): array
+    public function getSupportedTypes(?string $format = null): array
     {
-        return ['Docker\\API\\Model\\VolumesPrunePostResponse200' => false];
+        return [\Docker\API\Model\VolumesPrunePostResponse200::class => false];
     }
 }

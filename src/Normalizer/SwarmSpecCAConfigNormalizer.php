@@ -21,61 +21,66 @@ class SwarmSpecCAConfigNormalizer implements DenormalizerInterface, NormalizerIn
     use NormalizerAwareTrait;
     use ValidatorTrait;
 
-    public function supportsDenormalization($data, $type, $format = null, array $context = []): bool
+    public function supportsDenormalization(mixed $data, string $type, ?string $format = null, array $context = []): bool
     {
-        return 'Docker\\API\\Model\\SwarmSpecCAConfig' === $type;
+        return \Docker\API\Model\SwarmSpecCAConfig::class === $type;
     }
 
-    public function supportsNormalization($data, $format = null, array $context = []): bool
+    public function supportsNormalization(mixed $data, ?string $format = null, array $context = []): bool
     {
-        return \is_object($data) && 'Docker\\API\\Model\\SwarmSpecCAConfig' === $data::class;
+        return \is_object($data) && \Docker\API\Model\SwarmSpecCAConfig::class === $data::class;
     }
 
-    public function denormalize($data, $class, $format = null, array $context = [])
+    public function denormalize(mixed $data, string $type, ?string $format = null, array $context = []): mixed
     {
-        if (isset($data['$ref'])) {
+        $object = new \Docker\API\Model\SwarmSpecCAConfig();
+        if (null === $data || false === \is_array($data)) {
+            return $object;
+        }
+        if (isset($data['$ref']) && !isset($data['type']) && !isset($data['properties']) && !isset($data['allOf'])) {
             return new Reference($data['$ref'], $context['document-origin']);
         }
         if (isset($data['$recursiveRef'])) {
             return new Reference($data['$recursiveRef'], $context['document-origin']);
-        }
-        $object = new \Docker\API\Model\SwarmSpecCAConfig();
-        if (null === $data || false === \is_array($data)) {
-            return $object;
         }
         if (\array_key_exists('NodeCertExpiry', $data) && null !== $data['NodeCertExpiry']) {
             $object->setNodeCertExpiry($data['NodeCertExpiry']);
             unset($data['NodeCertExpiry']);
         } elseif (\array_key_exists('NodeCertExpiry', $data) && null === $data['NodeCertExpiry']) {
             $object->setNodeCertExpiry(null);
+            unset($data['NodeCertExpiry']);
         }
         if (\array_key_exists('ExternalCAs', $data) && null !== $data['ExternalCAs']) {
             $values = [];
             foreach ($data['ExternalCAs'] as $value) {
-                $values[] = $this->denormalizer->denormalize($value, 'Docker\\API\\Model\\SwarmSpecCAConfigExternalCAsItem', 'json', $context);
+                $values[] = $this->denormalizer->denormalize($value, \Docker\API\Model\SwarmSpecCAConfigExternalCAsItem::class, 'json', $context);
             }
             $object->setExternalCAs($values);
             unset($data['ExternalCAs']);
         } elseif (\array_key_exists('ExternalCAs', $data) && null === $data['ExternalCAs']) {
             $object->setExternalCAs(null);
+            unset($data['ExternalCAs']);
         }
         if (\array_key_exists('SigningCACert', $data) && null !== $data['SigningCACert']) {
             $object->setSigningCACert($data['SigningCACert']);
             unset($data['SigningCACert']);
         } elseif (\array_key_exists('SigningCACert', $data) && null === $data['SigningCACert']) {
             $object->setSigningCACert(null);
+            unset($data['SigningCACert']);
         }
         if (\array_key_exists('SigningCAKey', $data) && null !== $data['SigningCAKey']) {
             $object->setSigningCAKey($data['SigningCAKey']);
             unset($data['SigningCAKey']);
         } elseif (\array_key_exists('SigningCAKey', $data) && null === $data['SigningCAKey']) {
             $object->setSigningCAKey(null);
+            unset($data['SigningCAKey']);
         }
         if (\array_key_exists('ForceRotate', $data) && null !== $data['ForceRotate']) {
             $object->setForceRotate($data['ForceRotate']);
             unset($data['ForceRotate']);
         } elseif (\array_key_exists('ForceRotate', $data) && null === $data['ForceRotate']) {
             $object->setForceRotate(null);
+            unset($data['ForceRotate']);
         }
         foreach ($data as $key => $value_1) {
             if (preg_match('/.*/', (string) $key)) {
@@ -86,42 +91,39 @@ class SwarmSpecCAConfigNormalizer implements DenormalizerInterface, NormalizerIn
         return $object;
     }
 
-    /**
-     * @return array|string|int|float|bool|\ArrayObject|null
-     */
-    public function normalize($object, $format = null, array $context = [])
+    public function normalize(mixed $data, ?string $format = null, array $context = []): array|string|int|float|bool|\ArrayObject|null
     {
-        $data = [];
-        if ($object->isInitialized('nodeCertExpiry') && null !== $object->getNodeCertExpiry()) {
-            $data['NodeCertExpiry'] = $object->getNodeCertExpiry();
+        $dataArray = [];
+        if ($data->isInitialized('nodeCertExpiry') && null !== $data->getNodeCertExpiry()) {
+            $dataArray['NodeCertExpiry'] = $data->getNodeCertExpiry();
         }
-        if ($object->isInitialized('externalCAs') && null !== $object->getExternalCAs()) {
+        if ($data->isInitialized('externalCAs') && null !== $data->getExternalCAs()) {
             $values = [];
-            foreach ($object->getExternalCAs() as $value) {
-                $values[] = null === $value ? null : new \ArrayObject($this->normalizer->normalize($value, 'json', $context), \ArrayObject::ARRAY_AS_PROPS);
+            foreach ($data->getExternalCAs() as $value) {
+                $values[] = null === $value ? null : new \Docker\API\Runtime\JsonObject($this->normalizer->normalize($value, 'json', $context));
             }
-            $data['ExternalCAs'] = $values;
+            $dataArray['ExternalCAs'] = $values;
         }
-        if ($object->isInitialized('signingCACert') && null !== $object->getSigningCACert()) {
-            $data['SigningCACert'] = $object->getSigningCACert();
+        if ($data->isInitialized('signingCACert') && null !== $data->getSigningCACert()) {
+            $dataArray['SigningCACert'] = $data->getSigningCACert();
         }
-        if ($object->isInitialized('signingCAKey') && null !== $object->getSigningCAKey()) {
-            $data['SigningCAKey'] = $object->getSigningCAKey();
+        if ($data->isInitialized('signingCAKey') && null !== $data->getSigningCAKey()) {
+            $dataArray['SigningCAKey'] = $data->getSigningCAKey();
         }
-        if ($object->isInitialized('forceRotate') && null !== $object->getForceRotate()) {
-            $data['ForceRotate'] = $object->getForceRotate();
+        if ($data->isInitialized('forceRotate') && null !== $data->getForceRotate()) {
+            $dataArray['ForceRotate'] = $data->getForceRotate();
         }
-        foreach ($object as $key => $value_1) {
+        foreach ($data->additionalPropertyEntries() as $key => $value_1) {
             if (preg_match('/.*/', (string) $key)) {
-                $data[$key] = $value_1;
+                $dataArray[$key] = $value_1;
             }
         }
 
-        return $data;
+        return $dataArray;
     }
 
-    public function getSupportedTypes(string $format = null): array
+    public function getSupportedTypes(?string $format = null): array
     {
-        return ['Docker\\API\\Model\\SwarmSpecCAConfig' => false];
+        return [\Docker\API\Model\SwarmSpecCAConfig::class => false];
     }
 }

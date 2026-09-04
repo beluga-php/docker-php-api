@@ -4,8 +4,12 @@ declare(strict_types=1);
 
 namespace Docker\API\Model;
 
-class SystemInfo extends \ArrayObject
+use Docker\API\Runtime\AdditionalAndPatternProperties;
+use Docker\API\Runtime\AdditionalPropertiesInterface;
+
+class SystemInfo implements AdditionalPropertiesInterface
 {
+    use AdditionalAndPatternProperties;
     /**
      * @var array
      */
@@ -78,7 +82,7 @@ class SystemInfo extends \ArrayObject
      * > formatting of values and labels, should not be considered stable,
      * > and may change without notice.
      *
-     * @var string[][]|null
+     * @var list<list<string>>|null
      */
     protected $driverStatus;
     /**
@@ -318,7 +322,7 @@ class SystemInfo extends \ArrayObject
      * User-defined resources can be either Integer resources (e.g, `SSD=3`) or
      * String resources (e.g, `GPU=UUID1`).
      *
-     * @var GenericResourcesItem[]|null
+     * @var list<GenericResourcesItem>|null
      */
     protected $genericResources;
     /**
@@ -370,7 +374,7 @@ class SystemInfo extends \ArrayObject
      * > field. Node labels can be retrieved using the `/nodes/(id)` endpoint
      * > on a manager node in the Swarm.
      *
-     * @var string[]|null
+     * @var list<string>|null
      */
     protected $labels;
     /**
@@ -511,7 +515,7 @@ class SystemInfo extends \ArrayObject
      * be present, and are included as a comma-separated list of key/value
      * pairs.
      *
-     * @var string[]|null
+     * @var list<string>|null
      */
     protected $securityOptions;
     /**
@@ -530,7 +534,7 @@ class SystemInfo extends \ArrayObject
      * Example: a Base "10.10.0.0/16" with Size 24 will define the set of 256
      * 10.10.[0-255].0/24 address pools.
      *
-     * @var SystemInfoDefaultAddressPoolsItem[]|null
+     * @var list<SystemInfoDefaultAddressPoolsItem>|null
      */
     protected $defaultAddressPools;
     /**
@@ -539,7 +543,7 @@ class SystemInfo extends \ArrayObject
      *
      * These messages can be printed by the client as information to the user.
      *
-     * @var string[]|null
+     * @var list<string>|null
      */
     protected $warnings;
 
@@ -704,7 +708,7 @@ class SystemInfo extends \ArrayObject
      * > formatting of values and labels, should not be considered stable,
      * > and may change without notice.
      *
-     * @return string[][]|null
+     * @return list<list<string>>|null
      */
     public function getDriverStatus(): ?array
     {
@@ -725,7 +729,7 @@ class SystemInfo extends \ArrayObject
      * > formatting of values and labels, should not be considered stable,
      * > and may change without notice.
      *
-     * @param string[][]|null $driverStatus
+     * @param list<list<string>>|null $driverStatus
      */
     public function setDriverStatus(?array $driverStatus): self
     {
@@ -1422,7 +1426,7 @@ class SystemInfo extends \ArrayObject
      * User-defined resources can be either Integer resources (e.g, `SSD=3`) or
      * String resources (e.g, `GPU=UUID1`).
      *
-     * @return GenericResourcesItem[]|null
+     * @return list<GenericResourcesItem>|null
      */
     public function getGenericResources(): ?array
     {
@@ -1433,7 +1437,7 @@ class SystemInfo extends \ArrayObject
      * User-defined resources can be either Integer resources (e.g, `SSD=3`) or
      * String resources (e.g, `GPU=UUID1`).
      *
-     * @param GenericResourcesItem[]|null $genericResources
+     * @param list<GenericResourcesItem>|null $genericResources
      */
     public function setGenericResources(?array $genericResources): self
     {
@@ -1558,7 +1562,7 @@ class SystemInfo extends \ArrayObject
      * > field. Node labels can be retrieved using the `/nodes/(id)` endpoint
      * > on a manager node in the Swarm.
      *
-     * @return string[]|null
+     * @return list<string>|null
      */
     public function getLabels(): ?array
     {
@@ -1576,7 +1580,7 @@ class SystemInfo extends \ArrayObject
      * > field. Node labels can be retrieved using the `/nodes/(id)` endpoint
      * > on a manager node in the Swarm.
      *
-     * @param string[]|null $labels
+     * @param list<string>|null $labels
      */
     public function setLabels(?array $labels): self
     {
@@ -1949,7 +1953,7 @@ class SystemInfo extends \ArrayObject
      * be present, and are included as a comma-separated list of key/value
      * pairs.
      *
-     * @return string[]|null
+     * @return list<string>|null
      */
     public function getSecurityOptions(): ?array
     {
@@ -1964,7 +1968,7 @@ class SystemInfo extends \ArrayObject
      * be present, and are included as a comma-separated list of key/value
      * pairs.
      *
-     * @param string[]|null $securityOptions
+     * @param list<string>|null $securityOptions
      */
     public function setSecurityOptions(?array $securityOptions): self
     {
@@ -2006,7 +2010,7 @@ class SystemInfo extends \ArrayObject
      * Example: a Base "10.10.0.0/16" with Size 24 will define the set of 256
      * 10.10.[0-255].0/24 address pools.
      *
-     * @return SystemInfoDefaultAddressPoolsItem[]|null
+     * @return list<SystemInfoDefaultAddressPoolsItem>|null
      */
     public function getDefaultAddressPools(): ?array
     {
@@ -2020,7 +2024,7 @@ class SystemInfo extends \ArrayObject
      * Example: a Base "10.10.0.0/16" with Size 24 will define the set of 256
      * 10.10.[0-255].0/24 address pools.
      *
-     * @param SystemInfoDefaultAddressPoolsItem[]|null $defaultAddressPools
+     * @param list<SystemInfoDefaultAddressPoolsItem>|null $defaultAddressPools
      */
     public function setDefaultAddressPools(?array $defaultAddressPools): self
     {
@@ -2036,7 +2040,7 @@ class SystemInfo extends \ArrayObject
      *
      * These messages can be printed by the client as information to the user.
      *
-     * @return string[]|null
+     * @return list<string>|null
      */
     public function getWarnings(): ?array
     {
@@ -2049,7 +2053,7 @@ class SystemInfo extends \ArrayObject
      *
      * These messages can be printed by the client as information to the user.
      *
-     * @param string[]|null $warnings
+     * @param list<string>|null $warnings
      */
     public function setWarnings(?array $warnings): self
     {
@@ -2057,5 +2061,10 @@ class SystemInfo extends \ArrayObject
         $this->warnings = $warnings;
 
         return $this;
+    }
+
+    public function definedProperties(): array
+    {
+        return ['iD' => ['ID', 'getID', 'setID'], 'containers' => ['Containers', 'getContainers', 'setContainers'], 'containersRunning' => ['ContainersRunning', 'getContainersRunning', 'setContainersRunning'], 'containersPaused' => ['ContainersPaused', 'getContainersPaused', 'setContainersPaused'], 'containersStopped' => ['ContainersStopped', 'getContainersStopped', 'setContainersStopped'], 'images' => ['Images', 'getImages', 'setImages'], 'driver' => ['Driver', 'getDriver', 'setDriver'], 'driverStatus' => ['DriverStatus', 'getDriverStatus', 'setDriverStatus'], 'dockerRootDir' => ['DockerRootDir', 'getDockerRootDir', 'setDockerRootDir'], 'plugins' => ['Plugins', 'getPlugins', 'setPlugins'], 'memoryLimit' => ['MemoryLimit', 'getMemoryLimit', 'setMemoryLimit'], 'swapLimit' => ['SwapLimit', 'getSwapLimit', 'setSwapLimit'], 'kernelMemory' => ['KernelMemory', 'getKernelMemory', 'setKernelMemory'], 'cpuCfsPeriod' => ['CpuCfsPeriod', 'getCpuCfsPeriod', 'setCpuCfsPeriod'], 'cpuCfsQuota' => ['CpuCfsQuota', 'getCpuCfsQuota', 'setCpuCfsQuota'], 'cPUShares' => ['CPUShares', 'getCPUShares', 'setCPUShares'], 'cPUSet' => ['CPUSet', 'getCPUSet', 'setCPUSet'], 'pidsLimit' => ['PidsLimit', 'getPidsLimit', 'setPidsLimit'], 'oomKillDisable' => ['OomKillDisable', 'getOomKillDisable', 'setOomKillDisable'], 'iPv4Forwarding' => ['IPv4Forwarding', 'getIPv4Forwarding', 'setIPv4Forwarding'], 'bridgeNfIptables' => ['BridgeNfIptables', 'getBridgeNfIptables', 'setBridgeNfIptables'], 'bridgeNfIp6tables' => ['BridgeNfIp6tables', 'getBridgeNfIp6tables', 'setBridgeNfIp6tables'], 'debug' => ['Debug', 'getDebug', 'setDebug'], 'nFd' => ['NFd', 'getNFd', 'setNFd'], 'nGoroutines' => ['NGoroutines', 'getNGoroutines', 'setNGoroutines'], 'systemTime' => ['SystemTime', 'getSystemTime', 'setSystemTime'], 'loggingDriver' => ['LoggingDriver', 'getLoggingDriver', 'setLoggingDriver'], 'cgroupDriver' => ['CgroupDriver', 'getCgroupDriver', 'setCgroupDriver'], 'cgroupVersion' => ['CgroupVersion', 'getCgroupVersion', 'setCgroupVersion'], 'nEventsListener' => ['NEventsListener', 'getNEventsListener', 'setNEventsListener'], 'kernelVersion' => ['KernelVersion', 'getKernelVersion', 'setKernelVersion'], 'operatingSystem' => ['OperatingSystem', 'getOperatingSystem', 'setOperatingSystem'], 'oSVersion' => ['OSVersion', 'getOSVersion', 'setOSVersion'], 'oSType' => ['OSType', 'getOSType', 'setOSType'], 'architecture' => ['Architecture', 'getArchitecture', 'setArchitecture'], 'nCPU' => ['NCPU', 'getNCPU', 'setNCPU'], 'memTotal' => ['MemTotal', 'getMemTotal', 'setMemTotal'], 'indexServerAddress' => ['IndexServerAddress', 'getIndexServerAddress', 'setIndexServerAddress'], 'registryConfig' => ['RegistryConfig', 'getRegistryConfig', 'setRegistryConfig'], 'genericResources' => ['GenericResources', 'getGenericResources', 'setGenericResources'], 'httpProxy' => ['HttpProxy', 'getHttpProxy', 'setHttpProxy'], 'httpsProxy' => ['HttpsProxy', 'getHttpsProxy', 'setHttpsProxy'], 'noProxy' => ['NoProxy', 'getNoProxy', 'setNoProxy'], 'name' => ['Name', 'getName', 'setName'], 'labels' => ['Labels', 'getLabels', 'setLabels'], 'experimentalBuild' => ['ExperimentalBuild', 'getExperimentalBuild', 'setExperimentalBuild'], 'serverVersion' => ['ServerVersion', 'getServerVersion', 'setServerVersion'], 'clusterStore' => ['ClusterStore', 'getClusterStore', 'setClusterStore'], 'clusterAdvertise' => ['ClusterAdvertise', 'getClusterAdvertise', 'setClusterAdvertise'], 'runtimes' => ['Runtimes', 'getRuntimes', 'setRuntimes'], 'defaultRuntime' => ['DefaultRuntime', 'getDefaultRuntime', 'setDefaultRuntime'], 'swarm' => ['Swarm', 'getSwarm', 'setSwarm'], 'liveRestoreEnabled' => ['LiveRestoreEnabled', 'getLiveRestoreEnabled', 'setLiveRestoreEnabled'], 'isolation' => ['Isolation', 'getIsolation', 'setIsolation'], 'initBinary' => ['InitBinary', 'getInitBinary', 'setInitBinary'], 'containerdCommit' => ['ContainerdCommit', 'getContainerdCommit', 'setContainerdCommit'], 'runcCommit' => ['RuncCommit', 'getRuncCommit', 'setRuncCommit'], 'initCommit' => ['InitCommit', 'getInitCommit', 'setInitCommit'], 'securityOptions' => ['SecurityOptions', 'getSecurityOptions', 'setSecurityOptions'], 'productLicense' => ['ProductLicense', 'getProductLicense', 'setProductLicense'], 'defaultAddressPools' => ['DefaultAddressPools', 'getDefaultAddressPools', 'setDefaultAddressPools'], 'warnings' => ['Warnings', 'getWarnings', 'setWarnings']];
     }
 }

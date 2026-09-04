@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Docker\API\Exception;
 
-class BadRequestException extends \RuntimeException implements ClientException
+abstract class BadRequestException extends \RuntimeException implements ClientException, WithResponseInterface
 {
     public function __construct(string $message)
     {

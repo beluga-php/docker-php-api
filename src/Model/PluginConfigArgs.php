@@ -4,8 +4,12 @@ declare(strict_types=1);
 
 namespace Docker\API\Model;
 
-class PluginConfigArgs extends \ArrayObject
+use Docker\API\Runtime\AdditionalAndPatternProperties;
+use Docker\API\Runtime\AdditionalPropertiesInterface;
+
+class PluginConfigArgs implements AdditionalPropertiesInterface
 {
+    use AdditionalAndPatternProperties;
     /**
      * @var array
      */
@@ -24,11 +28,11 @@ class PluginConfigArgs extends \ArrayObject
      */
     protected $description;
     /**
-     * @var string[]|null
+     * @var list<string>|null
      */
     protected $settable;
     /**
-     * @var string[]|null
+     * @var list<string>|null
      */
     protected $value;
 
@@ -59,7 +63,7 @@ class PluginConfigArgs extends \ArrayObject
     }
 
     /**
-     * @return string[]|null
+     * @return list<string>|null
      */
     public function getSettable(): ?array
     {
@@ -67,7 +71,7 @@ class PluginConfigArgs extends \ArrayObject
     }
 
     /**
-     * @param string[]|null $settable
+     * @param list<string>|null $settable
      */
     public function setSettable(?array $settable): self
     {
@@ -78,7 +82,7 @@ class PluginConfigArgs extends \ArrayObject
     }
 
     /**
-     * @return string[]|null
+     * @return list<string>|null
      */
     public function getValue(): ?array
     {
@@ -86,7 +90,7 @@ class PluginConfigArgs extends \ArrayObject
     }
 
     /**
-     * @param string[]|null $value
+     * @param list<string>|null $value
      */
     public function setValue(?array $value): self
     {
@@ -94,5 +98,10 @@ class PluginConfigArgs extends \ArrayObject
         $this->value = $value;
 
         return $this;
+    }
+
+    public function definedProperties(): array
+    {
+        return ['name' => ['Name', 'getName', 'setName'], 'description' => ['Description', 'getDescription', 'setDescription'], 'settable' => ['Settable', 'getSettable', 'setSettable'], 'value' => ['Value', 'getValue', 'setValue']];
     }
 }

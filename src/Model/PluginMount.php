@@ -4,8 +4,12 @@ declare(strict_types=1);
 
 namespace Docker\API\Model;
 
-class PluginMount extends \ArrayObject
+use Docker\API\Runtime\AdditionalAndPatternProperties;
+use Docker\API\Runtime\AdditionalPropertiesInterface;
+
+class PluginMount implements AdditionalPropertiesInterface
 {
+    use AdditionalAndPatternProperties;
     /**
      * @var array
      */
@@ -24,7 +28,7 @@ class PluginMount extends \ArrayObject
      */
     protected $description;
     /**
-     * @var string[]|null
+     * @var list<string>|null
      */
     protected $settable;
     /**
@@ -40,7 +44,7 @@ class PluginMount extends \ArrayObject
      */
     protected $type;
     /**
-     * @var string[]|null
+     * @var list<string>|null
      */
     protected $options;
 
@@ -71,7 +75,7 @@ class PluginMount extends \ArrayObject
     }
 
     /**
-     * @return string[]|null
+     * @return list<string>|null
      */
     public function getSettable(): ?array
     {
@@ -79,7 +83,7 @@ class PluginMount extends \ArrayObject
     }
 
     /**
-     * @param string[]|null $settable
+     * @param list<string>|null $settable
      */
     public function setSettable(?array $settable): self
     {
@@ -129,7 +133,7 @@ class PluginMount extends \ArrayObject
     }
 
     /**
-     * @return string[]|null
+     * @return list<string>|null
      */
     public function getOptions(): ?array
     {
@@ -137,7 +141,7 @@ class PluginMount extends \ArrayObject
     }
 
     /**
-     * @param string[]|null $options
+     * @param list<string>|null $options
      */
     public function setOptions(?array $options): self
     {
@@ -145,5 +149,10 @@ class PluginMount extends \ArrayObject
         $this->options = $options;
 
         return $this;
+    }
+
+    public function definedProperties(): array
+    {
+        return ['name' => ['Name', 'getName', 'setName'], 'description' => ['Description', 'getDescription', 'setDescription'], 'settable' => ['Settable', 'getSettable', 'setSettable'], 'source' => ['Source', 'getSource', 'setSource'], 'destination' => ['Destination', 'getDestination', 'setDestination'], 'type' => ['Type', 'getType', 'setType'], 'options' => ['Options', 'getOptions', 'setOptions']];
     }
 }

@@ -21,51 +21,55 @@ class ServiceSpecModeNormalizer implements DenormalizerInterface, NormalizerInte
     use NormalizerAwareTrait;
     use ValidatorTrait;
 
-    public function supportsDenormalization($data, $type, $format = null, array $context = []): bool
+    public function supportsDenormalization(mixed $data, string $type, ?string $format = null, array $context = []): bool
     {
-        return 'Docker\\API\\Model\\ServiceSpecMode' === $type;
+        return \Docker\API\Model\ServiceSpecMode::class === $type;
     }
 
-    public function supportsNormalization($data, $format = null, array $context = []): bool
+    public function supportsNormalization(mixed $data, ?string $format = null, array $context = []): bool
     {
-        return \is_object($data) && 'Docker\\API\\Model\\ServiceSpecMode' === $data::class;
+        return \is_object($data) && \Docker\API\Model\ServiceSpecMode::class === $data::class;
     }
 
-    public function denormalize($data, $class, $format = null, array $context = [])
+    public function denormalize(mixed $data, string $type, ?string $format = null, array $context = []): mixed
     {
-        if (isset($data['$ref'])) {
+        $object = new \Docker\API\Model\ServiceSpecMode();
+        if (null === $data || false === \is_array($data)) {
+            return $object;
+        }
+        if (isset($data['$ref']) && !isset($data['type']) && !isset($data['properties']) && !isset($data['allOf'])) {
             return new Reference($data['$ref'], $context['document-origin']);
         }
         if (isset($data['$recursiveRef'])) {
             return new Reference($data['$recursiveRef'], $context['document-origin']);
         }
-        $object = new \Docker\API\Model\ServiceSpecMode();
-        if (null === $data || false === \is_array($data)) {
-            return $object;
-        }
         if (\array_key_exists('Replicated', $data) && null !== $data['Replicated']) {
-            $object->setReplicated($this->denormalizer->denormalize($data['Replicated'], 'Docker\\API\\Model\\ServiceSpecModeReplicated', 'json', $context));
+            $object->setReplicated($this->denormalizer->denormalize($data['Replicated'], \Docker\API\Model\ServiceSpecModeReplicated::class, 'json', $context));
             unset($data['Replicated']);
         } elseif (\array_key_exists('Replicated', $data) && null === $data['Replicated']) {
             $object->setReplicated(null);
+            unset($data['Replicated']);
         }
         if (\array_key_exists('Global', $data) && null !== $data['Global']) {
-            $object->setGlobal($this->denormalizer->denormalize($data['Global'], 'Docker\\API\\Model\\ServiceSpecModeGlobal', 'json', $context));
+            $object->setGlobal($this->denormalizer->denormalize($data['Global'], \Docker\API\Model\ServiceSpecModeGlobal::class, 'json', $context));
             unset($data['Global']);
         } elseif (\array_key_exists('Global', $data) && null === $data['Global']) {
             $object->setGlobal(null);
+            unset($data['Global']);
         }
         if (\array_key_exists('ReplicatedJob', $data) && null !== $data['ReplicatedJob']) {
-            $object->setReplicatedJob($this->denormalizer->denormalize($data['ReplicatedJob'], 'Docker\\API\\Model\\ServiceSpecModeReplicatedJob', 'json', $context));
+            $object->setReplicatedJob($this->denormalizer->denormalize($data['ReplicatedJob'], \Docker\API\Model\ServiceSpecModeReplicatedJob::class, 'json', $context));
             unset($data['ReplicatedJob']);
         } elseif (\array_key_exists('ReplicatedJob', $data) && null === $data['ReplicatedJob']) {
             $object->setReplicatedJob(null);
+            unset($data['ReplicatedJob']);
         }
         if (\array_key_exists('GlobalJob', $data) && null !== $data['GlobalJob']) {
-            $object->setGlobalJob($this->denormalizer->denormalize($data['GlobalJob'], 'Docker\\API\\Model\\ServiceSpecModeGlobalJob', 'json', $context));
+            $object->setGlobalJob($this->denormalizer->denormalize($data['GlobalJob'], \Docker\API\Model\ServiceSpecModeGlobalJob::class, 'json', $context));
             unset($data['GlobalJob']);
         } elseif (\array_key_exists('GlobalJob', $data) && null === $data['GlobalJob']) {
             $object->setGlobalJob(null);
+            unset($data['GlobalJob']);
         }
         foreach ($data as $key => $value) {
             if (preg_match('/.*/', (string) $key)) {
@@ -76,35 +80,32 @@ class ServiceSpecModeNormalizer implements DenormalizerInterface, NormalizerInte
         return $object;
     }
 
-    /**
-     * @return array|string|int|float|bool|\ArrayObject|null
-     */
-    public function normalize($object, $format = null, array $context = [])
+    public function normalize(mixed $data, ?string $format = null, array $context = []): array|string|int|float|bool|\ArrayObject|null
     {
-        $data = [];
-        if ($object->isInitialized('replicated') && null !== $object->getReplicated()) {
-            $data['Replicated'] = null === $object->getReplicated() ? null : new \ArrayObject($this->normalizer->normalize($object->getReplicated(), 'json', $context), \ArrayObject::ARRAY_AS_PROPS);
+        $dataArray = [];
+        if ($data->isInitialized('replicated') && null !== $data->getReplicated()) {
+            $dataArray['Replicated'] = null === $data->getReplicated() ? null : new \Docker\API\Runtime\JsonObject($this->normalizer->normalize($data->getReplicated(), 'json', $context));
         }
-        if ($object->isInitialized('global') && null !== $object->getGlobal()) {
-            $data['Global'] = null === $object->getGlobal() ? null : new \ArrayObject($this->normalizer->normalize($object->getGlobal(), 'json', $context), \ArrayObject::ARRAY_AS_PROPS);
+        if ($data->isInitialized('global') && null !== $data->getGlobal()) {
+            $dataArray['Global'] = null === $data->getGlobal() ? null : new \Docker\API\Runtime\JsonObject($this->normalizer->normalize($data->getGlobal(), 'json', $context));
         }
-        if ($object->isInitialized('replicatedJob') && null !== $object->getReplicatedJob()) {
-            $data['ReplicatedJob'] = null === $object->getReplicatedJob() ? null : new \ArrayObject($this->normalizer->normalize($object->getReplicatedJob(), 'json', $context), \ArrayObject::ARRAY_AS_PROPS);
+        if ($data->isInitialized('replicatedJob') && null !== $data->getReplicatedJob()) {
+            $dataArray['ReplicatedJob'] = null === $data->getReplicatedJob() ? null : new \Docker\API\Runtime\JsonObject($this->normalizer->normalize($data->getReplicatedJob(), 'json', $context));
         }
-        if ($object->isInitialized('globalJob') && null !== $object->getGlobalJob()) {
-            $data['GlobalJob'] = null === $object->getGlobalJob() ? null : new \ArrayObject($this->normalizer->normalize($object->getGlobalJob(), 'json', $context), \ArrayObject::ARRAY_AS_PROPS);
+        if ($data->isInitialized('globalJob') && null !== $data->getGlobalJob()) {
+            $dataArray['GlobalJob'] = null === $data->getGlobalJob() ? null : new \Docker\API\Runtime\JsonObject($this->normalizer->normalize($data->getGlobalJob(), 'json', $context));
         }
-        foreach ($object as $key => $value) {
+        foreach ($data->additionalPropertyEntries() as $key => $value) {
             if (preg_match('/.*/', (string) $key)) {
-                $data[$key] = $value;
+                $dataArray[$key] = $value;
             }
         }
 
-        return $data;
+        return $dataArray;
     }
 
-    public function getSupportedTypes(string $format = null): array
+    public function getSupportedTypes(?string $format = null): array
     {
-        return ['Docker\\API\\Model\\ServiceSpecMode' => false];
+        return [\Docker\API\Model\ServiceSpecMode::class => false];
     }
 }

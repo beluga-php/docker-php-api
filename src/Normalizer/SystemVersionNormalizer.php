@@ -21,103 +21,118 @@ class SystemVersionNormalizer implements DenormalizerInterface, NormalizerInterf
     use NormalizerAwareTrait;
     use ValidatorTrait;
 
-    public function supportsDenormalization($data, $type, $format = null, array $context = []): bool
+    public function supportsDenormalization(mixed $data, string $type, ?string $format = null, array $context = []): bool
     {
-        return 'Docker\\API\\Model\\SystemVersion' === $type;
+        return \Docker\API\Model\SystemVersion::class === $type;
     }
 
-    public function supportsNormalization($data, $format = null, array $context = []): bool
+    public function supportsNormalization(mixed $data, ?string $format = null, array $context = []): bool
     {
-        return \is_object($data) && 'Docker\\API\\Model\\SystemVersion' === $data::class;
+        return \is_object($data) && \Docker\API\Model\SystemVersion::class === $data::class;
     }
 
-    public function denormalize($data, $class, $format = null, array $context = [])
+    public function denormalize(mixed $data, string $type, ?string $format = null, array $context = []): mixed
     {
-        if (isset($data['$ref'])) {
+        $object = new \Docker\API\Model\SystemVersion();
+        if (null === $data || false === \is_array($data)) {
+            return $object;
+        }
+        if (isset($data['$ref']) && !isset($data['type']) && !isset($data['properties']) && !isset($data['allOf'])) {
             return new Reference($data['$ref'], $context['document-origin']);
         }
         if (isset($data['$recursiveRef'])) {
             return new Reference($data['$recursiveRef'], $context['document-origin']);
         }
-        $object = new \Docker\API\Model\SystemVersion();
-        if (null === $data || false === \is_array($data)) {
-            return $object;
+        if (\array_key_exists('Experimental', $data) && \is_int($data['Experimental'])) {
+            $data['Experimental'] = (bool) $data['Experimental'];
         }
         if (\array_key_exists('Platform', $data) && null !== $data['Platform']) {
-            $object->setPlatform($this->denormalizer->denormalize($data['Platform'], 'Docker\\API\\Model\\SystemVersionPlatform', 'json', $context));
+            $object->setPlatform($this->denormalizer->denormalize($data['Platform'], \Docker\API\Model\SystemVersionPlatform::class, 'json', $context));
             unset($data['Platform']);
         } elseif (\array_key_exists('Platform', $data) && null === $data['Platform']) {
             $object->setPlatform(null);
+            unset($data['Platform']);
         }
         if (\array_key_exists('Components', $data) && null !== $data['Components']) {
             $values = [];
             foreach ($data['Components'] as $value) {
-                $values[] = $this->denormalizer->denormalize($value, 'Docker\\API\\Model\\SystemVersionComponentsItem', 'json', $context);
+                $values[] = $this->denormalizer->denormalize($value, \Docker\API\Model\SystemVersionComponentsItem::class, 'json', $context);
             }
             $object->setComponents($values);
             unset($data['Components']);
         } elseif (\array_key_exists('Components', $data) && null === $data['Components']) {
             $object->setComponents(null);
+            unset($data['Components']);
         }
         if (\array_key_exists('Version', $data) && null !== $data['Version']) {
             $object->setVersion($data['Version']);
             unset($data['Version']);
         } elseif (\array_key_exists('Version', $data) && null === $data['Version']) {
             $object->setVersion(null);
+            unset($data['Version']);
         }
         if (\array_key_exists('ApiVersion', $data) && null !== $data['ApiVersion']) {
             $object->setApiVersion($data['ApiVersion']);
             unset($data['ApiVersion']);
         } elseif (\array_key_exists('ApiVersion', $data) && null === $data['ApiVersion']) {
             $object->setApiVersion(null);
+            unset($data['ApiVersion']);
         }
         if (\array_key_exists('MinAPIVersion', $data) && null !== $data['MinAPIVersion']) {
             $object->setMinAPIVersion($data['MinAPIVersion']);
             unset($data['MinAPIVersion']);
         } elseif (\array_key_exists('MinAPIVersion', $data) && null === $data['MinAPIVersion']) {
             $object->setMinAPIVersion(null);
+            unset($data['MinAPIVersion']);
         }
         if (\array_key_exists('GitCommit', $data) && null !== $data['GitCommit']) {
             $object->setGitCommit($data['GitCommit']);
             unset($data['GitCommit']);
         } elseif (\array_key_exists('GitCommit', $data) && null === $data['GitCommit']) {
             $object->setGitCommit(null);
+            unset($data['GitCommit']);
         }
         if (\array_key_exists('GoVersion', $data) && null !== $data['GoVersion']) {
             $object->setGoVersion($data['GoVersion']);
             unset($data['GoVersion']);
         } elseif (\array_key_exists('GoVersion', $data) && null === $data['GoVersion']) {
             $object->setGoVersion(null);
+            unset($data['GoVersion']);
         }
         if (\array_key_exists('Os', $data) && null !== $data['Os']) {
             $object->setOs($data['Os']);
             unset($data['Os']);
         } elseif (\array_key_exists('Os', $data) && null === $data['Os']) {
             $object->setOs(null);
+            unset($data['Os']);
         }
         if (\array_key_exists('Arch', $data) && null !== $data['Arch']) {
             $object->setArch($data['Arch']);
             unset($data['Arch']);
         } elseif (\array_key_exists('Arch', $data) && null === $data['Arch']) {
             $object->setArch(null);
+            unset($data['Arch']);
         }
         if (\array_key_exists('KernelVersion', $data) && null !== $data['KernelVersion']) {
             $object->setKernelVersion($data['KernelVersion']);
             unset($data['KernelVersion']);
         } elseif (\array_key_exists('KernelVersion', $data) && null === $data['KernelVersion']) {
             $object->setKernelVersion(null);
+            unset($data['KernelVersion']);
         }
         if (\array_key_exists('Experimental', $data) && null !== $data['Experimental']) {
             $object->setExperimental($data['Experimental']);
             unset($data['Experimental']);
         } elseif (\array_key_exists('Experimental', $data) && null === $data['Experimental']) {
             $object->setExperimental(null);
+            unset($data['Experimental']);
         }
         if (\array_key_exists('BuildTime', $data) && null !== $data['BuildTime']) {
             $object->setBuildTime($data['BuildTime']);
             unset($data['BuildTime']);
         } elseif (\array_key_exists('BuildTime', $data) && null === $data['BuildTime']) {
             $object->setBuildTime(null);
+            unset($data['BuildTime']);
         }
         foreach ($data as $key => $value_1) {
             if (preg_match('/.*/', (string) $key)) {
@@ -128,63 +143,60 @@ class SystemVersionNormalizer implements DenormalizerInterface, NormalizerInterf
         return $object;
     }
 
-    /**
-     * @return array|string|int|float|bool|\ArrayObject|null
-     */
-    public function normalize($object, $format = null, array $context = [])
+    public function normalize(mixed $data, ?string $format = null, array $context = []): array|string|int|float|bool|\ArrayObject|null
     {
-        $data = [];
-        if ($object->isInitialized('platform') && null !== $object->getPlatform()) {
-            $data['Platform'] = null === $object->getPlatform() ? null : new \ArrayObject($this->normalizer->normalize($object->getPlatform(), 'json', $context), \ArrayObject::ARRAY_AS_PROPS);
+        $dataArray = [];
+        if ($data->isInitialized('platform') && null !== $data->getPlatform()) {
+            $dataArray['Platform'] = null === $data->getPlatform() ? null : new \Docker\API\Runtime\JsonObject($this->normalizer->normalize($data->getPlatform(), 'json', $context));
         }
-        if ($object->isInitialized('components') && null !== $object->getComponents()) {
+        if ($data->isInitialized('components') && null !== $data->getComponents()) {
             $values = [];
-            foreach ($object->getComponents() as $value) {
-                $values[] = null === $value ? null : new \ArrayObject($this->normalizer->normalize($value, 'json', $context), \ArrayObject::ARRAY_AS_PROPS);
+            foreach ($data->getComponents() as $value) {
+                $values[] = null === $value ? null : new \Docker\API\Runtime\JsonObject($this->normalizer->normalize($value, 'json', $context));
             }
-            $data['Components'] = $values;
+            $dataArray['Components'] = $values;
         }
-        if ($object->isInitialized('version') && null !== $object->getVersion()) {
-            $data['Version'] = $object->getVersion();
+        if ($data->isInitialized('version') && null !== $data->getVersion()) {
+            $dataArray['Version'] = $data->getVersion();
         }
-        if ($object->isInitialized('apiVersion') && null !== $object->getApiVersion()) {
-            $data['ApiVersion'] = $object->getApiVersion();
+        if ($data->isInitialized('apiVersion') && null !== $data->getApiVersion()) {
+            $dataArray['ApiVersion'] = $data->getApiVersion();
         }
-        if ($object->isInitialized('minAPIVersion') && null !== $object->getMinAPIVersion()) {
-            $data['MinAPIVersion'] = $object->getMinAPIVersion();
+        if ($data->isInitialized('minAPIVersion') && null !== $data->getMinAPIVersion()) {
+            $dataArray['MinAPIVersion'] = $data->getMinAPIVersion();
         }
-        if ($object->isInitialized('gitCommit') && null !== $object->getGitCommit()) {
-            $data['GitCommit'] = $object->getGitCommit();
+        if ($data->isInitialized('gitCommit') && null !== $data->getGitCommit()) {
+            $dataArray['GitCommit'] = $data->getGitCommit();
         }
-        if ($object->isInitialized('goVersion') && null !== $object->getGoVersion()) {
-            $data['GoVersion'] = $object->getGoVersion();
+        if ($data->isInitialized('goVersion') && null !== $data->getGoVersion()) {
+            $dataArray['GoVersion'] = $data->getGoVersion();
         }
-        if ($object->isInitialized('os') && null !== $object->getOs()) {
-            $data['Os'] = $object->getOs();
+        if ($data->isInitialized('os') && null !== $data->getOs()) {
+            $dataArray['Os'] = $data->getOs();
         }
-        if ($object->isInitialized('arch') && null !== $object->getArch()) {
-            $data['Arch'] = $object->getArch();
+        if ($data->isInitialized('arch') && null !== $data->getArch()) {
+            $dataArray['Arch'] = $data->getArch();
         }
-        if ($object->isInitialized('kernelVersion') && null !== $object->getKernelVersion()) {
-            $data['KernelVersion'] = $object->getKernelVersion();
+        if ($data->isInitialized('kernelVersion') && null !== $data->getKernelVersion()) {
+            $dataArray['KernelVersion'] = $data->getKernelVersion();
         }
-        if ($object->isInitialized('experimental') && null !== $object->getExperimental()) {
-            $data['Experimental'] = $object->getExperimental();
+        if ($data->isInitialized('experimental') && null !== $data->getExperimental()) {
+            $dataArray['Experimental'] = $data->getExperimental();
         }
-        if ($object->isInitialized('buildTime') && null !== $object->getBuildTime()) {
-            $data['BuildTime'] = $object->getBuildTime();
+        if ($data->isInitialized('buildTime') && null !== $data->getBuildTime()) {
+            $dataArray['BuildTime'] = $data->getBuildTime();
         }
-        foreach ($object as $key => $value_1) {
+        foreach ($data->additionalPropertyEntries() as $key => $value_1) {
             if (preg_match('/.*/', (string) $key)) {
-                $data[$key] = $value_1;
+                $dataArray[$key] = $value_1;
             }
         }
 
-        return $data;
+        return $dataArray;
     }
 
-    public function getSupportedTypes(string $format = null): array
+    public function getSupportedTypes(?string $format = null): array
     {
-        return ['Docker\\API\\Model\\SystemVersion' => false];
+        return [\Docker\API\Model\SystemVersion::class => false];
     }
 }

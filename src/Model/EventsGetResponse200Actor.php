@@ -4,8 +4,12 @@ declare(strict_types=1);
 
 namespace Docker\API\Model;
 
-class EventsGetResponse200Actor extends \ArrayObject
+use Docker\API\Runtime\AdditionalAndPatternProperties;
+use Docker\API\Runtime\AdditionalPropertiesInterface;
+
+class EventsGetResponse200Actor implements AdditionalPropertiesInterface
 {
+    use AdditionalAndPatternProperties;
     /**
      * @var array
      */
@@ -68,5 +72,10 @@ class EventsGetResponse200Actor extends \ArrayObject
         $this->attributes = $attributes;
 
         return $this;
+    }
+
+    public function definedProperties(): array
+    {
+        return ['iD' => ['ID', 'getID', 'setID'], 'attributes' => ['Attributes', 'getAttributes', 'setAttributes']];
     }
 }

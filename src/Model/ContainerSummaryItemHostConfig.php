@@ -4,8 +4,12 @@ declare(strict_types=1);
 
 namespace Docker\API\Model;
 
-class ContainerSummaryItemHostConfig extends \ArrayObject
+use Docker\API\Runtime\AdditionalAndPatternProperties;
+use Docker\API\Runtime\AdditionalPropertiesInterface;
+
+class ContainerSummaryItemHostConfig implements AdditionalPropertiesInterface
 {
+    use AdditionalAndPatternProperties;
     /**
      * @var array
      */
@@ -31,5 +35,10 @@ class ContainerSummaryItemHostConfig extends \ArrayObject
         $this->networkMode = $networkMode;
 
         return $this;
+    }
+
+    public function definedProperties(): array
+    {
+        return ['networkMode' => ['NetworkMode', 'getNetworkMode', 'setNetworkMode']];
     }
 }

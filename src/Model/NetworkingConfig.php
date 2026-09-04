@@ -4,8 +4,12 @@ declare(strict_types=1);
 
 namespace Docker\API\Model;
 
-class NetworkingConfig extends \ArrayObject
+use Docker\API\Runtime\AdditionalAndPatternProperties;
+use Docker\API\Runtime\AdditionalPropertiesInterface;
+
+class NetworkingConfig implements AdditionalPropertiesInterface
 {
+    use AdditionalAndPatternProperties;
     /**
      * @var array
      */
@@ -43,5 +47,10 @@ class NetworkingConfig extends \ArrayObject
         $this->endpointsConfig = $endpointsConfig;
 
         return $this;
+    }
+
+    public function definedProperties(): array
+    {
+        return ['endpointsConfig' => ['EndpointsConfig', 'getEndpointsConfig', 'setEndpointsConfig']];
     }
 }

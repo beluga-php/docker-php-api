@@ -4,8 +4,12 @@ declare(strict_types=1);
 
 namespace Docker\API\Model;
 
-class VolumeUsageData extends \ArrayObject
+use Docker\API\Runtime\AdditionalAndPatternProperties;
+use Docker\API\Runtime\AdditionalPropertiesInterface;
+
+class VolumeUsageData implements AdditionalPropertiesInterface
 {
+    use AdditionalAndPatternProperties;
     /**
      * @var array
      */
@@ -76,5 +80,10 @@ class VolumeUsageData extends \ArrayObject
         $this->refCount = $refCount;
 
         return $this;
+    }
+
+    public function definedProperties(): array
+    {
+        return ['size' => ['Size', 'getSize', 'setSize'], 'refCount' => ['RefCount', 'getRefCount', 'setRefCount']];
     }
 }

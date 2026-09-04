@@ -4,8 +4,12 @@ declare(strict_types=1);
 
 namespace Docker\API\Model;
 
-class DistributionNameJsonGetResponse200Descriptor extends \ArrayObject
+use Docker\API\Runtime\AdditionalAndPatternProperties;
+use Docker\API\Runtime\AdditionalPropertiesInterface;
+
+class DistributionNameJsonGetResponse200Descriptor implements AdditionalPropertiesInterface
 {
+    use AdditionalAndPatternProperties;
     /**
      * @var array
      */
@@ -28,7 +32,7 @@ class DistributionNameJsonGetResponse200Descriptor extends \ArrayObject
      */
     protected $digest;
     /**
-     * @var string[]|null
+     * @var list<string>|null
      */
     protected $uRLs;
 
@@ -72,7 +76,7 @@ class DistributionNameJsonGetResponse200Descriptor extends \ArrayObject
     }
 
     /**
-     * @return string[]|null
+     * @return list<string>|null
      */
     public function getURLs(): ?array
     {
@@ -80,7 +84,7 @@ class DistributionNameJsonGetResponse200Descriptor extends \ArrayObject
     }
 
     /**
-     * @param string[]|null $uRLs
+     * @param list<string>|null $uRLs
      */
     public function setURLs(?array $uRLs): self
     {
@@ -88,5 +92,10 @@ class DistributionNameJsonGetResponse200Descriptor extends \ArrayObject
         $this->uRLs = $uRLs;
 
         return $this;
+    }
+
+    public function definedProperties(): array
+    {
+        return ['mediaType' => ['MediaType', 'getMediaType', 'setMediaType'], 'size' => ['Size', 'getSize', 'setSize'], 'digest' => ['Digest', 'getDigest', 'setDigest'], 'uRLs' => ['URLs', 'getURLs', 'setURLs']];
     }
 }

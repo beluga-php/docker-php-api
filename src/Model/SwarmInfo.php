@@ -4,8 +4,12 @@ declare(strict_types=1);
 
 namespace Docker\API\Model;
 
-class SwarmInfo extends \ArrayObject
+use Docker\API\Runtime\AdditionalAndPatternProperties;
+use Docker\API\Runtime\AdditionalPropertiesInterface;
+
+class SwarmInfo implements AdditionalPropertiesInterface
 {
+    use AdditionalAndPatternProperties;
     /**
      * @var array
      */
@@ -45,7 +49,7 @@ class SwarmInfo extends \ArrayObject
     /**
      * List of ID's and addresses of other managers in the swarm.
      *
-     * @var PeerNode[]|null
+     * @var list<PeerNode>|null
      */
     protected $remoteManagers;
     /**
@@ -156,7 +160,7 @@ class SwarmInfo extends \ArrayObject
     /**
      * List of ID's and addresses of other managers in the swarm.
      *
-     * @return PeerNode[]|null
+     * @return list<PeerNode>|null
      */
     public function getRemoteManagers(): ?array
     {
@@ -166,7 +170,7 @@ class SwarmInfo extends \ArrayObject
     /**
      * List of ID's and addresses of other managers in the swarm.
      *
-     * @param PeerNode[]|null $remoteManagers
+     * @param list<PeerNode>|null $remoteManagers
      */
     public function setRemoteManagers(?array $remoteManagers): self
     {
@@ -233,5 +237,10 @@ class SwarmInfo extends \ArrayObject
         $this->cluster = $cluster;
 
         return $this;
+    }
+
+    public function definedProperties(): array
+    {
+        return ['nodeID' => ['NodeID', 'getNodeID', 'setNodeID'], 'nodeAddr' => ['NodeAddr', 'getNodeAddr', 'setNodeAddr'], 'localNodeState' => ['LocalNodeState', 'getLocalNodeState', 'setLocalNodeState'], 'controlAvailable' => ['ControlAvailable', 'getControlAvailable', 'setControlAvailable'], 'error' => ['Error', 'getError', 'setError'], 'remoteManagers' => ['RemoteManagers', 'getRemoteManagers', 'setRemoteManagers'], 'nodes' => ['Nodes', 'getNodes', 'setNodes'], 'managers' => ['Managers', 'getManagers', 'setManagers'], 'cluster' => ['Cluster', 'getCluster', 'setCluster']];
     }
 }

@@ -4,8 +4,12 @@ declare(strict_types=1);
 
 namespace Docker\API\Model;
 
-class VolumesCreatePostBody extends \ArrayObject
+use Docker\API\Runtime\AdditionalAndPatternProperties;
+use Docker\API\Runtime\AdditionalPropertiesInterface;
+
+class VolumesCreatePostBody implements AdditionalPropertiesInterface
 {
+    use AdditionalAndPatternProperties;
     /**
      * @var array
      */
@@ -125,5 +129,10 @@ class VolumesCreatePostBody extends \ArrayObject
         $this->labels = $labels;
 
         return $this;
+    }
+
+    public function definedProperties(): array
+    {
+        return ['name' => ['Name', 'getName', 'setName'], 'driver' => ['Driver', 'getDriver', 'setDriver'], 'driverOpts' => ['DriverOpts', 'getDriverOpts', 'setDriverOpts'], 'labels' => ['Labels', 'getLabels', 'setLabels']];
     }
 }

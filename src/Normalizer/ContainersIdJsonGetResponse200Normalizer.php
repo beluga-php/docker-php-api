@@ -21,45 +21,48 @@ class ContainersIdJsonGetResponse200Normalizer implements DenormalizerInterface,
     use NormalizerAwareTrait;
     use ValidatorTrait;
 
-    public function supportsDenormalization($data, $type, $format = null, array $context = []): bool
+    public function supportsDenormalization(mixed $data, string $type, ?string $format = null, array $context = []): bool
     {
-        return 'Docker\\API\\Model\\ContainersIdJsonGetResponse200' === $type;
+        return \Docker\API\Model\ContainersIdJsonGetResponse200::class === $type;
     }
 
-    public function supportsNormalization($data, $format = null, array $context = []): bool
+    public function supportsNormalization(mixed $data, ?string $format = null, array $context = []): bool
     {
-        return \is_object($data) && 'Docker\\API\\Model\\ContainersIdJsonGetResponse200' === $data::class;
+        return \is_object($data) && \Docker\API\Model\ContainersIdJsonGetResponse200::class === $data::class;
     }
 
-    public function denormalize($data, $class, $format = null, array $context = [])
+    public function denormalize(mixed $data, string $type, ?string $format = null, array $context = []): mixed
     {
-        if (isset($data['$ref'])) {
+        $object = new \Docker\API\Model\ContainersIdJsonGetResponse200();
+        if (null === $data || false === \is_array($data)) {
+            return $object;
+        }
+        if (isset($data['$ref']) && !isset($data['type']) && !isset($data['properties']) && !isset($data['allOf'])) {
             return new Reference($data['$ref'], $context['document-origin']);
         }
         if (isset($data['$recursiveRef'])) {
             return new Reference($data['$recursiveRef'], $context['document-origin']);
-        }
-        $object = new \Docker\API\Model\ContainersIdJsonGetResponse200();
-        if (null === $data || false === \is_array($data)) {
-            return $object;
         }
         if (\array_key_exists('Id', $data) && null !== $data['Id']) {
             $object->setId($data['Id']);
             unset($data['Id']);
         } elseif (\array_key_exists('Id', $data) && null === $data['Id']) {
             $object->setId(null);
+            unset($data['Id']);
         }
         if (\array_key_exists('Created', $data) && null !== $data['Created']) {
             $object->setCreated($data['Created']);
             unset($data['Created']);
         } elseif (\array_key_exists('Created', $data) && null === $data['Created']) {
             $object->setCreated(null);
+            unset($data['Created']);
         }
         if (\array_key_exists('Path', $data) && null !== $data['Path']) {
             $object->setPath($data['Path']);
             unset($data['Path']);
         } elseif (\array_key_exists('Path', $data) && null === $data['Path']) {
             $object->setPath(null);
+            unset($data['Path']);
         }
         if (\array_key_exists('Args', $data) && null !== $data['Args']) {
             $values = [];
@@ -70,84 +73,98 @@ class ContainersIdJsonGetResponse200Normalizer implements DenormalizerInterface,
             unset($data['Args']);
         } elseif (\array_key_exists('Args', $data) && null === $data['Args']) {
             $object->setArgs(null);
+            unset($data['Args']);
         }
         if (\array_key_exists('State', $data) && null !== $data['State']) {
-            $object->setState($this->denormalizer->denormalize($data['State'], 'Docker\\API\\Model\\ContainerState', 'json', $context));
+            $object->setState($this->denormalizer->denormalize($data['State'], \Docker\API\Model\ContainerState::class, 'json', $context));
             unset($data['State']);
         } elseif (\array_key_exists('State', $data) && null === $data['State']) {
             $object->setState(null);
+            unset($data['State']);
         }
         if (\array_key_exists('Image', $data) && null !== $data['Image']) {
             $object->setImage($data['Image']);
             unset($data['Image']);
         } elseif (\array_key_exists('Image', $data) && null === $data['Image']) {
             $object->setImage(null);
+            unset($data['Image']);
         }
         if (\array_key_exists('ResolvConfPath', $data) && null !== $data['ResolvConfPath']) {
             $object->setResolvConfPath($data['ResolvConfPath']);
             unset($data['ResolvConfPath']);
         } elseif (\array_key_exists('ResolvConfPath', $data) && null === $data['ResolvConfPath']) {
             $object->setResolvConfPath(null);
+            unset($data['ResolvConfPath']);
         }
         if (\array_key_exists('HostnamePath', $data) && null !== $data['HostnamePath']) {
             $object->setHostnamePath($data['HostnamePath']);
             unset($data['HostnamePath']);
         } elseif (\array_key_exists('HostnamePath', $data) && null === $data['HostnamePath']) {
             $object->setHostnamePath(null);
+            unset($data['HostnamePath']);
         }
         if (\array_key_exists('HostsPath', $data) && null !== $data['HostsPath']) {
             $object->setHostsPath($data['HostsPath']);
             unset($data['HostsPath']);
         } elseif (\array_key_exists('HostsPath', $data) && null === $data['HostsPath']) {
             $object->setHostsPath(null);
+            unset($data['HostsPath']);
         }
         if (\array_key_exists('LogPath', $data) && null !== $data['LogPath']) {
             $object->setLogPath($data['LogPath']);
             unset($data['LogPath']);
         } elseif (\array_key_exists('LogPath', $data) && null === $data['LogPath']) {
             $object->setLogPath(null);
+            unset($data['LogPath']);
         }
         if (\array_key_exists('Name', $data) && null !== $data['Name']) {
             $object->setName($data['Name']);
             unset($data['Name']);
         } elseif (\array_key_exists('Name', $data) && null === $data['Name']) {
             $object->setName(null);
+            unset($data['Name']);
         }
         if (\array_key_exists('RestartCount', $data) && null !== $data['RestartCount']) {
             $object->setRestartCount($data['RestartCount']);
             unset($data['RestartCount']);
         } elseif (\array_key_exists('RestartCount', $data) && null === $data['RestartCount']) {
             $object->setRestartCount(null);
+            unset($data['RestartCount']);
         }
         if (\array_key_exists('Driver', $data) && null !== $data['Driver']) {
             $object->setDriver($data['Driver']);
             unset($data['Driver']);
         } elseif (\array_key_exists('Driver', $data) && null === $data['Driver']) {
             $object->setDriver(null);
+            unset($data['Driver']);
         }
         if (\array_key_exists('Platform', $data) && null !== $data['Platform']) {
             $object->setPlatform($data['Platform']);
             unset($data['Platform']);
         } elseif (\array_key_exists('Platform', $data) && null === $data['Platform']) {
             $object->setPlatform(null);
+            unset($data['Platform']);
         }
         if (\array_key_exists('MountLabel', $data) && null !== $data['MountLabel']) {
             $object->setMountLabel($data['MountLabel']);
             unset($data['MountLabel']);
         } elseif (\array_key_exists('MountLabel', $data) && null === $data['MountLabel']) {
             $object->setMountLabel(null);
+            unset($data['MountLabel']);
         }
         if (\array_key_exists('ProcessLabel', $data) && null !== $data['ProcessLabel']) {
             $object->setProcessLabel($data['ProcessLabel']);
             unset($data['ProcessLabel']);
         } elseif (\array_key_exists('ProcessLabel', $data) && null === $data['ProcessLabel']) {
             $object->setProcessLabel(null);
+            unset($data['ProcessLabel']);
         }
         if (\array_key_exists('AppArmorProfile', $data) && null !== $data['AppArmorProfile']) {
             $object->setAppArmorProfile($data['AppArmorProfile']);
             unset($data['AppArmorProfile']);
         } elseif (\array_key_exists('AppArmorProfile', $data) && null === $data['AppArmorProfile']) {
             $object->setAppArmorProfile(null);
+            unset($data['AppArmorProfile']);
         }
         if (\array_key_exists('ExecIDs', $data) && null !== $data['ExecIDs']) {
             $values_1 = [];
@@ -158,52 +175,60 @@ class ContainersIdJsonGetResponse200Normalizer implements DenormalizerInterface,
             unset($data['ExecIDs']);
         } elseif (\array_key_exists('ExecIDs', $data) && null === $data['ExecIDs']) {
             $object->setExecIDs(null);
+            unset($data['ExecIDs']);
         }
         if (\array_key_exists('HostConfig', $data) && null !== $data['HostConfig']) {
-            $object->setHostConfig($this->denormalizer->denormalize($data['HostConfig'], 'Docker\\API\\Model\\HostConfig', 'json', $context));
+            $object->setHostConfig($this->denormalizer->denormalize($data['HostConfig'], \Docker\API\Model\HostConfig::class, 'json', $context));
             unset($data['HostConfig']);
         } elseif (\array_key_exists('HostConfig', $data) && null === $data['HostConfig']) {
             $object->setHostConfig(null);
+            unset($data['HostConfig']);
         }
         if (\array_key_exists('GraphDriver', $data) && null !== $data['GraphDriver']) {
-            $object->setGraphDriver($this->denormalizer->denormalize($data['GraphDriver'], 'Docker\\API\\Model\\GraphDriverData', 'json', $context));
+            $object->setGraphDriver($this->denormalizer->denormalize($data['GraphDriver'], \Docker\API\Model\GraphDriverData::class, 'json', $context));
             unset($data['GraphDriver']);
         } elseif (\array_key_exists('GraphDriver', $data) && null === $data['GraphDriver']) {
             $object->setGraphDriver(null);
+            unset($data['GraphDriver']);
         }
         if (\array_key_exists('SizeRw', $data) && null !== $data['SizeRw']) {
             $object->setSizeRw($data['SizeRw']);
             unset($data['SizeRw']);
         } elseif (\array_key_exists('SizeRw', $data) && null === $data['SizeRw']) {
             $object->setSizeRw(null);
+            unset($data['SizeRw']);
         }
         if (\array_key_exists('SizeRootFs', $data) && null !== $data['SizeRootFs']) {
             $object->setSizeRootFs($data['SizeRootFs']);
             unset($data['SizeRootFs']);
         } elseif (\array_key_exists('SizeRootFs', $data) && null === $data['SizeRootFs']) {
             $object->setSizeRootFs(null);
+            unset($data['SizeRootFs']);
         }
         if (\array_key_exists('Mounts', $data) && null !== $data['Mounts']) {
             $values_2 = [];
             foreach ($data['Mounts'] as $value_2) {
-                $values_2[] = $this->denormalizer->denormalize($value_2, 'Docker\\API\\Model\\MountPoint', 'json', $context);
+                $values_2[] = $this->denormalizer->denormalize($value_2, \Docker\API\Model\MountPoint::class, 'json', $context);
             }
             $object->setMounts($values_2);
             unset($data['Mounts']);
         } elseif (\array_key_exists('Mounts', $data) && null === $data['Mounts']) {
             $object->setMounts(null);
+            unset($data['Mounts']);
         }
         if (\array_key_exists('Config', $data) && null !== $data['Config']) {
-            $object->setConfig($this->denormalizer->denormalize($data['Config'], 'Docker\\API\\Model\\ContainerConfig', 'json', $context));
+            $object->setConfig($this->denormalizer->denormalize($data['Config'], \Docker\API\Model\ContainerConfig::class, 'json', $context));
             unset($data['Config']);
         } elseif (\array_key_exists('Config', $data) && null === $data['Config']) {
             $object->setConfig(null);
+            unset($data['Config']);
         }
         if (\array_key_exists('NetworkSettings', $data) && null !== $data['NetworkSettings']) {
-            $object->setNetworkSettings($this->denormalizer->denormalize($data['NetworkSettings'], 'Docker\\API\\Model\\NetworkSettings', 'json', $context));
+            $object->setNetworkSettings($this->denormalizer->denormalize($data['NetworkSettings'], \Docker\API\Model\NetworkSettings::class, 'json', $context));
             unset($data['NetworkSettings']);
         } elseif (\array_key_exists('NetworkSettings', $data) && null === $data['NetworkSettings']) {
             $object->setNetworkSettings(null);
+            unset($data['NetworkSettings']);
         }
         foreach ($data as $key => $value_3) {
             if (preg_match('/.*/', (string) $key)) {
@@ -214,110 +239,107 @@ class ContainersIdJsonGetResponse200Normalizer implements DenormalizerInterface,
         return $object;
     }
 
-    /**
-     * @return array|string|int|float|bool|\ArrayObject|null
-     */
-    public function normalize($object, $format = null, array $context = [])
+    public function normalize(mixed $data, ?string $format = null, array $context = []): array|string|int|float|bool|\ArrayObject|null
     {
-        $data = [];
-        if ($object->isInitialized('id') && null !== $object->getId()) {
-            $data['Id'] = $object->getId();
+        $dataArray = [];
+        if ($data->isInitialized('id') && null !== $data->getId()) {
+            $dataArray['Id'] = $data->getId();
         }
-        if ($object->isInitialized('created') && null !== $object->getCreated()) {
-            $data['Created'] = $object->getCreated();
+        if ($data->isInitialized('created') && null !== $data->getCreated()) {
+            $dataArray['Created'] = $data->getCreated();
         }
-        if ($object->isInitialized('path') && null !== $object->getPath()) {
-            $data['Path'] = $object->getPath();
+        if ($data->isInitialized('path') && null !== $data->getPath()) {
+            $dataArray['Path'] = $data->getPath();
         }
-        if ($object->isInitialized('args') && null !== $object->getArgs()) {
+        if ($data->isInitialized('args') && null !== $data->getArgs()) {
             $values = [];
-            foreach ($object->getArgs() as $value) {
+            foreach ($data->getArgs() as $value) {
                 $values[] = $value;
             }
-            $data['Args'] = $values;
+            $dataArray['Args'] = $values;
         }
-        if ($object->isInitialized('state') && null !== $object->getState()) {
-            $data['State'] = null === $object->getState() ? null : new \ArrayObject($this->normalizer->normalize($object->getState(), 'json', $context), \ArrayObject::ARRAY_AS_PROPS);
+        if ($data->isInitialized('state') && null !== $data->getState()) {
+            $dataArray['State'] = null === $data->getState() ? null : new \Docker\API\Runtime\JsonObject($this->normalizer->normalize($data->getState(), 'json', $context));
         }
-        if ($object->isInitialized('image') && null !== $object->getImage()) {
-            $data['Image'] = $object->getImage();
+        if ($data->isInitialized('image') && null !== $data->getImage()) {
+            $dataArray['Image'] = $data->getImage();
         }
-        if ($object->isInitialized('resolvConfPath') && null !== $object->getResolvConfPath()) {
-            $data['ResolvConfPath'] = $object->getResolvConfPath();
+        if ($data->isInitialized('resolvConfPath') && null !== $data->getResolvConfPath()) {
+            $dataArray['ResolvConfPath'] = $data->getResolvConfPath();
         }
-        if ($object->isInitialized('hostnamePath') && null !== $object->getHostnamePath()) {
-            $data['HostnamePath'] = $object->getHostnamePath();
+        if ($data->isInitialized('hostnamePath') && null !== $data->getHostnamePath()) {
+            $dataArray['HostnamePath'] = $data->getHostnamePath();
         }
-        if ($object->isInitialized('hostsPath') && null !== $object->getHostsPath()) {
-            $data['HostsPath'] = $object->getHostsPath();
+        if ($data->isInitialized('hostsPath') && null !== $data->getHostsPath()) {
+            $dataArray['HostsPath'] = $data->getHostsPath();
         }
-        if ($object->isInitialized('logPath') && null !== $object->getLogPath()) {
-            $data['LogPath'] = $object->getLogPath();
+        if ($data->isInitialized('logPath') && null !== $data->getLogPath()) {
+            $dataArray['LogPath'] = $data->getLogPath();
         }
-        if ($object->isInitialized('name') && null !== $object->getName()) {
-            $data['Name'] = $object->getName();
+        if ($data->isInitialized('name') && null !== $data->getName()) {
+            $dataArray['Name'] = $data->getName();
         }
-        if ($object->isInitialized('restartCount') && null !== $object->getRestartCount()) {
-            $data['RestartCount'] = $object->getRestartCount();
+        if ($data->isInitialized('restartCount') && null !== $data->getRestartCount()) {
+            $dataArray['RestartCount'] = $data->getRestartCount();
         }
-        if ($object->isInitialized('driver') && null !== $object->getDriver()) {
-            $data['Driver'] = $object->getDriver();
+        if ($data->isInitialized('driver') && null !== $data->getDriver()) {
+            $dataArray['Driver'] = $data->getDriver();
         }
-        if ($object->isInitialized('platform') && null !== $object->getPlatform()) {
-            $data['Platform'] = $object->getPlatform();
+        if ($data->isInitialized('platform') && null !== $data->getPlatform()) {
+            $dataArray['Platform'] = $data->getPlatform();
         }
-        if ($object->isInitialized('mountLabel') && null !== $object->getMountLabel()) {
-            $data['MountLabel'] = $object->getMountLabel();
+        if ($data->isInitialized('mountLabel') && null !== $data->getMountLabel()) {
+            $dataArray['MountLabel'] = $data->getMountLabel();
         }
-        if ($object->isInitialized('processLabel') && null !== $object->getProcessLabel()) {
-            $data['ProcessLabel'] = $object->getProcessLabel();
+        if ($data->isInitialized('processLabel') && null !== $data->getProcessLabel()) {
+            $dataArray['ProcessLabel'] = $data->getProcessLabel();
         }
-        if ($object->isInitialized('appArmorProfile') && null !== $object->getAppArmorProfile()) {
-            $data['AppArmorProfile'] = $object->getAppArmorProfile();
+        if ($data->isInitialized('appArmorProfile') && null !== $data->getAppArmorProfile()) {
+            $dataArray['AppArmorProfile'] = $data->getAppArmorProfile();
         }
-        if ($object->isInitialized('execIDs') && null !== $object->getExecIDs()) {
+        if ($data->isInitialized('execIDs') && null !== $data->getExecIDs()) {
             $values_1 = [];
-            foreach ($object->getExecIDs() as $value_1) {
+            foreach ($data->getExecIDs() as $value_1) {
                 $values_1[] = $value_1;
             }
-            $data['ExecIDs'] = $values_1;
+            $dataArray['ExecIDs'] = $values_1;
         }
-        if ($object->isInitialized('hostConfig') && null !== $object->getHostConfig()) {
-            $data['HostConfig'] = null === $object->getHostConfig() ? null : new \ArrayObject($this->normalizer->normalize($object->getHostConfig(), 'json', $context), \ArrayObject::ARRAY_AS_PROPS);
+        if ($data->isInitialized('hostConfig') && null !== $data->getHostConfig()) {
+            $dataArray['HostConfig'] = null === $data->getHostConfig() ? null : new \Docker\API\Runtime\JsonObject($this->normalizer->normalize($data->getHostConfig(), 'json', $context));
         }
-        if ($object->isInitialized('graphDriver') && null !== $object->getGraphDriver()) {
-            $data['GraphDriver'] = null === $object->getGraphDriver() ? null : new \ArrayObject($this->normalizer->normalize($object->getGraphDriver(), 'json', $context), \ArrayObject::ARRAY_AS_PROPS);
+        if ($data->isInitialized('graphDriver') && null !== $data->getGraphDriver()) {
+            $dataArray['GraphDriver'] = null === $data->getGraphDriver() ? null : new \Docker\API\Runtime\JsonObject($this->normalizer->normalize($data->getGraphDriver(), 'json', $context));
         }
-        if ($object->isInitialized('sizeRw') && null !== $object->getSizeRw()) {
-            $data['SizeRw'] = $object->getSizeRw();
+        if ($data->isInitialized('sizeRw') && null !== $data->getSizeRw()) {
+            $dataArray['SizeRw'] = $data->getSizeRw();
         }
-        if ($object->isInitialized('sizeRootFs') && null !== $object->getSizeRootFs()) {
-            $data['SizeRootFs'] = $object->getSizeRootFs();
+        if ($data->isInitialized('sizeRootFs') && null !== $data->getSizeRootFs()) {
+            $dataArray['SizeRootFs'] = $data->getSizeRootFs();
         }
-        if ($object->isInitialized('mounts') && null !== $object->getMounts()) {
+        if ($data->isInitialized('mounts') && null !== $data->getMounts()) {
             $values_2 = [];
-            foreach ($object->getMounts() as $value_2) {
-                $values_2[] = null === $value_2 ? null : new \ArrayObject($this->normalizer->normalize($value_2, 'json', $context), \ArrayObject::ARRAY_AS_PROPS);
+            foreach ($data->getMounts() as $value_2) {
+                $values_2[] = null === $value_2 ? null : new \Docker\API\Runtime\JsonObject($this->normalizer->normalize($value_2, 'json', $context));
             }
-            $data['Mounts'] = $values_2;
+            $dataArray['Mounts'] = $values_2;
         }
-        if ($object->isInitialized('config') && null !== $object->getConfig()) {
-            $data['Config'] = null === $object->getConfig() ? null : new \ArrayObject($this->normalizer->normalize($object->getConfig(), 'json', $context), \ArrayObject::ARRAY_AS_PROPS);
+        if ($data->isInitialized('config') && null !== $data->getConfig()) {
+            $dataArray['Config'] = null === $data->getConfig() ? null : new \Docker\API\Runtime\JsonObject($this->normalizer->normalize($data->getConfig(), 'json', $context));
         }
-        if ($object->isInitialized('networkSettings') && null !== $object->getNetworkSettings()) {
-            $data['NetworkSettings'] = null === $object->getNetworkSettings() ? null : new \ArrayObject($this->normalizer->normalize($object->getNetworkSettings(), 'json', $context), \ArrayObject::ARRAY_AS_PROPS);
+        if ($data->isInitialized('networkSettings') && null !== $data->getNetworkSettings()) {
+            $dataArray['NetworkSettings'] = null === $data->getNetworkSettings() ? null : new \Docker\API\Runtime\JsonObject($this->normalizer->normalize($data->getNetworkSettings(), 'json', $context));
         }
-        foreach ($object as $key => $value_3) {
+        foreach ($data->additionalPropertyEntries() as $key => $value_3) {
             if (preg_match('/.*/', (string) $key)) {
-                $data[$key] = $value_3;
+                $dataArray[$key] = $value_3;
             }
         }
 
-        return $data;
+        return $dataArray;
     }
 
-    public function getSupportedTypes(string $format = null): array
+    public function getSupportedTypes(?string $format = null): array
     {
-        return ['Docker\\API\\Model\\ContainersIdJsonGetResponse200' => false];
+        return [\Docker\API\Model\ContainersIdJsonGetResponse200::class => false];
     }
 }

@@ -9,10 +9,9 @@ class SecretList extends \Docker\API\Runtime\Client\BaseEndpoint implements \Doc
     use \Docker\API\Runtime\Client\EndpointTrait;
 
     /**
-     * @param array $queryParameters {
-     *
-     * @var string $filters A JSON encoded value of the filters (a `map[string][]string`) to
-     *             process on the secrets list.
+     * @param array{
+     *    "filters"?: string, //A JSON encoded value of the filters (a `map[string][]string`) to
+     * process on the secrets list.
      *
      * Available filters:
      *
@@ -20,8 +19,7 @@ class SecretList extends \Docker\API\Runtime\Client\BaseEndpoint implements \Doc
      * - `label=<key> or label=<key>=value`
      * - `name=<secret name>`
      * - `names=<secret name>`
-     *
-     * }
+     * } $queryParameters
      */
     public function __construct(array $queryParameters = [])
     {
@@ -65,18 +63,18 @@ class SecretList extends \Docker\API\Runtime\Client\BaseEndpoint implements \Doc
      *
      * @return \Docker\API\Model\Secret[]|null
      */
-    protected function transformResponseBody(\Psr\Http\Message\ResponseInterface $response, \Symfony\Component\Serializer\SerializerInterface $serializer, string $contentType = null)
+    protected function transformResponseBody(\Psr\Http\Message\ResponseInterface $response, \Symfony\Component\Serializer\SerializerInterface $serializer, ?string $contentType = null)
     {
         $status = $response->getStatusCode();
         $body = (string) $response->getBody();
-        if ((null === $contentType) === false && (200 === $status && false !== mb_strpos($contentType, 'application/json'))) {
-            return $serializer->deserialize($body, 'Docker\\API\\Model\\Secret[]', 'json');
+        if ((null === $contentType) === false && (200 === $status && false !== stripos(strtolower($contentType), 'application/json'))) {
+            return $serializer->deserialize($body, 'Docker\API\Model\Secret[]', 'json');
         }
-        if ((null === $contentType) === false && (500 === $status && false !== mb_strpos($contentType, 'application/json'))) {
-            throw new \Docker\API\Exception\SecretListInternalServerErrorException($serializer->deserialize($body, 'Docker\\API\\Model\\ErrorResponse', 'json'), $response);
+        if ((null === $contentType) === false && (500 === $status && false !== stripos(strtolower($contentType), 'application/json'))) {
+            throw new \Docker\API\Exception\SecretListInternalServerErrorException($serializer->deserialize($body, 'Docker\API\Model\ErrorResponse', 'json'), $response);
         }
-        if ((null === $contentType) === false && (503 === $status && false !== mb_strpos($contentType, 'application/json'))) {
-            throw new \Docker\API\Exception\SecretListServiceUnavailableException($serializer->deserialize($body, 'Docker\\API\\Model\\ErrorResponse', 'json'), $response);
+        if ((null === $contentType) === false && (503 === $status && false !== stripos(strtolower($contentType), 'application/json'))) {
+            throw new \Docker\API\Exception\SecretListServiceUnavailableException($serializer->deserialize($body, 'Docker\API\Model\ErrorResponse', 'json'), $response);
         }
     }
 

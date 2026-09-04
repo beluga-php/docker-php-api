@@ -21,37 +21,38 @@ class PluginSettingsNormalizer implements DenormalizerInterface, NormalizerInter
     use NormalizerAwareTrait;
     use ValidatorTrait;
 
-    public function supportsDenormalization($data, $type, $format = null, array $context = []): bool
+    public function supportsDenormalization(mixed $data, string $type, ?string $format = null, array $context = []): bool
     {
-        return 'Docker\\API\\Model\\PluginSettings' === $type;
+        return \Docker\API\Model\PluginSettings::class === $type;
     }
 
-    public function supportsNormalization($data, $format = null, array $context = []): bool
+    public function supportsNormalization(mixed $data, ?string $format = null, array $context = []): bool
     {
-        return \is_object($data) && 'Docker\\API\\Model\\PluginSettings' === $data::class;
+        return \is_object($data) && \Docker\API\Model\PluginSettings::class === $data::class;
     }
 
-    public function denormalize($data, $class, $format = null, array $context = [])
+    public function denormalize(mixed $data, string $type, ?string $format = null, array $context = []): mixed
     {
-        if (isset($data['$ref'])) {
+        $object = new \Docker\API\Model\PluginSettings();
+        if (null === $data || false === \is_array($data)) {
+            return $object;
+        }
+        if (isset($data['$ref']) && !isset($data['type']) && !isset($data['properties']) && !isset($data['allOf'])) {
             return new Reference($data['$ref'], $context['document-origin']);
         }
         if (isset($data['$recursiveRef'])) {
             return new Reference($data['$recursiveRef'], $context['document-origin']);
         }
-        $object = new \Docker\API\Model\PluginSettings();
-        if (null === $data || false === \is_array($data)) {
-            return $object;
-        }
         if (\array_key_exists('Mounts', $data) && null !== $data['Mounts']) {
             $values = [];
             foreach ($data['Mounts'] as $value) {
-                $values[] = $this->denormalizer->denormalize($value, 'Docker\\API\\Model\\PluginMount', 'json', $context);
+                $values[] = $this->denormalizer->denormalize($value, \Docker\API\Model\PluginMount::class, 'json', $context);
             }
             $object->setMounts($values);
             unset($data['Mounts']);
         } elseif (\array_key_exists('Mounts', $data) && null === $data['Mounts']) {
             $object->setMounts(null);
+            unset($data['Mounts']);
         }
         if (\array_key_exists('Env', $data) && null !== $data['Env']) {
             $values_1 = [];
@@ -62,6 +63,7 @@ class PluginSettingsNormalizer implements DenormalizerInterface, NormalizerInter
             unset($data['Env']);
         } elseif (\array_key_exists('Env', $data) && null === $data['Env']) {
             $object->setEnv(null);
+            unset($data['Env']);
         }
         if (\array_key_exists('Args', $data) && null !== $data['Args']) {
             $values_2 = [];
@@ -72,16 +74,18 @@ class PluginSettingsNormalizer implements DenormalizerInterface, NormalizerInter
             unset($data['Args']);
         } elseif (\array_key_exists('Args', $data) && null === $data['Args']) {
             $object->setArgs(null);
+            unset($data['Args']);
         }
         if (\array_key_exists('Devices', $data) && null !== $data['Devices']) {
             $values_3 = [];
             foreach ($data['Devices'] as $value_3) {
-                $values_3[] = $this->denormalizer->denormalize($value_3, 'Docker\\API\\Model\\PluginDevice', 'json', $context);
+                $values_3[] = $this->denormalizer->denormalize($value_3, \Docker\API\Model\PluginDevice::class, 'json', $context);
             }
             $object->setDevices($values_3);
             unset($data['Devices']);
         } elseif (\array_key_exists('Devices', $data) && null === $data['Devices']) {
             $object->setDevices(null);
+            unset($data['Devices']);
         }
         foreach ($data as $key => $value_4) {
             if (preg_match('/.*/', (string) $key)) {
@@ -92,43 +96,40 @@ class PluginSettingsNormalizer implements DenormalizerInterface, NormalizerInter
         return $object;
     }
 
-    /**
-     * @return array|string|int|float|bool|\ArrayObject|null
-     */
-    public function normalize($object, $format = null, array $context = [])
+    public function normalize(mixed $data, ?string $format = null, array $context = []): array|string|int|float|bool|\ArrayObject|null
     {
-        $data = [];
+        $dataArray = [];
         $values = [];
-        foreach ($object->getMounts() as $value) {
-            $values[] = null === $value ? null : new \ArrayObject($this->normalizer->normalize($value, 'json', $context), \ArrayObject::ARRAY_AS_PROPS);
+        foreach ($data->getMounts() as $value) {
+            $values[] = null === $value ? null : new \Docker\API\Runtime\JsonObject($this->normalizer->normalize($value, 'json', $context));
         }
-        $data['Mounts'] = $values;
+        $dataArray['Mounts'] = $values;
         $values_1 = [];
-        foreach ($object->getEnv() as $value_1) {
+        foreach ($data->getEnv() as $value_1) {
             $values_1[] = $value_1;
         }
-        $data['Env'] = $values_1;
+        $dataArray['Env'] = $values_1;
         $values_2 = [];
-        foreach ($object->getArgs() as $value_2) {
+        foreach ($data->getArgs() as $value_2) {
             $values_2[] = $value_2;
         }
-        $data['Args'] = $values_2;
+        $dataArray['Args'] = $values_2;
         $values_3 = [];
-        foreach ($object->getDevices() as $value_3) {
-            $values_3[] = null === $value_3 ? null : new \ArrayObject($this->normalizer->normalize($value_3, 'json', $context), \ArrayObject::ARRAY_AS_PROPS);
+        foreach ($data->getDevices() as $value_3) {
+            $values_3[] = null === $value_3 ? null : new \Docker\API\Runtime\JsonObject($this->normalizer->normalize($value_3, 'json', $context));
         }
-        $data['Devices'] = $values_3;
-        foreach ($object as $key => $value_4) {
+        $dataArray['Devices'] = $values_3;
+        foreach ($data->additionalPropertyEntries() as $key => $value_4) {
             if (preg_match('/.*/', (string) $key)) {
-                $data[$key] = $value_4;
+                $dataArray[$key] = $value_4;
             }
         }
 
-        return $data;
+        return $dataArray;
     }
 
-    public function getSupportedTypes(string $format = null): array
+    public function getSupportedTypes(?string $format = null): array
     {
-        return ['Docker\\API\\Model\\PluginSettings' => false];
+        return [\Docker\API\Model\PluginSettings::class => false];
     }
 }

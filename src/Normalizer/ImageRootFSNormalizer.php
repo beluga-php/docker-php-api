@@ -21,33 +21,34 @@ class ImageRootFSNormalizer implements DenormalizerInterface, NormalizerInterfac
     use NormalizerAwareTrait;
     use ValidatorTrait;
 
-    public function supportsDenormalization($data, $type, $format = null, array $context = []): bool
+    public function supportsDenormalization(mixed $data, string $type, ?string $format = null, array $context = []): bool
     {
-        return 'Docker\\API\\Model\\ImageRootFS' === $type;
+        return \Docker\API\Model\ImageRootFS::class === $type;
     }
 
-    public function supportsNormalization($data, $format = null, array $context = []): bool
+    public function supportsNormalization(mixed $data, ?string $format = null, array $context = []): bool
     {
-        return \is_object($data) && 'Docker\\API\\Model\\ImageRootFS' === $data::class;
+        return \is_object($data) && \Docker\API\Model\ImageRootFS::class === $data::class;
     }
 
-    public function denormalize($data, $class, $format = null, array $context = [])
+    public function denormalize(mixed $data, string $type, ?string $format = null, array $context = []): mixed
     {
-        if (isset($data['$ref'])) {
+        $object = new \Docker\API\Model\ImageRootFS();
+        if (null === $data || false === \is_array($data)) {
+            return $object;
+        }
+        if (isset($data['$ref']) && !isset($data['type']) && !isset($data['properties']) && !isset($data['allOf'])) {
             return new Reference($data['$ref'], $context['document-origin']);
         }
         if (isset($data['$recursiveRef'])) {
             return new Reference($data['$recursiveRef'], $context['document-origin']);
-        }
-        $object = new \Docker\API\Model\ImageRootFS();
-        if (null === $data || false === \is_array($data)) {
-            return $object;
         }
         if (\array_key_exists('Type', $data) && null !== $data['Type']) {
             $object->setType($data['Type']);
             unset($data['Type']);
         } elseif (\array_key_exists('Type', $data) && null === $data['Type']) {
             $object->setType(null);
+            unset($data['Type']);
         }
         if (\array_key_exists('Layers', $data) && null !== $data['Layers']) {
             $values = [];
@@ -58,12 +59,14 @@ class ImageRootFSNormalizer implements DenormalizerInterface, NormalizerInterfac
             unset($data['Layers']);
         } elseif (\array_key_exists('Layers', $data) && null === $data['Layers']) {
             $object->setLayers(null);
+            unset($data['Layers']);
         }
         if (\array_key_exists('BaseLayer', $data) && null !== $data['BaseLayer']) {
             $object->setBaseLayer($data['BaseLayer']);
             unset($data['BaseLayer']);
         } elseif (\array_key_exists('BaseLayer', $data) && null === $data['BaseLayer']) {
             $object->setBaseLayer(null);
+            unset($data['BaseLayer']);
         }
         foreach ($data as $key => $value_1) {
             if (preg_match('/.*/', (string) $key)) {
@@ -74,34 +77,31 @@ class ImageRootFSNormalizer implements DenormalizerInterface, NormalizerInterfac
         return $object;
     }
 
-    /**
-     * @return array|string|int|float|bool|\ArrayObject|null
-     */
-    public function normalize($object, $format = null, array $context = [])
+    public function normalize(mixed $data, ?string $format = null, array $context = []): array|string|int|float|bool|\ArrayObject|null
     {
-        $data = [];
-        $data['Type'] = $object->getType();
-        if ($object->isInitialized('layers') && null !== $object->getLayers()) {
+        $dataArray = [];
+        $dataArray['Type'] = $data->getType();
+        if ($data->isInitialized('layers') && null !== $data->getLayers()) {
             $values = [];
-            foreach ($object->getLayers() as $value) {
+            foreach ($data->getLayers() as $value) {
                 $values[] = $value;
             }
-            $data['Layers'] = $values;
+            $dataArray['Layers'] = $values;
         }
-        if ($object->isInitialized('baseLayer') && null !== $object->getBaseLayer()) {
-            $data['BaseLayer'] = $object->getBaseLayer();
+        if ($data->isInitialized('baseLayer') && null !== $data->getBaseLayer()) {
+            $dataArray['BaseLayer'] = $data->getBaseLayer();
         }
-        foreach ($object as $key => $value_1) {
+        foreach ($data->additionalPropertyEntries() as $key => $value_1) {
             if (preg_match('/.*/', (string) $key)) {
-                $data[$key] = $value_1;
+                $dataArray[$key] = $value_1;
             }
         }
 
-        return $data;
+        return $dataArray;
     }
 
-    public function getSupportedTypes(string $format = null): array
+    public function getSupportedTypes(?string $format = null): array
     {
-        return ['Docker\\API\\Model\\ImageRootFS' => false];
+        return [\Docker\API\Model\ImageRootFS::class => false];
     }
 }

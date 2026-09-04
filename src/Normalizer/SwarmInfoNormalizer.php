@@ -21,85 +21,97 @@ class SwarmInfoNormalizer implements DenormalizerInterface, NormalizerInterface,
     use NormalizerAwareTrait;
     use ValidatorTrait;
 
-    public function supportsDenormalization($data, $type, $format = null, array $context = []): bool
+    public function supportsDenormalization(mixed $data, string $type, ?string $format = null, array $context = []): bool
     {
-        return 'Docker\\API\\Model\\SwarmInfo' === $type;
+        return \Docker\API\Model\SwarmInfo::class === $type;
     }
 
-    public function supportsNormalization($data, $format = null, array $context = []): bool
+    public function supportsNormalization(mixed $data, ?string $format = null, array $context = []): bool
     {
-        return \is_object($data) && 'Docker\\API\\Model\\SwarmInfo' === $data::class;
+        return \is_object($data) && \Docker\API\Model\SwarmInfo::class === $data::class;
     }
 
-    public function denormalize($data, $class, $format = null, array $context = [])
+    public function denormalize(mixed $data, string $type, ?string $format = null, array $context = []): mixed
     {
-        if (isset($data['$ref'])) {
+        $object = new \Docker\API\Model\SwarmInfo();
+        if (null === $data || false === \is_array($data)) {
+            return $object;
+        }
+        if (isset($data['$ref']) && !isset($data['type']) && !isset($data['properties']) && !isset($data['allOf'])) {
             return new Reference($data['$ref'], $context['document-origin']);
         }
         if (isset($data['$recursiveRef'])) {
             return new Reference($data['$recursiveRef'], $context['document-origin']);
         }
-        $object = new \Docker\API\Model\SwarmInfo();
-        if (null === $data || false === \is_array($data)) {
-            return $object;
+        if (\array_key_exists('ControlAvailable', $data) && \is_int($data['ControlAvailable'])) {
+            $data['ControlAvailable'] = (bool) $data['ControlAvailable'];
         }
         if (\array_key_exists('NodeID', $data) && null !== $data['NodeID']) {
             $object->setNodeID($data['NodeID']);
             unset($data['NodeID']);
         } elseif (\array_key_exists('NodeID', $data) && null === $data['NodeID']) {
             $object->setNodeID(null);
+            unset($data['NodeID']);
         }
         if (\array_key_exists('NodeAddr', $data) && null !== $data['NodeAddr']) {
             $object->setNodeAddr($data['NodeAddr']);
             unset($data['NodeAddr']);
         } elseif (\array_key_exists('NodeAddr', $data) && null === $data['NodeAddr']) {
             $object->setNodeAddr(null);
+            unset($data['NodeAddr']);
         }
         if (\array_key_exists('LocalNodeState', $data) && null !== $data['LocalNodeState']) {
             $object->setLocalNodeState($data['LocalNodeState']);
             unset($data['LocalNodeState']);
         } elseif (\array_key_exists('LocalNodeState', $data) && null === $data['LocalNodeState']) {
             $object->setLocalNodeState(null);
+            unset($data['LocalNodeState']);
         }
         if (\array_key_exists('ControlAvailable', $data) && null !== $data['ControlAvailable']) {
             $object->setControlAvailable($data['ControlAvailable']);
             unset($data['ControlAvailable']);
         } elseif (\array_key_exists('ControlAvailable', $data) && null === $data['ControlAvailable']) {
             $object->setControlAvailable(null);
+            unset($data['ControlAvailable']);
         }
         if (\array_key_exists('Error', $data) && null !== $data['Error']) {
             $object->setError($data['Error']);
             unset($data['Error']);
         } elseif (\array_key_exists('Error', $data) && null === $data['Error']) {
             $object->setError(null);
+            unset($data['Error']);
         }
         if (\array_key_exists('RemoteManagers', $data) && null !== $data['RemoteManagers']) {
             $values = [];
             foreach ($data['RemoteManagers'] as $value) {
-                $values[] = $this->denormalizer->denormalize($value, 'Docker\\API\\Model\\PeerNode', 'json', $context);
+                $values[] = $this->denormalizer->denormalize($value, \Docker\API\Model\PeerNode::class, 'json', $context);
             }
             $object->setRemoteManagers($values);
             unset($data['RemoteManagers']);
         } elseif (\array_key_exists('RemoteManagers', $data) && null === $data['RemoteManagers']) {
             $object->setRemoteManagers(null);
+            unset($data['RemoteManagers']);
         }
         if (\array_key_exists('Nodes', $data) && null !== $data['Nodes']) {
             $object->setNodes($data['Nodes']);
             unset($data['Nodes']);
         } elseif (\array_key_exists('Nodes', $data) && null === $data['Nodes']) {
             $object->setNodes(null);
+            unset($data['Nodes']);
         }
         if (\array_key_exists('Managers', $data) && null !== $data['Managers']) {
             $object->setManagers($data['Managers']);
             unset($data['Managers']);
         } elseif (\array_key_exists('Managers', $data) && null === $data['Managers']) {
             $object->setManagers(null);
+            unset($data['Managers']);
         }
         if (\array_key_exists('Cluster', $data) && null !== $data['Cluster']) {
-            $object->setCluster($this->denormalizer->denormalize($data['Cluster'], 'Docker\\API\\Model\\ClusterInfo', 'json', $context));
+            $object->setCluster($this->denormalizer->denormalize($data['Cluster'], \Docker\API\Model\ClusterInfo::class, 'json', $context));
             unset($data['Cluster']);
         } elseif (\array_key_exists('Cluster', $data) && null === $data['Cluster']) {
             $object->setCluster(null);
+            unset($data['Cluster']);
         }
         foreach ($data as $key => $value_1) {
             if (preg_match('/.*/', (string) $key)) {
@@ -110,54 +122,51 @@ class SwarmInfoNormalizer implements DenormalizerInterface, NormalizerInterface,
         return $object;
     }
 
-    /**
-     * @return array|string|int|float|bool|\ArrayObject|null
-     */
-    public function normalize($object, $format = null, array $context = [])
+    public function normalize(mixed $data, ?string $format = null, array $context = []): array|string|int|float|bool|\ArrayObject|null
     {
-        $data = [];
-        if ($object->isInitialized('nodeID') && null !== $object->getNodeID()) {
-            $data['NodeID'] = $object->getNodeID();
+        $dataArray = [];
+        if ($data->isInitialized('nodeID') && null !== $data->getNodeID()) {
+            $dataArray['NodeID'] = $data->getNodeID();
         }
-        if ($object->isInitialized('nodeAddr') && null !== $object->getNodeAddr()) {
-            $data['NodeAddr'] = $object->getNodeAddr();
+        if ($data->isInitialized('nodeAddr') && null !== $data->getNodeAddr()) {
+            $dataArray['NodeAddr'] = $data->getNodeAddr();
         }
-        if ($object->isInitialized('localNodeState') && null !== $object->getLocalNodeState()) {
-            $data['LocalNodeState'] = $object->getLocalNodeState();
+        if ($data->isInitialized('localNodeState') && null !== $data->getLocalNodeState()) {
+            $dataArray['LocalNodeState'] = $data->getLocalNodeState();
         }
-        if ($object->isInitialized('controlAvailable') && null !== $object->getControlAvailable()) {
-            $data['ControlAvailable'] = $object->getControlAvailable();
+        if ($data->isInitialized('controlAvailable') && null !== $data->getControlAvailable()) {
+            $dataArray['ControlAvailable'] = $data->getControlAvailable();
         }
-        if ($object->isInitialized('error') && null !== $object->getError()) {
-            $data['Error'] = $object->getError();
+        if ($data->isInitialized('error') && null !== $data->getError()) {
+            $dataArray['Error'] = $data->getError();
         }
-        if ($object->isInitialized('remoteManagers') && null !== $object->getRemoteManagers()) {
+        if ($data->isInitialized('remoteManagers') && null !== $data->getRemoteManagers()) {
             $values = [];
-            foreach ($object->getRemoteManagers() as $value) {
-                $values[] = null === $value ? null : new \ArrayObject($this->normalizer->normalize($value, 'json', $context), \ArrayObject::ARRAY_AS_PROPS);
+            foreach ($data->getRemoteManagers() as $value) {
+                $values[] = null === $value ? null : new \Docker\API\Runtime\JsonObject($this->normalizer->normalize($value, 'json', $context));
             }
-            $data['RemoteManagers'] = $values;
+            $dataArray['RemoteManagers'] = $values;
         }
-        if ($object->isInitialized('nodes') && null !== $object->getNodes()) {
-            $data['Nodes'] = $object->getNodes();
+        if ($data->isInitialized('nodes') && null !== $data->getNodes()) {
+            $dataArray['Nodes'] = $data->getNodes();
         }
-        if ($object->isInitialized('managers') && null !== $object->getManagers()) {
-            $data['Managers'] = $object->getManagers();
+        if ($data->isInitialized('managers') && null !== $data->getManagers()) {
+            $dataArray['Managers'] = $data->getManagers();
         }
-        if ($object->isInitialized('cluster') && null !== $object->getCluster()) {
-            $data['Cluster'] = null === $object->getCluster() ? null : new \ArrayObject($this->normalizer->normalize($object->getCluster(), 'json', $context), \ArrayObject::ARRAY_AS_PROPS);
+        if ($data->isInitialized('cluster') && null !== $data->getCluster()) {
+            $dataArray['Cluster'] = null === $data->getCluster() ? null : new \Docker\API\Runtime\JsonObject($this->normalizer->normalize($data->getCluster(), 'json', $context));
         }
-        foreach ($object as $key => $value_1) {
+        foreach ($data->additionalPropertyEntries() as $key => $value_1) {
             if (preg_match('/.*/', (string) $key)) {
-                $data[$key] = $value_1;
+                $dataArray[$key] = $value_1;
             }
         }
 
-        return $data;
+        return $dataArray;
     }
 
-    public function getSupportedTypes(string $format = null): array
+    public function getSupportedTypes(?string $format = null): array
     {
-        return ['Docker\\API\\Model\\SwarmInfo' => false];
+        return [\Docker\API\Model\SwarmInfo::class => false];
     }
 }

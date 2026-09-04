@@ -4,8 +4,12 @@ declare(strict_types=1);
 
 namespace Docker\API\Model;
 
-class ServiceSpecModeReplicatedJob extends \ArrayObject
+use Docker\API\Runtime\AdditionalAndPatternProperties;
+use Docker\API\Runtime\AdditionalPropertiesInterface;
+
+class ServiceSpecModeReplicatedJob implements AdditionalPropertiesInterface
 {
+    use AdditionalAndPatternProperties;
     /**
      * @var array
      */
@@ -67,5 +71,10 @@ class ServiceSpecModeReplicatedJob extends \ArrayObject
         $this->totalCompletions = $totalCompletions;
 
         return $this;
+    }
+
+    public function definedProperties(): array
+    {
+        return ['maxConcurrent' => ['MaxConcurrent', 'getMaxConcurrent', 'setMaxConcurrent'], 'totalCompletions' => ['TotalCompletions', 'getTotalCompletions', 'setTotalCompletions']];
     }
 }

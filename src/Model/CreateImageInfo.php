@@ -4,8 +4,12 @@ declare(strict_types=1);
 
 namespace Docker\API\Model;
 
-class CreateImageInfo extends \ArrayObject
+use Docker\API\Runtime\AdditionalAndPatternProperties;
+use Docker\API\Runtime\AdditionalPropertiesInterface;
+
+class CreateImageInfo implements AdditionalPropertiesInterface
 {
+    use AdditionalAndPatternProperties;
     /**
      * @var array
      */
@@ -99,5 +103,10 @@ class CreateImageInfo extends \ArrayObject
         $this->progressDetail = $progressDetail;
 
         return $this;
+    }
+
+    public function definedProperties(): array
+    {
+        return ['id' => ['id', 'getId', 'setId'], 'error' => ['error', 'getError', 'setError'], 'status' => ['status', 'getStatus', 'setStatus'], 'progress' => ['progress', 'getProgress', 'setProgress'], 'progressDetail' => ['progressDetail', 'getProgressDetail', 'setProgressDetail']];
     }
 }

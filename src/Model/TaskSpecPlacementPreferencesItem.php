@@ -4,8 +4,12 @@ declare(strict_types=1);
 
 namespace Docker\API\Model;
 
-class TaskSpecPlacementPreferencesItem extends \ArrayObject
+use Docker\API\Runtime\AdditionalAndPatternProperties;
+use Docker\API\Runtime\AdditionalPropertiesInterface;
+
+class TaskSpecPlacementPreferencesItem implements AdditionalPropertiesInterface
 {
+    use AdditionalAndPatternProperties;
     /**
      * @var array
      */
@@ -31,5 +35,10 @@ class TaskSpecPlacementPreferencesItem extends \ArrayObject
         $this->spread = $spread;
 
         return $this;
+    }
+
+    public function definedProperties(): array
+    {
+        return ['spread' => ['Spread', 'getSpread', 'setSpread']];
     }
 }

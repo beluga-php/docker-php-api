@@ -21,64 +21,69 @@ class VolumeNormalizer implements DenormalizerInterface, NormalizerInterface, De
     use NormalizerAwareTrait;
     use ValidatorTrait;
 
-    public function supportsDenormalization($data, $type, $format = null, array $context = []): bool
+    public function supportsDenormalization(mixed $data, string $type, ?string $format = null, array $context = []): bool
     {
-        return 'Docker\\API\\Model\\Volume' === $type;
+        return \Docker\API\Model\Volume::class === $type;
     }
 
-    public function supportsNormalization($data, $format = null, array $context = []): bool
+    public function supportsNormalization(mixed $data, ?string $format = null, array $context = []): bool
     {
-        return \is_object($data) && 'Docker\\API\\Model\\Volume' === $data::class;
+        return \is_object($data) && \Docker\API\Model\Volume::class === $data::class;
     }
 
-    public function denormalize($data, $class, $format = null, array $context = [])
+    public function denormalize(mixed $data, string $type, ?string $format = null, array $context = []): mixed
     {
-        if (isset($data['$ref'])) {
+        $object = new \Docker\API\Model\Volume();
+        if (null === $data || false === \is_array($data)) {
+            return $object;
+        }
+        if (isset($data['$ref']) && !isset($data['type']) && !isset($data['properties']) && !isset($data['allOf'])) {
             return new Reference($data['$ref'], $context['document-origin']);
         }
         if (isset($data['$recursiveRef'])) {
             return new Reference($data['$recursiveRef'], $context['document-origin']);
-        }
-        $object = new \Docker\API\Model\Volume();
-        if (null === $data || false === \is_array($data)) {
-            return $object;
         }
         if (\array_key_exists('Name', $data) && null !== $data['Name']) {
             $object->setName($data['Name']);
             unset($data['Name']);
         } elseif (\array_key_exists('Name', $data) && null === $data['Name']) {
             $object->setName(null);
+            unset($data['Name']);
         }
         if (\array_key_exists('Driver', $data) && null !== $data['Driver']) {
             $object->setDriver($data['Driver']);
             unset($data['Driver']);
         } elseif (\array_key_exists('Driver', $data) && null === $data['Driver']) {
             $object->setDriver(null);
+            unset($data['Driver']);
         }
         if (\array_key_exists('Mountpoint', $data) && null !== $data['Mountpoint']) {
             $object->setMountpoint($data['Mountpoint']);
             unset($data['Mountpoint']);
         } elseif (\array_key_exists('Mountpoint', $data) && null === $data['Mountpoint']) {
             $object->setMountpoint(null);
+            unset($data['Mountpoint']);
         }
         if (\array_key_exists('CreatedAt', $data) && null !== $data['CreatedAt']) {
             $object->setCreatedAt($data['CreatedAt']);
             unset($data['CreatedAt']);
         } elseif (\array_key_exists('CreatedAt', $data) && null === $data['CreatedAt']) {
             $object->setCreatedAt(null);
+            unset($data['CreatedAt']);
         }
         if (\array_key_exists('Status', $data) && null !== $data['Status']) {
-            $values = new \ArrayObject([], \ArrayObject::ARRAY_AS_PROPS);
+            $values = new \Docker\API\Runtime\JsonObject();
             foreach ($data['Status'] as $key => $value) {
-                $values[$key] = $this->denormalizer->denormalize($value, 'Docker\\API\\Model\\VolumeStatusItem', 'json', $context);
+                $values[$key] = $this->denormalizer->denormalize($value, \Docker\API\Model\VolumeStatusItem::class, 'json', $context);
             }
             $object->setStatus($values);
             unset($data['Status']);
         } elseif (\array_key_exists('Status', $data) && null === $data['Status']) {
             $object->setStatus(null);
+            unset($data['Status']);
         }
         if (\array_key_exists('Labels', $data) && null !== $data['Labels']) {
-            $values_1 = new \ArrayObject([], \ArrayObject::ARRAY_AS_PROPS);
+            $values_1 = new \Docker\API\Runtime\JsonObject();
             foreach ($data['Labels'] as $key_1 => $value_1) {
                 $values_1[$key_1] = $value_1;
             }
@@ -86,15 +91,17 @@ class VolumeNormalizer implements DenormalizerInterface, NormalizerInterface, De
             unset($data['Labels']);
         } elseif (\array_key_exists('Labels', $data) && null === $data['Labels']) {
             $object->setLabels(null);
+            unset($data['Labels']);
         }
         if (\array_key_exists('Scope', $data) && null !== $data['Scope']) {
             $object->setScope($data['Scope']);
             unset($data['Scope']);
         } elseif (\array_key_exists('Scope', $data) && null === $data['Scope']) {
             $object->setScope(null);
+            unset($data['Scope']);
         }
         if (\array_key_exists('Options', $data) && null !== $data['Options']) {
-            $values_2 = new \ArrayObject([], \ArrayObject::ARRAY_AS_PROPS);
+            $values_2 = new \Docker\API\Runtime\JsonObject();
             foreach ($data['Options'] as $key_2 => $value_2) {
                 $values_2[$key_2] = $value_2;
             }
@@ -102,12 +109,14 @@ class VolumeNormalizer implements DenormalizerInterface, NormalizerInterface, De
             unset($data['Options']);
         } elseif (\array_key_exists('Options', $data) && null === $data['Options']) {
             $object->setOptions(null);
+            unset($data['Options']);
         }
         if (\array_key_exists('UsageData', $data) && null !== $data['UsageData']) {
-            $object->setUsageData($this->denormalizer->denormalize($data['UsageData'], 'Docker\\API\\Model\\VolumeUsageData', 'json', $context));
+            $object->setUsageData($this->denormalizer->denormalize($data['UsageData'], \Docker\API\Model\VolumeUsageData::class, 'json', $context));
             unset($data['UsageData']);
         } elseif (\array_key_exists('UsageData', $data) && null === $data['UsageData']) {
             $object->setUsageData(null);
+            unset($data['UsageData']);
         }
         foreach ($data as $key_3 => $value_3) {
             if (preg_match('/.*/', (string) $key_3)) {
@@ -118,50 +127,47 @@ class VolumeNormalizer implements DenormalizerInterface, NormalizerInterface, De
         return $object;
     }
 
-    /**
-     * @return array|string|int|float|bool|\ArrayObject|null
-     */
-    public function normalize($object, $format = null, array $context = [])
+    public function normalize(mixed $data, ?string $format = null, array $context = []): array|string|int|float|bool|\ArrayObject|null
     {
-        $data = [];
-        $data['Name'] = $object->getName();
-        $data['Driver'] = $object->getDriver();
-        $data['Mountpoint'] = $object->getMountpoint();
-        if ($object->isInitialized('createdAt') && null !== $object->getCreatedAt()) {
-            $data['CreatedAt'] = $object->getCreatedAt();
+        $dataArray = [];
+        $dataArray['Name'] = $data->getName();
+        $dataArray['Driver'] = $data->getDriver();
+        $dataArray['Mountpoint'] = $data->getMountpoint();
+        if ($data->isInitialized('createdAt') && null !== $data->getCreatedAt()) {
+            $dataArray['CreatedAt'] = $data->getCreatedAt();
         }
-        if ($object->isInitialized('status') && null !== $object->getStatus()) {
-            $values = new \ArrayObject([], \ArrayObject::ARRAY_AS_PROPS);
-            foreach ($object->getStatus() as $key => $value) {
-                $values[$key] = null === $value ? null : new \ArrayObject($this->normalizer->normalize($value, 'json', $context), \ArrayObject::ARRAY_AS_PROPS);
+        if ($data->isInitialized('status') && null !== $data->getStatus()) {
+            $values = new \Docker\API\Runtime\JsonObject();
+            foreach ($data->getStatus() as $key => $value) {
+                $values[$key] = null === $value ? null : new \Docker\API\Runtime\JsonObject($this->normalizer->normalize($value, 'json', $context));
             }
-            $data['Status'] = $values;
+            $dataArray['Status'] = $values;
         }
-        $values_1 = new \ArrayObject([], \ArrayObject::ARRAY_AS_PROPS);
-        foreach ($object->getLabels() as $key_1 => $value_1) {
+        $values_1 = new \Docker\API\Runtime\JsonObject();
+        foreach ($data->getLabels() as $key_1 => $value_1) {
             $values_1[$key_1] = $value_1;
         }
-        $data['Labels'] = $values_1;
-        $data['Scope'] = $object->getScope();
-        $values_2 = new \ArrayObject([], \ArrayObject::ARRAY_AS_PROPS);
-        foreach ($object->getOptions() as $key_2 => $value_2) {
+        $dataArray['Labels'] = $values_1;
+        $dataArray['Scope'] = $data->getScope();
+        $values_2 = new \Docker\API\Runtime\JsonObject();
+        foreach ($data->getOptions() as $key_2 => $value_2) {
             $values_2[$key_2] = $value_2;
         }
-        $data['Options'] = $values_2;
-        if ($object->isInitialized('usageData') && null !== $object->getUsageData()) {
-            $data['UsageData'] = null === $object->getUsageData() ? null : new \ArrayObject($this->normalizer->normalize($object->getUsageData(), 'json', $context), \ArrayObject::ARRAY_AS_PROPS);
+        $dataArray['Options'] = $values_2;
+        if ($data->isInitialized('usageData') && null !== $data->getUsageData()) {
+            $dataArray['UsageData'] = null === $data->getUsageData() ? null : new \Docker\API\Runtime\JsonObject($this->normalizer->normalize($data->getUsageData(), 'json', $context));
         }
-        foreach ($object as $key_3 => $value_3) {
+        foreach ($data->additionalPropertyEntries() as $key_3 => $value_3) {
             if (preg_match('/.*/', (string) $key_3)) {
-                $data[$key_3] = $value_3;
+                $dataArray[$key_3] = $value_3;
             }
         }
 
-        return $data;
+        return $dataArray;
     }
 
-    public function getSupportedTypes(string $format = null): array
+    public function getSupportedTypes(?string $format = null): array
     {
-        return ['Docker\\API\\Model\\Volume' => false];
+        return [\Docker\API\Model\Volume::class => false];
     }
 }

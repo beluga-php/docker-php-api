@@ -11,17 +11,14 @@ class SecretUpdate extends \Docker\API\Runtime\Client\BaseEndpoint implements \D
     protected $accept;
 
     /**
-     * @param string $id              The ID or name of the secret
-     * @param array  $queryParameters {
-     *
-     * @var int $version The version number of the secret object being updated. This is
-     *          required to avoid conflicting writes.
-     *
-     * }
-     *
+     * @param string $id The ID or name of the secret
+     * @param array{
+     *    "version": int, //The version number of the secret object being updated. This is
+     * required to avoid conflicting writes.
+     * } $queryParameters
      * @param array $accept Accept content header application/json|text/plain
      */
-    public function __construct(string $id, \Docker\API\Model\SecretSpec $requestBody = null, array $queryParameters = [], array $accept = [])
+    public function __construct(string $id, ?\Docker\API\Model\SecretSpec $requestBody = null, array $queryParameters = [], array $accept = [])
     {
         $this->id = $id;
         $this->body = $requestBody;
@@ -36,13 +33,13 @@ class SecretUpdate extends \Docker\API\Runtime\Client\BaseEndpoint implements \D
 
     public function getUri(): string
     {
-        return str_replace(['{id}'], [$this->id], '/secrets/{id}/update');
+        return str_replace(['{id}'], [rawurlencode($this->id)], '/secrets/{id}/update');
     }
 
     public function getBody(\Symfony\Component\Serializer\SerializerInterface $serializer, $streamFactory = null): array
     {
         if ($this->body instanceof \Docker\API\Model\SecretSpec) {
-            return [['Content-Type' => ['application/json']], $serializer->serialize($this->body, 'json')];
+            return [['Content-Type' => ['application/json']], \Docker\API\Runtime\Client\JsonPayload::encode($serializer, $this->body)];
         }
         if ($this->body instanceof \Docker\API\Model\SecretSpec) {
             return [['Content-Type' => ['text/plain']], $this->body];
@@ -79,23 +76,23 @@ class SecretUpdate extends \Docker\API\Runtime\Client\BaseEndpoint implements \D
      *
      * @return null
      */
-    protected function transformResponseBody(\Psr\Http\Message\ResponseInterface $response, \Symfony\Component\Serializer\SerializerInterface $serializer, string $contentType = null)
+    protected function transformResponseBody(\Psr\Http\Message\ResponseInterface $response, \Symfony\Component\Serializer\SerializerInterface $serializer, ?string $contentType = null)
     {
         $status = $response->getStatusCode();
         $body = (string) $response->getBody();
         if (200 === $status) {
         }
-        if ((null === $contentType) === false && (400 === $status && false !== mb_strpos($contentType, 'application/json'))) {
-            throw new \Docker\API\Exception\SecretUpdateBadRequestException($serializer->deserialize($body, 'Docker\\API\\Model\\ErrorResponse', 'json'), $response);
+        if ((null === $contentType) === false && (400 === $status && false !== stripos(strtolower($contentType), 'application/json'))) {
+            throw new \Docker\API\Exception\SecretUpdateBadRequestException($serializer->deserialize($body, 'Docker\API\Model\ErrorResponse', 'json'), $response);
         }
-        if ((null === $contentType) === false && (404 === $status && false !== mb_strpos($contentType, 'application/json'))) {
-            throw new \Docker\API\Exception\SecretUpdateNotFoundException($serializer->deserialize($body, 'Docker\\API\\Model\\ErrorResponse', 'json'), $response);
+        if ((null === $contentType) === false && (404 === $status && false !== stripos(strtolower($contentType), 'application/json'))) {
+            throw new \Docker\API\Exception\SecretUpdateNotFoundException($serializer->deserialize($body, 'Docker\API\Model\ErrorResponse', 'json'), $response);
         }
-        if ((null === $contentType) === false && (500 === $status && false !== mb_strpos($contentType, 'application/json'))) {
-            throw new \Docker\API\Exception\SecretUpdateInternalServerErrorException($serializer->deserialize($body, 'Docker\\API\\Model\\ErrorResponse', 'json'), $response);
+        if ((null === $contentType) === false && (500 === $status && false !== stripos(strtolower($contentType), 'application/json'))) {
+            throw new \Docker\API\Exception\SecretUpdateInternalServerErrorException($serializer->deserialize($body, 'Docker\API\Model\ErrorResponse', 'json'), $response);
         }
-        if ((null === $contentType) === false && (503 === $status && false !== mb_strpos($contentType, 'application/json'))) {
-            throw new \Docker\API\Exception\SecretUpdateServiceUnavailableException($serializer->deserialize($body, 'Docker\\API\\Model\\ErrorResponse', 'json'), $response);
+        if ((null === $contentType) === false && (503 === $status && false !== stripos(strtolower($contentType), 'application/json'))) {
+            throw new \Docker\API\Exception\SecretUpdateServiceUnavailableException($serializer->deserialize($body, 'Docker\API\Model\ErrorResponse', 'json'), $response);
         }
     }
 

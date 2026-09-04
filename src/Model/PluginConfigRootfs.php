@@ -4,8 +4,12 @@ declare(strict_types=1);
 
 namespace Docker\API\Model;
 
-class PluginConfigRootfs extends \ArrayObject
+use Docker\API\Runtime\AdditionalAndPatternProperties;
+use Docker\API\Runtime\AdditionalPropertiesInterface;
+
+class PluginConfigRootfs implements AdditionalPropertiesInterface
 {
+    use AdditionalAndPatternProperties;
     /**
      * @var array
      */
@@ -20,7 +24,7 @@ class PluginConfigRootfs extends \ArrayObject
      */
     protected $type;
     /**
-     * @var string[]|null
+     * @var list<string>|null
      */
     protected $diffIds;
 
@@ -38,7 +42,7 @@ class PluginConfigRootfs extends \ArrayObject
     }
 
     /**
-     * @return string[]|null
+     * @return list<string>|null
      */
     public function getDiffIds(): ?array
     {
@@ -46,7 +50,7 @@ class PluginConfigRootfs extends \ArrayObject
     }
 
     /**
-     * @param string[]|null $diffIds
+     * @param list<string>|null $diffIds
      */
     public function setDiffIds(?array $diffIds): self
     {
@@ -54,5 +58,10 @@ class PluginConfigRootfs extends \ArrayObject
         $this->diffIds = $diffIds;
 
         return $this;
+    }
+
+    public function definedProperties(): array
+    {
+        return ['type' => ['type', 'getType', 'setType'], 'diffIds' => ['diff_ids', 'getDiffIds', 'setDiffIds']];
     }
 }

@@ -21,38 +21,39 @@ class IPAMNormalizer implements DenormalizerInterface, NormalizerInterface, Deno
     use NormalizerAwareTrait;
     use ValidatorTrait;
 
-    public function supportsDenormalization($data, $type, $format = null, array $context = []): bool
+    public function supportsDenormalization(mixed $data, string $type, ?string $format = null, array $context = []): bool
     {
-        return 'Docker\\API\\Model\\IPAM' === $type;
+        return \Docker\API\Model\IPAM::class === $type;
     }
 
-    public function supportsNormalization($data, $format = null, array $context = []): bool
+    public function supportsNormalization(mixed $data, ?string $format = null, array $context = []): bool
     {
-        return \is_object($data) && 'Docker\\API\\Model\\IPAM' === $data::class;
+        return \is_object($data) && \Docker\API\Model\IPAM::class === $data::class;
     }
 
-    public function denormalize($data, $class, $format = null, array $context = [])
+    public function denormalize(mixed $data, string $type, ?string $format = null, array $context = []): mixed
     {
-        if (isset($data['$ref'])) {
+        $object = new \Docker\API\Model\IPAM();
+        if (null === $data || false === \is_array($data)) {
+            return $object;
+        }
+        if (isset($data['$ref']) && !isset($data['type']) && !isset($data['properties']) && !isset($data['allOf'])) {
             return new Reference($data['$ref'], $context['document-origin']);
         }
         if (isset($data['$recursiveRef'])) {
             return new Reference($data['$recursiveRef'], $context['document-origin']);
-        }
-        $object = new \Docker\API\Model\IPAM();
-        if (null === $data || false === \is_array($data)) {
-            return $object;
         }
         if (\array_key_exists('Driver', $data) && null !== $data['Driver']) {
             $object->setDriver($data['Driver']);
             unset($data['Driver']);
         } elseif (\array_key_exists('Driver', $data) && null === $data['Driver']) {
             $object->setDriver(null);
+            unset($data['Driver']);
         }
         if (\array_key_exists('Config', $data) && null !== $data['Config']) {
             $values = [];
             foreach ($data['Config'] as $value) {
-                $values_1 = new \ArrayObject([], \ArrayObject::ARRAY_AS_PROPS);
+                $values_1 = new \Docker\API\Runtime\JsonObject();
                 foreach ($value as $key => $value_1) {
                     $values_1[$key] = $value_1;
                 }
@@ -62,9 +63,10 @@ class IPAMNormalizer implements DenormalizerInterface, NormalizerInterface, Deno
             unset($data['Config']);
         } elseif (\array_key_exists('Config', $data) && null === $data['Config']) {
             $object->setConfig(null);
+            unset($data['Config']);
         }
         if (\array_key_exists('Options', $data) && null !== $data['Options']) {
-            $values_2 = new \ArrayObject([], \ArrayObject::ARRAY_AS_PROPS);
+            $values_2 = new \Docker\API\Runtime\JsonObject();
             foreach ($data['Options'] as $key_1 => $value_2) {
                 $values_2[$key_1] = $value_2;
             }
@@ -72,6 +74,7 @@ class IPAMNormalizer implements DenormalizerInterface, NormalizerInterface, Deno
             unset($data['Options']);
         } elseif (\array_key_exists('Options', $data) && null === $data['Options']) {
             $object->setOptions(null);
+            unset($data['Options']);
         }
         foreach ($data as $key_2 => $value_3) {
             if (preg_match('/.*/', (string) $key_2)) {
@@ -82,44 +85,41 @@ class IPAMNormalizer implements DenormalizerInterface, NormalizerInterface, Deno
         return $object;
     }
 
-    /**
-     * @return array|string|int|float|bool|\ArrayObject|null
-     */
-    public function normalize($object, $format = null, array $context = [])
+    public function normalize(mixed $data, ?string $format = null, array $context = []): array|string|int|float|bool|\ArrayObject|null
     {
-        $data = [];
-        if ($object->isInitialized('driver') && null !== $object->getDriver()) {
-            $data['Driver'] = $object->getDriver();
+        $dataArray = [];
+        if ($data->isInitialized('driver') && null !== $data->getDriver()) {
+            $dataArray['Driver'] = $data->getDriver();
         }
-        if ($object->isInitialized('config') && null !== $object->getConfig()) {
+        if ($data->isInitialized('config') && null !== $data->getConfig()) {
             $values = [];
-            foreach ($object->getConfig() as $value) {
-                $values_1 = new \ArrayObject([], \ArrayObject::ARRAY_AS_PROPS);
+            foreach ($data->getConfig() as $value) {
+                $values_1 = new \Docker\API\Runtime\JsonObject();
                 foreach ($value as $key => $value_1) {
                     $values_1[$key] = $value_1;
                 }
                 $values[] = $values_1;
             }
-            $data['Config'] = $values;
+            $dataArray['Config'] = $values;
         }
-        if ($object->isInitialized('options') && null !== $object->getOptions()) {
-            $values_2 = new \ArrayObject([], \ArrayObject::ARRAY_AS_PROPS);
-            foreach ($object->getOptions() as $key_1 => $value_2) {
+        if ($data->isInitialized('options') && null !== $data->getOptions()) {
+            $values_2 = new \Docker\API\Runtime\JsonObject();
+            foreach ($data->getOptions() as $key_1 => $value_2) {
                 $values_2[$key_1] = $value_2;
             }
-            $data['Options'] = $values_2;
+            $dataArray['Options'] = $values_2;
         }
-        foreach ($object as $key_2 => $value_3) {
+        foreach ($data->additionalPropertyEntries() as $key_2 => $value_3) {
             if (preg_match('/.*/', (string) $key_2)) {
-                $data[$key_2] = $value_3;
+                $dataArray[$key_2] = $value_3;
             }
         }
 
-        return $data;
+        return $dataArray;
     }
 
-    public function getSupportedTypes(string $format = null): array
+    public function getSupportedTypes(?string $format = null): array
     {
-        return ['Docker\\API\\Model\\IPAM' => false];
+        return [\Docker\API\Model\IPAM::class => false];
     }
 }

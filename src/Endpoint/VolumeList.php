@@ -9,10 +9,9 @@ class VolumeList extends \Docker\API\Runtime\Client\BaseEndpoint implements \Doc
     use \Docker\API\Runtime\Client\EndpointTrait;
 
     /**
-     * @param array $queryParameters {
-     *
-     * @var string $filters JSON encoded value of the filters (a `map[string][]string`) to
-     *             process on the volumes list. Available filters:
+     * @param array{
+     *    "filters"?: string, //JSON encoded value of the filters (a `map[string][]string`) to
+     * process on the volumes list. Available filters:
      *
      * - `dangling=<boolean>` When set to `true` (or `1`), returns all
      * volumes that are not in use by a container. When set to `false`
@@ -22,8 +21,7 @@ class VolumeList extends \Docker\API\Runtime\Client\BaseEndpoint implements \Doc
      * - `label=<key>` or `label=<key>:<value>` Matches volumes based on
      * the presence of a `label` alone or a `label` and a value.
      * - `name=<volume-name>` Matches all or part of a volume name.
-     *
-     * }
+     * } $queryParameters
      */
     public function __construct(array $queryParameters = [])
     {
@@ -66,15 +64,15 @@ class VolumeList extends \Docker\API\Runtime\Client\BaseEndpoint implements \Doc
      *
      * @return \Docker\API\Model\VolumesGetResponse200|null
      */
-    protected function transformResponseBody(\Psr\Http\Message\ResponseInterface $response, \Symfony\Component\Serializer\SerializerInterface $serializer, string $contentType = null)
+    protected function transformResponseBody(\Psr\Http\Message\ResponseInterface $response, \Symfony\Component\Serializer\SerializerInterface $serializer, ?string $contentType = null)
     {
         $status = $response->getStatusCode();
         $body = (string) $response->getBody();
-        if ((null === $contentType) === false && (200 === $status && false !== mb_strpos($contentType, 'application/json'))) {
-            return $serializer->deserialize($body, 'Docker\\API\\Model\\VolumesGetResponse200', 'json');
+        if ((null === $contentType) === false && (200 === $status && false !== stripos(strtolower($contentType), 'application/json'))) {
+            return $serializer->deserialize($body, 'Docker\API\Model\VolumesGetResponse200', 'json');
         }
-        if ((null === $contentType) === false && (500 === $status && false !== mb_strpos($contentType, 'application/json'))) {
-            throw new \Docker\API\Exception\VolumeListInternalServerErrorException($serializer->deserialize($body, 'Docker\\API\\Model\\ErrorResponse', 'json'), $response);
+        if ((null === $contentType) === false && (500 === $status && false !== stripos(strtolower($contentType), 'application/json'))) {
+            throw new \Docker\API\Exception\VolumeListInternalServerErrorException($serializer->deserialize($body, 'Docker\API\Model\ErrorResponse', 'json'), $response);
         }
     }
 

@@ -21,36 +21,37 @@ class EventsGetResponse200ActorNormalizer implements DenormalizerInterface, Norm
     use NormalizerAwareTrait;
     use ValidatorTrait;
 
-    public function supportsDenormalization($data, $type, $format = null, array $context = []): bool
+    public function supportsDenormalization(mixed $data, string $type, ?string $format = null, array $context = []): bool
     {
-        return 'Docker\\API\\Model\\EventsGetResponse200Actor' === $type;
+        return \Docker\API\Model\EventsGetResponse200Actor::class === $type;
     }
 
-    public function supportsNormalization($data, $format = null, array $context = []): bool
+    public function supportsNormalization(mixed $data, ?string $format = null, array $context = []): bool
     {
-        return \is_object($data) && 'Docker\\API\\Model\\EventsGetResponse200Actor' === $data::class;
+        return \is_object($data) && \Docker\API\Model\EventsGetResponse200Actor::class === $data::class;
     }
 
-    public function denormalize($data, $class, $format = null, array $context = [])
+    public function denormalize(mixed $data, string $type, ?string $format = null, array $context = []): mixed
     {
-        if (isset($data['$ref'])) {
+        $object = new \Docker\API\Model\EventsGetResponse200Actor();
+        if (null === $data || false === \is_array($data)) {
+            return $object;
+        }
+        if (isset($data['$ref']) && !isset($data['type']) && !isset($data['properties']) && !isset($data['allOf'])) {
             return new Reference($data['$ref'], $context['document-origin']);
         }
         if (isset($data['$recursiveRef'])) {
             return new Reference($data['$recursiveRef'], $context['document-origin']);
-        }
-        $object = new \Docker\API\Model\EventsGetResponse200Actor();
-        if (null === $data || false === \is_array($data)) {
-            return $object;
         }
         if (\array_key_exists('ID', $data) && null !== $data['ID']) {
             $object->setID($data['ID']);
             unset($data['ID']);
         } elseif (\array_key_exists('ID', $data) && null === $data['ID']) {
             $object->setID(null);
+            unset($data['ID']);
         }
         if (\array_key_exists('Attributes', $data) && null !== $data['Attributes']) {
-            $values = new \ArrayObject([], \ArrayObject::ARRAY_AS_PROPS);
+            $values = new \Docker\API\Runtime\JsonObject();
             foreach ($data['Attributes'] as $key => $value) {
                 $values[$key] = $value;
             }
@@ -58,6 +59,7 @@ class EventsGetResponse200ActorNormalizer implements DenormalizerInterface, Norm
             unset($data['Attributes']);
         } elseif (\array_key_exists('Attributes', $data) && null === $data['Attributes']) {
             $object->setAttributes(null);
+            unset($data['Attributes']);
         }
         foreach ($data as $key_1 => $value_1) {
             if (preg_match('/.*/', (string) $key_1)) {
@@ -68,33 +70,30 @@ class EventsGetResponse200ActorNormalizer implements DenormalizerInterface, Norm
         return $object;
     }
 
-    /**
-     * @return array|string|int|float|bool|\ArrayObject|null
-     */
-    public function normalize($object, $format = null, array $context = [])
+    public function normalize(mixed $data, ?string $format = null, array $context = []): array|string|int|float|bool|\ArrayObject|null
     {
-        $data = [];
-        if ($object->isInitialized('iD') && null !== $object->getID()) {
-            $data['ID'] = $object->getID();
+        $dataArray = [];
+        if ($data->isInitialized('iD') && null !== $data->getID()) {
+            $dataArray['ID'] = $data->getID();
         }
-        if ($object->isInitialized('attributes') && null !== $object->getAttributes()) {
-            $values = new \ArrayObject([], \ArrayObject::ARRAY_AS_PROPS);
-            foreach ($object->getAttributes() as $key => $value) {
+        if ($data->isInitialized('attributes') && null !== $data->getAttributes()) {
+            $values = new \Docker\API\Runtime\JsonObject();
+            foreach ($data->getAttributes() as $key => $value) {
                 $values[$key] = $value;
             }
-            $data['Attributes'] = $values;
+            $dataArray['Attributes'] = $values;
         }
-        foreach ($object as $key_1 => $value_1) {
+        foreach ($data->additionalPropertyEntries() as $key_1 => $value_1) {
             if (preg_match('/.*/', (string) $key_1)) {
-                $data[$key_1] = $value_1;
+                $dataArray[$key_1] = $value_1;
             }
         }
 
-        return $data;
+        return $dataArray;
     }
 
-    public function getSupportedTypes(string $format = null): array
+    public function getSupportedTypes(?string $format = null): array
     {
-        return ['Docker\\API\\Model\\EventsGetResponse200Actor' => false];
+        return [\Docker\API\Model\EventsGetResponse200Actor::class => false];
     }
 }

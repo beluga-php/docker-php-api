@@ -4,8 +4,12 @@ declare(strict_types=1);
 
 namespace Docker\API\Model;
 
-class BuildCache extends \ArrayObject
+use Docker\API\Runtime\AdditionalAndPatternProperties;
+use Docker\API\Runtime\AdditionalPropertiesInterface;
+
+class BuildCache implements AdditionalPropertiesInterface
 {
+    use AdditionalAndPatternProperties;
     /**
      * @var array
      */
@@ -214,5 +218,10 @@ class BuildCache extends \ArrayObject
         $this->usageCount = $usageCount;
 
         return $this;
+    }
+
+    public function definedProperties(): array
+    {
+        return ['iD' => ['ID', 'getID', 'setID'], 'parent' => ['Parent', 'getParent', 'setParent'], 'type' => ['Type', 'getType', 'setType'], 'description' => ['Description', 'getDescription', 'setDescription'], 'inUse' => ['InUse', 'getInUse', 'setInUse'], 'shared' => ['Shared', 'getShared', 'setShared'], 'size' => ['Size', 'getSize', 'setSize'], 'createdAt' => ['CreatedAt', 'getCreatedAt', 'setCreatedAt'], 'lastUsedAt' => ['LastUsedAt', 'getLastUsedAt', 'setLastUsedAt'], 'usageCount' => ['UsageCount', 'getUsageCount', 'setUsageCount']];
     }
 }

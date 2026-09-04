@@ -4,8 +4,12 @@ declare(strict_types=1);
 
 namespace Docker\API\Model;
 
-class ImageSummary extends \ArrayObject
+use Docker\API\Runtime\AdditionalAndPatternProperties;
+use Docker\API\Runtime\AdditionalPropertiesInterface;
+
+class ImageSummary implements AdditionalPropertiesInterface
 {
+    use AdditionalAndPatternProperties;
     /**
      * @var array
      */
@@ -24,11 +28,11 @@ class ImageSummary extends \ArrayObject
      */
     protected $parentId;
     /**
-     * @var string[]|null
+     * @var list<string>|null
      */
     protected $repoTags;
     /**
-     * @var string[]|null
+     * @var list<string>|null
      */
     protected $repoDigests;
     /**
@@ -83,7 +87,7 @@ class ImageSummary extends \ArrayObject
     }
 
     /**
-     * @return string[]|null
+     * @return list<string>|null
      */
     public function getRepoTags(): ?array
     {
@@ -91,7 +95,7 @@ class ImageSummary extends \ArrayObject
     }
 
     /**
-     * @param string[]|null $repoTags
+     * @param list<string>|null $repoTags
      */
     public function setRepoTags(?array $repoTags): self
     {
@@ -102,7 +106,7 @@ class ImageSummary extends \ArrayObject
     }
 
     /**
-     * @return string[]|null
+     * @return list<string>|null
      */
     public function getRepoDigests(): ?array
     {
@@ -110,7 +114,7 @@ class ImageSummary extends \ArrayObject
     }
 
     /**
-     * @param string[]|null $repoDigests
+     * @param list<string>|null $repoDigests
      */
     public function setRepoDigests(?array $repoDigests): self
     {
@@ -202,5 +206,10 @@ class ImageSummary extends \ArrayObject
         $this->containers = $containers;
 
         return $this;
+    }
+
+    public function definedProperties(): array
+    {
+        return ['id' => ['Id', 'getId', 'setId'], 'parentId' => ['ParentId', 'getParentId', 'setParentId'], 'repoTags' => ['RepoTags', 'getRepoTags', 'setRepoTags'], 'repoDigests' => ['RepoDigests', 'getRepoDigests', 'setRepoDigests'], 'created' => ['Created', 'getCreated', 'setCreated'], 'size' => ['Size', 'getSize', 'setSize'], 'sharedSize' => ['SharedSize', 'getSharedSize', 'setSharedSize'], 'virtualSize' => ['VirtualSize', 'getVirtualSize', 'setVirtualSize'], 'labels' => ['Labels', 'getLabels', 'setLabels'], 'containers' => ['Containers', 'getContainers', 'setContainers']];
     }
 }

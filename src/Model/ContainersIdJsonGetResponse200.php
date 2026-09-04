@@ -4,8 +4,12 @@ declare(strict_types=1);
 
 namespace Docker\API\Model;
 
-class ContainersIdJsonGetResponse200 extends \ArrayObject
+use Docker\API\Runtime\AdditionalAndPatternProperties;
+use Docker\API\Runtime\AdditionalPropertiesInterface;
+
+class ContainersIdJsonGetResponse200 implements AdditionalPropertiesInterface
 {
+    use AdditionalAndPatternProperties;
     /**
      * @var array
      */
@@ -36,7 +40,7 @@ class ContainersIdJsonGetResponse200 extends \ArrayObject
     /**
      * The arguments to the command being run.
      *
-     * @var string[]|null
+     * @var list<string>|null
      */
     protected $args;
     /**
@@ -99,7 +103,7 @@ class ContainersIdJsonGetResponse200 extends \ArrayObject
     /**
      * IDs of exec instances that are running in the container.
      *
-     * @var string[]|null
+     * @var list<string>|null
      */
     protected $execIDs;
     /**
@@ -128,7 +132,7 @@ class ContainersIdJsonGetResponse200 extends \ArrayObject
      */
     protected $sizeRootFs;
     /**
-     * @var MountPoint[]|null
+     * @var list<MountPoint>|null
      */
     protected $mounts;
     /**
@@ -204,7 +208,7 @@ class ContainersIdJsonGetResponse200 extends \ArrayObject
     /**
      * The arguments to the command being run.
      *
-     * @return string[]|null
+     * @return list<string>|null
      */
     public function getArgs(): ?array
     {
@@ -214,7 +218,7 @@ class ContainersIdJsonGetResponse200 extends \ArrayObject
     /**
      * The arguments to the command being run.
      *
-     * @param string[]|null $args
+     * @param list<string>|null $args
      */
     public function setArgs(?array $args): self
     {
@@ -410,7 +414,7 @@ class ContainersIdJsonGetResponse200 extends \ArrayObject
     /**
      * IDs of exec instances that are running in the container.
      *
-     * @return string[]|null
+     * @return list<string>|null
      */
     public function getExecIDs(): ?array
     {
@@ -420,7 +424,7 @@ class ContainersIdJsonGetResponse200 extends \ArrayObject
     /**
      * IDs of exec instances that are running in the container.
      *
-     * @param string[]|null $execIDs
+     * @param list<string>|null $execIDs
      */
     public function setExecIDs(?array $execIDs): self
     {
@@ -509,7 +513,7 @@ class ContainersIdJsonGetResponse200 extends \ArrayObject
     }
 
     /**
-     * @return MountPoint[]|null
+     * @return list<MountPoint>|null
      */
     public function getMounts(): ?array
     {
@@ -517,7 +521,7 @@ class ContainersIdJsonGetResponse200 extends \ArrayObject
     }
 
     /**
-     * @param MountPoint[]|null $mounts
+     * @param list<MountPoint>|null $mounts
      */
     public function setMounts(?array $mounts): self
     {
@@ -563,5 +567,10 @@ class ContainersIdJsonGetResponse200 extends \ArrayObject
         $this->networkSettings = $networkSettings;
 
         return $this;
+    }
+
+    public function definedProperties(): array
+    {
+        return ['id' => ['Id', 'getId', 'setId'], 'created' => ['Created', 'getCreated', 'setCreated'], 'path' => ['Path', 'getPath', 'setPath'], 'args' => ['Args', 'getArgs', 'setArgs'], 'state' => ['State', 'getState', 'setState'], 'image' => ['Image', 'getImage', 'setImage'], 'resolvConfPath' => ['ResolvConfPath', 'getResolvConfPath', 'setResolvConfPath'], 'hostnamePath' => ['HostnamePath', 'getHostnamePath', 'setHostnamePath'], 'hostsPath' => ['HostsPath', 'getHostsPath', 'setHostsPath'], 'logPath' => ['LogPath', 'getLogPath', 'setLogPath'], 'name' => ['Name', 'getName', 'setName'], 'restartCount' => ['RestartCount', 'getRestartCount', 'setRestartCount'], 'driver' => ['Driver', 'getDriver', 'setDriver'], 'platform' => ['Platform', 'getPlatform', 'setPlatform'], 'mountLabel' => ['MountLabel', 'getMountLabel', 'setMountLabel'], 'processLabel' => ['ProcessLabel', 'getProcessLabel', 'setProcessLabel'], 'appArmorProfile' => ['AppArmorProfile', 'getAppArmorProfile', 'setAppArmorProfile'], 'execIDs' => ['ExecIDs', 'getExecIDs', 'setExecIDs'], 'hostConfig' => ['HostConfig', 'getHostConfig', 'setHostConfig'], 'graphDriver' => ['GraphDriver', 'getGraphDriver', 'setGraphDriver'], 'sizeRw' => ['SizeRw', 'getSizeRw', 'setSizeRw'], 'sizeRootFs' => ['SizeRootFs', 'getSizeRootFs', 'setSizeRootFs'], 'mounts' => ['Mounts', 'getMounts', 'setMounts'], 'config' => ['Config', 'getConfig', 'setConfig'], 'networkSettings' => ['NetworkSettings', 'getNetworkSettings', 'setNetworkSettings']];
     }
 }

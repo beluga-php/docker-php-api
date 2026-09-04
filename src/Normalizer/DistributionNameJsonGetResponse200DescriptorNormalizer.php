@@ -21,45 +21,48 @@ class DistributionNameJsonGetResponse200DescriptorNormalizer implements Denormal
     use NormalizerAwareTrait;
     use ValidatorTrait;
 
-    public function supportsDenormalization($data, $type, $format = null, array $context = []): bool
+    public function supportsDenormalization(mixed $data, string $type, ?string $format = null, array $context = []): bool
     {
-        return 'Docker\\API\\Model\\DistributionNameJsonGetResponse200Descriptor' === $type;
+        return \Docker\API\Model\DistributionNameJsonGetResponse200Descriptor::class === $type;
     }
 
-    public function supportsNormalization($data, $format = null, array $context = []): bool
+    public function supportsNormalization(mixed $data, ?string $format = null, array $context = []): bool
     {
-        return \is_object($data) && 'Docker\\API\\Model\\DistributionNameJsonGetResponse200Descriptor' === $data::class;
+        return \is_object($data) && \Docker\API\Model\DistributionNameJsonGetResponse200Descriptor::class === $data::class;
     }
 
-    public function denormalize($data, $class, $format = null, array $context = [])
+    public function denormalize(mixed $data, string $type, ?string $format = null, array $context = []): mixed
     {
-        if (isset($data['$ref'])) {
+        $object = new \Docker\API\Model\DistributionNameJsonGetResponse200Descriptor();
+        if (null === $data || false === \is_array($data)) {
+            return $object;
+        }
+        if (isset($data['$ref']) && !isset($data['type']) && !isset($data['properties']) && !isset($data['allOf'])) {
             return new Reference($data['$ref'], $context['document-origin']);
         }
         if (isset($data['$recursiveRef'])) {
             return new Reference($data['$recursiveRef'], $context['document-origin']);
-        }
-        $object = new \Docker\API\Model\DistributionNameJsonGetResponse200Descriptor();
-        if (null === $data || false === \is_array($data)) {
-            return $object;
         }
         if (\array_key_exists('MediaType', $data) && null !== $data['MediaType']) {
             $object->setMediaType($data['MediaType']);
             unset($data['MediaType']);
         } elseif (\array_key_exists('MediaType', $data) && null === $data['MediaType']) {
             $object->setMediaType(null);
+            unset($data['MediaType']);
         }
         if (\array_key_exists('Size', $data) && null !== $data['Size']) {
             $object->setSize($data['Size']);
             unset($data['Size']);
         } elseif (\array_key_exists('Size', $data) && null === $data['Size']) {
             $object->setSize(null);
+            unset($data['Size']);
         }
         if (\array_key_exists('Digest', $data) && null !== $data['Digest']) {
             $object->setDigest($data['Digest']);
             unset($data['Digest']);
         } elseif (\array_key_exists('Digest', $data) && null === $data['Digest']) {
             $object->setDigest(null);
+            unset($data['Digest']);
         }
         if (\array_key_exists('URLs', $data) && null !== $data['URLs']) {
             $values = [];
@@ -70,6 +73,7 @@ class DistributionNameJsonGetResponse200DescriptorNormalizer implements Denormal
             unset($data['URLs']);
         } elseif (\array_key_exists('URLs', $data) && null === $data['URLs']) {
             $object->setURLs(null);
+            unset($data['URLs']);
         }
         foreach ($data as $key => $value_1) {
             if (preg_match('/.*/', (string) $key)) {
@@ -80,39 +84,36 @@ class DistributionNameJsonGetResponse200DescriptorNormalizer implements Denormal
         return $object;
     }
 
-    /**
-     * @return array|string|int|float|bool|\ArrayObject|null
-     */
-    public function normalize($object, $format = null, array $context = [])
+    public function normalize(mixed $data, ?string $format = null, array $context = []): array|string|int|float|bool|\ArrayObject|null
     {
-        $data = [];
-        if ($object->isInitialized('mediaType') && null !== $object->getMediaType()) {
-            $data['MediaType'] = $object->getMediaType();
+        $dataArray = [];
+        if ($data->isInitialized('mediaType') && null !== $data->getMediaType()) {
+            $dataArray['MediaType'] = $data->getMediaType();
         }
-        if ($object->isInitialized('size') && null !== $object->getSize()) {
-            $data['Size'] = $object->getSize();
+        if ($data->isInitialized('size') && null !== $data->getSize()) {
+            $dataArray['Size'] = $data->getSize();
         }
-        if ($object->isInitialized('digest') && null !== $object->getDigest()) {
-            $data['Digest'] = $object->getDigest();
+        if ($data->isInitialized('digest') && null !== $data->getDigest()) {
+            $dataArray['Digest'] = $data->getDigest();
         }
-        if ($object->isInitialized('uRLs') && null !== $object->getURLs()) {
+        if ($data->isInitialized('uRLs') && null !== $data->getURLs()) {
             $values = [];
-            foreach ($object->getURLs() as $value) {
+            foreach ($data->getURLs() as $value) {
                 $values[] = $value;
             }
-            $data['URLs'] = $values;
+            $dataArray['URLs'] = $values;
         }
-        foreach ($object as $key => $value_1) {
+        foreach ($data->additionalPropertyEntries() as $key => $value_1) {
             if (preg_match('/.*/', (string) $key)) {
-                $data[$key] = $value_1;
+                $dataArray[$key] = $value_1;
             }
         }
 
-        return $data;
+        return $dataArray;
     }
 
-    public function getSupportedTypes(string $format = null): array
+    public function getSupportedTypes(?string $format = null): array
     {
-        return ['Docker\\API\\Model\\DistributionNameJsonGetResponse200Descriptor' => false];
+        return [\Docker\API\Model\DistributionNameJsonGetResponse200Descriptor::class => false];
     }
 }

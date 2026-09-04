@@ -4,8 +4,12 @@ declare(strict_types=1);
 
 namespace Docker\API\Model;
 
-class SwarmJoinPostBody extends \ArrayObject
+use Docker\API\Runtime\AdditionalAndPatternProperties;
+use Docker\API\Runtime\AdditionalPropertiesInterface;
+
+class SwarmJoinPostBody implements AdditionalPropertiesInterface
 {
+    use AdditionalAndPatternProperties;
     /**
      * @var array
      */
@@ -52,7 +56,7 @@ class SwarmJoinPostBody extends \ArrayObject
     /**
      * Addresses of manager nodes already participating in the swarm.
      *
-     * @var string[]|null
+     * @var list<string>|null
      */
     protected $remoteAddrs;
     /**
@@ -154,7 +158,7 @@ class SwarmJoinPostBody extends \ArrayObject
     /**
      * Addresses of manager nodes already participating in the swarm.
      *
-     * @return string[]|null
+     * @return list<string>|null
      */
     public function getRemoteAddrs(): ?array
     {
@@ -164,7 +168,7 @@ class SwarmJoinPostBody extends \ArrayObject
     /**
      * Addresses of manager nodes already participating in the swarm.
      *
-     * @param string[]|null $remoteAddrs
+     * @param list<string>|null $remoteAddrs
      */
     public function setRemoteAddrs(?array $remoteAddrs): self
     {
@@ -191,5 +195,10 @@ class SwarmJoinPostBody extends \ArrayObject
         $this->joinToken = $joinToken;
 
         return $this;
+    }
+
+    public function definedProperties(): array
+    {
+        return ['listenAddr' => ['ListenAddr', 'getListenAddr', 'setListenAddr'], 'advertiseAddr' => ['AdvertiseAddr', 'getAdvertiseAddr', 'setAdvertiseAddr'], 'dataPathAddr' => ['DataPathAddr', 'getDataPathAddr', 'setDataPathAddr'], 'remoteAddrs' => ['RemoteAddrs', 'getRemoteAddrs', 'setRemoteAddrs'], 'joinToken' => ['JoinToken', 'getJoinToken', 'setJoinToken']];
     }
 }

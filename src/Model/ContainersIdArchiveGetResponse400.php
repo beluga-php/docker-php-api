@@ -4,8 +4,12 @@ declare(strict_types=1);
 
 namespace Docker\API\Model;
 
-class ContainersIdArchiveGetResponse400 extends \ArrayObject
+use Docker\API\Runtime\AdditionalAndPatternProperties;
+use Docker\API\Runtime\AdditionalPropertiesInterface;
+
+class ContainersIdArchiveGetResponse400 implements AdditionalPropertiesInterface
 {
+    use AdditionalAndPatternProperties;
     /**
      * @var array
      */
@@ -70,5 +74,10 @@ class ContainersIdArchiveGetResponse400 extends \ArrayObject
         $this->message = $message;
 
         return $this;
+    }
+
+    public function definedProperties(): array
+    {
+        return ['errorResponse' => ['ErrorResponse', 'getErrorResponse', 'setErrorResponse'], 'message' => ['message', 'getMessage', 'setMessage']];
     }
 }

@@ -4,8 +4,12 @@ declare(strict_types=1);
 
 namespace Docker\API\Model;
 
-class IPAM extends \ArrayObject
+use Docker\API\Runtime\AdditionalAndPatternProperties;
+use Docker\API\Runtime\AdditionalPropertiesInterface;
+
+class IPAM implements AdditionalPropertiesInterface
 {
+    use AdditionalAndPatternProperties;
     /**
      * @var array
      */
@@ -22,13 +26,13 @@ class IPAM extends \ArrayObject
      */
     protected $driver = 'default';
     /**
-     * List of IPAM configuration options, specified as a map:.
+     * List of IPAM configuration options, specified as a map:
      *
      * ```
      * {"Subnet": <CIDR>, "IPRange": <CIDR>, "Gateway": <IP address>, "AuxAddress": <device_name:IP address>}
      * ```
      *
-     * @var array<string, string>[]|null
+     * @var list<array<string, string>>|null
      */
     protected $config;
     /**
@@ -58,13 +62,13 @@ class IPAM extends \ArrayObject
     }
 
     /**
-     * List of IPAM configuration options, specified as a map:.
+     * List of IPAM configuration options, specified as a map:
      *
      * ```
      * {"Subnet": <CIDR>, "IPRange": <CIDR>, "Gateway": <IP address>, "AuxAddress": <device_name:IP address>}
      * ```
      *
-     * @return array<string, string>[]|null
+     * @return list<array<string, string>>|null
      */
     public function getConfig(): ?array
     {
@@ -72,13 +76,13 @@ class IPAM extends \ArrayObject
     }
 
     /**
-     * List of IPAM configuration options, specified as a map:.
+     * List of IPAM configuration options, specified as a map:
      *
      * ```
      * {"Subnet": <CIDR>, "IPRange": <CIDR>, "Gateway": <IP address>, "AuxAddress": <device_name:IP address>}
      * ```
      *
-     * @param array<string, string>[]|null $config
+     * @param list<array<string, string>>|null $config
      */
     public function setConfig(?array $config): self
     {
@@ -109,5 +113,10 @@ class IPAM extends \ArrayObject
         $this->options = $options;
 
         return $this;
+    }
+
+    public function definedProperties(): array
+    {
+        return ['driver' => ['Driver', 'getDriver', 'setDriver'], 'config' => ['Config', 'getConfig', 'setConfig'], 'options' => ['Options', 'getOptions', 'setOptions']];
     }
 }

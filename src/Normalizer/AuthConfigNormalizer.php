@@ -21,51 +21,55 @@ class AuthConfigNormalizer implements DenormalizerInterface, NormalizerInterface
     use NormalizerAwareTrait;
     use ValidatorTrait;
 
-    public function supportsDenormalization($data, $type, $format = null, array $context = []): bool
+    public function supportsDenormalization(mixed $data, string $type, ?string $format = null, array $context = []): bool
     {
-        return 'Docker\\API\\Model\\AuthConfig' === $type;
+        return \Docker\API\Model\AuthConfig::class === $type;
     }
 
-    public function supportsNormalization($data, $format = null, array $context = []): bool
+    public function supportsNormalization(mixed $data, ?string $format = null, array $context = []): bool
     {
-        return \is_object($data) && 'Docker\\API\\Model\\AuthConfig' === $data::class;
+        return \is_object($data) && \Docker\API\Model\AuthConfig::class === $data::class;
     }
 
-    public function denormalize($data, $class, $format = null, array $context = [])
+    public function denormalize(mixed $data, string $type, ?string $format = null, array $context = []): mixed
     {
-        if (isset($data['$ref'])) {
+        $object = new \Docker\API\Model\AuthConfig();
+        if (null === $data || false === \is_array($data)) {
+            return $object;
+        }
+        if (isset($data['$ref']) && !isset($data['type']) && !isset($data['properties']) && !isset($data['allOf'])) {
             return new Reference($data['$ref'], $context['document-origin']);
         }
         if (isset($data['$recursiveRef'])) {
             return new Reference($data['$recursiveRef'], $context['document-origin']);
-        }
-        $object = new \Docker\API\Model\AuthConfig();
-        if (null === $data || false === \is_array($data)) {
-            return $object;
         }
         if (\array_key_exists('username', $data) && null !== $data['username']) {
             $object->setUsername($data['username']);
             unset($data['username']);
         } elseif (\array_key_exists('username', $data) && null === $data['username']) {
             $object->setUsername(null);
+            unset($data['username']);
         }
         if (\array_key_exists('password', $data) && null !== $data['password']) {
             $object->setPassword($data['password']);
             unset($data['password']);
         } elseif (\array_key_exists('password', $data) && null === $data['password']) {
             $object->setPassword(null);
+            unset($data['password']);
         }
         if (\array_key_exists('email', $data) && null !== $data['email']) {
             $object->setEmail($data['email']);
             unset($data['email']);
         } elseif (\array_key_exists('email', $data) && null === $data['email']) {
             $object->setEmail(null);
+            unset($data['email']);
         }
         if (\array_key_exists('serveraddress', $data) && null !== $data['serveraddress']) {
             $object->setServeraddress($data['serveraddress']);
             unset($data['serveraddress']);
         } elseif (\array_key_exists('serveraddress', $data) && null === $data['serveraddress']) {
             $object->setServeraddress(null);
+            unset($data['serveraddress']);
         }
         foreach ($data as $key => $value) {
             if (preg_match('/.*/', (string) $key)) {
@@ -76,35 +80,32 @@ class AuthConfigNormalizer implements DenormalizerInterface, NormalizerInterface
         return $object;
     }
 
-    /**
-     * @return array|string|int|float|bool|\ArrayObject|null
-     */
-    public function normalize($object, $format = null, array $context = [])
+    public function normalize(mixed $data, ?string $format = null, array $context = []): array|string|int|float|bool|\ArrayObject|null
     {
-        $data = [];
-        if ($object->isInitialized('username') && null !== $object->getUsername()) {
-            $data['username'] = $object->getUsername();
+        $dataArray = [];
+        if ($data->isInitialized('username') && null !== $data->getUsername()) {
+            $dataArray['username'] = $data->getUsername();
         }
-        if ($object->isInitialized('password') && null !== $object->getPassword()) {
-            $data['password'] = $object->getPassword();
+        if ($data->isInitialized('password') && null !== $data->getPassword()) {
+            $dataArray['password'] = $data->getPassword();
         }
-        if ($object->isInitialized('email') && null !== $object->getEmail()) {
-            $data['email'] = $object->getEmail();
+        if ($data->isInitialized('email') && null !== $data->getEmail()) {
+            $dataArray['email'] = $data->getEmail();
         }
-        if ($object->isInitialized('serveraddress') && null !== $object->getServeraddress()) {
-            $data['serveraddress'] = $object->getServeraddress();
+        if ($data->isInitialized('serveraddress') && null !== $data->getServeraddress()) {
+            $dataArray['serveraddress'] = $data->getServeraddress();
         }
-        foreach ($object as $key => $value) {
+        foreach ($data->additionalPropertyEntries() as $key => $value) {
             if (preg_match('/.*/', (string) $key)) {
-                $data[$key] = $value;
+                $dataArray[$key] = $value;
             }
         }
 
-        return $data;
+        return $dataArray;
     }
 
-    public function getSupportedTypes(string $format = null): array
+    public function getSupportedTypes(?string $format = null): array
     {
-        return ['Docker\\API\\Model\\AuthConfig' => false];
+        return [\Docker\API\Model\AuthConfig::class => false];
     }
 }

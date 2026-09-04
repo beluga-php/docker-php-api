@@ -13,13 +13,11 @@ class ContainerResize extends \Docker\API\Runtime\Client\BaseEndpoint implements
     /**
      * Resize the TTY for a container.
      *
-     * @param string $id              ID or name of the container
-     * @param array  $queryParameters {
-     *
-     * @var int $h Height of the TTY session in characters
-     * @var int $w Width of the TTY session in characters
-     *          }
-     *
+     * @param string $id ID or name of the container
+     * @param array{
+     *    "h"?: int, //Height of the TTY session in characters
+     *    "w"?: int, //Width of the TTY session in characters
+     * } $queryParameters
      * @param array $accept Accept content header text/plain|application/json
      */
     public function __construct(string $id, array $queryParameters = [], array $accept = [])
@@ -36,7 +34,7 @@ class ContainerResize extends \Docker\API\Runtime\Client\BaseEndpoint implements
 
     public function getUri(): string
     {
-        return str_replace(['{id}'], [$this->id], '/containers/{id}/resize');
+        return str_replace(['{id}'], [rawurlencode($this->id)], '/containers/{id}/resize');
     }
 
     public function getBody(\Symfony\Component\Serializer\SerializerInterface $serializer, $streamFactory = null): array
@@ -70,13 +68,13 @@ class ContainerResize extends \Docker\API\Runtime\Client\BaseEndpoint implements
      *
      * @return null
      */
-    protected function transformResponseBody(\Psr\Http\Message\ResponseInterface $response, \Symfony\Component\Serializer\SerializerInterface $serializer, string $contentType = null)
+    protected function transformResponseBody(\Psr\Http\Message\ResponseInterface $response, \Symfony\Component\Serializer\SerializerInterface $serializer, ?string $contentType = null)
     {
         $status = $response->getStatusCode();
         $body = (string) $response->getBody();
         if (200 === $status) {
         }
-        if ((null === $contentType) === false && (404 === $status && false !== mb_strpos($contentType, 'application/json'))) {
+        if ((null === $contentType) === false && (404 === $status && false !== stripos(strtolower($contentType), 'application/json'))) {
             throw new \Docker\API\Exception\ContainerResizeNotFoundException($response);
         }
         if (500 === $status) {

@@ -21,51 +21,55 @@ class HealthcheckResultNormalizer implements DenormalizerInterface, NormalizerIn
     use NormalizerAwareTrait;
     use ValidatorTrait;
 
-    public function supportsDenormalization($data, $type, $format = null, array $context = []): bool
+    public function supportsDenormalization(mixed $data, string $type, ?string $format = null, array $context = []): bool
     {
-        return 'Docker\\API\\Model\\HealthcheckResult' === $type;
+        return \Docker\API\Model\HealthcheckResult::class === $type;
     }
 
-    public function supportsNormalization($data, $format = null, array $context = []): bool
+    public function supportsNormalization(mixed $data, ?string $format = null, array $context = []): bool
     {
-        return \is_object($data) && 'Docker\\API\\Model\\HealthcheckResult' === $data::class;
+        return \is_object($data) && \Docker\API\Model\HealthcheckResult::class === $data::class;
     }
 
-    public function denormalize($data, $class, $format = null, array $context = [])
+    public function denormalize(mixed $data, string $type, ?string $format = null, array $context = []): mixed
     {
-        if (isset($data['$ref'])) {
+        $object = new \Docker\API\Model\HealthcheckResult();
+        if (null === $data || false === \is_array($data)) {
+            return $object;
+        }
+        if (isset($data['$ref']) && !isset($data['type']) && !isset($data['properties']) && !isset($data['allOf'])) {
             return new Reference($data['$ref'], $context['document-origin']);
         }
         if (isset($data['$recursiveRef'])) {
             return new Reference($data['$recursiveRef'], $context['document-origin']);
         }
-        $object = new \Docker\API\Model\HealthcheckResult();
-        if (null === $data || false === \is_array($data)) {
-            return $object;
-        }
         if (\array_key_exists('Start', $data) && null !== $data['Start']) {
-            $object->setStart(\DateTime::createFromFormat('Y-m-d\\TH:i:s.uuP', $data['Start']));
+            $object->setStart('Z' === (new \DateTime($data['Start']))->getTimezone()->getName() ? (new \DateTime($data['Start']))->setTimezone(new \DateTimeZone('GMT')) : new \DateTime($data['Start']));
             unset($data['Start']);
         } elseif (\array_key_exists('Start', $data) && null === $data['Start']) {
             $object->setStart(null);
+            unset($data['Start']);
         }
         if (\array_key_exists('End', $data) && null !== $data['End']) {
             $object->setEnd($data['End']);
             unset($data['End']);
         } elseif (\array_key_exists('End', $data) && null === $data['End']) {
             $object->setEnd(null);
+            unset($data['End']);
         }
         if (\array_key_exists('ExitCode', $data) && null !== $data['ExitCode']) {
             $object->setExitCode($data['ExitCode']);
             unset($data['ExitCode']);
         } elseif (\array_key_exists('ExitCode', $data) && null === $data['ExitCode']) {
             $object->setExitCode(null);
+            unset($data['ExitCode']);
         }
         if (\array_key_exists('Output', $data) && null !== $data['Output']) {
             $object->setOutput($data['Output']);
             unset($data['Output']);
         } elseif (\array_key_exists('Output', $data) && null === $data['Output']) {
             $object->setOutput(null);
+            unset($data['Output']);
         }
         foreach ($data as $key => $value) {
             if (preg_match('/.*/', (string) $key)) {
@@ -76,35 +80,32 @@ class HealthcheckResultNormalizer implements DenormalizerInterface, NormalizerIn
         return $object;
     }
 
-    /**
-     * @return array|string|int|float|bool|\ArrayObject|null
-     */
-    public function normalize($object, $format = null, array $context = [])
+    public function normalize(mixed $data, ?string $format = null, array $context = []): array|string|int|float|bool|\ArrayObject|null
     {
-        $data = [];
-        if ($object->isInitialized('start') && null !== $object->getStart()) {
-            $data['Start'] = $object->getStart()->format('Y-m-d\\TH:i:sP');
+        $dataArray = [];
+        if ($data->isInitialized('start') && null !== $data->getStart()) {
+            $dataArray['Start'] = $data->getStart()->format('Y-m-d\TH:i:sP');
         }
-        if ($object->isInitialized('end') && null !== $object->getEnd()) {
-            $data['End'] = $object->getEnd();
+        if ($data->isInitialized('end') && null !== $data->getEnd()) {
+            $dataArray['End'] = $data->getEnd();
         }
-        if ($object->isInitialized('exitCode') && null !== $object->getExitCode()) {
-            $data['ExitCode'] = $object->getExitCode();
+        if ($data->isInitialized('exitCode') && null !== $data->getExitCode()) {
+            $dataArray['ExitCode'] = $data->getExitCode();
         }
-        if ($object->isInitialized('output') && null !== $object->getOutput()) {
-            $data['Output'] = $object->getOutput();
+        if ($data->isInitialized('output') && null !== $data->getOutput()) {
+            $dataArray['Output'] = $data->getOutput();
         }
-        foreach ($object as $key => $value) {
+        foreach ($data->additionalPropertyEntries() as $key => $value) {
             if (preg_match('/.*/', (string) $key)) {
-                $data[$key] = $value;
+                $dataArray[$key] = $value;
             }
         }
 
-        return $data;
+        return $dataArray;
     }
 
-    public function getSupportedTypes(string $format = null): array
+    public function getSupportedTypes(?string $format = null): array
     {
-        return ['Docker\\API\\Model\\HealthcheckResult' => false];
+        return [\Docker\API\Model\HealthcheckResult::class => false];
     }
 }

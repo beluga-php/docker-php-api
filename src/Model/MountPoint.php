@@ -4,8 +4,12 @@ declare(strict_types=1);
 
 namespace Docker\API\Model;
 
-class MountPoint extends \ArrayObject
+use Docker\API\Runtime\AdditionalAndPatternProperties;
+use Docker\API\Runtime\AdditionalPropertiesInterface;
+
+class MountPoint implements AdditionalPropertiesInterface
 {
+    use AdditionalAndPatternProperties;
     /**
      * @var array
      */
@@ -150,5 +154,10 @@ class MountPoint extends \ArrayObject
         $this->propagation = $propagation;
 
         return $this;
+    }
+
+    public function definedProperties(): array
+    {
+        return ['type' => ['Type', 'getType', 'setType'], 'name' => ['Name', 'getName', 'setName'], 'source' => ['Source', 'getSource', 'setSource'], 'destination' => ['Destination', 'getDestination', 'setDestination'], 'driver' => ['Driver', 'getDriver', 'setDriver'], 'mode' => ['Mode', 'getMode', 'setMode'], 'rW' => ['RW', 'getRW', 'setRW'], 'propagation' => ['Propagation', 'getPropagation', 'setPropagation']];
     }
 }

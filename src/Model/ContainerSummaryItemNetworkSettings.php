@@ -4,8 +4,12 @@ declare(strict_types=1);
 
 namespace Docker\API\Model;
 
-class ContainerSummaryItemNetworkSettings extends \ArrayObject
+use Docker\API\Runtime\AdditionalAndPatternProperties;
+use Docker\API\Runtime\AdditionalPropertiesInterface;
+
+class ContainerSummaryItemNetworkSettings implements AdditionalPropertiesInterface
 {
+    use AdditionalAndPatternProperties;
     /**
      * @var array
      */
@@ -37,5 +41,10 @@ class ContainerSummaryItemNetworkSettings extends \ArrayObject
         $this->networks = $networks;
 
         return $this;
+    }
+
+    public function definedProperties(): array
+    {
+        return ['networks' => ['Networks', 'getNetworks', 'setNetworks']];
     }
 }

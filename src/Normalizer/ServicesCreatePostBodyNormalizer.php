@@ -21,36 +21,37 @@ class ServicesCreatePostBodyNormalizer implements DenormalizerInterface, Normali
     use NormalizerAwareTrait;
     use ValidatorTrait;
 
-    public function supportsDenormalization($data, $type, $format = null, array $context = []): bool
+    public function supportsDenormalization(mixed $data, string $type, ?string $format = null, array $context = []): bool
     {
-        return 'Docker\\API\\Model\\ServicesCreatePostBody' === $type;
+        return \Docker\API\Model\ServicesCreatePostBody::class === $type;
     }
 
-    public function supportsNormalization($data, $format = null, array $context = []): bool
+    public function supportsNormalization(mixed $data, ?string $format = null, array $context = []): bool
     {
-        return \is_object($data) && 'Docker\\API\\Model\\ServicesCreatePostBody' === $data::class;
+        return \is_object($data) && \Docker\API\Model\ServicesCreatePostBody::class === $data::class;
     }
 
-    public function denormalize($data, $class, $format = null, array $context = [])
+    public function denormalize(mixed $data, string $type, ?string $format = null, array $context = []): mixed
     {
-        if (isset($data['$ref'])) {
+        $object = new \Docker\API\Model\ServicesCreatePostBody();
+        if (null === $data || false === \is_array($data)) {
+            return $object;
+        }
+        if (isset($data['$ref']) && !isset($data['type']) && !isset($data['properties']) && !isset($data['allOf'])) {
             return new Reference($data['$ref'], $context['document-origin']);
         }
         if (isset($data['$recursiveRef'])) {
             return new Reference($data['$recursiveRef'], $context['document-origin']);
-        }
-        $object = new \Docker\API\Model\ServicesCreatePostBody();
-        if (null === $data || false === \is_array($data)) {
-            return $object;
         }
         if (\array_key_exists('Name', $data) && null !== $data['Name']) {
             $object->setName($data['Name']);
             unset($data['Name']);
         } elseif (\array_key_exists('Name', $data) && null === $data['Name']) {
             $object->setName(null);
+            unset($data['Name']);
         }
         if (\array_key_exists('Labels', $data) && null !== $data['Labels']) {
-            $values = new \ArrayObject([], \ArrayObject::ARRAY_AS_PROPS);
+            $values = new \Docker\API\Runtime\JsonObject();
             foreach ($data['Labels'] as $key => $value) {
                 $values[$key] = $value;
             }
@@ -58,46 +59,53 @@ class ServicesCreatePostBodyNormalizer implements DenormalizerInterface, Normali
             unset($data['Labels']);
         } elseif (\array_key_exists('Labels', $data) && null === $data['Labels']) {
             $object->setLabels(null);
+            unset($data['Labels']);
         }
         if (\array_key_exists('TaskTemplate', $data) && null !== $data['TaskTemplate']) {
-            $object->setTaskTemplate($this->denormalizer->denormalize($data['TaskTemplate'], 'Docker\\API\\Model\\TaskSpec', 'json', $context));
+            $object->setTaskTemplate($this->denormalizer->denormalize($data['TaskTemplate'], \Docker\API\Model\TaskSpec::class, 'json', $context));
             unset($data['TaskTemplate']);
         } elseif (\array_key_exists('TaskTemplate', $data) && null === $data['TaskTemplate']) {
             $object->setTaskTemplate(null);
+            unset($data['TaskTemplate']);
         }
         if (\array_key_exists('Mode', $data) && null !== $data['Mode']) {
-            $object->setMode($this->denormalizer->denormalize($data['Mode'], 'Docker\\API\\Model\\ServiceSpecMode', 'json', $context));
+            $object->setMode($this->denormalizer->denormalize($data['Mode'], \Docker\API\Model\ServiceSpecMode::class, 'json', $context));
             unset($data['Mode']);
         } elseif (\array_key_exists('Mode', $data) && null === $data['Mode']) {
             $object->setMode(null);
+            unset($data['Mode']);
         }
         if (\array_key_exists('UpdateConfig', $data) && null !== $data['UpdateConfig']) {
-            $object->setUpdateConfig($this->denormalizer->denormalize($data['UpdateConfig'], 'Docker\\API\\Model\\ServiceSpecUpdateConfig', 'json', $context));
+            $object->setUpdateConfig($this->denormalizer->denormalize($data['UpdateConfig'], \Docker\API\Model\ServiceSpecUpdateConfig::class, 'json', $context));
             unset($data['UpdateConfig']);
         } elseif (\array_key_exists('UpdateConfig', $data) && null === $data['UpdateConfig']) {
             $object->setUpdateConfig(null);
+            unset($data['UpdateConfig']);
         }
         if (\array_key_exists('RollbackConfig', $data) && null !== $data['RollbackConfig']) {
-            $object->setRollbackConfig($this->denormalizer->denormalize($data['RollbackConfig'], 'Docker\\API\\Model\\ServiceSpecRollbackConfig', 'json', $context));
+            $object->setRollbackConfig($this->denormalizer->denormalize($data['RollbackConfig'], \Docker\API\Model\ServiceSpecRollbackConfig::class, 'json', $context));
             unset($data['RollbackConfig']);
         } elseif (\array_key_exists('RollbackConfig', $data) && null === $data['RollbackConfig']) {
             $object->setRollbackConfig(null);
+            unset($data['RollbackConfig']);
         }
         if (\array_key_exists('Networks', $data) && null !== $data['Networks']) {
             $values_1 = [];
             foreach ($data['Networks'] as $value_1) {
-                $values_1[] = $this->denormalizer->denormalize($value_1, 'Docker\\API\\Model\\NetworkAttachmentConfig', 'json', $context);
+                $values_1[] = $this->denormalizer->denormalize($value_1, \Docker\API\Model\NetworkAttachmentConfig::class, 'json', $context);
             }
             $object->setNetworks($values_1);
             unset($data['Networks']);
         } elseif (\array_key_exists('Networks', $data) && null === $data['Networks']) {
             $object->setNetworks(null);
+            unset($data['Networks']);
         }
         if (\array_key_exists('EndpointSpec', $data) && null !== $data['EndpointSpec']) {
-            $object->setEndpointSpec($this->denormalizer->denormalize($data['EndpointSpec'], 'Docker\\API\\Model\\EndpointSpec', 'json', $context));
+            $object->setEndpointSpec($this->denormalizer->denormalize($data['EndpointSpec'], \Docker\API\Model\EndpointSpec::class, 'json', $context));
             unset($data['EndpointSpec']);
         } elseif (\array_key_exists('EndpointSpec', $data) && null === $data['EndpointSpec']) {
             $object->setEndpointSpec(null);
+            unset($data['EndpointSpec']);
         }
         foreach ($data as $key_1 => $value_2) {
             if (preg_match('/.*/', (string) $key_1)) {
@@ -108,55 +116,52 @@ class ServicesCreatePostBodyNormalizer implements DenormalizerInterface, Normali
         return $object;
     }
 
-    /**
-     * @return array|string|int|float|bool|\ArrayObject|null
-     */
-    public function normalize($object, $format = null, array $context = [])
+    public function normalize(mixed $data, ?string $format = null, array $context = []): array|string|int|float|bool|\ArrayObject|null
     {
-        $data = [];
-        if ($object->isInitialized('name') && null !== $object->getName()) {
-            $data['Name'] = $object->getName();
+        $dataArray = [];
+        if ($data->isInitialized('name') && null !== $data->getName()) {
+            $dataArray['Name'] = $data->getName();
         }
-        if ($object->isInitialized('labels') && null !== $object->getLabels()) {
-            $values = new \ArrayObject([], \ArrayObject::ARRAY_AS_PROPS);
-            foreach ($object->getLabels() as $key => $value) {
+        if ($data->isInitialized('labels') && null !== $data->getLabels()) {
+            $values = new \Docker\API\Runtime\JsonObject();
+            foreach ($data->getLabels() as $key => $value) {
                 $values[$key] = $value;
             }
-            $data['Labels'] = $values;
+            $dataArray['Labels'] = $values;
         }
-        if ($object->isInitialized('taskTemplate') && null !== $object->getTaskTemplate()) {
-            $data['TaskTemplate'] = null === $object->getTaskTemplate() ? null : new \ArrayObject($this->normalizer->normalize($object->getTaskTemplate(), 'json', $context), \ArrayObject::ARRAY_AS_PROPS);
+        if ($data->isInitialized('taskTemplate') && null !== $data->getTaskTemplate()) {
+            $dataArray['TaskTemplate'] = null === $data->getTaskTemplate() ? null : new \Docker\API\Runtime\JsonObject($this->normalizer->normalize($data->getTaskTemplate(), 'json', $context));
         }
-        if ($object->isInitialized('mode') && null !== $object->getMode()) {
-            $data['Mode'] = null === $object->getMode() ? null : new \ArrayObject($this->normalizer->normalize($object->getMode(), 'json', $context), \ArrayObject::ARRAY_AS_PROPS);
+        if ($data->isInitialized('mode') && null !== $data->getMode()) {
+            $dataArray['Mode'] = null === $data->getMode() ? null : new \Docker\API\Runtime\JsonObject($this->normalizer->normalize($data->getMode(), 'json', $context));
         }
-        if ($object->isInitialized('updateConfig') && null !== $object->getUpdateConfig()) {
-            $data['UpdateConfig'] = null === $object->getUpdateConfig() ? null : new \ArrayObject($this->normalizer->normalize($object->getUpdateConfig(), 'json', $context), \ArrayObject::ARRAY_AS_PROPS);
+        if ($data->isInitialized('updateConfig') && null !== $data->getUpdateConfig()) {
+            $dataArray['UpdateConfig'] = null === $data->getUpdateConfig() ? null : new \Docker\API\Runtime\JsonObject($this->normalizer->normalize($data->getUpdateConfig(), 'json', $context));
         }
-        if ($object->isInitialized('rollbackConfig') && null !== $object->getRollbackConfig()) {
-            $data['RollbackConfig'] = null === $object->getRollbackConfig() ? null : new \ArrayObject($this->normalizer->normalize($object->getRollbackConfig(), 'json', $context), \ArrayObject::ARRAY_AS_PROPS);
+        if ($data->isInitialized('rollbackConfig') && null !== $data->getRollbackConfig()) {
+            $dataArray['RollbackConfig'] = null === $data->getRollbackConfig() ? null : new \Docker\API\Runtime\JsonObject($this->normalizer->normalize($data->getRollbackConfig(), 'json', $context));
         }
-        if ($object->isInitialized('networks') && null !== $object->getNetworks()) {
+        if ($data->isInitialized('networks') && null !== $data->getNetworks()) {
             $values_1 = [];
-            foreach ($object->getNetworks() as $value_1) {
-                $values_1[] = null === $value_1 ? null : new \ArrayObject($this->normalizer->normalize($value_1, 'json', $context), \ArrayObject::ARRAY_AS_PROPS);
+            foreach ($data->getNetworks() as $value_1) {
+                $values_1[] = null === $value_1 ? null : new \Docker\API\Runtime\JsonObject($this->normalizer->normalize($value_1, 'json', $context));
             }
-            $data['Networks'] = $values_1;
+            $dataArray['Networks'] = $values_1;
         }
-        if ($object->isInitialized('endpointSpec') && null !== $object->getEndpointSpec()) {
-            $data['EndpointSpec'] = null === $object->getEndpointSpec() ? null : new \ArrayObject($this->normalizer->normalize($object->getEndpointSpec(), 'json', $context), \ArrayObject::ARRAY_AS_PROPS);
+        if ($data->isInitialized('endpointSpec') && null !== $data->getEndpointSpec()) {
+            $dataArray['EndpointSpec'] = null === $data->getEndpointSpec() ? null : new \Docker\API\Runtime\JsonObject($this->normalizer->normalize($data->getEndpointSpec(), 'json', $context));
         }
-        foreach ($object as $key_1 => $value_2) {
+        foreach ($data->additionalPropertyEntries() as $key_1 => $value_2) {
             if (preg_match('/.*/', (string) $key_1)) {
-                $data[$key_1] = $value_2;
+                $dataArray[$key_1] = $value_2;
             }
         }
 
-        return $data;
+        return $dataArray;
     }
 
-    public function getSupportedTypes(string $format = null): array
+    public function getSupportedTypes(?string $format = null): array
     {
-        return ['Docker\\API\\Model\\ServicesCreatePostBody' => false];
+        return [\Docker\API\Model\ServicesCreatePostBody::class => false];
     }
 }

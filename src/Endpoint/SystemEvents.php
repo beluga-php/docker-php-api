@@ -33,11 +33,10 @@ class SystemEvents extends \Docker\API\Runtime\Client\BaseEndpoint implements \D
      *
      * The Builder reports `prune` events
      *
-     * @param array $queryParameters {
-     *
-     * @var string $since show events created since this timestamp then stream new events
-     * @var string $until show events created until this timestamp then stop streaming
-     * @var string $filters A JSON encoded value of filters (a `map[string][]string`) to process on the event list. Available filters:
+     * @param array{
+     *    "since"?: string, //Show events created since this timestamp then stream new events.
+     *    "until"?: string, //Show events created until this timestamp then stop streaming.
+     *    "filters"?: string, //A JSON encoded value of filters (a `map[string][]string`) to process on the event list. Available filters:
      *
      * - `config=<string>` config name or ID
      * - `container=<string>` container name or ID
@@ -53,8 +52,7 @@ class SystemEvents extends \Docker\API\Runtime\Client\BaseEndpoint implements \D
      * - `service=<string>` service name or ID
      * - `type=<string>` object to filter by, one of `container`, `image`, `volume`, `network`, `daemon`, `plugin`, `node`, `service`, `secret` or `config`
      * - `volume=<string>` volume name
-     *
-     * }
+     * } $queryParameters
      */
     public function __construct(array $queryParameters = [])
     {
@@ -100,18 +98,18 @@ class SystemEvents extends \Docker\API\Runtime\Client\BaseEndpoint implements \D
      *
      * @return \Docker\API\Model\EventsGetResponse200|null
      */
-    protected function transformResponseBody(\Psr\Http\Message\ResponseInterface $response, \Symfony\Component\Serializer\SerializerInterface $serializer, string $contentType = null)
+    protected function transformResponseBody(\Psr\Http\Message\ResponseInterface $response, \Symfony\Component\Serializer\SerializerInterface $serializer, ?string $contentType = null)
     {
         $status = $response->getStatusCode();
         $body = (string) $response->getBody();
-        if ((null === $contentType) === false && (200 === $status && false !== mb_strpos($contentType, 'application/json'))) {
-            return $serializer->deserialize($body, 'Docker\\API\\Model\\EventsGetResponse200', 'json');
+        if ((null === $contentType) === false && (200 === $status && false !== stripos(strtolower($contentType), 'application/json'))) {
+            return $serializer->deserialize($body, 'Docker\API\Model\EventsGetResponse200', 'json');
         }
-        if ((null === $contentType) === false && (400 === $status && false !== mb_strpos($contentType, 'application/json'))) {
-            throw new \Docker\API\Exception\SystemEventsBadRequestException($serializer->deserialize($body, 'Docker\\API\\Model\\ErrorResponse', 'json'), $response);
+        if ((null === $contentType) === false && (400 === $status && false !== stripos(strtolower($contentType), 'application/json'))) {
+            throw new \Docker\API\Exception\SystemEventsBadRequestException($serializer->deserialize($body, 'Docker\API\Model\ErrorResponse', 'json'), $response);
         }
-        if ((null === $contentType) === false && (500 === $status && false !== mb_strpos($contentType, 'application/json'))) {
-            throw new \Docker\API\Exception\SystemEventsInternalServerErrorException($serializer->deserialize($body, 'Docker\\API\\Model\\ErrorResponse', 'json'), $response);
+        if ((null === $contentType) === false && (500 === $status && false !== stripos(strtolower($contentType), 'application/json'))) {
+            throw new \Docker\API\Exception\SystemEventsInternalServerErrorException($serializer->deserialize($body, 'Docker\API\Model\ErrorResponse', 'json'), $response);
         }
     }
 

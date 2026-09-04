@@ -4,8 +4,12 @@ declare(strict_types=1);
 
 namespace Docker\API\Model;
 
-class BuildInfo extends \ArrayObject
+use Docker\API\Runtime\AdditionalAndPatternProperties;
+use Docker\API\Runtime\AdditionalPropertiesInterface;
+
+class BuildInfo implements AdditionalPropertiesInterface
 {
+    use AdditionalAndPatternProperties;
     /**
      * @var array
      */
@@ -158,5 +162,10 @@ class BuildInfo extends \ArrayObject
         $this->aux = $aux;
 
         return $this;
+    }
+
+    public function definedProperties(): array
+    {
+        return ['id' => ['id', 'getId', 'setId'], 'stream' => ['stream', 'getStream', 'setStream'], 'error' => ['error', 'getError', 'setError'], 'errorDetail' => ['errorDetail', 'getErrorDetail', 'setErrorDetail'], 'status' => ['status', 'getStatus', 'setStatus'], 'progress' => ['progress', 'getProgress', 'setProgress'], 'progressDetail' => ['progressDetail', 'getProgressDetail', 'setProgressDetail'], 'aux' => ['aux', 'getAux', 'setAux']];
     }
 }

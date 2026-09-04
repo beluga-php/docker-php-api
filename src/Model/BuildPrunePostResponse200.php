@@ -4,8 +4,12 @@ declare(strict_types=1);
 
 namespace Docker\API\Model;
 
-class BuildPrunePostResponse200 extends \ArrayObject
+use Docker\API\Runtime\AdditionalAndPatternProperties;
+use Docker\API\Runtime\AdditionalPropertiesInterface;
+
+class BuildPrunePostResponse200 implements AdditionalPropertiesInterface
 {
+    use AdditionalAndPatternProperties;
     /**
      * @var array
      */
@@ -16,7 +20,7 @@ class BuildPrunePostResponse200 extends \ArrayObject
         return \array_key_exists($property, $this->initialized);
     }
     /**
-     * @var string[]|null
+     * @var list<string>|null
      */
     protected $cachesDeleted;
     /**
@@ -27,7 +31,7 @@ class BuildPrunePostResponse200 extends \ArrayObject
     protected $spaceReclaimed;
 
     /**
-     * @return string[]|null
+     * @return list<string>|null
      */
     public function getCachesDeleted(): ?array
     {
@@ -35,7 +39,7 @@ class BuildPrunePostResponse200 extends \ArrayObject
     }
 
     /**
-     * @param string[]|null $cachesDeleted
+     * @param list<string>|null $cachesDeleted
      */
     public function setCachesDeleted(?array $cachesDeleted): self
     {
@@ -62,5 +66,10 @@ class BuildPrunePostResponse200 extends \ArrayObject
         $this->spaceReclaimed = $spaceReclaimed;
 
         return $this;
+    }
+
+    public function definedProperties(): array
+    {
+        return ['cachesDeleted' => ['CachesDeleted', 'getCachesDeleted', 'setCachesDeleted'], 'spaceReclaimed' => ['SpaceReclaimed', 'getSpaceReclaimed', 'setSpaceReclaimed']];
     }
 }

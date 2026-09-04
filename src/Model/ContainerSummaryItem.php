@@ -4,8 +4,12 @@ declare(strict_types=1);
 
 namespace Docker\API\Model;
 
-class ContainerSummaryItem extends \ArrayObject
+use Docker\API\Runtime\AdditionalAndPatternProperties;
+use Docker\API\Runtime\AdditionalPropertiesInterface;
+
+class ContainerSummaryItem implements AdditionalPropertiesInterface
 {
+    use AdditionalAndPatternProperties;
     /**
      * @var array
      */
@@ -24,7 +28,7 @@ class ContainerSummaryItem extends \ArrayObject
     /**
      * The names that this container has been given.
      *
-     * @var string[]|null
+     * @var list<string>|null
      */
     protected $names;
     /**
@@ -54,7 +58,7 @@ class ContainerSummaryItem extends \ArrayObject
     /**
      * The ports exposed by this container.
      *
-     * @var Port[]|null
+     * @var list<Port>|null
      */
     protected $ports;
     /**
@@ -98,7 +102,7 @@ class ContainerSummaryItem extends \ArrayObject
      */
     protected $networkSettings;
     /**
-     * @var Mount[]|null
+     * @var list<Mount>|null
      */
     protected $mounts;
 
@@ -124,7 +128,7 @@ class ContainerSummaryItem extends \ArrayObject
     /**
      * The names that this container has been given.
      *
-     * @return string[]|null
+     * @return list<string>|null
      */
     public function getNames(): ?array
     {
@@ -134,7 +138,7 @@ class ContainerSummaryItem extends \ArrayObject
     /**
      * The names that this container has been given.
      *
-     * @param string[]|null $names
+     * @param list<string>|null $names
      */
     public function setNames(?array $names): self
     {
@@ -223,7 +227,7 @@ class ContainerSummaryItem extends \ArrayObject
     /**
      * The ports exposed by this container.
      *
-     * @return Port[]|null
+     * @return list<Port>|null
      */
     public function getPorts(): ?array
     {
@@ -233,7 +237,7 @@ class ContainerSummaryItem extends \ArrayObject
     /**
      * The ports exposed by this container.
      *
-     * @param Port[]|null $ports
+     * @param list<Port>|null $ports
      */
     public function setPorts(?array $ports): self
     {
@@ -375,7 +379,7 @@ class ContainerSummaryItem extends \ArrayObject
     }
 
     /**
-     * @return Mount[]|null
+     * @return list<Mount>|null
      */
     public function getMounts(): ?array
     {
@@ -383,7 +387,7 @@ class ContainerSummaryItem extends \ArrayObject
     }
 
     /**
-     * @param Mount[]|null $mounts
+     * @param list<Mount>|null $mounts
      */
     public function setMounts(?array $mounts): self
     {
@@ -391,5 +395,10 @@ class ContainerSummaryItem extends \ArrayObject
         $this->mounts = $mounts;
 
         return $this;
+    }
+
+    public function definedProperties(): array
+    {
+        return ['id' => ['Id', 'getId', 'setId'], 'names' => ['Names', 'getNames', 'setNames'], 'image' => ['Image', 'getImage', 'setImage'], 'imageID' => ['ImageID', 'getImageID', 'setImageID'], 'command' => ['Command', 'getCommand', 'setCommand'], 'created' => ['Created', 'getCreated', 'setCreated'], 'ports' => ['Ports', 'getPorts', 'setPorts'], 'sizeRw' => ['SizeRw', 'getSizeRw', 'setSizeRw'], 'sizeRootFs' => ['SizeRootFs', 'getSizeRootFs', 'setSizeRootFs'], 'labels' => ['Labels', 'getLabels', 'setLabels'], 'state' => ['State', 'getState', 'setState'], 'status' => ['Status', 'getStatus', 'setStatus'], 'hostConfig' => ['HostConfig', 'getHostConfig', 'setHostConfig'], 'networkSettings' => ['NetworkSettings', 'getNetworkSettings', 'setNetworkSettings'], 'mounts' => ['Mounts', 'getMounts', 'setMounts']];
     }
 }

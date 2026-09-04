@@ -4,8 +4,12 @@ declare(strict_types=1);
 
 namespace Docker\API\Model;
 
-class RestartPolicy extends \ArrayObject
+use Docker\API\Runtime\AdditionalAndPatternProperties;
+use Docker\API\Runtime\AdditionalPropertiesInterface;
+
+class RestartPolicy implements AdditionalPropertiesInterface
 {
+    use AdditionalAndPatternProperties;
     /**
      * @var array
      */
@@ -73,5 +77,10 @@ class RestartPolicy extends \ArrayObject
         $this->maximumRetryCount = $maximumRetryCount;
 
         return $this;
+    }
+
+    public function definedProperties(): array
+    {
+        return ['name' => ['Name', 'getName', 'setName'], 'maximumRetryCount' => ['MaximumRetryCount', 'getMaximumRetryCount', 'setMaximumRetryCount']];
     }
 }

@@ -4,8 +4,12 @@ declare(strict_types=1);
 
 namespace Docker\API\Model;
 
-class TaskSpecPluginSpec extends \ArrayObject
+use Docker\API\Runtime\AdditionalAndPatternProperties;
+use Docker\API\Runtime\AdditionalPropertiesInterface;
+
+class TaskSpecPluginSpec implements AdditionalPropertiesInterface
 {
+    use AdditionalAndPatternProperties;
     /**
      * @var array
      */
@@ -34,7 +38,7 @@ class TaskSpecPluginSpec extends \ArrayObject
      */
     protected $disabled;
     /**
-     * @var TaskSpecPluginSpecPluginPrivilegeItem[]|null
+     * @var list<TaskSpecPluginSpecPluginPrivilegeItem>|null
      */
     protected $pluginPrivilege;
 
@@ -96,7 +100,7 @@ class TaskSpecPluginSpec extends \ArrayObject
     }
 
     /**
-     * @return TaskSpecPluginSpecPluginPrivilegeItem[]|null
+     * @return list<TaskSpecPluginSpecPluginPrivilegeItem>|null
      */
     public function getPluginPrivilege(): ?array
     {
@@ -104,7 +108,7 @@ class TaskSpecPluginSpec extends \ArrayObject
     }
 
     /**
-     * @param TaskSpecPluginSpecPluginPrivilegeItem[]|null $pluginPrivilege
+     * @param list<TaskSpecPluginSpecPluginPrivilegeItem>|null $pluginPrivilege
      */
     public function setPluginPrivilege(?array $pluginPrivilege): self
     {
@@ -112,5 +116,10 @@ class TaskSpecPluginSpec extends \ArrayObject
         $this->pluginPrivilege = $pluginPrivilege;
 
         return $this;
+    }
+
+    public function definedProperties(): array
+    {
+        return ['name' => ['Name', 'getName', 'setName'], 'remote' => ['Remote', 'getRemote', 'setRemote'], 'disabled' => ['Disabled', 'getDisabled', 'setDisabled'], 'pluginPrivilege' => ['PluginPrivilege', 'getPluginPrivilege', 'setPluginPrivilege']];
     }
 }

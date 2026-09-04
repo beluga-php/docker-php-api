@@ -4,8 +4,12 @@ declare(strict_types=1);
 
 namespace Docker\API\Model;
 
-class NodeDescription extends \ArrayObject
+use Docker\API\Runtime\AdditionalAndPatternProperties;
+use Docker\API\Runtime\AdditionalPropertiesInterface;
+
+class NodeDescription implements AdditionalPropertiesInterface
 {
+    use AdditionalAndPatternProperties;
     /**
      * @var array
      */
@@ -137,5 +141,10 @@ class NodeDescription extends \ArrayObject
         $this->tLSInfo = $tLSInfo;
 
         return $this;
+    }
+
+    public function definedProperties(): array
+    {
+        return ['hostname' => ['Hostname', 'getHostname', 'setHostname'], 'platform' => ['Platform', 'getPlatform', 'setPlatform'], 'resources' => ['Resources', 'getResources', 'setResources'], 'engine' => ['Engine', 'getEngine', 'setEngine'], 'tLSInfo' => ['TLSInfo', 'getTLSInfo', 'setTLSInfo']];
     }
 }

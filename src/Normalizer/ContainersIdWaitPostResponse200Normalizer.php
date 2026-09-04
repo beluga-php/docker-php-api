@@ -21,39 +21,41 @@ class ContainersIdWaitPostResponse200Normalizer implements DenormalizerInterface
     use NormalizerAwareTrait;
     use ValidatorTrait;
 
-    public function supportsDenormalization($data, $type, $format = null, array $context = []): bool
+    public function supportsDenormalization(mixed $data, string $type, ?string $format = null, array $context = []): bool
     {
-        return 'Docker\\API\\Model\\ContainersIdWaitPostResponse200' === $type;
+        return \Docker\API\Model\ContainersIdWaitPostResponse200::class === $type;
     }
 
-    public function supportsNormalization($data, $format = null, array $context = []): bool
+    public function supportsNormalization(mixed $data, ?string $format = null, array $context = []): bool
     {
-        return \is_object($data) && 'Docker\\API\\Model\\ContainersIdWaitPostResponse200' === $data::class;
+        return \is_object($data) && \Docker\API\Model\ContainersIdWaitPostResponse200::class === $data::class;
     }
 
-    public function denormalize($data, $class, $format = null, array $context = [])
+    public function denormalize(mixed $data, string $type, ?string $format = null, array $context = []): mixed
     {
-        if (isset($data['$ref'])) {
+        $object = new \Docker\API\Model\ContainersIdWaitPostResponse200();
+        if (null === $data || false === \is_array($data)) {
+            return $object;
+        }
+        if (isset($data['$ref']) && !isset($data['type']) && !isset($data['properties']) && !isset($data['allOf'])) {
             return new Reference($data['$ref'], $context['document-origin']);
         }
         if (isset($data['$recursiveRef'])) {
             return new Reference($data['$recursiveRef'], $context['document-origin']);
-        }
-        $object = new \Docker\API\Model\ContainersIdWaitPostResponse200();
-        if (null === $data || false === \is_array($data)) {
-            return $object;
         }
         if (\array_key_exists('StatusCode', $data) && null !== $data['StatusCode']) {
             $object->setStatusCode($data['StatusCode']);
             unset($data['StatusCode']);
         } elseif (\array_key_exists('StatusCode', $data) && null === $data['StatusCode']) {
             $object->setStatusCode(null);
+            unset($data['StatusCode']);
         }
         if (\array_key_exists('Error', $data) && null !== $data['Error']) {
-            $object->setError($this->denormalizer->denormalize($data['Error'], 'Docker\\API\\Model\\ContainersIdWaitPostResponse200Error', 'json', $context));
+            $object->setError($this->denormalizer->denormalize($data['Error'], \Docker\API\Model\ContainersIdWaitPostResponse200Error::class, 'json', $context));
             unset($data['Error']);
         } elseif (\array_key_exists('Error', $data) && null === $data['Error']) {
             $object->setError(null);
+            unset($data['Error']);
         }
         foreach ($data as $key => $value) {
             if (preg_match('/.*/', (string) $key)) {
@@ -64,27 +66,24 @@ class ContainersIdWaitPostResponse200Normalizer implements DenormalizerInterface
         return $object;
     }
 
-    /**
-     * @return array|string|int|float|bool|\ArrayObject|null
-     */
-    public function normalize($object, $format = null, array $context = [])
+    public function normalize(mixed $data, ?string $format = null, array $context = []): array|string|int|float|bool|\ArrayObject|null
     {
-        $data = [];
-        $data['StatusCode'] = $object->getStatusCode();
-        if ($object->isInitialized('error') && null !== $object->getError()) {
-            $data['Error'] = null === $object->getError() ? null : new \ArrayObject($this->normalizer->normalize($object->getError(), 'json', $context), \ArrayObject::ARRAY_AS_PROPS);
+        $dataArray = [];
+        $dataArray['StatusCode'] = $data->getStatusCode();
+        if ($data->isInitialized('error') && null !== $data->getError()) {
+            $dataArray['Error'] = null === $data->getError() ? null : new \Docker\API\Runtime\JsonObject($this->normalizer->normalize($data->getError(), 'json', $context));
         }
-        foreach ($object as $key => $value) {
+        foreach ($data->additionalPropertyEntries() as $key => $value) {
             if (preg_match('/.*/', (string) $key)) {
-                $data[$key] = $value;
+                $dataArray[$key] = $value;
             }
         }
 
-        return $data;
+        return $dataArray;
     }
 
-    public function getSupportedTypes(string $format = null): array
+    public function getSupportedTypes(?string $format = null): array
     {
-        return ['Docker\\API\\Model\\ContainersIdWaitPostResponse200' => false];
+        return [\Docker\API\Model\ContainersIdWaitPostResponse200::class => false];
     }
 }

@@ -4,8 +4,12 @@ declare(strict_types=1);
 
 namespace Docker\API\Model;
 
-class ServiceUpdateResponse extends \ArrayObject
+use Docker\API\Runtime\AdditionalAndPatternProperties;
+use Docker\API\Runtime\AdditionalPropertiesInterface;
+
+class ServiceUpdateResponse implements AdditionalPropertiesInterface
 {
+    use AdditionalAndPatternProperties;
     /**
      * @var array
      */
@@ -18,14 +22,14 @@ class ServiceUpdateResponse extends \ArrayObject
     /**
      * Optional warning messages.
      *
-     * @var string[]|null
+     * @var list<string>|null
      */
     protected $warnings;
 
     /**
      * Optional warning messages.
      *
-     * @return string[]|null
+     * @return list<string>|null
      */
     public function getWarnings(): ?array
     {
@@ -35,7 +39,7 @@ class ServiceUpdateResponse extends \ArrayObject
     /**
      * Optional warning messages.
      *
-     * @param string[]|null $warnings
+     * @param list<string>|null $warnings
      */
     public function setWarnings(?array $warnings): self
     {
@@ -43,5 +47,10 @@ class ServiceUpdateResponse extends \ArrayObject
         $this->warnings = $warnings;
 
         return $this;
+    }
+
+    public function definedProperties(): array
+    {
+        return ['warnings' => ['Warnings', 'getWarnings', 'setWarnings']];
     }
 }

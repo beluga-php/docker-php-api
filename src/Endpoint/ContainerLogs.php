@@ -16,20 +16,17 @@ class ContainerLogs extends \Docker\API\Runtime\Client\BaseEndpoint implements \
      * Note: This endpoint works only for containers with the `json-file` or
      * `journald` logging driver.
      *
-     * @param string $id              ID or name of the container
-     * @param array  $queryParameters {
-     *
-     * @var bool   $follow keep connection after returning logs
-     * @var bool   $stdout Return logs from `stdout`
-     * @var bool   $stderr Return logs from `stderr`
-     * @var int    $since Only return logs since this time, as a UNIX timestamp
-     * @var int    $until Only return logs before this time, as a UNIX timestamp
-     * @var bool   $timestamps Add timestamps to every log line
-     * @var string $tail Only return this number of log lines from the end of the logs.
-     *             Specify as an integer or `all` to output all log lines.
-     *
-     * }
-     *
+     * @param string $id ID or name of the container
+     * @param array{
+     *    "follow"?: bool, //Keep connection after returning logs.
+     *    "stdout"?: bool, //Return logs from `stdout`
+     *    "stderr"?: bool, //Return logs from `stderr`
+     *    "since"?: int, //Only return logs since this time, as a UNIX timestamp
+     *    "until"?: int, //Only return logs before this time, as a UNIX timestamp
+     *    "timestamps"?: bool, //Add timestamps to every log line
+     *    "tail"?: string, //Only return this number of log lines from the end of the logs.
+     * Specify as an integer or `all` to output all log lines.
+     * } $queryParameters
      * @param array $accept Accept content header application/json|text/plain
      */
     public function __construct(string $id, array $queryParameters = [], array $accept = [])
@@ -46,7 +43,7 @@ class ContainerLogs extends \Docker\API\Runtime\Client\BaseEndpoint implements \
 
     public function getUri(): string
     {
-        return str_replace(['{id}'], [$this->id], '/containers/{id}/logs');
+        return str_replace(['{id}'], [rawurlencode($this->id)], '/containers/{id}/logs');
     }
 
     public function getBody(\Symfony\Component\Serializer\SerializerInterface $serializer, $streamFactory = null): array
@@ -84,20 +81,26 @@ class ContainerLogs extends \Docker\API\Runtime\Client\BaseEndpoint implements \
      * @throws \Docker\API\Exception\ContainerLogsNotFoundException
      * @throws \Docker\API\Exception\ContainerLogsInternalServerErrorException
      *
-     * @return null
+     * @return string|null
      */
-    protected function transformResponseBody(\Psr\Http\Message\ResponseInterface $response, \Symfony\Component\Serializer\SerializerInterface $serializer, string $contentType = null)
+    protected function transformResponseBody(\Psr\Http\Message\ResponseInterface $response, \Symfony\Component\Serializer\SerializerInterface $serializer, ?string $contentType = null)
     {
         $status = $response->getStatusCode();
         $body = (string) $response->getBody();
-        if ((null === $contentType) === false && (200 === $status && false !== mb_strpos($contentType, 'application/json'))) {
-            return json_decode($body);
+        if ((null === $contentType) === false && (200 === $status && false !== stripos(strtolower($contentType), 'application/json'))) {
+            try {
+                $decodedBody = json_decode($body, false, 512, \JSON_THROW_ON_ERROR);
+
+                return $decodedBody;
+            } catch (\JsonException $jsonException) {
+                throw new \Jane\Component\JsonSchemaRuntime\Exception\MalformedJsonException('Malformed JSON response body.', 0, $jsonException);
+            }
         }
-        if ((null === $contentType) === false && (404 === $status && false !== mb_strpos($contentType, 'application/json'))) {
-            throw new \Docker\API\Exception\ContainerLogsNotFoundException($serializer->deserialize($body, 'Docker\\API\\Model\\ErrorResponse', 'json'), $response);
+        if ((null === $contentType) === false && (404 === $status && false !== stripos(strtolower($contentType), 'application/json'))) {
+            throw new \Docker\API\Exception\ContainerLogsNotFoundException($serializer->deserialize($body, 'Docker\API\Model\ErrorResponse', 'json'), $response);
         }
-        if ((null === $contentType) === false && (500 === $status && false !== mb_strpos($contentType, 'application/json'))) {
-            throw new \Docker\API\Exception\ContainerLogsInternalServerErrorException($serializer->deserialize($body, 'Docker\\API\\Model\\ErrorResponse', 'json'), $response);
+        if ((null === $contentType) === false && (500 === $status && false !== stripos(strtolower($contentType), 'application/json'))) {
+            throw new \Docker\API\Exception\ContainerLogsInternalServerErrorException($serializer->deserialize($body, 'Docker\API\Model\ErrorResponse', 'json'), $response);
         }
     }
 

@@ -4,8 +4,12 @@ declare(strict_types=1);
 
 namespace Docker\API\Model;
 
-class SwarmSpecDispatcher extends \ArrayObject
+use Docker\API\Runtime\AdditionalAndPatternProperties;
+use Docker\API\Runtime\AdditionalPropertiesInterface;
+
+class SwarmSpecDispatcher implements AdditionalPropertiesInterface
 {
+    use AdditionalAndPatternProperties;
     /**
      * @var array
      */
@@ -39,5 +43,10 @@ class SwarmSpecDispatcher extends \ArrayObject
         $this->heartbeatPeriod = $heartbeatPeriod;
 
         return $this;
+    }
+
+    public function definedProperties(): array
+    {
+        return ['heartbeatPeriod' => ['HeartbeatPeriod', 'getHeartbeatPeriod', 'setHeartbeatPeriod']];
     }
 }

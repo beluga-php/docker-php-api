@@ -21,87 +21,103 @@ class BuildCacheNormalizer implements DenormalizerInterface, NormalizerInterface
     use NormalizerAwareTrait;
     use ValidatorTrait;
 
-    public function supportsDenormalization($data, $type, $format = null, array $context = []): bool
+    public function supportsDenormalization(mixed $data, string $type, ?string $format = null, array $context = []): bool
     {
-        return 'Docker\\API\\Model\\BuildCache' === $type;
+        return \Docker\API\Model\BuildCache::class === $type;
     }
 
-    public function supportsNormalization($data, $format = null, array $context = []): bool
+    public function supportsNormalization(mixed $data, ?string $format = null, array $context = []): bool
     {
-        return \is_object($data) && 'Docker\\API\\Model\\BuildCache' === $data::class;
+        return \is_object($data) && \Docker\API\Model\BuildCache::class === $data::class;
     }
 
-    public function denormalize($data, $class, $format = null, array $context = [])
+    public function denormalize(mixed $data, string $type, ?string $format = null, array $context = []): mixed
     {
-        if (isset($data['$ref'])) {
+        $object = new \Docker\API\Model\BuildCache();
+        if (null === $data || false === \is_array($data)) {
+            return $object;
+        }
+        if (isset($data['$ref']) && !isset($data['type']) && !isset($data['properties']) && !isset($data['allOf'])) {
             return new Reference($data['$ref'], $context['document-origin']);
         }
         if (isset($data['$recursiveRef'])) {
             return new Reference($data['$recursiveRef'], $context['document-origin']);
         }
-        $object = new \Docker\API\Model\BuildCache();
-        if (null === $data || false === \is_array($data)) {
-            return $object;
+        if (\array_key_exists('InUse', $data) && \is_int($data['InUse'])) {
+            $data['InUse'] = (bool) $data['InUse'];
+        }
+        if (\array_key_exists('Shared', $data) && \is_int($data['Shared'])) {
+            $data['Shared'] = (bool) $data['Shared'];
         }
         if (\array_key_exists('ID', $data) && null !== $data['ID']) {
             $object->setID($data['ID']);
             unset($data['ID']);
         } elseif (\array_key_exists('ID', $data) && null === $data['ID']) {
             $object->setID(null);
+            unset($data['ID']);
         }
         if (\array_key_exists('Parent', $data) && null !== $data['Parent']) {
             $object->setParent($data['Parent']);
             unset($data['Parent']);
         } elseif (\array_key_exists('Parent', $data) && null === $data['Parent']) {
             $object->setParent(null);
+            unset($data['Parent']);
         }
         if (\array_key_exists('Type', $data) && null !== $data['Type']) {
             $object->setType($data['Type']);
             unset($data['Type']);
         } elseif (\array_key_exists('Type', $data) && null === $data['Type']) {
             $object->setType(null);
+            unset($data['Type']);
         }
         if (\array_key_exists('Description', $data) && null !== $data['Description']) {
             $object->setDescription($data['Description']);
             unset($data['Description']);
         } elseif (\array_key_exists('Description', $data) && null === $data['Description']) {
             $object->setDescription(null);
+            unset($data['Description']);
         }
         if (\array_key_exists('InUse', $data) && null !== $data['InUse']) {
             $object->setInUse($data['InUse']);
             unset($data['InUse']);
         } elseif (\array_key_exists('InUse', $data) && null === $data['InUse']) {
             $object->setInUse(null);
+            unset($data['InUse']);
         }
         if (\array_key_exists('Shared', $data) && null !== $data['Shared']) {
             $object->setShared($data['Shared']);
             unset($data['Shared']);
         } elseif (\array_key_exists('Shared', $data) && null === $data['Shared']) {
             $object->setShared(null);
+            unset($data['Shared']);
         }
         if (\array_key_exists('Size', $data) && null !== $data['Size']) {
             $object->setSize($data['Size']);
             unset($data['Size']);
         } elseif (\array_key_exists('Size', $data) && null === $data['Size']) {
             $object->setSize(null);
+            unset($data['Size']);
         }
         if (\array_key_exists('CreatedAt', $data) && null !== $data['CreatedAt']) {
             $object->setCreatedAt($data['CreatedAt']);
             unset($data['CreatedAt']);
         } elseif (\array_key_exists('CreatedAt', $data) && null === $data['CreatedAt']) {
             $object->setCreatedAt(null);
+            unset($data['CreatedAt']);
         }
         if (\array_key_exists('LastUsedAt', $data) && null !== $data['LastUsedAt']) {
             $object->setLastUsedAt($data['LastUsedAt']);
             unset($data['LastUsedAt']);
         } elseif (\array_key_exists('LastUsedAt', $data) && null === $data['LastUsedAt']) {
             $object->setLastUsedAt(null);
+            unset($data['LastUsedAt']);
         }
         if (\array_key_exists('UsageCount', $data) && null !== $data['UsageCount']) {
             $object->setUsageCount($data['UsageCount']);
             unset($data['UsageCount']);
         } elseif (\array_key_exists('UsageCount', $data) && null === $data['UsageCount']) {
             $object->setUsageCount(null);
+            unset($data['UsageCount']);
         }
         foreach ($data as $key => $value) {
             if (preg_match('/.*/', (string) $key)) {
@@ -112,53 +128,50 @@ class BuildCacheNormalizer implements DenormalizerInterface, NormalizerInterface
         return $object;
     }
 
-    /**
-     * @return array|string|int|float|bool|\ArrayObject|null
-     */
-    public function normalize($object, $format = null, array $context = [])
+    public function normalize(mixed $data, ?string $format = null, array $context = []): array|string|int|float|bool|\ArrayObject|null
     {
-        $data = [];
-        if ($object->isInitialized('iD') && null !== $object->getID()) {
-            $data['ID'] = $object->getID();
+        $dataArray = [];
+        if ($data->isInitialized('iD') && null !== $data->getID()) {
+            $dataArray['ID'] = $data->getID();
         }
-        if ($object->isInitialized('parent') && null !== $object->getParent()) {
-            $data['Parent'] = $object->getParent();
+        if ($data->isInitialized('parent') && null !== $data->getParent()) {
+            $dataArray['Parent'] = $data->getParent();
         }
-        if ($object->isInitialized('type') && null !== $object->getType()) {
-            $data['Type'] = $object->getType();
+        if ($data->isInitialized('type') && null !== $data->getType()) {
+            $dataArray['Type'] = $data->getType();
         }
-        if ($object->isInitialized('description') && null !== $object->getDescription()) {
-            $data['Description'] = $object->getDescription();
+        if ($data->isInitialized('description') && null !== $data->getDescription()) {
+            $dataArray['Description'] = $data->getDescription();
         }
-        if ($object->isInitialized('inUse') && null !== $object->getInUse()) {
-            $data['InUse'] = $object->getInUse();
+        if ($data->isInitialized('inUse') && null !== $data->getInUse()) {
+            $dataArray['InUse'] = $data->getInUse();
         }
-        if ($object->isInitialized('shared') && null !== $object->getShared()) {
-            $data['Shared'] = $object->getShared();
+        if ($data->isInitialized('shared') && null !== $data->getShared()) {
+            $dataArray['Shared'] = $data->getShared();
         }
-        if ($object->isInitialized('size') && null !== $object->getSize()) {
-            $data['Size'] = $object->getSize();
+        if ($data->isInitialized('size') && null !== $data->getSize()) {
+            $dataArray['Size'] = $data->getSize();
         }
-        if ($object->isInitialized('createdAt') && null !== $object->getCreatedAt()) {
-            $data['CreatedAt'] = $object->getCreatedAt();
+        if ($data->isInitialized('createdAt') && null !== $data->getCreatedAt()) {
+            $dataArray['CreatedAt'] = $data->getCreatedAt();
         }
-        if ($object->isInitialized('lastUsedAt') && null !== $object->getLastUsedAt()) {
-            $data['LastUsedAt'] = $object->getLastUsedAt();
+        if ($data->isInitialized('lastUsedAt') && null !== $data->getLastUsedAt()) {
+            $dataArray['LastUsedAt'] = $data->getLastUsedAt();
         }
-        if ($object->isInitialized('usageCount') && null !== $object->getUsageCount()) {
-            $data['UsageCount'] = $object->getUsageCount();
+        if ($data->isInitialized('usageCount') && null !== $data->getUsageCount()) {
+            $dataArray['UsageCount'] = $data->getUsageCount();
         }
-        foreach ($object as $key => $value) {
+        foreach ($data->additionalPropertyEntries() as $key => $value) {
             if (preg_match('/.*/', (string) $key)) {
-                $data[$key] = $value;
+                $dataArray[$key] = $value;
             }
         }
 
-        return $data;
+        return $dataArray;
     }
 
-    public function getSupportedTypes(string $format = null): array
+    public function getSupportedTypes(?string $format = null): array
     {
-        return ['Docker\\API\\Model\\BuildCache' => false];
+        return [\Docker\API\Model\BuildCache::class => false];
     }
 }

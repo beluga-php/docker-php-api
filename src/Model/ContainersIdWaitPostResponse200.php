@@ -4,8 +4,12 @@ declare(strict_types=1);
 
 namespace Docker\API\Model;
 
-class ContainersIdWaitPostResponse200 extends \ArrayObject
+use Docker\API\Runtime\AdditionalAndPatternProperties;
+use Docker\API\Runtime\AdditionalPropertiesInterface;
+
+class ContainersIdWaitPostResponse200 implements AdditionalPropertiesInterface
 {
+    use AdditionalAndPatternProperties;
     /**
      * @var array
      */
@@ -64,5 +68,10 @@ class ContainersIdWaitPostResponse200 extends \ArrayObject
         $this->error = $error;
 
         return $this;
+    }
+
+    public function definedProperties(): array
+    {
+        return ['statusCode' => ['StatusCode', 'getStatusCode', 'setStatusCode'], 'error' => ['Error', 'getError', 'setError']];
     }
 }

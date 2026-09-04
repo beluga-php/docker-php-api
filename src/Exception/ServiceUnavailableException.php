@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Docker\API\Exception;
 
-class ServiceUnavailableException extends \RuntimeException implements ServerException
+abstract class ServiceUnavailableException extends \RuntimeException implements ServerException, WithResponseInterface
 {
     public function __construct(string $message)
     {

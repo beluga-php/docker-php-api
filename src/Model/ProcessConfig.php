@@ -4,8 +4,12 @@ declare(strict_types=1);
 
 namespace Docker\API\Model;
 
-class ProcessConfig extends \ArrayObject
+use Docker\API\Runtime\AdditionalAndPatternProperties;
+use Docker\API\Runtime\AdditionalPropertiesInterface;
+
+class ProcessConfig implements AdditionalPropertiesInterface
 {
+    use AdditionalAndPatternProperties;
     /**
      * @var array
      */
@@ -32,7 +36,7 @@ class ProcessConfig extends \ArrayObject
      */
     protected $entrypoint;
     /**
-     * @var string[]|null
+     * @var list<string>|null
      */
     protected $arguments;
 
@@ -89,7 +93,7 @@ class ProcessConfig extends \ArrayObject
     }
 
     /**
-     * @return string[]|null
+     * @return list<string>|null
      */
     public function getArguments(): ?array
     {
@@ -97,7 +101,7 @@ class ProcessConfig extends \ArrayObject
     }
 
     /**
-     * @param string[]|null $arguments
+     * @param list<string>|null $arguments
      */
     public function setArguments(?array $arguments): self
     {
@@ -105,5 +109,10 @@ class ProcessConfig extends \ArrayObject
         $this->arguments = $arguments;
 
         return $this;
+    }
+
+    public function definedProperties(): array
+    {
+        return ['privileged' => ['privileged', 'getPrivileged', 'setPrivileged'], 'user' => ['user', 'getUser', 'setUser'], 'tty' => ['tty', 'getTty', 'setTty'], 'entrypoint' => ['entrypoint', 'getEntrypoint', 'setEntrypoint'], 'arguments' => ['arguments', 'getArguments', 'setArguments']];
     }
 }

@@ -21,37 +21,38 @@ class NetworkingConfigNormalizer implements DenormalizerInterface, NormalizerInt
     use NormalizerAwareTrait;
     use ValidatorTrait;
 
-    public function supportsDenormalization($data, $type, $format = null, array $context = []): bool
+    public function supportsDenormalization(mixed $data, string $type, ?string $format = null, array $context = []): bool
     {
-        return 'Docker\\API\\Model\\NetworkingConfig' === $type;
+        return \Docker\API\Model\NetworkingConfig::class === $type;
     }
 
-    public function supportsNormalization($data, $format = null, array $context = []): bool
+    public function supportsNormalization(mixed $data, ?string $format = null, array $context = []): bool
     {
-        return \is_object($data) && 'Docker\\API\\Model\\NetworkingConfig' === $data::class;
+        return \is_object($data) && \Docker\API\Model\NetworkingConfig::class === $data::class;
     }
 
-    public function denormalize($data, $class, $format = null, array $context = [])
+    public function denormalize(mixed $data, string $type, ?string $format = null, array $context = []): mixed
     {
-        if (isset($data['$ref'])) {
+        $object = new \Docker\API\Model\NetworkingConfig();
+        if (null === $data || false === \is_array($data)) {
+            return $object;
+        }
+        if (isset($data['$ref']) && !isset($data['type']) && !isset($data['properties']) && !isset($data['allOf'])) {
             return new Reference($data['$ref'], $context['document-origin']);
         }
         if (isset($data['$recursiveRef'])) {
             return new Reference($data['$recursiveRef'], $context['document-origin']);
         }
-        $object = new \Docker\API\Model\NetworkingConfig();
-        if (null === $data || false === \is_array($data)) {
-            return $object;
-        }
         if (\array_key_exists('EndpointsConfig', $data) && null !== $data['EndpointsConfig']) {
-            $values = new \ArrayObject([], \ArrayObject::ARRAY_AS_PROPS);
+            $values = new \Docker\API\Runtime\JsonObject();
             foreach ($data['EndpointsConfig'] as $key => $value) {
-                $values[$key] = $this->denormalizer->denormalize($value, 'Docker\\API\\Model\\EndpointSettings', 'json', $context);
+                $values[$key] = $this->denormalizer->denormalize($value, \Docker\API\Model\EndpointSettings::class, 'json', $context);
             }
             $object->setEndpointsConfig($values);
             unset($data['EndpointsConfig']);
         } elseif (\array_key_exists('EndpointsConfig', $data) && null === $data['EndpointsConfig']) {
             $object->setEndpointsConfig(null);
+            unset($data['EndpointsConfig']);
         }
         foreach ($data as $key_1 => $value_1) {
             if (preg_match('/.*/', (string) $key_1)) {
@@ -62,30 +63,27 @@ class NetworkingConfigNormalizer implements DenormalizerInterface, NormalizerInt
         return $object;
     }
 
-    /**
-     * @return array|string|int|float|bool|\ArrayObject|null
-     */
-    public function normalize($object, $format = null, array $context = [])
+    public function normalize(mixed $data, ?string $format = null, array $context = []): array|string|int|float|bool|\ArrayObject|null
     {
-        $data = [];
-        if ($object->isInitialized('endpointsConfig') && null !== $object->getEndpointsConfig()) {
-            $values = new \ArrayObject([], \ArrayObject::ARRAY_AS_PROPS);
-            foreach ($object->getEndpointsConfig() as $key => $value) {
-                $values[$key] = null === $value ? null : new \ArrayObject($this->normalizer->normalize($value, 'json', $context), \ArrayObject::ARRAY_AS_PROPS);
+        $dataArray = [];
+        if ($data->isInitialized('endpointsConfig') && null !== $data->getEndpointsConfig()) {
+            $values = new \Docker\API\Runtime\JsonObject();
+            foreach ($data->getEndpointsConfig() as $key => $value) {
+                $values[$key] = null === $value ? null : new \Docker\API\Runtime\JsonObject($this->normalizer->normalize($value, 'json', $context));
             }
-            $data['EndpointsConfig'] = $values;
+            $dataArray['EndpointsConfig'] = $values;
         }
-        foreach ($object as $key_1 => $value_1) {
+        foreach ($data->additionalPropertyEntries() as $key_1 => $value_1) {
             if (preg_match('/.*/', (string) $key_1)) {
-                $data[$key_1] = $value_1;
+                $dataArray[$key_1] = $value_1;
             }
         }
 
-        return $data;
+        return $dataArray;
     }
 
-    public function getSupportedTypes(string $format = null): array
+    public function getSupportedTypes(?string $format = null): array
     {
-        return ['Docker\\API\\Model\\NetworkingConfig' => false];
+        return [\Docker\API\Model\NetworkingConfig::class => false];
     }
 }

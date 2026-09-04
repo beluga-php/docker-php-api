@@ -21,39 +21,41 @@ class ContainersIdArchiveGetResponse400Normalizer implements DenormalizerInterfa
     use NormalizerAwareTrait;
     use ValidatorTrait;
 
-    public function supportsDenormalization($data, $type, $format = null, array $context = []): bool
+    public function supportsDenormalization(mixed $data, string $type, ?string $format = null, array $context = []): bool
     {
-        return 'Docker\\API\\Model\\ContainersIdArchiveGetResponse400' === $type;
+        return \Docker\API\Model\ContainersIdArchiveGetResponse400::class === $type;
     }
 
-    public function supportsNormalization($data, $format = null, array $context = []): bool
+    public function supportsNormalization(mixed $data, ?string $format = null, array $context = []): bool
     {
-        return \is_object($data) && 'Docker\\API\\Model\\ContainersIdArchiveGetResponse400' === $data::class;
+        return \is_object($data) && \Docker\API\Model\ContainersIdArchiveGetResponse400::class === $data::class;
     }
 
-    public function denormalize($data, $class, $format = null, array $context = [])
+    public function denormalize(mixed $data, string $type, ?string $format = null, array $context = []): mixed
     {
-        if (isset($data['$ref'])) {
+        $object = new \Docker\API\Model\ContainersIdArchiveGetResponse400();
+        if (null === $data || false === \is_array($data)) {
+            return $object;
+        }
+        if (isset($data['$ref']) && !isset($data['type']) && !isset($data['properties']) && !isset($data['allOf'])) {
             return new Reference($data['$ref'], $context['document-origin']);
         }
         if (isset($data['$recursiveRef'])) {
             return new Reference($data['$recursiveRef'], $context['document-origin']);
         }
-        $object = new \Docker\API\Model\ContainersIdArchiveGetResponse400();
-        if (null === $data || false === \is_array($data)) {
-            return $object;
-        }
         if (\array_key_exists('ErrorResponse', $data) && null !== $data['ErrorResponse']) {
-            $object->setErrorResponse($this->denormalizer->denormalize($data['ErrorResponse'], 'Docker\\API\\Model\\ErrorResponse', 'json', $context));
+            $object->setErrorResponse($this->denormalizer->denormalize($data['ErrorResponse'], \Docker\API\Model\ErrorResponse::class, 'json', $context));
             unset($data['ErrorResponse']);
         } elseif (\array_key_exists('ErrorResponse', $data) && null === $data['ErrorResponse']) {
             $object->setErrorResponse(null);
+            unset($data['ErrorResponse']);
         }
         if (\array_key_exists('message', $data) && null !== $data['message']) {
             $object->setMessage($data['message']);
             unset($data['message']);
         } elseif (\array_key_exists('message', $data) && null === $data['message']) {
             $object->setMessage(null);
+            unset($data['message']);
         }
         foreach ($data as $key => $value) {
             if (preg_match('/.*/', (string) $key)) {
@@ -64,29 +66,26 @@ class ContainersIdArchiveGetResponse400Normalizer implements DenormalizerInterfa
         return $object;
     }
 
-    /**
-     * @return array|string|int|float|bool|\ArrayObject|null
-     */
-    public function normalize($object, $format = null, array $context = [])
+    public function normalize(mixed $data, ?string $format = null, array $context = []): array|string|int|float|bool|\ArrayObject|null
     {
-        $data = [];
-        if ($object->isInitialized('errorResponse') && null !== $object->getErrorResponse()) {
-            $data['ErrorResponse'] = null === $object->getErrorResponse() ? null : new \ArrayObject($this->normalizer->normalize($object->getErrorResponse(), 'json', $context), \ArrayObject::ARRAY_AS_PROPS);
+        $dataArray = [];
+        if ($data->isInitialized('errorResponse') && null !== $data->getErrorResponse()) {
+            $dataArray['ErrorResponse'] = null === $data->getErrorResponse() ? null : new \Docker\API\Runtime\JsonObject($this->normalizer->normalize($data->getErrorResponse(), 'json', $context));
         }
-        if ($object->isInitialized('message') && null !== $object->getMessage()) {
-            $data['message'] = $object->getMessage();
+        if ($data->isInitialized('message') && null !== $data->getMessage()) {
+            $dataArray['message'] = $data->getMessage();
         }
-        foreach ($object as $key => $value) {
+        foreach ($data->additionalPropertyEntries() as $key => $value) {
             if (preg_match('/.*/', (string) $key)) {
-                $data[$key] = $value;
+                $dataArray[$key] = $value;
             }
         }
 
-        return $data;
+        return $dataArray;
     }
 
-    public function getSupportedTypes(string $format = null): array
+    public function getSupportedTypes(?string $format = null): array
     {
-        return ['Docker\\API\\Model\\ContainersIdArchiveGetResponse400' => false];
+        return [\Docker\API\Model\ContainersIdArchiveGetResponse400::class => false];
     }
 }

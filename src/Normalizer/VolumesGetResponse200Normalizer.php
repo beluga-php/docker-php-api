@@ -21,37 +21,38 @@ class VolumesGetResponse200Normalizer implements DenormalizerInterface, Normaliz
     use NormalizerAwareTrait;
     use ValidatorTrait;
 
-    public function supportsDenormalization($data, $type, $format = null, array $context = []): bool
+    public function supportsDenormalization(mixed $data, string $type, ?string $format = null, array $context = []): bool
     {
-        return 'Docker\\API\\Model\\VolumesGetResponse200' === $type;
+        return \Docker\API\Model\VolumesGetResponse200::class === $type;
     }
 
-    public function supportsNormalization($data, $format = null, array $context = []): bool
+    public function supportsNormalization(mixed $data, ?string $format = null, array $context = []): bool
     {
-        return \is_object($data) && 'Docker\\API\\Model\\VolumesGetResponse200' === $data::class;
+        return \is_object($data) && \Docker\API\Model\VolumesGetResponse200::class === $data::class;
     }
 
-    public function denormalize($data, $class, $format = null, array $context = [])
+    public function denormalize(mixed $data, string $type, ?string $format = null, array $context = []): mixed
     {
-        if (isset($data['$ref'])) {
+        $object = new \Docker\API\Model\VolumesGetResponse200();
+        if (null === $data || false === \is_array($data)) {
+            return $object;
+        }
+        if (isset($data['$ref']) && !isset($data['type']) && !isset($data['properties']) && !isset($data['allOf'])) {
             return new Reference($data['$ref'], $context['document-origin']);
         }
         if (isset($data['$recursiveRef'])) {
             return new Reference($data['$recursiveRef'], $context['document-origin']);
         }
-        $object = new \Docker\API\Model\VolumesGetResponse200();
-        if (null === $data || false === \is_array($data)) {
-            return $object;
-        }
         if (\array_key_exists('Volumes', $data) && null !== $data['Volumes']) {
             $values = [];
             foreach ($data['Volumes'] as $value) {
-                $values[] = $this->denormalizer->denormalize($value, 'Docker\\API\\Model\\Volume', 'json', $context);
+                $values[] = $this->denormalizer->denormalize($value, \Docker\API\Model\Volume::class, 'json', $context);
             }
             $object->setVolumes($values);
             unset($data['Volumes']);
         } elseif (\array_key_exists('Volumes', $data) && null === $data['Volumes']) {
             $object->setVolumes(null);
+            unset($data['Volumes']);
         }
         if (\array_key_exists('Warnings', $data) && null !== $data['Warnings']) {
             $values_1 = [];
@@ -62,6 +63,7 @@ class VolumesGetResponse200Normalizer implements DenormalizerInterface, Normaliz
             unset($data['Warnings']);
         } elseif (\array_key_exists('Warnings', $data) && null === $data['Warnings']) {
             $object->setWarnings(null);
+            unset($data['Warnings']);
         }
         foreach ($data as $key => $value_2) {
             if (preg_match('/.*/', (string) $key)) {
@@ -72,33 +74,30 @@ class VolumesGetResponse200Normalizer implements DenormalizerInterface, Normaliz
         return $object;
     }
 
-    /**
-     * @return array|string|int|float|bool|\ArrayObject|null
-     */
-    public function normalize($object, $format = null, array $context = [])
+    public function normalize(mixed $data, ?string $format = null, array $context = []): array|string|int|float|bool|\ArrayObject|null
     {
-        $data = [];
+        $dataArray = [];
         $values = [];
-        foreach ($object->getVolumes() as $value) {
-            $values[] = null === $value ? null : new \ArrayObject($this->normalizer->normalize($value, 'json', $context), \ArrayObject::ARRAY_AS_PROPS);
+        foreach ($data->getVolumes() as $value) {
+            $values[] = null === $value ? null : new \Docker\API\Runtime\JsonObject($this->normalizer->normalize($value, 'json', $context));
         }
-        $data['Volumes'] = $values;
+        $dataArray['Volumes'] = $values;
         $values_1 = [];
-        foreach ($object->getWarnings() as $value_1) {
+        foreach ($data->getWarnings() as $value_1) {
             $values_1[] = $value_1;
         }
-        $data['Warnings'] = $values_1;
-        foreach ($object as $key => $value_2) {
+        $dataArray['Warnings'] = $values_1;
+        foreach ($data->additionalPropertyEntries() as $key => $value_2) {
             if (preg_match('/.*/', (string) $key)) {
-                $data[$key] = $value_2;
+                $dataArray[$key] = $value_2;
             }
         }
 
-        return $data;
+        return $dataArray;
     }
 
-    public function getSupportedTypes(string $format = null): array
+    public function getSupportedTypes(?string $format = null): array
     {
-        return ['Docker\\API\\Model\\VolumesGetResponse200' => false];
+        return [\Docker\API\Model\VolumesGetResponse200::class => false];
     }
 }

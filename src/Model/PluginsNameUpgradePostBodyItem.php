@@ -4,8 +4,12 @@ declare(strict_types=1);
 
 namespace Docker\API\Model;
 
-class PluginsNameUpgradePostBodyItem extends \ArrayObject
+use Docker\API\Runtime\AdditionalAndPatternProperties;
+use Docker\API\Runtime\AdditionalPropertiesInterface;
+
+class PluginsNameUpgradePostBodyItem implements AdditionalPropertiesInterface
 {
+    use AdditionalAndPatternProperties;
     /**
      * @var array
      */
@@ -24,7 +28,7 @@ class PluginsNameUpgradePostBodyItem extends \ArrayObject
      */
     protected $description;
     /**
-     * @var string[]|null
+     * @var list<string>|null
      */
     protected $value;
 
@@ -55,7 +59,7 @@ class PluginsNameUpgradePostBodyItem extends \ArrayObject
     }
 
     /**
-     * @return string[]|null
+     * @return list<string>|null
      */
     public function getValue(): ?array
     {
@@ -63,7 +67,7 @@ class PluginsNameUpgradePostBodyItem extends \ArrayObject
     }
 
     /**
-     * @param string[]|null $value
+     * @param list<string>|null $value
      */
     public function setValue(?array $value): self
     {
@@ -71,5 +75,10 @@ class PluginsNameUpgradePostBodyItem extends \ArrayObject
         $this->value = $value;
 
         return $this;
+    }
+
+    public function definedProperties(): array
+    {
+        return ['name' => ['Name', 'getName', 'setName'], 'description' => ['Description', 'getDescription', 'setDescription'], 'value' => ['Value', 'getValue', 'setValue']];
     }
 }

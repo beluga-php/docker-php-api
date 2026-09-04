@@ -4,8 +4,12 @@ declare(strict_types=1);
 
 namespace Docker\API\Model;
 
-class Volume extends \ArrayObject
+use Docker\API\Runtime\AdditionalAndPatternProperties;
+use Docker\API\Runtime\AdditionalPropertiesInterface;
+
+class Volume implements AdditionalPropertiesInterface
 {
+    use AdditionalAndPatternProperties;
     /**
      * @var array
      */
@@ -272,5 +276,10 @@ class Volume extends \ArrayObject
         $this->usageData = $usageData;
 
         return $this;
+    }
+
+    public function definedProperties(): array
+    {
+        return ['name' => ['Name', 'getName', 'setName'], 'driver' => ['Driver', 'getDriver', 'setDriver'], 'mountpoint' => ['Mountpoint', 'getMountpoint', 'setMountpoint'], 'createdAt' => ['CreatedAt', 'getCreatedAt', 'setCreatedAt'], 'status' => ['Status', 'getStatus', 'setStatus'], 'labels' => ['Labels', 'getLabels', 'setLabels'], 'scope' => ['Scope', 'getScope', 'setScope'], 'options' => ['Options', 'getOptions', 'setOptions'], 'usageData' => ['UsageData', 'getUsageData', 'setUsageData']];
     }
 }

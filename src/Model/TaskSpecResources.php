@@ -4,8 +4,12 @@ declare(strict_types=1);
 
 namespace Docker\API\Model;
 
-class TaskSpecResources extends \ArrayObject
+use Docker\API\Runtime\AdditionalAndPatternProperties;
+use Docker\API\Runtime\AdditionalPropertiesInterface;
+
+class TaskSpecResources implements AdditionalPropertiesInterface
 {
+    use AdditionalAndPatternProperties;
     /**
      * @var array
      */
@@ -67,5 +71,10 @@ class TaskSpecResources extends \ArrayObject
         $this->reservation = $reservation;
 
         return $this;
+    }
+
+    public function definedProperties(): array
+    {
+        return ['limits' => ['Limits', 'getLimits', 'setLimits'], 'reservation' => ['Reservation', 'getReservation', 'setReservation']];
     }
 }

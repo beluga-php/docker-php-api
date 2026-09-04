@@ -21,45 +21,48 @@ class PluginInterfaceTypeNormalizer implements DenormalizerInterface, Normalizer
     use NormalizerAwareTrait;
     use ValidatorTrait;
 
-    public function supportsDenormalization($data, $type, $format = null, array $context = []): bool
+    public function supportsDenormalization(mixed $data, string $type, ?string $format = null, array $context = []): bool
     {
-        return 'Docker\\API\\Model\\PluginInterfaceType' === $type;
+        return \Docker\API\Model\PluginInterfaceType::class === $type;
     }
 
-    public function supportsNormalization($data, $format = null, array $context = []): bool
+    public function supportsNormalization(mixed $data, ?string $format = null, array $context = []): bool
     {
-        return \is_object($data) && 'Docker\\API\\Model\\PluginInterfaceType' === $data::class;
+        return \is_object($data) && \Docker\API\Model\PluginInterfaceType::class === $data::class;
     }
 
-    public function denormalize($data, $class, $format = null, array $context = [])
+    public function denormalize(mixed $data, string $type, ?string $format = null, array $context = []): mixed
     {
-        if (isset($data['$ref'])) {
+        $object = new \Docker\API\Model\PluginInterfaceType();
+        if (null === $data || false === \is_array($data)) {
+            return $object;
+        }
+        if (isset($data['$ref']) && !isset($data['type']) && !isset($data['properties']) && !isset($data['allOf'])) {
             return new Reference($data['$ref'], $context['document-origin']);
         }
         if (isset($data['$recursiveRef'])) {
             return new Reference($data['$recursiveRef'], $context['document-origin']);
-        }
-        $object = new \Docker\API\Model\PluginInterfaceType();
-        if (null === $data || false === \is_array($data)) {
-            return $object;
         }
         if (\array_key_exists('Prefix', $data) && null !== $data['Prefix']) {
             $object->setPrefix($data['Prefix']);
             unset($data['Prefix']);
         } elseif (\array_key_exists('Prefix', $data) && null === $data['Prefix']) {
             $object->setPrefix(null);
+            unset($data['Prefix']);
         }
         if (\array_key_exists('Capability', $data) && null !== $data['Capability']) {
             $object->setCapability($data['Capability']);
             unset($data['Capability']);
         } elseif (\array_key_exists('Capability', $data) && null === $data['Capability']) {
             $object->setCapability(null);
+            unset($data['Capability']);
         }
         if (\array_key_exists('Version', $data) && null !== $data['Version']) {
             $object->setVersion($data['Version']);
             unset($data['Version']);
         } elseif (\array_key_exists('Version', $data) && null === $data['Version']) {
             $object->setVersion(null);
+            unset($data['Version']);
         }
         foreach ($data as $key => $value) {
             if (preg_match('/.*/', (string) $key)) {
@@ -70,26 +73,23 @@ class PluginInterfaceTypeNormalizer implements DenormalizerInterface, Normalizer
         return $object;
     }
 
-    /**
-     * @return array|string|int|float|bool|\ArrayObject|null
-     */
-    public function normalize($object, $format = null, array $context = [])
+    public function normalize(mixed $data, ?string $format = null, array $context = []): array|string|int|float|bool|\ArrayObject|null
     {
-        $data = [];
-        $data['Prefix'] = $object->getPrefix();
-        $data['Capability'] = $object->getCapability();
-        $data['Version'] = $object->getVersion();
-        foreach ($object as $key => $value) {
+        $dataArray = [];
+        $dataArray['Prefix'] = $data->getPrefix();
+        $dataArray['Capability'] = $data->getCapability();
+        $dataArray['Version'] = $data->getVersion();
+        foreach ($data->additionalPropertyEntries() as $key => $value) {
             if (preg_match('/.*/', (string) $key)) {
-                $data[$key] = $value;
+                $dataArray[$key] = $value;
             }
         }
 
-        return $data;
+        return $dataArray;
     }
 
-    public function getSupportedTypes(string $format = null): array
+    public function getSupportedTypes(?string $format = null): array
     {
-        return ['Docker\\API\\Model\\PluginInterfaceType' => false];
+        return [\Docker\API\Model\PluginInterfaceType::class => false];
     }
 }

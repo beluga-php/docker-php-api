@@ -21,36 +21,37 @@ class GraphDriverDataNormalizer implements DenormalizerInterface, NormalizerInte
     use NormalizerAwareTrait;
     use ValidatorTrait;
 
-    public function supportsDenormalization($data, $type, $format = null, array $context = []): bool
+    public function supportsDenormalization(mixed $data, string $type, ?string $format = null, array $context = []): bool
     {
-        return 'Docker\\API\\Model\\GraphDriverData' === $type;
+        return \Docker\API\Model\GraphDriverData::class === $type;
     }
 
-    public function supportsNormalization($data, $format = null, array $context = []): bool
+    public function supportsNormalization(mixed $data, ?string $format = null, array $context = []): bool
     {
-        return \is_object($data) && 'Docker\\API\\Model\\GraphDriverData' === $data::class;
+        return \is_object($data) && \Docker\API\Model\GraphDriverData::class === $data::class;
     }
 
-    public function denormalize($data, $class, $format = null, array $context = [])
+    public function denormalize(mixed $data, string $type, ?string $format = null, array $context = []): mixed
     {
-        if (isset($data['$ref'])) {
+        $object = new \Docker\API\Model\GraphDriverData();
+        if (null === $data || false === \is_array($data)) {
+            return $object;
+        }
+        if (isset($data['$ref']) && !isset($data['type']) && !isset($data['properties']) && !isset($data['allOf'])) {
             return new Reference($data['$ref'], $context['document-origin']);
         }
         if (isset($data['$recursiveRef'])) {
             return new Reference($data['$recursiveRef'], $context['document-origin']);
-        }
-        $object = new \Docker\API\Model\GraphDriverData();
-        if (null === $data || false === \is_array($data)) {
-            return $object;
         }
         if (\array_key_exists('Name', $data) && null !== $data['Name']) {
             $object->setName($data['Name']);
             unset($data['Name']);
         } elseif (\array_key_exists('Name', $data) && null === $data['Name']) {
             $object->setName(null);
+            unset($data['Name']);
         }
         if (\array_key_exists('Data', $data) && null !== $data['Data']) {
-            $values = new \ArrayObject([], \ArrayObject::ARRAY_AS_PROPS);
+            $values = new \Docker\API\Runtime\JsonObject();
             foreach ($data['Data'] as $key => $value) {
                 $values[$key] = $value;
             }
@@ -58,6 +59,7 @@ class GraphDriverDataNormalizer implements DenormalizerInterface, NormalizerInte
             unset($data['Data']);
         } elseif (\array_key_exists('Data', $data) && null === $data['Data']) {
             $object->setData(null);
+            unset($data['Data']);
         }
         foreach ($data as $key_1 => $value_1) {
             if (preg_match('/.*/', (string) $key_1)) {
@@ -68,29 +70,26 @@ class GraphDriverDataNormalizer implements DenormalizerInterface, NormalizerInte
         return $object;
     }
 
-    /**
-     * @return array|string|int|float|bool|\ArrayObject|null
-     */
-    public function normalize($object, $format = null, array $context = [])
+    public function normalize(mixed $data, ?string $format = null, array $context = []): array|string|int|float|bool|\ArrayObject|null
     {
-        $data = [];
-        $data['Name'] = $object->getName();
-        $values = new \ArrayObject([], \ArrayObject::ARRAY_AS_PROPS);
-        foreach ($object->getData() as $key => $value) {
+        $dataArray = [];
+        $dataArray['Name'] = $data->getName();
+        $values = new \Docker\API\Runtime\JsonObject();
+        foreach ($data->getData() as $key => $value) {
             $values[$key] = $value;
         }
-        $data['Data'] = $values;
-        foreach ($object as $key_1 => $value_1) {
+        $dataArray['Data'] = $values;
+        foreach ($data->additionalPropertyEntries() as $key_1 => $value_1) {
             if (preg_match('/.*/', (string) $key_1)) {
-                $data[$key_1] = $value_1;
+                $dataArray[$key_1] = $value_1;
             }
         }
 
-        return $data;
+        return $dataArray;
     }
 
-    public function getSupportedTypes(string $format = null): array
+    public function getSupportedTypes(?string $format = null): array
     {
-        return ['Docker\\API\\Model\\GraphDriverData' => false];
+        return [\Docker\API\Model\GraphDriverData::class => false];
     }
 }

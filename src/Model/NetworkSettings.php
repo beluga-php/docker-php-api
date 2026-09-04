@@ -4,8 +4,12 @@ declare(strict_types=1);
 
 namespace Docker\API\Model;
 
-class NetworkSettings extends \ArrayObject
+use Docker\API\Runtime\AdditionalAndPatternProperties;
+use Docker\API\Runtime\AdditionalPropertiesInterface;
+
+class NetworkSettings implements AdditionalPropertiesInterface
 {
+    use AdditionalAndPatternProperties;
     /**
      * @var array
      */
@@ -53,7 +57,7 @@ class NetworkSettings extends \ArrayObject
      * If a container's port is mapped for multiple protocols, separate entries
      * are added to the mapping table.
      *
-     * @var array<string, PortBinding[]>|null
+     * @var array<string, list<PortBinding>>|null
      */
     protected $ports;
     /**
@@ -63,11 +67,11 @@ class NetworkSettings extends \ArrayObject
      */
     protected $sandboxKey;
     /**
-     * @var Address[]|null
+     * @var list<Address>|null
      */
     protected $secondaryIPAddresses;
     /**
-     * @var Address[]|null
+     * @var list<Address>|null
      */
     protected $secondaryIPv6Addresses;
     /**
@@ -292,7 +296,7 @@ class NetworkSettings extends \ArrayObject
      * If a container's port is mapped for multiple protocols, separate entries
      * are added to the mapping table.
      *
-     * @return array<string, PortBinding[]>|null
+     * @return array<string, list<PortBinding>>|null
      */
     public function getPorts(): ?iterable
     {
@@ -307,7 +311,7 @@ class NetworkSettings extends \ArrayObject
      * If a container's port is mapped for multiple protocols, separate entries
      * are added to the mapping table.
      *
-     * @param array<string, PortBinding[]>|null $ports
+     * @param array<string, list<PortBinding>>|null $ports
      */
     public function setPorts(?iterable $ports): self
     {
@@ -337,7 +341,7 @@ class NetworkSettings extends \ArrayObject
     }
 
     /**
-     * @return Address[]|null
+     * @return list<Address>|null
      */
     public function getSecondaryIPAddresses(): ?array
     {
@@ -345,7 +349,7 @@ class NetworkSettings extends \ArrayObject
     }
 
     /**
-     * @param Address[]|null $secondaryIPAddresses
+     * @param list<Address>|null $secondaryIPAddresses
      */
     public function setSecondaryIPAddresses(?array $secondaryIPAddresses): self
     {
@@ -356,7 +360,7 @@ class NetworkSettings extends \ArrayObject
     }
 
     /**
-     * @return Address[]|null
+     * @return list<Address>|null
      */
     public function getSecondaryIPv6Addresses(): ?array
     {
@@ -364,7 +368,7 @@ class NetworkSettings extends \ArrayObject
     }
 
     /**
-     * @param Address[]|null $secondaryIPv6Addresses
+     * @param list<Address>|null $secondaryIPv6Addresses
      */
     public function setSecondaryIPv6Addresses(?array $secondaryIPv6Addresses): self
     {
@@ -675,5 +679,10 @@ class NetworkSettings extends \ArrayObject
         $this->networks = $networks;
 
         return $this;
+    }
+
+    public function definedProperties(): array
+    {
+        return ['bridge' => ['Bridge', 'getBridge', 'setBridge'], 'sandboxID' => ['SandboxID', 'getSandboxID', 'setSandboxID'], 'hairpinMode' => ['HairpinMode', 'getHairpinMode', 'setHairpinMode'], 'linkLocalIPv6Address' => ['LinkLocalIPv6Address', 'getLinkLocalIPv6Address', 'setLinkLocalIPv6Address'], 'linkLocalIPv6PrefixLen' => ['LinkLocalIPv6PrefixLen', 'getLinkLocalIPv6PrefixLen', 'setLinkLocalIPv6PrefixLen'], 'ports' => ['Ports', 'getPorts', 'setPorts'], 'sandboxKey' => ['SandboxKey', 'getSandboxKey', 'setSandboxKey'], 'secondaryIPAddresses' => ['SecondaryIPAddresses', 'getSecondaryIPAddresses', 'setSecondaryIPAddresses'], 'secondaryIPv6Addresses' => ['SecondaryIPv6Addresses', 'getSecondaryIPv6Addresses', 'setSecondaryIPv6Addresses'], 'endpointID' => ['EndpointID', 'getEndpointID', 'setEndpointID'], 'gateway' => ['Gateway', 'getGateway', 'setGateway'], 'globalIPv6Address' => ['GlobalIPv6Address', 'getGlobalIPv6Address', 'setGlobalIPv6Address'], 'globalIPv6PrefixLen' => ['GlobalIPv6PrefixLen', 'getGlobalIPv6PrefixLen', 'setGlobalIPv6PrefixLen'], 'iPAddress' => ['IPAddress', 'getIPAddress', 'setIPAddress'], 'iPPrefixLen' => ['IPPrefixLen', 'getIPPrefixLen', 'setIPPrefixLen'], 'iPv6Gateway' => ['IPv6Gateway', 'getIPv6Gateway', 'setIPv6Gateway'], 'macAddress' => ['MacAddress', 'getMacAddress', 'setMacAddress'], 'networks' => ['Networks', 'getNetworks', 'setNetworks']];
     }
 }

@@ -4,8 +4,12 @@ declare(strict_types=1);
 
 namespace Docker\API\Model;
 
-class DistributionNameJsonGetResponse200 extends \ArrayObject
+use Docker\API\Runtime\AdditionalAndPatternProperties;
+use Docker\API\Runtime\AdditionalPropertiesInterface;
+
+class DistributionNameJsonGetResponse200 implements AdditionalPropertiesInterface
 {
+    use AdditionalAndPatternProperties;
     /**
      * @var array
      */
@@ -24,7 +28,7 @@ class DistributionNameJsonGetResponse200 extends \ArrayObject
     /**
      * An array containing all platforms supported by the image.
      *
-     * @var DistributionNameJsonGetResponse200PlatformsItem[]|null
+     * @var list<DistributionNameJsonGetResponse200PlatformsItem>|null
      */
     protected $platforms;
 
@@ -50,7 +54,7 @@ class DistributionNameJsonGetResponse200 extends \ArrayObject
     /**
      * An array containing all platforms supported by the image.
      *
-     * @return DistributionNameJsonGetResponse200PlatformsItem[]|null
+     * @return list<DistributionNameJsonGetResponse200PlatformsItem>|null
      */
     public function getPlatforms(): ?array
     {
@@ -60,7 +64,7 @@ class DistributionNameJsonGetResponse200 extends \ArrayObject
     /**
      * An array containing all platforms supported by the image.
      *
-     * @param DistributionNameJsonGetResponse200PlatformsItem[]|null $platforms
+     * @param list<DistributionNameJsonGetResponse200PlatformsItem>|null $platforms
      */
     public function setPlatforms(?array $platforms): self
     {
@@ -68,5 +72,10 @@ class DistributionNameJsonGetResponse200 extends \ArrayObject
         $this->platforms = $platforms;
 
         return $this;
+    }
+
+    public function definedProperties(): array
+    {
+        return ['descriptor' => ['Descriptor', 'getDescriptor', 'setDescriptor'], 'platforms' => ['Platforms', 'getPlatforms', 'setPlatforms']];
     }
 }

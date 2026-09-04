@@ -4,8 +4,12 @@ declare(strict_types=1);
 
 namespace Docker\API\Model;
 
-class ImageRootFS extends \ArrayObject
+use Docker\API\Runtime\AdditionalAndPatternProperties;
+use Docker\API\Runtime\AdditionalPropertiesInterface;
+
+class ImageRootFS implements AdditionalPropertiesInterface
 {
+    use AdditionalAndPatternProperties;
     /**
      * @var array
      */
@@ -20,7 +24,7 @@ class ImageRootFS extends \ArrayObject
      */
     protected $type;
     /**
-     * @var string[]|null
+     * @var list<string>|null
      */
     protected $layers;
     /**
@@ -42,7 +46,7 @@ class ImageRootFS extends \ArrayObject
     }
 
     /**
-     * @return string[]|null
+     * @return list<string>|null
      */
     public function getLayers(): ?array
     {
@@ -50,7 +54,7 @@ class ImageRootFS extends \ArrayObject
     }
 
     /**
-     * @param string[]|null $layers
+     * @param list<string>|null $layers
      */
     public function setLayers(?array $layers): self
     {
@@ -71,5 +75,10 @@ class ImageRootFS extends \ArrayObject
         $this->baseLayer = $baseLayer;
 
         return $this;
+    }
+
+    public function definedProperties(): array
+    {
+        return ['type' => ['Type', 'getType', 'setType'], 'layers' => ['Layers', 'getLayers', 'setLayers'], 'baseLayer' => ['BaseLayer', 'getBaseLayer', 'setBaseLayer']];
     }
 }

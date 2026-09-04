@@ -4,8 +4,12 @@ declare(strict_types=1);
 
 namespace Docker\API\Model;
 
-class VolumesPrunePostResponse200 extends \ArrayObject
+use Docker\API\Runtime\AdditionalAndPatternProperties;
+use Docker\API\Runtime\AdditionalPropertiesInterface;
+
+class VolumesPrunePostResponse200 implements AdditionalPropertiesInterface
 {
+    use AdditionalAndPatternProperties;
     /**
      * @var array
      */
@@ -18,7 +22,7 @@ class VolumesPrunePostResponse200 extends \ArrayObject
     /**
      * Volumes that were deleted.
      *
-     * @var string[]|null
+     * @var list<string>|null
      */
     protected $volumesDeleted;
     /**
@@ -31,7 +35,7 @@ class VolumesPrunePostResponse200 extends \ArrayObject
     /**
      * Volumes that were deleted.
      *
-     * @return string[]|null
+     * @return list<string>|null
      */
     public function getVolumesDeleted(): ?array
     {
@@ -41,7 +45,7 @@ class VolumesPrunePostResponse200 extends \ArrayObject
     /**
      * Volumes that were deleted.
      *
-     * @param string[]|null $volumesDeleted
+     * @param list<string>|null $volumesDeleted
      */
     public function setVolumesDeleted(?array $volumesDeleted): self
     {
@@ -68,5 +72,10 @@ class VolumesPrunePostResponse200 extends \ArrayObject
         $this->spaceReclaimed = $spaceReclaimed;
 
         return $this;
+    }
+
+    public function definedProperties(): array
+    {
+        return ['volumesDeleted' => ['VolumesDeleted', 'getVolumesDeleted', 'setVolumesDeleted'], 'spaceReclaimed' => ['SpaceReclaimed', 'getSpaceReclaimed', 'setSpaceReclaimed']];
     }
 }

@@ -21,45 +21,48 @@ class DistributionNameJsonGetResponse200PlatformsItemNormalizer implements Denor
     use NormalizerAwareTrait;
     use ValidatorTrait;
 
-    public function supportsDenormalization($data, $type, $format = null, array $context = []): bool
+    public function supportsDenormalization(mixed $data, string $type, ?string $format = null, array $context = []): bool
     {
-        return 'Docker\\API\\Model\\DistributionNameJsonGetResponse200PlatformsItem' === $type;
+        return \Docker\API\Model\DistributionNameJsonGetResponse200PlatformsItem::class === $type;
     }
 
-    public function supportsNormalization($data, $format = null, array $context = []): bool
+    public function supportsNormalization(mixed $data, ?string $format = null, array $context = []): bool
     {
-        return \is_object($data) && 'Docker\\API\\Model\\DistributionNameJsonGetResponse200PlatformsItem' === $data::class;
+        return \is_object($data) && \Docker\API\Model\DistributionNameJsonGetResponse200PlatformsItem::class === $data::class;
     }
 
-    public function denormalize($data, $class, $format = null, array $context = [])
+    public function denormalize(mixed $data, string $type, ?string $format = null, array $context = []): mixed
     {
-        if (isset($data['$ref'])) {
+        $object = new \Docker\API\Model\DistributionNameJsonGetResponse200PlatformsItem();
+        if (null === $data || false === \is_array($data)) {
+            return $object;
+        }
+        if (isset($data['$ref']) && !isset($data['type']) && !isset($data['properties']) && !isset($data['allOf'])) {
             return new Reference($data['$ref'], $context['document-origin']);
         }
         if (isset($data['$recursiveRef'])) {
             return new Reference($data['$recursiveRef'], $context['document-origin']);
-        }
-        $object = new \Docker\API\Model\DistributionNameJsonGetResponse200PlatformsItem();
-        if (null === $data || false === \is_array($data)) {
-            return $object;
         }
         if (\array_key_exists('Architecture', $data) && null !== $data['Architecture']) {
             $object->setArchitecture($data['Architecture']);
             unset($data['Architecture']);
         } elseif (\array_key_exists('Architecture', $data) && null === $data['Architecture']) {
             $object->setArchitecture(null);
+            unset($data['Architecture']);
         }
         if (\array_key_exists('OS', $data) && null !== $data['OS']) {
             $object->setOS($data['OS']);
             unset($data['OS']);
         } elseif (\array_key_exists('OS', $data) && null === $data['OS']) {
             $object->setOS(null);
+            unset($data['OS']);
         }
         if (\array_key_exists('OSVersion', $data) && null !== $data['OSVersion']) {
             $object->setOSVersion($data['OSVersion']);
             unset($data['OSVersion']);
         } elseif (\array_key_exists('OSVersion', $data) && null === $data['OSVersion']) {
             $object->setOSVersion(null);
+            unset($data['OSVersion']);
         }
         if (\array_key_exists('OSFeatures', $data) && null !== $data['OSFeatures']) {
             $values = [];
@@ -70,12 +73,14 @@ class DistributionNameJsonGetResponse200PlatformsItemNormalizer implements Denor
             unset($data['OSFeatures']);
         } elseif (\array_key_exists('OSFeatures', $data) && null === $data['OSFeatures']) {
             $object->setOSFeatures(null);
+            unset($data['OSFeatures']);
         }
         if (\array_key_exists('Variant', $data) && null !== $data['Variant']) {
             $object->setVariant($data['Variant']);
             unset($data['Variant']);
         } elseif (\array_key_exists('Variant', $data) && null === $data['Variant']) {
             $object->setVariant(null);
+            unset($data['Variant']);
         }
         if (\array_key_exists('Features', $data) && null !== $data['Features']) {
             $values_1 = [];
@@ -86,6 +91,7 @@ class DistributionNameJsonGetResponse200PlatformsItemNormalizer implements Denor
             unset($data['Features']);
         } elseif (\array_key_exists('Features', $data) && null === $data['Features']) {
             $object->setFeatures(null);
+            unset($data['Features']);
         }
         foreach ($data as $key => $value_2) {
             if (preg_match('/.*/', (string) $key)) {
@@ -96,49 +102,46 @@ class DistributionNameJsonGetResponse200PlatformsItemNormalizer implements Denor
         return $object;
     }
 
-    /**
-     * @return array|string|int|float|bool|\ArrayObject|null
-     */
-    public function normalize($object, $format = null, array $context = [])
+    public function normalize(mixed $data, ?string $format = null, array $context = []): array|string|int|float|bool|\ArrayObject|null
     {
-        $data = [];
-        if ($object->isInitialized('architecture') && null !== $object->getArchitecture()) {
-            $data['Architecture'] = $object->getArchitecture();
+        $dataArray = [];
+        if ($data->isInitialized('architecture') && null !== $data->getArchitecture()) {
+            $dataArray['Architecture'] = $data->getArchitecture();
         }
-        if ($object->isInitialized('oS') && null !== $object->getOS()) {
-            $data['OS'] = $object->getOS();
+        if ($data->isInitialized('oS') && null !== $data->getOS()) {
+            $dataArray['OS'] = $data->getOS();
         }
-        if ($object->isInitialized('oSVersion') && null !== $object->getOSVersion()) {
-            $data['OSVersion'] = $object->getOSVersion();
+        if ($data->isInitialized('oSVersion') && null !== $data->getOSVersion()) {
+            $dataArray['OSVersion'] = $data->getOSVersion();
         }
-        if ($object->isInitialized('oSFeatures') && null !== $object->getOSFeatures()) {
+        if ($data->isInitialized('oSFeatures') && null !== $data->getOSFeatures()) {
             $values = [];
-            foreach ($object->getOSFeatures() as $value) {
+            foreach ($data->getOSFeatures() as $value) {
                 $values[] = $value;
             }
-            $data['OSFeatures'] = $values;
+            $dataArray['OSFeatures'] = $values;
         }
-        if ($object->isInitialized('variant') && null !== $object->getVariant()) {
-            $data['Variant'] = $object->getVariant();
+        if ($data->isInitialized('variant') && null !== $data->getVariant()) {
+            $dataArray['Variant'] = $data->getVariant();
         }
-        if ($object->isInitialized('features') && null !== $object->getFeatures()) {
+        if ($data->isInitialized('features') && null !== $data->getFeatures()) {
             $values_1 = [];
-            foreach ($object->getFeatures() as $value_1) {
+            foreach ($data->getFeatures() as $value_1) {
                 $values_1[] = $value_1;
             }
-            $data['Features'] = $values_1;
+            $dataArray['Features'] = $values_1;
         }
-        foreach ($object as $key => $value_2) {
+        foreach ($data->additionalPropertyEntries() as $key => $value_2) {
             if (preg_match('/.*/', (string) $key)) {
-                $data[$key] = $value_2;
+                $dataArray[$key] = $value_2;
             }
         }
 
-        return $data;
+        return $dataArray;
     }
 
-    public function getSupportedTypes(string $format = null): array
+    public function getSupportedTypes(?string $format = null): array
     {
-        return ['Docker\\API\\Model\\DistributionNameJsonGetResponse200PlatformsItem' => false];
+        return [\Docker\API\Model\DistributionNameJsonGetResponse200PlatformsItem::class => false];
     }
 }

@@ -4,8 +4,12 @@ declare(strict_types=1);
 
 namespace Docker\API\Model;
 
-class HostConfig extends \ArrayObject
+use Docker\API\Runtime\AdditionalAndPatternProperties;
+use Docker\API\Runtime\AdditionalPropertiesInterface;
+
+class HostConfig implements AdditionalPropertiesInterface
 {
+    use AdditionalAndPatternProperties;
     /**
      * @var array
      */
@@ -44,53 +48,53 @@ class HostConfig extends \ArrayObject
      */
     protected $blkioWeight;
     /**
-     * Block IO weight (relative device weight) in the form:.
+     * Block IO weight (relative device weight) in the form:
      *
      * ```
      * [{"Path": "device_path", "Weight": weight}]
      * ```
      *
-     * @var ResourcesBlkioWeightDeviceItem[]|null
+     * @var list<ResourcesBlkioWeightDeviceItem>|null
      */
     protected $blkioWeightDevice;
     /**
-     * Limit read rate (bytes per second) from a device, in the form:.
+     * Limit read rate (bytes per second) from a device, in the form:
      *
      * ```
      * [{"Path": "device_path", "Rate": rate}]
      * ```
      *
-     * @var ThrottleDevice[]|null
+     * @var list<ThrottleDevice>|null
      */
     protected $blkioDeviceReadBps;
     /**
-     * Limit write rate (bytes per second) to a device, in the form:.
+     * Limit write rate (bytes per second) to a device, in the form:
      *
      * ```
      * [{"Path": "device_path", "Rate": rate}]
      * ```
      *
-     * @var ThrottleDevice[]|null
+     * @var list<ThrottleDevice>|null
      */
     protected $blkioDeviceWriteBps;
     /**
-     * Limit read rate (IO per second) from a device, in the form:.
+     * Limit read rate (IO per second) from a device, in the form:
      *
      * ```
      * [{"Path": "device_path", "Rate": rate}]
      * ```
      *
-     * @var ThrottleDevice[]|null
+     * @var list<ThrottleDevice>|null
      */
     protected $blkioDeviceReadIOps;
     /**
-     * Limit write rate (IO per second) to a device, in the form:.
+     * Limit write rate (IO per second) to a device, in the form:
      *
      * ```
      * [{"Path": "device_path", "Rate": rate}]
      * ```
      *
-     * @var ThrottleDevice[]|null
+     * @var list<ThrottleDevice>|null
      */
     protected $blkioDeviceWriteIOps;
     /**
@@ -135,19 +139,19 @@ class HostConfig extends \ArrayObject
     /**
      * A list of devices to add to the container.
      *
-     * @var DeviceMapping[]|null
+     * @var list<DeviceMapping>|null
      */
     protected $devices;
     /**
      * a list of cgroup rules to apply to the container.
      *
-     * @var string[]|null
+     * @var list<string>|null
      */
     protected $deviceCgroupRules;
     /**
      * A list of requests for devices to be sent to device drivers.
      *
-     * @var DeviceRequest[]|null
+     * @var list<DeviceRequest>|null
      */
     protected $deviceRequests;
     /**
@@ -215,13 +219,13 @@ class HostConfig extends \ArrayObject
      */
     protected $pidsLimit;
     /**
-     * A list of resource limits to set in the container. For example:.
+     * A list of resource limits to set in the container. For example:
      *
      * ```
      * {"Name": "nofile", "Soft": 1024, "Hard": 2048}
      * ```
      *
-     * @var ResourcesUlimitsItem[]|null
+     * @var list<ResourcesUlimitsItem>|null
      */
     protected $ulimits;
     /**
@@ -259,45 +263,45 @@ class HostConfig extends \ArrayObject
     protected $iOMaximumBandwidth;
     /**
      * A list of volume bindings for this container. Each volume binding
-     * is a string in one of these forms:.
+     * is a string in one of these forms:
      *
      * - `host-src:container-dest[:options]` to bind-mount a host path
-     * into the container. Both `host-src`, and `container-dest` must
-     * be an _absolute_ path.
+     *   into the container. Both `host-src`, and `container-dest` must
+     *   be an _absolute_ path.
      * - `volume-name:container-dest[:options]` to bind-mount a volume
-     * managed by a volume driver into the container. `container-dest`
-     * must be an _absolute_ path.
+     *   managed by a volume driver into the container. `container-dest`
+     *   must be an _absolute_ path.
      *
      * `options` is an optional, comma-delimited list of:
      *
      * - `nocopy` disables automatic copying of data from the container
-     * path to the volume. The `nocopy` flag only applies to named volumes.
+     *   path to the volume. The `nocopy` flag only applies to named volumes.
      * - `[ro|rw]` mounts a volume read-only or read-write, respectively.
-     * If omitted or set to `rw`, volumes are mounted read-write.
+     *   If omitted or set to `rw`, volumes are mounted read-write.
      * - `[z|Z]` applies SELinux labels to allow or deny multiple containers
-     * to read and write to the same volume.
-     * - `z`: a _shared_ content label is applied to the content. This
-     * label indicates that multiple containers can share the volume
-     * content, for both reading and writing.
-     * - `Z`: a _private unshared_ label is applied to the content.
-     * This label indicates that only the current container can use
-     * a private volume. Labeling systems such as SELinux require
-     * proper labels to be placed on volume content that is mounted
-     * into a container. Without a label, the security system can
-     * prevent a container's processes from using the content. By
-     * default, the labels set by the host operating system are not
-     * modified.
+     *   to read and write to the same volume.
+     *     - `z`: a _shared_ content label is applied to the content. This
+     *       label indicates that multiple containers can share the volume
+     *       content, for both reading and writing.
+     *     - `Z`: a _private unshared_ label is applied to the content.
+     *       This label indicates that only the current container can use
+     *       a private volume. Labeling systems such as SELinux require
+     *       proper labels to be placed on volume content that is mounted
+     *       into a container. Without a label, the security system can
+     *       prevent a container's processes from using the content. By
+     *       default, the labels set by the host operating system are not
+     *       modified.
      * - `[[r]shared|[r]slave|[r]private]` specifies mount
-     * [propagation behavior](https://www.kernel.org/doc/Documentation/filesystems/sharedsubtree.txt).
-     * This only applies to bind-mounted volumes, not internal volumes
-     * or named volumes. Mount propagation requires the source mount
-     * point (the location where the source directory is mounted in the
-     * host operating system) to have the correct propagation properties.
-     * For shared volumes, the source mount point must be set to `shared`.
-     * For slave volumes, the mount must be set to either `shared` or
-     * `slave`.
+     *   [propagation behavior](https://www.kernel.org/doc/Documentation/filesystems/sharedsubtree.txt).
+     *   This only applies to bind-mounted volumes, not internal volumes
+     *   or named volumes. Mount propagation requires the source mount
+     *   point (the location where the source directory is mounted in the
+     *   host operating system) to have the correct propagation properties.
+     *   For shared volumes, the source mount point must be set to `shared`.
+     *   For slave volumes, the mount must be set to either `shared` or
+     *   `slave`.
      *
-     * @var string[]|null
+     * @var list<string>|null
      */
     protected $binds;
     /**
@@ -329,7 +333,7 @@ class HostConfig extends \ArrayObject
      * If a container's port is mapped for multiple protocols, separate entries
      * are added to the mapping table.
      *
-     * @var array<string, PortBinding[]>|null
+     * @var array<string, list<PortBinding>>|null
      */
     protected $portBindings;
     /**
@@ -359,31 +363,31 @@ class HostConfig extends \ArrayObject
      * A list of volumes to inherit from another container, specified in
      * the form `<container name>[:<ro|rw>]`.
      *
-     * @var string[]|null
+     * @var list<string>|null
      */
     protected $volumesFrom;
     /**
      * Specification for mounts to be added to the container.
      *
-     * @var Mount[]|null
+     * @var list<Mount>|null
      */
     protected $mounts;
     /**
      * A list of kernel capabilities to add to the container. Conflicts
      * with option 'Capabilities'.
      *
-     * @var string[]|null
+     * @var list<string>|null
      */
     protected $capAdd;
     /**
      * A list of kernel capabilities to drop from the container. Conflicts
      * with option 'Capabilities'.
      *
-     * @var string[]|null
+     * @var list<string>|null
      */
     protected $capDrop;
     /**
-     * cgroup namespace mode for the container. Possible values are:.
+     * cgroup namespace mode for the container. Possible values are:
      *
      * - `"private"`: the container runs in its own private cgroup namespace
      * - `"host"`: use the host system's cgroup namespace
@@ -397,36 +401,36 @@ class HostConfig extends \ArrayObject
     /**
      * A list of DNS servers for the container to use.
      *
-     * @var string[]|null
+     * @var list<string>|null
      */
     protected $dns;
     /**
      * A list of DNS options.
      *
-     * @var string[]|null
+     * @var list<string>|null
      */
     protected $dnsOptions;
     /**
      * A list of DNS search domains.
      *
-     * @var string[]|null
+     * @var list<string>|null
      */
     protected $dnsSearch;
     /**
      * A list of hostnames/IP mappings to add to the container's `/etc/hosts`
      * file. Specified in the form `["hostname:IP"]`.
      *
-     * @var string[]|null
+     * @var list<string>|null
      */
     protected $extraHosts;
     /**
      * A list of additional groups that the container process will run as.
      *
-     * @var string[]|null
+     * @var list<string>|null
      */
     protected $groupAdd;
     /**
-     * IPC sharing mode for the container. Possible values are:.
+     * IPC sharing mode for the container. Possible values are:
      *
      * - `"none"`: own private IPC namespace, with /dev/shm not mounted
      * - `"private"`: own private IPC namespace
@@ -449,7 +453,7 @@ class HostConfig extends \ArrayObject
     /**
      * A list of links for the container in the form `container_name:alias`.
      *
-     * @var string[]|null
+     * @var list<string>|null
      */
     protected $links;
     /**
@@ -461,7 +465,7 @@ class HostConfig extends \ArrayObject
     protected $oomScoreAdj;
     /**
      * Set the PID (Process) Namespace mode for the container. It can be
-     * either:.
+     * either:
      *
      * - `"container:<name|id>"`: joins another container's PID namespace
      * - `"host"`: use the host's PID namespace inside the container
@@ -499,7 +503,7 @@ class HostConfig extends \ArrayObject
     /**
      * A list of string values to customize labels for MLS systems, such as SELinux.
      *
-     * @var string[]|null
+     * @var list<string>|null
      */
     protected $securityOpt;
     /**
@@ -510,7 +514,7 @@ class HostConfig extends \ArrayObject
     protected $storageOpt;
     /**
      * A map of container directories which should be replaced by tmpfs
-     * mounts, and their corresponding mount options. For example:.
+     * mounts, and their corresponding mount options. For example:
      *
      * ```
      * { "/run": "rw,noexec,nosuid,size=65536k" }
@@ -540,7 +544,7 @@ class HostConfig extends \ArrayObject
     protected $shmSize;
     /**
      * A list of kernel parameters (sysctls) to set in the container.
-     * For example:.
+     * For example:
      *
      * ```
      * {"net.ipv4.ip_forward": "1"}
@@ -558,7 +562,7 @@ class HostConfig extends \ArrayObject
     /**
      * Initial console size, as an `[height, width]` array. (Windows only).
      *
-     * @var int[]|null
+     * @var list<int>|null
      */
     protected $consoleSize;
     /**
@@ -571,14 +575,14 @@ class HostConfig extends \ArrayObject
      * The list of paths to be masked inside the container (this overrides
      * the default set of paths).
      *
-     * @var string[]|null
+     * @var list<string>|null
      */
     protected $maskedPaths;
     /**
      * The list of paths to be set as read-only inside the container
      * (this overrides the default set of paths).
      *
-     * @var string[]|null
+     * @var list<string>|null
      */
     protected $readonlyPaths;
 
@@ -667,13 +671,13 @@ class HostConfig extends \ArrayObject
     }
 
     /**
-     * Block IO weight (relative device weight) in the form:.
+     * Block IO weight (relative device weight) in the form:
      *
      * ```
      * [{"Path": "device_path", "Weight": weight}]
      * ```
      *
-     * @return ResourcesBlkioWeightDeviceItem[]|null
+     * @return list<ResourcesBlkioWeightDeviceItem>|null
      */
     public function getBlkioWeightDevice(): ?array
     {
@@ -681,13 +685,13 @@ class HostConfig extends \ArrayObject
     }
 
     /**
-     * Block IO weight (relative device weight) in the form:.
+     * Block IO weight (relative device weight) in the form:
      *
      * ```
      * [{"Path": "device_path", "Weight": weight}]
      * ```
      *
-     * @param ResourcesBlkioWeightDeviceItem[]|null $blkioWeightDevice
+     * @param list<ResourcesBlkioWeightDeviceItem>|null $blkioWeightDevice
      */
     public function setBlkioWeightDevice(?array $blkioWeightDevice): self
     {
@@ -698,13 +702,13 @@ class HostConfig extends \ArrayObject
     }
 
     /**
-     * Limit read rate (bytes per second) from a device, in the form:.
+     * Limit read rate (bytes per second) from a device, in the form:
      *
      * ```
      * [{"Path": "device_path", "Rate": rate}]
      * ```
      *
-     * @return ThrottleDevice[]|null
+     * @return list<ThrottleDevice>|null
      */
     public function getBlkioDeviceReadBps(): ?array
     {
@@ -712,13 +716,13 @@ class HostConfig extends \ArrayObject
     }
 
     /**
-     * Limit read rate (bytes per second) from a device, in the form:.
+     * Limit read rate (bytes per second) from a device, in the form:
      *
      * ```
      * [{"Path": "device_path", "Rate": rate}]
      * ```
      *
-     * @param ThrottleDevice[]|null $blkioDeviceReadBps
+     * @param list<ThrottleDevice>|null $blkioDeviceReadBps
      */
     public function setBlkioDeviceReadBps(?array $blkioDeviceReadBps): self
     {
@@ -729,13 +733,13 @@ class HostConfig extends \ArrayObject
     }
 
     /**
-     * Limit write rate (bytes per second) to a device, in the form:.
+     * Limit write rate (bytes per second) to a device, in the form:
      *
      * ```
      * [{"Path": "device_path", "Rate": rate}]
      * ```
      *
-     * @return ThrottleDevice[]|null
+     * @return list<ThrottleDevice>|null
      */
     public function getBlkioDeviceWriteBps(): ?array
     {
@@ -743,13 +747,13 @@ class HostConfig extends \ArrayObject
     }
 
     /**
-     * Limit write rate (bytes per second) to a device, in the form:.
+     * Limit write rate (bytes per second) to a device, in the form:
      *
      * ```
      * [{"Path": "device_path", "Rate": rate}]
      * ```
      *
-     * @param ThrottleDevice[]|null $blkioDeviceWriteBps
+     * @param list<ThrottleDevice>|null $blkioDeviceWriteBps
      */
     public function setBlkioDeviceWriteBps(?array $blkioDeviceWriteBps): self
     {
@@ -760,13 +764,13 @@ class HostConfig extends \ArrayObject
     }
 
     /**
-     * Limit read rate (IO per second) from a device, in the form:.
+     * Limit read rate (IO per second) from a device, in the form:
      *
      * ```
      * [{"Path": "device_path", "Rate": rate}]
      * ```
      *
-     * @return ThrottleDevice[]|null
+     * @return list<ThrottleDevice>|null
      */
     public function getBlkioDeviceReadIOps(): ?array
     {
@@ -774,13 +778,13 @@ class HostConfig extends \ArrayObject
     }
 
     /**
-     * Limit read rate (IO per second) from a device, in the form:.
+     * Limit read rate (IO per second) from a device, in the form:
      *
      * ```
      * [{"Path": "device_path", "Rate": rate}]
      * ```
      *
-     * @param ThrottleDevice[]|null $blkioDeviceReadIOps
+     * @param list<ThrottleDevice>|null $blkioDeviceReadIOps
      */
     public function setBlkioDeviceReadIOps(?array $blkioDeviceReadIOps): self
     {
@@ -791,13 +795,13 @@ class HostConfig extends \ArrayObject
     }
 
     /**
-     * Limit write rate (IO per second) to a device, in the form:.
+     * Limit write rate (IO per second) to a device, in the form:
      *
      * ```
      * [{"Path": "device_path", "Rate": rate}]
      * ```
      *
-     * @return ThrottleDevice[]|null
+     * @return list<ThrottleDevice>|null
      */
     public function getBlkioDeviceWriteIOps(): ?array
     {
@@ -805,13 +809,13 @@ class HostConfig extends \ArrayObject
     }
 
     /**
-     * Limit write rate (IO per second) to a device, in the form:.
+     * Limit write rate (IO per second) to a device, in the form:
      *
      * ```
      * [{"Path": "device_path", "Rate": rate}]
      * ```
      *
-     * @param ThrottleDevice[]|null $blkioDeviceWriteIOps
+     * @param list<ThrottleDevice>|null $blkioDeviceWriteIOps
      */
     public function setBlkioDeviceWriteIOps(?array $blkioDeviceWriteIOps): self
     {
@@ -944,7 +948,7 @@ class HostConfig extends \ArrayObject
     /**
      * A list of devices to add to the container.
      *
-     * @return DeviceMapping[]|null
+     * @return list<DeviceMapping>|null
      */
     public function getDevices(): ?array
     {
@@ -954,7 +958,7 @@ class HostConfig extends \ArrayObject
     /**
      * A list of devices to add to the container.
      *
-     * @param DeviceMapping[]|null $devices
+     * @param list<DeviceMapping>|null $devices
      */
     public function setDevices(?array $devices): self
     {
@@ -967,7 +971,7 @@ class HostConfig extends \ArrayObject
     /**
      * a list of cgroup rules to apply to the container.
      *
-     * @return string[]|null
+     * @return list<string>|null
      */
     public function getDeviceCgroupRules(): ?array
     {
@@ -977,7 +981,7 @@ class HostConfig extends \ArrayObject
     /**
      * a list of cgroup rules to apply to the container.
      *
-     * @param string[]|null $deviceCgroupRules
+     * @param list<string>|null $deviceCgroupRules
      */
     public function setDeviceCgroupRules(?array $deviceCgroupRules): self
     {
@@ -990,7 +994,7 @@ class HostConfig extends \ArrayObject
     /**
      * A list of requests for devices to be sent to device drivers.
      *
-     * @return DeviceRequest[]|null
+     * @return list<DeviceRequest>|null
      */
     public function getDeviceRequests(): ?array
     {
@@ -1000,7 +1004,7 @@ class HostConfig extends \ArrayObject
     /**
      * A list of requests for devices to be sent to device drivers.
      *
-     * @param DeviceRequest[]|null $deviceRequests
+     * @param list<DeviceRequest>|null $deviceRequests
      */
     public function setDeviceRequests(?array $deviceRequests): self
     {
@@ -1202,13 +1206,13 @@ class HostConfig extends \ArrayObject
     }
 
     /**
-     * A list of resource limits to set in the container. For example:.
+     * A list of resource limits to set in the container. For example:
      *
      * ```
      * {"Name": "nofile", "Soft": 1024, "Hard": 2048}
      * ```
      *
-     * @return ResourcesUlimitsItem[]|null
+     * @return list<ResourcesUlimitsItem>|null
      */
     public function getUlimits(): ?array
     {
@@ -1216,13 +1220,13 @@ class HostConfig extends \ArrayObject
     }
 
     /**
-     * A list of resource limits to set in the container. For example:.
+     * A list of resource limits to set in the container. For example:
      *
      * ```
      * {"Name": "nofile", "Soft": 1024, "Hard": 2048}
      * ```
      *
-     * @param ResourcesUlimitsItem[]|null $ulimits
+     * @param list<ResourcesUlimitsItem>|null $ulimits
      */
     public function setUlimits(?array $ulimits): self
     {
@@ -1328,45 +1332,45 @@ class HostConfig extends \ArrayObject
 
     /**
      * A list of volume bindings for this container. Each volume binding
-     * is a string in one of these forms:.
+     * is a string in one of these forms:
      *
      * - `host-src:container-dest[:options]` to bind-mount a host path
-     * into the container. Both `host-src`, and `container-dest` must
-     * be an _absolute_ path.
+     *   into the container. Both `host-src`, and `container-dest` must
+     *   be an _absolute_ path.
      * - `volume-name:container-dest[:options]` to bind-mount a volume
-     * managed by a volume driver into the container. `container-dest`
-     * must be an _absolute_ path.
+     *   managed by a volume driver into the container. `container-dest`
+     *   must be an _absolute_ path.
      *
      * `options` is an optional, comma-delimited list of:
      *
      * - `nocopy` disables automatic copying of data from the container
-     * path to the volume. The `nocopy` flag only applies to named volumes.
+     *   path to the volume. The `nocopy` flag only applies to named volumes.
      * - `[ro|rw]` mounts a volume read-only or read-write, respectively.
-     * If omitted or set to `rw`, volumes are mounted read-write.
+     *   If omitted or set to `rw`, volumes are mounted read-write.
      * - `[z|Z]` applies SELinux labels to allow or deny multiple containers
-     * to read and write to the same volume.
-     * - `z`: a _shared_ content label is applied to the content. This
-     * label indicates that multiple containers can share the volume
-     * content, for both reading and writing.
-     * - `Z`: a _private unshared_ label is applied to the content.
-     * This label indicates that only the current container can use
-     * a private volume. Labeling systems such as SELinux require
-     * proper labels to be placed on volume content that is mounted
-     * into a container. Without a label, the security system can
-     * prevent a container's processes from using the content. By
-     * default, the labels set by the host operating system are not
-     * modified.
+     *   to read and write to the same volume.
+     *     - `z`: a _shared_ content label is applied to the content. This
+     *       label indicates that multiple containers can share the volume
+     *       content, for both reading and writing.
+     *     - `Z`: a _private unshared_ label is applied to the content.
+     *       This label indicates that only the current container can use
+     *       a private volume. Labeling systems such as SELinux require
+     *       proper labels to be placed on volume content that is mounted
+     *       into a container. Without a label, the security system can
+     *       prevent a container's processes from using the content. By
+     *       default, the labels set by the host operating system are not
+     *       modified.
      * - `[[r]shared|[r]slave|[r]private]` specifies mount
-     * [propagation behavior](https://www.kernel.org/doc/Documentation/filesystems/sharedsubtree.txt).
-     * This only applies to bind-mounted volumes, not internal volumes
-     * or named volumes. Mount propagation requires the source mount
-     * point (the location where the source directory is mounted in the
-     * host operating system) to have the correct propagation properties.
-     * For shared volumes, the source mount point must be set to `shared`.
-     * For slave volumes, the mount must be set to either `shared` or
-     * `slave`.
+     *   [propagation behavior](https://www.kernel.org/doc/Documentation/filesystems/sharedsubtree.txt).
+     *   This only applies to bind-mounted volumes, not internal volumes
+     *   or named volumes. Mount propagation requires the source mount
+     *   point (the location where the source directory is mounted in the
+     *   host operating system) to have the correct propagation properties.
+     *   For shared volumes, the source mount point must be set to `shared`.
+     *   For slave volumes, the mount must be set to either `shared` or
+     *   `slave`.
      *
-     * @return string[]|null
+     * @return list<string>|null
      */
     public function getBinds(): ?array
     {
@@ -1375,7 +1379,7 @@ class HostConfig extends \ArrayObject
 
     /**
      * A list of volume bindings for this container. Each volume binding
-     * is a string in one of these forms:.
+     * is a string in one of these forms:
      *
      * - `host-src:container-dest[:options]` to bind-mount a host path
      * into the container. Both `host-src`, and `container-dest` must
@@ -1413,7 +1417,7 @@ class HostConfig extends \ArrayObject
      * For slave volumes, the mount must be set to either `shared` or
      * `slave`.
      *
-     * @param string[]|null $binds
+     * @param list<string>|null $binds
      */
     public function setBinds(?array $binds): self
     {
@@ -1494,7 +1498,7 @@ class HostConfig extends \ArrayObject
      * If a container's port is mapped for multiple protocols, separate entries
      * are added to the mapping table.
      *
-     * @return array<string, PortBinding[]>|null
+     * @return array<string, list<PortBinding>>|null
      */
     public function getPortBindings(): ?iterable
     {
@@ -1509,7 +1513,7 @@ class HostConfig extends \ArrayObject
      * If a container's port is mapped for multiple protocols, separate entries
      * are added to the mapping table.
      *
-     * @param array<string, PortBinding[]>|null $portBindings
+     * @param array<string, list<PortBinding>>|null $portBindings
      */
     public function setPortBindings(?iterable $portBindings): self
     {
@@ -1590,7 +1594,7 @@ class HostConfig extends \ArrayObject
      * A list of volumes to inherit from another container, specified in
      * the form `<container name>[:<ro|rw>]`.
      *
-     * @return string[]|null
+     * @return list<string>|null
      */
     public function getVolumesFrom(): ?array
     {
@@ -1601,7 +1605,7 @@ class HostConfig extends \ArrayObject
      * A list of volumes to inherit from another container, specified in
      * the form `<container name>[:<ro|rw>]`.
      *
-     * @param string[]|null $volumesFrom
+     * @param list<string>|null $volumesFrom
      */
     public function setVolumesFrom(?array $volumesFrom): self
     {
@@ -1614,7 +1618,7 @@ class HostConfig extends \ArrayObject
     /**
      * Specification for mounts to be added to the container.
      *
-     * @return Mount[]|null
+     * @return list<Mount>|null
      */
     public function getMounts(): ?array
     {
@@ -1624,7 +1628,7 @@ class HostConfig extends \ArrayObject
     /**
      * Specification for mounts to be added to the container.
      *
-     * @param Mount[]|null $mounts
+     * @param list<Mount>|null $mounts
      */
     public function setMounts(?array $mounts): self
     {
@@ -1638,7 +1642,7 @@ class HostConfig extends \ArrayObject
      * A list of kernel capabilities to add to the container. Conflicts
      * with option 'Capabilities'.
      *
-     * @return string[]|null
+     * @return list<string>|null
      */
     public function getCapAdd(): ?array
     {
@@ -1649,7 +1653,7 @@ class HostConfig extends \ArrayObject
      * A list of kernel capabilities to add to the container. Conflicts
      * with option 'Capabilities'.
      *
-     * @param string[]|null $capAdd
+     * @param list<string>|null $capAdd
      */
     public function setCapAdd(?array $capAdd): self
     {
@@ -1663,7 +1667,7 @@ class HostConfig extends \ArrayObject
      * A list of kernel capabilities to drop from the container. Conflicts
      * with option 'Capabilities'.
      *
-     * @return string[]|null
+     * @return list<string>|null
      */
     public function getCapDrop(): ?array
     {
@@ -1674,7 +1678,7 @@ class HostConfig extends \ArrayObject
      * A list of kernel capabilities to drop from the container. Conflicts
      * with option 'Capabilities'.
      *
-     * @param string[]|null $capDrop
+     * @param list<string>|null $capDrop
      */
     public function setCapDrop(?array $capDrop): self
     {
@@ -1685,7 +1689,7 @@ class HostConfig extends \ArrayObject
     }
 
     /**
-     * cgroup namespace mode for the container. Possible values are:.
+     * cgroup namespace mode for the container. Possible values are:
      *
      * - `"private"`: the container runs in its own private cgroup namespace
      * - `"host"`: use the host system's cgroup namespace
@@ -1699,7 +1703,7 @@ class HostConfig extends \ArrayObject
     }
 
     /**
-     * cgroup namespace mode for the container. Possible values are:.
+     * cgroup namespace mode for the container. Possible values are:
      *
      * - `"private"`: the container runs in its own private cgroup namespace
      * - `"host"`: use the host system's cgroup namespace
@@ -1718,7 +1722,7 @@ class HostConfig extends \ArrayObject
     /**
      * A list of DNS servers for the container to use.
      *
-     * @return string[]|null
+     * @return list<string>|null
      */
     public function getDns(): ?array
     {
@@ -1728,7 +1732,7 @@ class HostConfig extends \ArrayObject
     /**
      * A list of DNS servers for the container to use.
      *
-     * @param string[]|null $dns
+     * @param list<string>|null $dns
      */
     public function setDns(?array $dns): self
     {
@@ -1741,7 +1745,7 @@ class HostConfig extends \ArrayObject
     /**
      * A list of DNS options.
      *
-     * @return string[]|null
+     * @return list<string>|null
      */
     public function getDnsOptions(): ?array
     {
@@ -1751,7 +1755,7 @@ class HostConfig extends \ArrayObject
     /**
      * A list of DNS options.
      *
-     * @param string[]|null $dnsOptions
+     * @param list<string>|null $dnsOptions
      */
     public function setDnsOptions(?array $dnsOptions): self
     {
@@ -1764,7 +1768,7 @@ class HostConfig extends \ArrayObject
     /**
      * A list of DNS search domains.
      *
-     * @return string[]|null
+     * @return list<string>|null
      */
     public function getDnsSearch(): ?array
     {
@@ -1774,7 +1778,7 @@ class HostConfig extends \ArrayObject
     /**
      * A list of DNS search domains.
      *
-     * @param string[]|null $dnsSearch
+     * @param list<string>|null $dnsSearch
      */
     public function setDnsSearch(?array $dnsSearch): self
     {
@@ -1788,7 +1792,7 @@ class HostConfig extends \ArrayObject
      * A list of hostnames/IP mappings to add to the container's `/etc/hosts`
      * file. Specified in the form `["hostname:IP"]`.
      *
-     * @return string[]|null
+     * @return list<string>|null
      */
     public function getExtraHosts(): ?array
     {
@@ -1799,7 +1803,7 @@ class HostConfig extends \ArrayObject
      * A list of hostnames/IP mappings to add to the container's `/etc/hosts`
      * file. Specified in the form `["hostname:IP"]`.
      *
-     * @param string[]|null $extraHosts
+     * @param list<string>|null $extraHosts
      */
     public function setExtraHosts(?array $extraHosts): self
     {
@@ -1812,7 +1816,7 @@ class HostConfig extends \ArrayObject
     /**
      * A list of additional groups that the container process will run as.
      *
-     * @return string[]|null
+     * @return list<string>|null
      */
     public function getGroupAdd(): ?array
     {
@@ -1822,7 +1826,7 @@ class HostConfig extends \ArrayObject
     /**
      * A list of additional groups that the container process will run as.
      *
-     * @param string[]|null $groupAdd
+     * @param list<string>|null $groupAdd
      */
     public function setGroupAdd(?array $groupAdd): self
     {
@@ -1833,7 +1837,7 @@ class HostConfig extends \ArrayObject
     }
 
     /**
-     * IPC sharing mode for the container. Possible values are:.
+     * IPC sharing mode for the container. Possible values are:
      *
      * - `"none"`: own private IPC namespace, with /dev/shm not mounted
      * - `"private"`: own private IPC namespace
@@ -1850,7 +1854,7 @@ class HostConfig extends \ArrayObject
     }
 
     /**
-     * IPC sharing mode for the container. Possible values are:.
+     * IPC sharing mode for the container. Possible values are:
      *
      * - `"none"`: own private IPC namespace, with /dev/shm not mounted
      * - `"private"`: own private IPC namespace
@@ -1891,7 +1895,7 @@ class HostConfig extends \ArrayObject
     /**
      * A list of links for the container in the form `container_name:alias`.
      *
-     * @return string[]|null
+     * @return list<string>|null
      */
     public function getLinks(): ?array
     {
@@ -1901,7 +1905,7 @@ class HostConfig extends \ArrayObject
     /**
      * A list of links for the container in the form `container_name:alias`.
      *
-     * @param string[]|null $links
+     * @param list<string>|null $links
      */
     public function setLinks(?array $links): self
     {
@@ -1934,7 +1938,7 @@ class HostConfig extends \ArrayObject
 
     /**
      * Set the PID (Process) Namespace mode for the container. It can be
-     * either:.
+     * either:
      *
      * - `"container:<name|id>"`: joins another container's PID namespace
      * - `"host"`: use the host's PID namespace inside the container
@@ -1946,7 +1950,7 @@ class HostConfig extends \ArrayObject
 
     /**
      * Set the PID (Process) Namespace mode for the container. It can be
-     * either:.
+     * either:
      *
      * - `"container:<name|id>"`: joins another container's PID namespace
      * - `"host"`: use the host's PID namespace inside the container
@@ -2037,7 +2041,7 @@ class HostConfig extends \ArrayObject
     /**
      * A list of string values to customize labels for MLS systems, such as SELinux.
      *
-     * @return string[]|null
+     * @return list<string>|null
      */
     public function getSecurityOpt(): ?array
     {
@@ -2047,7 +2051,7 @@ class HostConfig extends \ArrayObject
     /**
      * A list of string values to customize labels for MLS systems, such as SELinux.
      *
-     * @param string[]|null $securityOpt
+     * @param list<string>|null $securityOpt
      */
     public function setSecurityOpt(?array $securityOpt): self
     {
@@ -2082,7 +2086,7 @@ class HostConfig extends \ArrayObject
 
     /**
      * A map of container directories which should be replaced by tmpfs
-     * mounts, and their corresponding mount options. For example:.
+     * mounts, and their corresponding mount options. For example:
      *
      * ```
      * { "/run": "rw,noexec,nosuid,size=65536k" }
@@ -2097,7 +2101,7 @@ class HostConfig extends \ArrayObject
 
     /**
      * A map of container directories which should be replaced by tmpfs
-     * mounts, and their corresponding mount options. For example:.
+     * mounts, and their corresponding mount options. For example:
      *
      * ```
      * { "/run": "rw,noexec,nosuid,size=65536k" }
@@ -2174,7 +2178,7 @@ class HostConfig extends \ArrayObject
 
     /**
      * A list of kernel parameters (sysctls) to set in the container.
-     * For example:.
+     * For example:
      *
      * ```
      * {"net.ipv4.ip_forward": "1"}
@@ -2189,7 +2193,7 @@ class HostConfig extends \ArrayObject
 
     /**
      * A list of kernel parameters (sysctls) to set in the container.
-     * For example:.
+     * For example:
      *
      * ```
      * {"net.ipv4.ip_forward": "1"}
@@ -2227,7 +2231,7 @@ class HostConfig extends \ArrayObject
     /**
      * Initial console size, as an `[height, width]` array. (Windows only).
      *
-     * @return int[]|null
+     * @return list<int>|null
      */
     public function getConsoleSize(): ?array
     {
@@ -2237,7 +2241,7 @@ class HostConfig extends \ArrayObject
     /**
      * Initial console size, as an `[height, width]` array. (Windows only).
      *
-     * @param int[]|null $consoleSize
+     * @param list<int>|null $consoleSize
      */
     public function setConsoleSize(?array $consoleSize): self
     {
@@ -2270,7 +2274,7 @@ class HostConfig extends \ArrayObject
      * The list of paths to be masked inside the container (this overrides
      * the default set of paths).
      *
-     * @return string[]|null
+     * @return list<string>|null
      */
     public function getMaskedPaths(): ?array
     {
@@ -2281,7 +2285,7 @@ class HostConfig extends \ArrayObject
      * The list of paths to be masked inside the container (this overrides
      * the default set of paths).
      *
-     * @param string[]|null $maskedPaths
+     * @param list<string>|null $maskedPaths
      */
     public function setMaskedPaths(?array $maskedPaths): self
     {
@@ -2295,7 +2299,7 @@ class HostConfig extends \ArrayObject
      * The list of paths to be set as read-only inside the container
      * (this overrides the default set of paths).
      *
-     * @return string[]|null
+     * @return list<string>|null
      */
     public function getReadonlyPaths(): ?array
     {
@@ -2306,7 +2310,7 @@ class HostConfig extends \ArrayObject
      * The list of paths to be set as read-only inside the container
      * (this overrides the default set of paths).
      *
-     * @param string[]|null $readonlyPaths
+     * @param list<string>|null $readonlyPaths
      */
     public function setReadonlyPaths(?array $readonlyPaths): self
     {
@@ -2314,5 +2318,10 @@ class HostConfig extends \ArrayObject
         $this->readonlyPaths = $readonlyPaths;
 
         return $this;
+    }
+
+    public function definedProperties(): array
+    {
+        return ['cpuShares' => ['CpuShares', 'getCpuShares', 'setCpuShares'], 'memory' => ['Memory', 'getMemory', 'setMemory'], 'cgroupParent' => ['CgroupParent', 'getCgroupParent', 'setCgroupParent'], 'blkioWeight' => ['BlkioWeight', 'getBlkioWeight', 'setBlkioWeight'], 'blkioWeightDevice' => ['BlkioWeightDevice', 'getBlkioWeightDevice', 'setBlkioWeightDevice'], 'blkioDeviceReadBps' => ['BlkioDeviceReadBps', 'getBlkioDeviceReadBps', 'setBlkioDeviceReadBps'], 'blkioDeviceWriteBps' => ['BlkioDeviceWriteBps', 'getBlkioDeviceWriteBps', 'setBlkioDeviceWriteBps'], 'blkioDeviceReadIOps' => ['BlkioDeviceReadIOps', 'getBlkioDeviceReadIOps', 'setBlkioDeviceReadIOps'], 'blkioDeviceWriteIOps' => ['BlkioDeviceWriteIOps', 'getBlkioDeviceWriteIOps', 'setBlkioDeviceWriteIOps'], 'cpuPeriod' => ['CpuPeriod', 'getCpuPeriod', 'setCpuPeriod'], 'cpuQuota' => ['CpuQuota', 'getCpuQuota', 'setCpuQuota'], 'cpuRealtimePeriod' => ['CpuRealtimePeriod', 'getCpuRealtimePeriod', 'setCpuRealtimePeriod'], 'cpuRealtimeRuntime' => ['CpuRealtimeRuntime', 'getCpuRealtimeRuntime', 'setCpuRealtimeRuntime'], 'cpusetCpus' => ['CpusetCpus', 'getCpusetCpus', 'setCpusetCpus'], 'cpusetMems' => ['CpusetMems', 'getCpusetMems', 'setCpusetMems'], 'devices' => ['Devices', 'getDevices', 'setDevices'], 'deviceCgroupRules' => ['DeviceCgroupRules', 'getDeviceCgroupRules', 'setDeviceCgroupRules'], 'deviceRequests' => ['DeviceRequests', 'getDeviceRequests', 'setDeviceRequests'], 'kernelMemory' => ['KernelMemory', 'getKernelMemory', 'setKernelMemory'], 'kernelMemoryTCP' => ['KernelMemoryTCP', 'getKernelMemoryTCP', 'setKernelMemoryTCP'], 'memoryReservation' => ['MemoryReservation', 'getMemoryReservation', 'setMemoryReservation'], 'memorySwap' => ['MemorySwap', 'getMemorySwap', 'setMemorySwap'], 'memorySwappiness' => ['MemorySwappiness', 'getMemorySwappiness', 'setMemorySwappiness'], 'nanoCPUs' => ['NanoCPUs', 'getNanoCPUs', 'setNanoCPUs'], 'oomKillDisable' => ['OomKillDisable', 'getOomKillDisable', 'setOomKillDisable'], 'init' => ['Init', 'getInit', 'setInit'], 'pidsLimit' => ['PidsLimit', 'getPidsLimit', 'setPidsLimit'], 'ulimits' => ['Ulimits', 'getUlimits', 'setUlimits'], 'cpuCount' => ['CpuCount', 'getCpuCount', 'setCpuCount'], 'cpuPercent' => ['CpuPercent', 'getCpuPercent', 'setCpuPercent'], 'iOMaximumIOps' => ['IOMaximumIOps', 'getIOMaximumIOps', 'setIOMaximumIOps'], 'iOMaximumBandwidth' => ['IOMaximumBandwidth', 'getIOMaximumBandwidth', 'setIOMaximumBandwidth'], 'binds' => ['Binds', 'getBinds', 'setBinds'], 'containerIDFile' => ['ContainerIDFile', 'getContainerIDFile', 'setContainerIDFile'], 'logConfig' => ['LogConfig', 'getLogConfig', 'setLogConfig'], 'networkMode' => ['NetworkMode', 'getNetworkMode', 'setNetworkMode'], 'portBindings' => ['PortBindings', 'getPortBindings', 'setPortBindings'], 'restartPolicy' => ['RestartPolicy', 'getRestartPolicy', 'setRestartPolicy'], 'autoRemove' => ['AutoRemove', 'getAutoRemove', 'setAutoRemove'], 'volumeDriver' => ['VolumeDriver', 'getVolumeDriver', 'setVolumeDriver'], 'volumesFrom' => ['VolumesFrom', 'getVolumesFrom', 'setVolumesFrom'], 'mounts' => ['Mounts', 'getMounts', 'setMounts'], 'capAdd' => ['CapAdd', 'getCapAdd', 'setCapAdd'], 'capDrop' => ['CapDrop', 'getCapDrop', 'setCapDrop'], 'cgroupnsMode' => ['CgroupnsMode', 'getCgroupnsMode', 'setCgroupnsMode'], 'dns' => ['Dns', 'getDns', 'setDns'], 'dnsOptions' => ['DnsOptions', 'getDnsOptions', 'setDnsOptions'], 'dnsSearch' => ['DnsSearch', 'getDnsSearch', 'setDnsSearch'], 'extraHosts' => ['ExtraHosts', 'getExtraHosts', 'setExtraHosts'], 'groupAdd' => ['GroupAdd', 'getGroupAdd', 'setGroupAdd'], 'ipcMode' => ['IpcMode', 'getIpcMode', 'setIpcMode'], 'cgroup' => ['Cgroup', 'getCgroup', 'setCgroup'], 'links' => ['Links', 'getLinks', 'setLinks'], 'oomScoreAdj' => ['OomScoreAdj', 'getOomScoreAdj', 'setOomScoreAdj'], 'pidMode' => ['PidMode', 'getPidMode', 'setPidMode'], 'privileged' => ['Privileged', 'getPrivileged', 'setPrivileged'], 'publishAllPorts' => ['PublishAllPorts', 'getPublishAllPorts', 'setPublishAllPorts'], 'readonlyRootfs' => ['ReadonlyRootfs', 'getReadonlyRootfs', 'setReadonlyRootfs'], 'securityOpt' => ['SecurityOpt', 'getSecurityOpt', 'setSecurityOpt'], 'storageOpt' => ['StorageOpt', 'getStorageOpt', 'setStorageOpt'], 'tmpfs' => ['Tmpfs', 'getTmpfs', 'setTmpfs'], 'uTSMode' => ['UTSMode', 'getUTSMode', 'setUTSMode'], 'usernsMode' => ['UsernsMode', 'getUsernsMode', 'setUsernsMode'], 'shmSize' => ['ShmSize', 'getShmSize', 'setShmSize'], 'sysctls' => ['Sysctls', 'getSysctls', 'setSysctls'], 'runtime' => ['Runtime', 'getRuntime', 'setRuntime'], 'consoleSize' => ['ConsoleSize', 'getConsoleSize', 'setConsoleSize'], 'isolation' => ['Isolation', 'getIsolation', 'setIsolation'], 'maskedPaths' => ['MaskedPaths', 'getMaskedPaths', 'setMaskedPaths'], 'readonlyPaths' => ['ReadonlyPaths', 'getReadonlyPaths', 'setReadonlyPaths']];
     }
 }

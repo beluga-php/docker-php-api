@@ -9,12 +9,11 @@ class BuildPrune extends \Docker\API\Runtime\Client\BaseEndpoint implements \Doc
     use \Docker\API\Runtime\Client\EndpointTrait;
 
     /**
-     * @param array $queryParameters {
-     *
-     * @var int    $keep-storage Amount of disk space in bytes to keep for cache
-     * @var bool   $all Remove all types of build cache
-     * @var string $filters A JSON encoded value of the filters (a `map[string][]string`) to
-     *             process on the list of build cache objects.
+     * @param array{
+     *    "keep-storage"?: int, //Amount of disk space in bytes to keep for cache
+     *    "all"?: bool, //Remove all types of build cache
+     *    "filters"?: string, //A JSON encoded value of the filters (a `map[string][]string`) to
+     * process on the list of build cache objects.
      *
      * Available filters:
      *
@@ -26,8 +25,7 @@ class BuildPrune extends \Docker\API\Runtime\Client\BaseEndpoint implements \Doc
      * - `inuse`
      * - `shared`
      * - `private`
-     *
-     * }
+     * } $queryParameters
      */
     public function __construct(array $queryParameters = [])
     {
@@ -72,15 +70,15 @@ class BuildPrune extends \Docker\API\Runtime\Client\BaseEndpoint implements \Doc
      *
      * @return \Docker\API\Model\BuildPrunePostResponse200|null
      */
-    protected function transformResponseBody(\Psr\Http\Message\ResponseInterface $response, \Symfony\Component\Serializer\SerializerInterface $serializer, string $contentType = null)
+    protected function transformResponseBody(\Psr\Http\Message\ResponseInterface $response, \Symfony\Component\Serializer\SerializerInterface $serializer, ?string $contentType = null)
     {
         $status = $response->getStatusCode();
         $body = (string) $response->getBody();
-        if ((null === $contentType) === false && (200 === $status && false !== mb_strpos($contentType, 'application/json'))) {
-            return $serializer->deserialize($body, 'Docker\\API\\Model\\BuildPrunePostResponse200', 'json');
+        if ((null === $contentType) === false && (200 === $status && false !== stripos(strtolower($contentType), 'application/json'))) {
+            return $serializer->deserialize($body, 'Docker\API\Model\BuildPrunePostResponse200', 'json');
         }
-        if ((null === $contentType) === false && (500 === $status && false !== mb_strpos($contentType, 'application/json'))) {
-            throw new \Docker\API\Exception\BuildPruneInternalServerErrorException($serializer->deserialize($body, 'Docker\\API\\Model\\ErrorResponse', 'json'), $response);
+        if ((null === $contentType) === false && (500 === $status && false !== stripos(strtolower($contentType), 'application/json'))) {
+            throw new \Docker\API\Exception\BuildPruneInternalServerErrorException($serializer->deserialize($body, 'Docker\API\Model\ErrorResponse', 'json'), $response);
         }
     }
 
