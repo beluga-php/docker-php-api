@@ -1,5 +1,8 @@
 # Docker PHP Api
 
+> [!NOTE]
+> Development has moved back to the original project at https://github.com/docker-php/docker-php-api.
+
 Generated API Client from OpenAPI specification of [Docker](https://www.docker.com/), by [Jane](https://github.com/janephp/janephp) OpenAPI Client generator.
 
 ## Usage
